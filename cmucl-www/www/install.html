@@ -19,12 +19,26 @@
     supporting CLX, Hemlock, the Motif interface, and so on. 
 
 <p> <a href = "download.html">Download the archives</a> corresponding to
-    your platform. You can check the integrity of the files you have
-    downloaded by comparing the output of <tt>md5sum filename</tt> with
-    that given in the file md5sums.txt.
+    your platform. Certain tarballs are PGP-signed by the packager and are
+    accompanied by a file with an <tt>.asc</tt> extension; in this case you
+    can check that they have not been modified by using GPG:
+
+<pre>
+    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19a/cmucl-19a-x86-linux.tar.bz2
+    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19a/cmucl-19a-x86-linux.tar.bz2.asc
+    gpg --verify cmucl-19a-x86-linux.tar.bz2.asc
+</pre>
+
+<p> GPG should tell you that the file has a good signature from one of the
+    CMUCL developers. Unless you have a web-of-trust relationship with that
+    developer it will warn you that the key is not certified with a trusted
+    signature.
+
+
+<h2> Extract the tarballs</h2>
 
 <p> The release tarballs extract to the following directory structure:
-  
+
 <pre>
      bin/lisp
      lib/cmucl/lib/lisp.core
@@ -38,23 +52,23 @@
   
 <pre>
      cd /usr/local
-     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.extra.tar.bz2
+     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.extra.tar.bz2
 </pre>
      
 <p> or alternatively, install under a directory in <tt>/opt</tt>, for example
   
 <pre>
-     mkdir /opt/cmucl-18e
-     cd /opt/cmucl-18e
-     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.extra.tar.bz2
+     mkdir /opt/cmucl-19a
+     cd /opt/cmucl-19a
+     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.extra.tar.bz2
 </pre> 
  
-<p> The 18e distribution is relocateable: the lisp binary will search for
+<p> The 19a distribution is relocateable: the lisp binary will search for
     the lisp.core file relative to its location. This means that it is
     sufficient to have <tt>/usr/local/bin</tt> (or
-    <tt>/opt/cmucl-18e/bin</tt>) in your <tt>PATH</tt> to be able to invoke
+    <tt>/opt/cmucl-19a/bin</tt>) in your <tt>PATH</tt> to be able to invoke
     CMUCL from your shell.
 
 <p> You can now invoke CMUCL: this should display a banner then show a
@@ -62,13 +76,13 @@
   
 <pre>
       % lisp
-      CMU Common Lisp 18e, running on orion
-      With core: /prj/cmucl/release-18e/linux/lisp/lisp.core
-      Dumped on: Thu, 2003-04-03 15:47:12+02:00 on orion
-      See &lt;http://www.cons.org/cmucl/&gt; for support information.
+      CMU Common Lisp 19a, running on melbourne
+      With core: /export/linux/cmucl-19a-linux/lib/cmucl/lib/lisp.core
+      Dumped on: Wed, 2004-07-28 18:51:48+02:00 on lorien
+      See <http://www.cons.org/cmucl/> for support information.
       Loaded subsystems:
           Python 1.1, target Intel x86
-	 CLOS 18e (based on PCL September 16 92 PCL (f))
+          CLOS based on Gerd's PCL 2004/04/14 03:32:47
       * (format t &quot;~&amp;Hello, world!~%&quot;)
       Hello, world!
       NIL

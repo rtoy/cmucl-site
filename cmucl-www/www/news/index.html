@@ -11,9 +11,26 @@
 
 <p>
 <dl>
+
+<dt>2004-10-18</dt>
+<dd> <strong>cmucl-19a-patch-002 is available</strong>, to fix the
+bug in unbound-slot (:name was not accepted as a keyword argument). This
+patch breaks backward compatibility, since the :slot argument is no longer
+accepted. The patch is present in the <tt>release/19a/patches</tt>
+directory, or via ASDF-INSTALL from <a href =
+"http://common-lisp.net/webftp/pub/project/cmucl/release/19a/patches/cmucl-19a-patch-002.tar.gz">common-lisp.net</a>. 
+
+<dt>2004-10-01</dt>
+<dd> The <strong>October snapshot binaries</strong> have been uploaded, for
+sparcv9/Solaris, x86/FreeBSD, x86/Linux and MacOS X. The include more
+pretty-printer and <tt type="function-name">FORMAT</tt> fixes, an improved
+disassembler, pathname fixes, and a new float-accuracy compilation policy,
+so that <tt type=variable>DOUBLE-FLOAT-EPSILON</tt> is correct on x86
+platforms.
+
 <dt>2004-09-01</dt>
 <dd> The <strong>September snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD and x86/Linux. They include many ANSI
+sparcv9/Solaris, x86/FreeBSD, x86/Linux and MacOS X. They include many ANSI
 compliance fixes to <tt type="function-name">FORMAT</tt> and to the pretty-printer.
 
 <dt>2004-07-31</dt>

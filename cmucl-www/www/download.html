@@ -19,10 +19,10 @@
 <p> The download sites are: </p>
 
 <dl>
-<dt> <a href="ftp://cmucl.cons.org/pub/lisp/cmucl/">cmucl.cons.org:/pub/lisp/cmucl</a>
+<dt> <a href="ftp://ftp.common-lisp.net/pub/project/cmucl/">ftp.common-lisp.net:/pub/project/cmucl</a>
 <dd> The primary CMUCL machine, located in the United States. You can also
      access the same files <a href =
-     "http://cmucl.cons.org/ftp-area/cmucl/">using HTTP</a>. </dd>
+     "http://common-lisp.net/project/cmucl/">using HTTP</a>. </dd>
 
 <dt> <a href = "ftp://ftp.averillpark.net/cmucl/">ftp.averillpark.net/cmucl</a> 
 <dd> A complete mirror located in the United States. </dd>
@@ -53,11 +53,12 @@ outbound bandwidth. </dd>
     built with non-standard features or subsystems, are available in the
     <tt>experimental</tt> directory. These haven't had much testing. </p>
 
+<!--
 <p> Please read the <a href =
     "ftp://ftp2.cons.org/pub/lisp/cmucl/disclaim.txt">CMUCL
     disclaimer</a> for details of the <em>absence of warranty</em>
     traditional with free software. </p>
-
+-->
 
 <h2>Alternative binary distributions</h2>
 
@@ -94,49 +95,33 @@ outbound bandwidth. </dd>
 <h2>Anonymous CVS access</h2>
 
 <p> The CMUCL source code can also be obtained by anonymous CVS from
-    <tt>anoncvs@anoncvs.cons.org:/home/anoncvs/CVS-cmucl</tt>. The anoncvs
-    tree is synchronized daily with the main CVS tree, and can be accessed
-    using a command such as
+    <tt>common-lisp.net</tt>. It can be accessed using a command such as
 
 <pre>
-   export CVSROOT=:pserver:anonymous@anoncvs.cons.org:/home/anoncvs/CVS-cmucl
-   cvs login  (password is `anonymous')
-   cvs co src
+    cvs -d :pserver:anonymous@common-lisp.net:/project/cmucl/cvsroot login
+    &lt;enter anonymous as password&gt;
+    cvs -z3 -d :pserver:anonymous@common-lisp.net:/project/cmucl/cvsroot co src
 </pre>
 
 <p> The anoncvs tree is available using anonymous rsync at
-    <tt>rsync://cmucl.cons.org/CVS-cmucl</tt>. This is probably the most
-    network-friendly way of keeping up to date with the current sources,
-    since the rsync protocol is very efficient. Keeping your own local CVS
-    tree also makes cvs operations much faster than when you contact the
-    main repository. Sample usage:
+    <tt>rsync://common-lisp.net/project/cmucl/cvsroot</tt>. This is
+    probably the most network-friendly way of keeping up to date with the
+    current sources, since the rsync protocol is very efficient. Keeping
+    your own local CVS tree also makes cvs operations much faster than when
+    you contact the main repository. Sample usage:
 
 <pre>
-    rsync -avz rsync://cmucl.cons.org/CVS-cmucl /var/cvs/CVS-cmucl
+    rsync -avz rsync://common-lisp.net/project/cmucl/cvsroot /var/cvs/CVS-cmucl
 </pre>
 
-<p> You can also browse individual CVS files (these are not outchecked
-    source files, but the RCS files!) at <a href =
-    "http://www2.cons.org/ftp-area/cmucl/CVS-cmucl/" >www2.cons.org</a>.
-    This is intended for mirroring the whole CVS tree using some web mirror
-    tool (such as GNU wget). If you want the CVS tree as a whole, there is
-    a daily tarfile of the CVS tree at <a href =
-    "http://www2.cons.org/ftp-area/cmucl/current/">www2.cons.org</a>, using
-    the filename <tt>cmucl-cvs-YYYYMMDD.tar.gz</tt>. Likewise, the file
-    named <tt>cmucl-src-YYYYMMDD.tar.gz</tt> is a tarball of the sources,
-    updated daily. </p>
+<p> You can also <a href =
+    "http://common-lisp.net/cgi-bin/viewcvs.cgi/src/?cvsroot=cmucl">view
+    the repository via viewCVS</a>, and access histories and diffs between
+    versions. 
 
-<!--
-<p> The code can also be <a href =
-    "http://www2.cons.org:8000/cgi-bin/cvsweb-cmucl.cgi" >accessed using
-    cvsweb</a>, an interactive web-based CVS browser. You can step through
-    the source tree interactively and see histories and diffs between
-    versions. No delay applies, you access the working sources. </p>
--->
-
-<p> There are CVS tags for the latest releases, named <tt>RELEASE_18d</tt>,
-    <tt>RELEASE_18c</tt>, <tt>RELEASE_18b</tt> and <tt>RELEASE_18a</tt>.
-    </p>
+<p> There are CVS tags for the latest releases, named <tt>RELEASE_18e</tt>,
+    <tt>RELEASE_18d</tt>, <tt>RELEASE_18c</tt>, <tt>RELEASE_18b</tt> and
+    <tt>RELEASE_18a</tt>. </p>
 
 <p> Thanks for using CMUCL! </p>
 

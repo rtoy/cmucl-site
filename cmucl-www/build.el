@@ -180,7 +180,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
       (wb-insert-file "include/header-start.inc"))
     (insert "<!-- start jumpbar -->\n")
     (loop for file in files
-          unless (string= file (buffer-name))
+          ;; unless (string= file (buffer-name))
           if (string-match "\\.html\\'" file) do
           (unless wb-printable (insert "   <tr align=\"center\"><td>"))
           (insert "<a href=\"" url-to-here file "\">")

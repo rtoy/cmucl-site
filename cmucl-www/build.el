@@ -1,7 +1,6 @@
 ;;; build.el --- build process for CMUCL website
 ;;
 ;; Author: Eric Marsden <emarsden@laas.fr>
-;; Time-stamp: <2003-05-27 emarsden>
 ;;
 ;;
 ;; This script is used by the build process which transfers files from
@@ -32,8 +31,8 @@
 (require 'cl)
 
 (defconst wb-base-url "http://www.cons.org/cmucl/")
-(defconst wb-doc-url  "http://cmucl.cons.org/ftp-area/cmucl/doc/")
-(defconst wb-target-dir "/home/www/pub/cmucl/")
+(defconst wb-doc-url  "ftp://ftp.linux.org.uk/pub/lisp/cmucl/doc/")
+(defconst wb-target-dir "/project/cmucl/public_html/mirror/")
 (defconst wb-base-directory default-directory)
 
 ;; these override names which are otherwise generated automatically
@@ -72,7 +71,7 @@
 
 ;; some protection from spam harvesters
 (defun wb-munge-email (email)
-  (concat "<tt>&lt;"
+  (concat "<tt>&lt;"                    ;
           (if (string-match "@" email)
               (replace-match "&#64;" t t email)
             email)

@@ -14,17 +14,25 @@
 
 <dl>
 <dt> Linux/x86 </dt>
-<dd> The 18e release binaries should work on any i586 or better processor.
-     The 18e binaries are compiled against version 2.1 of the GNU C Library
-     (glibc2.1), but also work with glibc2.2. They should
-     run with any Linux kernel after 2.0 (but beware early kernels in the
-     2.4 series, which had poor virtual memory characteristics). There are
-     known problems running CMUCL on kernels using certain configurations of the
-     HIGHMEM support (this option allows larger process address spaces, and
-     certain distributions ship kernels with these patches enabled). The
-     <tt>CONFIG_64GB</tt> and <tt>CONFIG_1GB</tt> options work fine. The
-     runtime support for the CMUCL Motif interface is statically linked, so
-     you won't need the Motif libraries installed on your system.
+
+<dd> The 19a release binaries should work on any i586 or better processor.
+     The binaries are compiled against version 2.1 of the GNU C Library
+     (glibc2.1), but also work with glibc2.2 and glibc2.3. The runtime
+     support for the CMUCL Motif interface is dynamically linked, so you
+     will need the Motif or Lesstif libraries installed on your system to
+     use it. The binaries should run with any Linux kernel after 2.0 (but
+     beware early kernels in the 2.4 series, which had poor virtual memory
+     characteristics).
+
+     <p> There are problems running CMUCL on certain kernels that are built
+     with address-space randomization techniques, such as certain Fedora
+     kernels. If you run into problems, please use a vanilla kernel.
+
+     <p> There are known problems running CMUCL on 2.4 kernels using certain
+     configurations of the HIGHMEM support (this option allows larger
+     process address spaces, and certain distributions ship kernels with
+     these patches enabled). The <tt>CONFIG_64GB</tt> and
+     <tt>CONFIG_1GB</tt> options work fine.
 
      <p> CMUCL is known not to run under libsafe, whose system call
      interposition mechanism interferes with the foreign function
@@ -34,14 +42,16 @@
 </dd>
 
 <dt> FreeBSD/x86 </dt>
-<dd>
-     The 18e release binaries should work on any i586 or better processor.
-     The 18e binaries should work with FreeBSD releases 4.x and
+<dd> The 19a release binaries should work on any i586 or better processor.
+     The 19a binaries should work with FreeBSD releases 4.x and
      -current (5.x). </dd>
 
 <dt> OpenBSD/x86 </dt>
-<dd> The 18e release binaries should work on any i486 or better processor.
-     The 18e binaries were build on OpenBSD 3.1. </dd>
+<dd> There are currently no 19a binaries for OpenBSD (it seems that address
+     space randomization techniques introduced with recent versions of
+     OpenBSD interfere with CMUCL's memory management). The 18e release
+     binaries should work on any i486 or better processor. The 18e binaries
+     were build on OpenBSD 3.1. </dd>
 
 <dt> NetBSD/x86 </dt>
 <dd> there are binaries for NetBSD 1.5.2 in the <tt>experimental</tt>
@@ -54,37 +64,49 @@
      refuses to map zones larger than 128MiB.  </dd>
 
 <dt> Solaris/SPARC </dt>
-<dd> the 18e binaries should work with SunOS 5.5, 5.7 and
-     5.8 (also known respectively as Solaris 2.5, Solaris 7 and Solaris 8).
-     If you have an UltraSPARC processor you can get the <tt>v9</tt>
-     binaries, which use instructions which are only present on SPARC-v9
-     implementations; otherwise you should get the binaries without
-     <tt>v9</tt> in the name of the tarball. If you have an UltraSPARC the
-     command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you have an
-     older machine such as a SparcStation it will probably say
-     <tt>sun4m</tt>. </dd>
+
+<dd> the 19a binaries should work with SunOS 5.5 or later (also known
+     respectively as Solaris 2.5, Solaris 7 and later). They require an
+     UltraSPARC processor. If you have an ancient SPARC machine, you can
+     get the non-v9 version of the 18e release. If you have an UltraSPARC
+     the command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you
+     have an older machine such as a SparcStation it will probably say
+     <tt>sun4m</tt>.
+
+     <p> Two sets of binaries are available fro 19a, one with the
+     traditional stop-and-copy garbage collector, and another with a
+     generational collector. FASL files from the two versions are
+     incompatible. 
+     </dd>
 
 <dt> Alpha/Linux </dt>
-<dd> The 18e binaries are known to work on ev56 and ev6 machines, running
-     Linux 2.4.x.  </dd>
+<dd> There are no 19a binaries for Alpha. The 18e binaries are known to
+     work on ev56 and ev6 machines, running Linux 2.4.x. </dd>
 
 <dt> IRIX/MIPS </dt>
-<dd> The 18e release binaries are known to work with Irix 6.2, and should
-     work on any later version. They use the o32 ABI. </dd>
+<dd> There are no 19a binaries for IRIX. The 18e release binaries are known
+     to work with Irix 6.2, and should work on any later version. They use
+     the o32 ABI. </dd>
 
 <dt> HPUX/HPPA </dt>
 <dd> this port has not been maintained for quite a while, so
      you'll have to go back to the 18a release to find binaries for this
      platform. </dd>
+
+<dt> PowerPC/MacOS X </dt>
+<dd> CMUCL has an experimental port to this platform. Binaries are
+     available from <a href = "http://www.pmsf.de/personal/darwin/">Pierre
+     Mai's page</a>.  </dd>
+
+<dt> x86/win32 </dt>
+<dd> There is an ongoing effort to port CMUCL to win32. </dd>
 </dl>
 
-<p> There is some ongoing work on the creation of a PowerPC backend,
-    targeting LinuxPPC. There is no win32 port of CMUCL, and making this
-    port would involve a considerable amount of work. The <a href =
-    "http://sbcl.sf.net/">SBCL implementation</a> (a fork from CMUCL) runs
-    on some platforms that CMUCL doesn't currently support, such as
-    Linux/SPARC, Linux/PowerPC, Linux/Alpha -- check their web site for
-    current status. </p>
+
+<p> The <a href = "http://sbcl.sf.net/">SBCL implementation</a> (a fork
+    from CMUCL) runs on some platforms that CMUCL doesn't currently
+    support, such as Linux/SPARC, Linux/PowerPC, Linux/Alpha -- check their
+    web site for current status. </p>
 
 
 <h3>Platform-specific build options</h3>

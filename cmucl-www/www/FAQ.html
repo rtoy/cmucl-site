@@ -1,0 +1,383 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL FAQ</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Questions and Answers)
+
+<p> Please read these before asking questions on the cmucl-help and
+    cmucl-imp mailing lists. Additional questions and answers can be sent
+    to the webmasters (see email address in footer). </p>
+
+
+<ol>
+<li> <b>Q</b>: How do I turn off these GC messages?
+
+<pre>
+   [GC threshold exceeded with 10,411,328 bytes in use.  Commencing GC.]
+   [GC completed with 990,320 bytes retained and 9,421,008 bytes freed.]
+   [GC will next occur when at least 8,990,320 bytes are in use.]
+</pre>
+
+<p> <b>A</b>: Add <tt class=code>(setq ext:*gc-verbose* nil)</tt> to your
+    <tt>~/.cmucl-init</tt> initialization file. See the <i>CMUCL User's
+    Manual</i> for more information on tuning the garbage collector. </p>
+
+<hr>
+
+<li> <b>Q</b>: Why does CMUCL say <tt>Warning: Declaring foo special</tt>?
+
+<p> <b>A</b>: This happens when you have used <tt class="function-name">SETQ</tt> on an
+undeclared variable at the top level. The default behaviour of CMUCL in
+this situation is to <a href =
+"http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/dec_special.html">
+declare the variable special</a> (transforming it from a lexically bound
+variable to a dynamically bound variable). In effect, when you do
+
+<pre class=code>
+   (setq foo 42)
+</pre>
+
+and <tt>foo</tt> has not previously been declared (using <tt
+class="function-name">DEFVAR</tt> or <tt
+class="function-name">DEFPARAMETER</tt> for example), CMUCL will implicitly
+do a
+
+<pre class=code>
+   (defvar foo)
+</pre>
+
+<p> for you. This is done for the user's convenience, but can lead to
+strange behaviour if you're not expecting it (since by convention special
+variables are named with surrounding *asterisks*), which is why CMUCL emits
+the warning message. Also note that there is no way of undoing the SPECIAL
+declaration, to allow purely lexical binding of the symbol. </p>
+
+<p> The variable <tt class=variable>ext:*top-level-auto-declare*</tt>
+allows you to control this behaviour. </p>
+
+<hr>
+
+
+<li> <b>Q</b>: CMUCL barfs <tt>Function %%PROCLAIM is not defined</tt>
+    when loading code.
+
+<p> <b>A</b>: You are very likely trying to load code compiled with an
+    experimental release into an older image. This may occur with the
+    Debian-packaged binaries, since they may be built from more recent
+    sources than the official binaries. CMUCL releases are in general not
+    binary compatible, so you need to recompile all your Lisp files when
+    migrating to a new release. </p>
+
+<hr>
+
+
+<li> <b>Q</b>: CMUCL emits bogus warnings about functions not being
+     defined when compiling CLOS code. Stuff like
+
+<pre>
+Warning: Undefined function: PCL::|MAKE-INSTANCE
+KEE-GRAPHICAL-USER-INTERFACE:ROOT-SHELL-STREAM (:CONNECTION :ROOT-SHELL
+:SHELL-STREAMS) NIL|
+</pre>
+
+<p> <b>A</b>: CMUCL does indeed emit bogus warnings while compiling CLOS
+    code -- this is because of an insufficient level of integration of the
+    PCL CLOS implementation with the compiler. Hopefully this will be fixed
+    in a future release.
+
+<hr>
+
+
+
+<li> <b>Q</b>: How do I compile my Lisp program to an executable?
+
+<p> <b>A</b>: CMUCL does not support delivery as an executable. If this
+    bothers you, note that this is also the case of most other programming
+    language implementations: for example Sun's java implementation
+    requires a bundle of class files.
+
+<p> The standard way of delivering a Common Lisp application with CMUCL is
+    to dump an image containing all your application code (see the <i>CMUCL
+    User's Manual</i> for details), and deliver a tarball containing this
+    image, the lisp runtime, and a shell script which launches the runtime
+    with your image (see the <tt>sample-wrapper</tt> distributed with CMUCL
+    for guidance). Also see the following <a href =
+    "doc/executable.html">hint on making Lisp files executable</a>. </p>
+
+<hr>
+
+
+<li> <b>Q</b>: On my Linux machine, CMUCL dies on startup saying
+
+<pre>
+Error in allocating memory, please do &quot;echo 1 > /proc/sys/vm/overcommit_memory&quot;
+or get more memory+swap.
+</pre>
+
+<p> <b>A</b>: Hopefully the message is fairly clear. The problem is that
+    due to implementation choices, CMUCL reserves a large address space
+    when it starts up, instead of allocating memory on demand, as do most
+    applications. In its default configuration, the linux kernel may refuse
+    to reserve amounts of memory which are far greater than the amout of
+    available RAM and swap (this is called overcommitting, since the kernel
+    commits itself to satisfy more memory than is actually available). You
+    can either increase the amount of swap available (see the
+    <tt>mkswap</tt> command), or change the kernel's policy using (as root)
+    the command quoted above. </p>
+
+<p> The Debian-packaged CMUCL includes a <tt>-lazy</tt> commandline option
+    which reserves memory incrementally, and which should also solve this
+    problem. [2003-01-03: the -lazy option has been disabled in recent
+    Debian-packaged CMUCL binaries, following problems.] </p>
+
+<hr>
+
+
+
+<li> <b>Q</b>: Why does CMUCL say it's called Python 1.0 when it starts up?
+    Isn't that the name of a scripting language?
+
+<p> <b>A</b>: The CMUCL native code compiler is called Python. This use
+    of the name predates the existence of that other scripting language. </p>
+
+<hr>
+
+
+<li> <b>Q</b>: How do I report a bug in CMUCL?
+
+<p> <b>A</b>: Send an email describing the problem to the cmucl-help xor
+    cmucl-imp mailing lists (see the <a href = "support.html">Support
+    page</a> for more information on these lists). Make sure you include
+    the version of CMUCL that you are using (for instance the herald that
+    it prints on startup), the platform, your <tt
+    class=variable>*features*</tt>. Make sure that the problem isn't coming
+    from your personal or site-wide initialization files. Try to find the
+    smallest input file that provokes the problem. </p>
+
+<hr>
+
+
+<li> <b>Q</b>: How does CMUCL compare with other Common Lisp
+     implementations?
+
+<p> <b>A</b>: The short answer is that this really depends on your needs. Most
+    free implementations are fairly easy to install, and you should be able
+    to obtain evaluation copies of the commercial implementations, so it
+    isn't difficult to make a choice yourself. </p>
+
+<p> A longer answer is that compared with the various commercial Common
+    Lisp implementations (see <a href = "http://www.lisp.org/">lisp.org</a>
+    for a list), CMUCL is free: you can use it for zero upfront cost, and
+    it has a very liberal license that imposes few restrictions on its use
+    and redistribution. You also have access to the source code if you wish
+    to customize the implementation to your requirements. However, you
+    can't get a support contract from the vendor (though you could probably
+    find experienced CMUCL developers prepared to freelance -- contact the
+    cmucl-imp mailing list), and CMUCL is missing certain features present
+    in the commercial implementations (graphical browsers, GUI widgets,
+    add-on libraries ...). </p>
+
+<p> Compared with <a href = "http://clisp.cons.org/">CLISP</a>, CMUCL runs
+    on fewer platforms and has significantly higher memory usage. CLISP has
+    better internationalization support, in particular support for UNICODE.
+    Since CMUCL compiles to native code, it is an order of magnitude faster
+    on most applications than CLISP's bytecode execution model. However,
+    the mathematical primitives in CLISP are very fast, in particular its
+    bignum operations. CLISP also provides floats of unlimited precision,
+    while CMUCL is limited to IEEE-754 single-float and double-float (and
+    extended-precision on certain platforms). CMUCL has a more powerful
+    foreign function interface than CLISP, supports multiprocessing on x86,
+    and has a more powerful networking library. The builtin CLOS
+    implementation in CLISP is missing certain features, notably the
+    metaobject protocol. </p>
+
+<p> Compared with <a href = "http://sbcl.sf.net/">SBCL</a> (a fork from the
+    CMUCL implementation), CMUCL has more features (such a Motif interface)
+    and has a faster compiler (though compiled code runs at a similar speed
+    to CMUCL-generated code). SBCL is closer to the ANSI CL specification
+    in some respects, and emits different warnings for some types of code.
+    SBCL currently runs on a larger number of platforms than CMUCL.
+
+<hr>
+
+
+<li> <b>Q</b>: What user interface do you use with CMUCL?
+
+<p> <b>A</b>: Many people like to use <a href =
+    "http://common-lisp.net/project/slime/">SLIME</a> or <a href =
+    "http://ilisp.cons.org/">ILISP</a> in Emacs. </p>
+
+<hr>
+
+
+
+<li> <b>Q</b>: How difficult is it to port CMUCL to a new platform?
+
+<p> <b>A</b>: Short answer: fairly difficult. There are two aspects to
+    porting: writing a backend for the new the CPU architecture, and
+    handling the runtime's interaction with the operating system. </p>
+
+<p> Writing a compiler backend to target a new CPU involves deciding on a
+    register allocation policy, and writing assembly definitions for the
+    CMUCL virtual machine operations (VOPs). There are also a number of
+    utility routines to write in assembly, and some CPU-specific
+    constants (number of registers, how FPU exceptions are reported to user
+    land, how wide floating point registers are) to define. </p>
+
+<p> Targeting a new operating system involves getting the runtime to
+    compile. This means stuff like deciding on a memory map, implementing
+    memory management routines. The trickiest bit is probably signal
+    handling, and extracting the address of the faulting instruction from a
+    <tt>ucontext_t</tt>. </p>
+
+<hr>
+
+
+
+<li> <b>Q</b>: The garbage collector doesn't want to collect my big object!
+
+<p> <b>A</b>: You may have done something like
+
+<pre class=code>
+   USER&gt; (setq *print-array* nil)
+   USER&gt; (defvar *big* (make-array 42000000 :element-type 'double-float))
+   ;; use big, then get rid of it
+   USER&gt; (setq *big* nil)
+   USER&gt; (gc :full t)    ;; :full only with generational collector
+</pre>
+
+<p> You no longer have any references to the array, so were expecting it to
+    be garbage collected. However, according to <tt>(ROOM)</tt> it
+    wasn't. The reason is that the <a href =
+    "http://www.lisp.org/HyperSpec/Body/sec_25-1-1.html">read-eval-print-loop</a>
+    maintains variables called <tt>*</tt>, <tt>**</tt> and
+    <tt>***</tt>, that reference the values of the last three forms
+    evaluated, and the array is still accessible from these. Try evaluating
+    a few other forms (like <tt>1</tt>), then call the garbage collector again.
+    </p>
+
+<p> (This question isn't specific to CMUCL; you'll observe the same in
+    other implementations.) </p>
+<hr>
+
+
+<li> <b>Q</b>: CMUCL dies with <tt>*A2 gc_alloc_large failed, nbytes=NNN</tt>
+
+<p> <b>A</b>: This is the generational conservative garbage collector
+    telling you that you have exhausted the available dynamic space (the
+    memory zone that is used for normal lisp objects). You can increase the
+    size of the dynamic space reserved on startup by using the
+    <tt>-dynamic-space-size</tt> commandline option (see the <i>CMUCL User's
+    Manual</i> for details). You can determine the amount of dynamic space
+    currently available as follows: </p>
+
+<pre class=code>
+   USER&gt; (alien:def-alien-variable (&quot;dynamic_space_size&quot; dynamic-space-size) c-call::int)
+   #&lt;ALIEN::HEAP-ALIEN-INFO
+     (SYSTEM:FOREIGN-SYMBOL-ADDRESS '&quot;dynamic_space_size&quot;) (ALIEN:SIGNED 32)&gt;
+   USER> dynamic-space-size
+   536870912
+</pre>
+<hr>
+
+
+<li> <b>Q</b>: What does <tt>Error in function UNIX::SIGSEGV-HANDLER:
+     Segmentation Violation at #x1004C7BD.</tt> mean?
+
+<p> <b>A</b>: This means that CMUCL has received a signal indicating a
+    segmentation violation from the operating system, at an unexpected
+    address (it already uses SIGSEGV for normal operation of the garbage
+    collector). This can be due to:
+
+    <ul>
+    <li> you have linked with some alien code (such as a shared library)
+    which is generating segmentation violations. This can be due to a bug
+    in the alien code, or to you passing it invalid pointers. </li>
+
+    <li> you have lied to the compiler (written incorrect type
+    declarations), and compiled your code in unsafe mode (with the speed
+    optimization quality higher than the safety quality). For example, you
+    may have declared that a variable was an array, and actually passed a
+    list to the function. Make sure that you compile and run your code in
+    safe mode before trying to increase its speed. </li>
+
+    <li> you may have encountered an internal bug in CMUCL. It's quite
+    unlikely that a bug should manifest itself in this way, though, so
+    please check the first two possibilities before reporting a bug. </li>
+    </ul>
+<hr>
+
+
+<li> <b>Q</b>: Where can I hang out with CMUCL folks on IRC?
+
+<p> <b>A</b>: Try the <tt>#lisp</tt> channel on the <a href =
+    "http://freenode.net/">freenode network</a>. A number of CMUCL
+    users and developers (as well as SBCL creatures) can occasionally be
+    found wasting time there. </p>
+<hr>
+
+
+
+<li> <b>Q</b>: CMUCL leaks too much stuff from the compile-time environment
+     to the evaluation environment!
+
+<p> <b>A</b>: You may encounter this problem when porting code written for
+    CMUCL to another Common Lisp implementation -- such as LispWorks or
+    OpenMCL -- which is more conservative than CMUCL in propagating
+    declarations to the evaluation environment. For instance, consider the
+    compilation of a file containing the following code:
+
+<pre class=code>
+   (defconstant +foo+ #\a)
+   (defun foo () #.(char-code +foo+))
+</pre>
+
+<p> This code will compile in CMUCL, but some other implementations will
+    complain that the symbol <tt>+foo+</tt> is not bound when compiling the
+    function <tt>foo</tt>. CMUCL propagates the compile-time effect of the
+    DEFCONSTANT form to what CLtS calls the <i>evaluation environment</i>,
+    so that it becomes available when compiling the remainder of the file.
+    Certain other implementations are stricter in not leaking information
+    in this way, and require you to write the above code as
+
+<pre class=code>
+   (eval-when (:compile-toplevel :load-toplevel)
+     (defconstant +foo+ #\a))
+   (defun foo () #.(char-code +foo+))
+</pre>
+
+<p> This code will also work in CMUCL. See Section 3.2.3.1 <i>Processing of
+    Top Level Forms</i> of CLtS for more details (the specification is
+    somewhat vague about some of these issues, which explains why there is
+    considerable variation in behaviour from one implementation to
+    another).
+
+<hr>
+
+
+<li> <b>Q</b>: What is the meaning of the error message I see when tracing
+     functions: <tt>:FUNCTION-END breakpoints are currently unsupported for
+     the known return convention</tt> ?
+
+<p> <b>A</b>: This error message occurs sometimes when you try to trace
+    functions on the x86 ports of CMUCL. A simple workaround is to use
+
+<pre class=code>
+   USERL&gt; (trace my-function :encapsulate t)
+</pre>
+
+<p> This causes a different mechanism (which is implemented on x86) to be
+    used for the breakpoints that are used by tracing facility.
+<hr>
+
+
+</ol>
+
+@@FOOTER@@
+</body>
+</html>

@@ -1,0 +1,397 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: understanding the Garbage Collector</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Understanding the garbage collector)
+
+<!-- FIXME add from http://java.sun.com/docs/hotspot/gc/ -->
+
+<p> The garbage collector (or GC) is the component of the CMUCL runtime
+    that is responsible for recycling dynamically allocated memory. The GC
+    traverses the lisp heap, starting from the <i>roots</i> (global
+    variables, contents of the lisp stack, contents of the register file)
+    and follows references to identify objects that are reachable. The
+    memory occupied by objects that are no longer reachable (called
+    <i>garbage</i>) is made available for reuse.
+
+<p> When CMUCL is started, the runtime reserves a number of contiguous
+    regions of address space for the lisp heap. The lisp heap is divided
+    into dynamic, static and read-only spaces. The size of these spaces is
+    fixed on startup (which is why CMUCL looks like it uses a huge amount
+    of memory right after being started -- in fact it is just reserving
+    address space, and will only use the memory if necessary). The size of
+    the dynamic space can be set by the <tt>-dynamic-space-size</tt>
+    commandline option.
+
+<p> Newly created objects (both code and data) are allocated in the dynamic
+    space. They may be moved to static or read-only space by the function
+    <tt class = "function-name">purify</tt> (that is run when you save a
+    new lisp heap). The garbage collector only scans dynamic space. 
+
+
+<h2>Precise and conservative collectors</h2>
+
+<p> On platforms other than x86, CMUCL uses a <strong>precise
+    collector</strong>. This means that when tracing references through
+    memory to determine which objects are not reachable from the roots, it
+    is able to determine exactly which objects are not reachable (and thus
+    available for reuse).
+
+<p> In contrast, CMUCL uses a <strong>conservative collector</strong> on
+    x86 platforms. This means that when tracing references through memory
+    the GC is not always able to determine whether a given memory location
+    contains a reference (which it should follow for reachability
+    analysis), or just data (which it shouldn't follow). In these
+    situations where the GC cannot decide, it is cautious (or
+    <i>conservative</i>) and assumes that the location contains a
+    reference. This means that in some cases the conservative GC is unable
+    to reclaim storage that is actually garbage, which leads to wasted
+    memory. However, this leakage is often only temporary, since the
+    register or the stack location that was mis-interpreted will likely be
+    overwritten by the execution of the program. Experience shows that this
+    &quot;leakage&quot; is rarely a significant problem in most
+    applications.
+
+<p> Why use a conservative collector given its disadvantages over a precise
+    collector? On platforms that use a precise garbage collector, CMUCL
+    partitions the register file into descriptor registers (which contain
+    references to lisp objects) and non-descriptor registers (containing
+    machine integers, untagged fixnums, characters, etc). This means that
+    when a garbage collection occurs, it knows exactly which registers
+    should be included as roots of the reachability analysis. Furthermore,
+    the lisp stack (containing call frames) is separate from the C stack
+    (containing foreign frames, signal handler contexts, etc), so the scan
+    of the stack for roots can be done exactly. The x86 platform has such a
+    pitiful number of available registers that it would be unreasonable to
+    partition the register file in this way; this is why a conservative
+    collector is used. Furthermore, on x86 platforms the lisp stack is
+    shared with the C stack, so the stack must also be scavenged
+    conservatively.
+
+<div class=technical>
+<h3>Technical detail: descriptor and non-descriptor registers</h3>
+
+    <p> On non-x86 platforms the garbage collector classifies values into
+    three categories:
+
+    <ul>
+    <li> pointer descriptor objects such as FunctionPointer, ListPointer,
+    InstancePointer, OtherPointer, that have low tags in (#b001 #b011 #b101
+    #b111). These objects can be kept in a descriptor register, because
+    they are fully tagged. In fact, they <em>must</em> be kept in a
+    descriptor register, because the collector needs to see and modify them
+    (when the collector moves an object, it must update any pointers to
+    that object).
+
+    <li> immediate descriptor objects, such as odd and even fixnums,
+    OtherImmediate. These objects can be kept in descriptor registers,
+    because the collector won't think that they are pointer references.
+    They can also be kept in non-descriptor registers, because nothing bad
+    will happen if the collector sees them (the collector can distinguish
+    them from lisp-pointers by looking at their tag).
+
+    <li> non-descriptor objects such as machine-word-sized integers,
+    untagged characters, unboxed system-area-pointers, unboxed
+    single-floats and double-floats. These objects can't be kept in a
+    descriptor register, because doing so might confuse the collector.
+
+    </ul>
+
+    <p> See the files <tt>src/compiler/generic/primtype.lisp</tt> and
+    <tt>src/compiler/sparc/vm.lisp</tt> in the CMUCL source code for more
+    details. 
+</div>
+
+<!-- FIXME talk about safe points -->
+
+
+<h2>The generational collector</h2>
+
+<p> On non-x86 platforms, CMUCL uses a two-space stop-and-copy collector
+    based on the Cheney algorithm. The collector is triggered after a
+    certain amount of allocation, and interrupts the lisp application until
+    the garbage collection has terminated. During a collection, the garbage
+    collector examines the lisp heap, walking objects from the roots. It
+    copies reachable objects from the current memory space to the newspace,
+    making the necessary pointer corrections so that references to an object
+    remain valid once is has been copied to its new location. 
+
+<p> On x86 platforms CMUCL uses a <strong>generational mostly-copying
+    collector</strong>, which is signalled by the presence of
+    <tt>:gencgc</tt> on the <tt class=variable>*features*</tt> list. A
+    generational (or <i>generation-scavenging</i>) collector partitions the
+    lisp heap according to the age of objects, and focuses its attention on
+    younger objects. New objects are allocated in the youngest generation
+    (often called the <i>nursery</i>), and are promoted to an older
+    generation each time they survive a garbage collection. In an
+    application where most allocated objects are short-lived (which is the
+    case in many applications), a generational collector is efficient
+    because most garbage collections only examine a portion of the lisp
+    heap (it saves time by ignoring older objects), and because the spatial
+    locality of objects in the nursery can improve cache use.
+
+<p> The garbage collector performs a collection when generation 0 is full.
+    It starts by examining the objects in generation 0. Reachable objects
+    are promoted to generation 1. If the collection of generation 0 did not
+    release sufficient memory, generation 1 is collected, and so on until
+    generation number 6. 
+
+<p> The CMUCL generational collector is &quot;mostly-copying&quot;. An
+    object that has an ambiguous reference (where the conservative nature
+    of the collector means that it's unsure whether a memory location
+    contains a reference) is said to be <i>pinned</i> in place; they are
+    promoted in-place to the oldspace generation. The granularity of age
+    annotation is a page, and a page stays in place (isn't copied) if it
+    contains a pinned object.
+
+<p> The collector treats large objects (such as large arrays) specially,
+    for efficiency. [FIXME expand] The generational collector is able to
+    use the page protection mechanisms of the MMU to avoid scavenging pages
+    that don't contain pointers to younger generations.
+
+
+
+<h2>Triggering a garbage collection</h2>
+
+<p> Execution of the garbage collector will automatically be triggered once
+    a certain number of megabytes have been allocated. Before trying to
+    analyze the memory usage of your application, it may be useful
+    explicitly to trigger a garbage collection. This can be done by calling
+    the CMUCL function <tt class="function-name">ext:gc</tt>. 
+
+<p> The generational collector normally carries out only partial
+    collections (it scans a subset of all the generations). This may lead
+    to long-lived objects that become garbage taking a long time to be
+    reclaimed. In order to force a full garbage collection, use
+
+<pre class=example>
+   (gc :full t)
+</pre>
+
+<p> The <tt>:full</tt> keyword argument is only available when the
+    generational collector is present.
+
+
+<h2>Analyzing memory usage</h2>
+
+<p> The standard Common Lisp function <tt class="function-name">room</tt>
+    provides information on the status of memory allocation. It provides
+    information such as:
+
+<pre class=example>
+   Dynamic Space Usage:     5,851,432 bytes.
+   Read-Only Space Usage:  18,408,744 bytes.
+   Static Space Usage:      2,311,240 bytes.
+   Control Stack Usage:           452 bytes.
+   Binding Stack Usage:            96 bytes.
+   The current dynamic space is 0.
+   Garbage collection is currently enabled.
+</pre>
+
+<p> With a second argument of <tt>T</tt>, it prints additional information,
+    including the number of objects of each type that are present in the
+    lisp heap. This can be useful to know what class of data structures are
+    filling up the heap. If you suspect that the garbage collector is
+    forgetting to reclaim certain objects, you may be interested in reading
+    the page <a href = "analyze-memory-usage.html">analyzing memory
+    usage</a>. 
+
+<p> Note that the <tt class="function-name">room</tt> function only
+    displays information on the lisp heap; it does not tell you about
+    allocations in foreign space (objects allocated via the foreign
+    function interface, for example using <tt>malloc()</tt> from C). You
+    will need to use tools from your operating system (such as analyzing
+    the contents of the file <tt>/proc/&lt;pid&gt;/maps</tt> on Linux).
+
+
+<h2>Tuning the garbage collector</h2>
+
+<p> While the CMUCL garbage collector functions reasonably well in general,
+    for certain applications it may be useful to fiddle with various
+    parameters. 
+
+
+<ul>
+<li> The variable <tt class=variable>ext:*bytes-consed-between-gcs*</tt>
+     determines the number of bytes of allocation that will trigger a
+     garbage collection. A lower number will trigger the garbage collector
+     more frequently, but each collection will take less time; this is good
+     for interactive applications where response time is important. A
+     higher value will cause fewer garbage collections, and should decrease
+     the overall time spent in GC.
+
+     A useful idiom is to increase this value around code where you will be
+     allocating large amounts of memory, as follows: 
+
+<pre class=code>
+   (let ((ext:*bytes-consed-between-gcs*
+           (* ext:*bytes-consed-between-gcs* 5)))
+      ;; ... lots of allocation ...
+      )
+</pre>
+
+
+<li> The macro <tt class="function-name">sys:without-gcing</tt> allows you
+     to execute forms with the garbage collector disabled. 
+
+
+<li> Use the function <tt class = "function-name">ext:save-lisp</tt> with
+     the purify option enabled, in order to move code and data to static
+     space. This will improve your application's GC characteristics,
+     because the static and read-only spaces are not scanned by the garbage
+     collector.
+
+
+<li> The variable <tt class=variable>ext:*gc-verbose*</tt> can be used to
+     disable the status messages that are printed by the garbage collector.
+     This may give the illusion of reducing GC overhead. 
+
+<pre class=example>
+; [GC threshold exceeded with 20,168 bytes in use.  Commencing GC.]
+; [GC completed with 22,128 bytes retained and -1,960 bytes freed.]
+; [GC will next occur when at least 25,022,128 bytes are in use.]
+</pre>
+
+
+<li> The alien variable <tt class=variable>gencgc_verbose</tt> can be set
+     to 1 or 2 in order to print extra information concerning the
+     functioning of the generational collector. This prints information
+     like the following, showing the status of each generation.
+
+<pre class=code>
+USER> (alien:def-alien-variable ("gencgc_verbose" gencgc-verbose) c-call::int)
+#&lt;alien::heap-alien-info (system:foreign-symbol-address "gencgc_verbose" :flavor :data) (alien:signed 32)&gt;
+USER> (setf gencgc-verbose 2)
+2
+USER> (gc :full t)
+   Generation Boxed Unboxed LB   LUB    Alloc  Waste   Trig    WP  GCs Mem-age
+          0:  1471     0     0     0  6022632  2584 10000000    0   0  0.0000
+          1:   254    70 97657     0 401296280 33896 411252792 97843   1  2.9998
+          2:     0     0     0     0        0     0  2000000    0   0  0.0000
+          3:     0     0     0     0        0     0  2000000    0   0  0.0000
+          4:     0     0     0     0        0     0  2000000    0   0  0.0000
+          5:     0     0     0     0        0     0  2000000    0   0  0.0000
+   Total bytes alloc=407318912
+Starting GC of generation 0 with raise=1 alloc=6022632 trig=10000000 GCs=0
+*W control stack vector length 0
+Non-movable pages due to conservative pointers = 1, 4096 bytes
+Scavenge static space: 2364848 bytes
+GC of generation 0 finished:
+   Generation Boxed Unboxed LB   LUB    Alloc  Waste   Trig    WP  GCs Mem-age
+          0:     0     0     0     0        0     0 10000000    0   0  0.0000
+          1:   261    71 97657     0 401324584 38360 411252792 97843   1  3.9995
+          2:     0     0     0     0        0     0  2000000    0   0  0.0000
+          3:     0     0     0     0        0     0  2000000    0   0  0.0000
+          4:     0     0     0     0        0     0  2000000    0   0  0.0000
+          5:     0     0     0     0        0     0  2000000    0   0  0.0000
+   Total bytes alloc=401324584
+Starting GC of generation 1 with raise=1 alloc=401324584 trig=411252792 GCs=1
+*W control stack vector length 0
+Non-movable pages due to conservative pointers = 5, 20480 bytes
+Scavenge static space: 2364848 bytes
+** copy_large_object: 400000008
+GC of generation 1 finished:
+   Generation Boxed Unboxed LB   LUB    Alloc  Waste   Trig    WP  GCs Mem-age
+          0:     0     0     0     0        0     0 10000000    0   0  0.0000
+          1:     0     0     0     0        0     0 10000000    0   0  0.0000
+          2:   228    71 97657     0 401214056 13720  2000000    0   0  0.0000
+          3:     0     0     0     0        0     0  2000000    0   0  0.0000
+          4:     0     0     0     0        0     0  2000000    0   0  0.0000
+          5:     0     0     0     0        0     0  2000000    0   0  0.0000
+   Total bytes alloc=401214056
+Starting GC of generation 2 with raise=1 alloc=401214056 trig=2000000 GCs=0
+*W control stack vector length 0
+Non-movable pages due to conservative pointers = 5, 20480 bytes
+Scavenge static space: 2364848 bytes
+** copy_large_object: 400000008
+GC of generation 2 finished:
+   Generation Boxed Unboxed LB   LUB    Alloc  Waste   Trig    WP  GCs Mem-age
+          0:     0     0     0     0        0     0 10000000    0   0  0.0000
+          1:     0     0     0     0        0     0 10000000    0   0  0.0000
+          2:     0     0     0     0        0     0 10000000    0   0  0.0000
+          3:   228    71 97657     0 401214056 13720  2000000    0   0  0.0000
+          4:     0     0     0     0        0     0  2000000    0   0  0.0000
+          5:     0     0     0     0        0     0  2000000    0   0  0.0000
+   Total bytes alloc=401214056
+Starting GC of generation 3 with raise=1 alloc=401214056 trig=2000000 GCs=0
+*W control stack vector length 0
+Non-movable pages due to conservative pointers = 5, 20480 bytes
+Scavenge static space: 2364848 bytes
+** copy_large_object: 400000008
+GC of generation 3 finished:
+   Generation Boxed Unboxed LB   LUB    Alloc  Waste   Trig    WP  GCs Mem-age
+          0:     0     0     0     0        0     0 10000000    0   0  0.0000
+          1:     0     0     0     0        0     0 10000000    0   0  0.0000
+          2:     0     0     0     0        0     0 10000000    0   0  0.0000
+          3:     0     0     0     0        0     0 10000000    0   0  0.0000
+          4:   228    71 97657     0 401214056 13720  2000000    0   0  0.0000
+          5:     0     0     0     0        0     0  2000000    0   0  0.0000
+   Total bytes alloc=401214056
+Starting GC of generation 4 with raise=1 alloc=401214056 trig=2000000 GCs=0
+*W control stack vector length 0
+Non-movable pages due to conservative pointers = 5, 20480 bytes
+Scavenge static space: 2364848 bytes
+** copy_large_object: 400000008
+GC of generation 4 finished:
+   Generation Boxed Unboxed LB   LUB    Alloc  Waste   Trig    WP  GCs Mem-age
+          0:     0     0     0     0        0     0 10000000    0   0  0.0000
+          1:     0     0     0     0        0     0 10000000    0   0  0.0000
+          2:     0     0     0     0        0     0 10000000    0   0  0.0000
+          3:     0     0     0     0        0     0 10000000    0   0  0.0000
+          4:     0     0     0     0        0     0 10000000    0   0  0.0000
+          5:   228    71 97657     0 401214056 13720  2000000    0   0  0.0000
+   Total bytes alloc=401214056
+</pre>
+
+
+<li> The function <tt class="function-name">sys:scrub-control-stack</tt>
+     can be used to zero the unused portion of the control stack. This
+     avoids old objects being kept alive due to a reference from an
+     uninitialized variable on the control stack. 
+
+
+<li> (cl::gencgc-print-generation-stats 1) [FIXME expand]
+
+
+<li> The foreign variable <tt>gencgc_oldest_gen_to_gc</tt> determines the
+     oldeest generation that will be subject to garbage collection by default
+     (in partial collections). The default value enables GC on all
+     generations. Setting this variable to 0 effectively disables the
+     generational nature of the collector. In some applications,
+     generational GC may not be useful, because there are no long-lived
+     objects. An intermediate value (between 0 and 6) may be appropriate
+     after moving long-lived data into an older generation, in order to
+     avoid an unnecessary GC of this long-lived data. 
+
+</ul>
+
+
+<h2>Further information</h2>
+
+<ul>
+<li> <a href = "http://www.memorymanagement.org/">MemoryManagement.org</a>
+
+<li> <a href =
+     "http://citeseer.nj.nec.com/wilson92uniprocessor.html">Uniprocessor Garbage
+     Collection Techniques</a>, by Paul Wilson, is a survey of the major
+     techniques in automatic memory management. 
+
+<li> A document <a href =
+     "http://www.hpl.hp.com/personal/Hans_Boehm/gc/conservative.html" >Why
+     Conservative Garbage Collectors?</a> by Hans Boehm (author of a
+     well-known conservative collector for C programs). 
+</ul>
+
+
+<p class=credits> by Eric Marsden, with contributions from Pierre Mai and
+Daniel Barlow.
+
+
+@@FOOTER@@
+</body>
+</html>

@@ -1,0 +1,67 @@
+@@DTD@@
+<html>
+<head>
+<title>Handling X11 authorization with CLX</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Handling X11 authorization with CLX)
+
+<p> <strong>Summary</strong>: use the function <tt class =
+"function-name">EXT:OPEN-CLX-DISPLAY</tt> instead of <tt class =
+"function-name">XLIB:OPEN-DISPLAY</tt> to establish a connection with your
+ X11 server. 
+
+
+<p> To prevent malicious users from snooping on an display (and logging
+    keystrokes for example), X11 servers may require connection requests to
+    be authorized. The X server (or display manager) will create a random
+    key on startup, and store it as an entry in a file generally named
+    <tt>$HOME/.Xauthority</tt>. Clients must extract from this file the
+    &quot;magic cookie&quot; that corresponds to the server they wish to
+    connect to, and send it as authorization data when opening the display.
+    Users can manipulate the contents of the .Xauthority file by using the
+    <tt>xauth</tt> command.
+
+<p> Most X11 programs use the xlib libraries, which transparently extract
+    magic cookie information when establishing a connection with the X
+    server. The old CLX code base does not have support for
+    MIT-MAGIC-COOKIE-1 authorization, so CLX programs may be rejected by
+    the X server. One workaround is to say <tt>xhost +localhost</tt>, to
+    allow unauthorized X11 connections that originate from the local host.
+    A better solution is to change CLX programs to use the CMUCL function
+    <tt class = "function-name">EXT:OPEN-CLX-DISPLAY</tt> instead of <tt
+    class = "function-name">XLIB:OPEN-DISPLAY</tt> to establish connections
+    to your X11 server. This function is able to extract X11 authorization
+    cookies from your XAUTHORITY file and present them to the X server. 
+
+<p> As far as we know, support for X11 authorization has not been
+    integrated to the CLX code distributed by the commercial Common Lisp
+    vendors. 
+
+
+<h2>Parsing the <tt>DISPLAY</tt> environment variable</h2>
+ 
+<p> A further problem with the standard CLX function <tt class =
+    "function-name">XLIB:OPEN-DISPLAY</tt> is that it doesn't correctly
+    extract the display number from the <tt>DISPLAY</tt> environment
+    variable. This is a problem you might run into when using CLX on an
+    ssh-forwarded X11 session. Indeed, ssh typically sets <tt>$DISPLAY</tt>
+    to <tt>remotehost:10</tt>, and forwards port 6010 on the remote host to
+    port 6000 (or whatever port the local X11 server is running on) on the
+    local host. CLX will unsuccessfully try to connect to
+    <tt>remotehost:0</tt>.
+
+<p> The function <tt class= "function-name">EXT:OPEN-CLX-DISPLAY</tt>
+    parses a display specifier (which defaults to the contents of the
+    <tt>DISPLAY</tt> environment variable) to extract the display and
+    screen numbers, so should automatically work for ssh-forwarded X11
+    sessions. 
+
+<p class=credits> by Eric Marsden
+
+@@FOOTER@@
+</body>
+</html>

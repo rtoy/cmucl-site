@@ -1,0 +1,50 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Changing the default prompt</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Changing the default CMUCL prompt)
+
+<p> The default CMUCL prompt is a fairly basic <tt>* </tt>. You can use the
+<tt class=variable>*prompt*</tt> variable to customize this prompt, either
+by setting it to a constant string, or by setting it to a function which
+will be called each time the prompt is displayed. </p>
+
+<p> The following code demonstrates how to make CMUCL print the current
+    package in the prompt. </p>
+
+<pre class=code>
+   (in-package :cl-user)
+
+   (defvar *last-package* nil)
+   (defvar *cached-prompt*)
+
+   (defun my-prompt ()
+     (unless (eq *last-package* *package*)
+       (setf *cached-prompt*
+             (concatenate 'string (or (first (package-nicknames *package*))
+                                      (package-name *package*))
+                          &quot;> &quot;))
+       (setf *last-package* *package*))
+     *cached-prompt*)
+
+   (setf lisp::*prompt* #'my-prompt)
+</pre>
+
+
+<p> If you wish to change the debugger's prompt (which defaults to
+    something like <tt>0] </tt>, where 0 indicates the number of recursive
+    debuggers you have entered), there is a similar variable named <tt
+    class=variable>DEBUG:*DEBUG-PROMPT*</tt>. Your function should print a
+    string to <tt class=variable>*DEBUG-IO*</tt>.
+
+
+<p class=credits> by Paul Foley
+
+@@FOOTER@@
+</body>
+</html>

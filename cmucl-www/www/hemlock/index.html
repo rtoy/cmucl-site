@@ -1,0 +1,63 @@
+@@DTD@@
+<html>
+<head>
+<title>The Hemlock editor</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(an extensible Emacs-like editor)
+
+
+<p> <i>Hemlock</i> is an extensible Emacs-like text editor embedded in
+    CMUCL. It follows the tradition of the Lisp Machine editor ZWEI and the
+    ITS/TOPS-20 implementation of Emacs. Hemlock is able to display to a
+    terminal, or use CLX for X11. </p>
+
+<p> Available documentation:
+
+<ul>
+<li> the <a href = "@@DOC@@hemlock-user.ps.gz">Hemlock User Manual</a> <i>(176kB
+gzipped A4 Postscript)</i>, or in <a href =
+"@@DOC@@hemlock-user-letter.ps.gz">gzipped letter Postscript</a>. </li>
+
+<li> the <a href = "@@DOC@@hemlock-cim.ps.gz">command implementor's
+manual</a>, containing information for people who wish to extend Hemlock
+<i>(120kB gzipped Postscript)</i>.
+</ul>
+
+<p> The Scribe sources for these documents are distributed with the CMUCL
+    source code, in the <tt>src/docs/hem</tt> directory. </p>
+
+
+<h3> Experimenting with Hemlock </h3>
+
+<p> To start experimenting with Hemlock, load the CLX and Hemlock
+    subsystems, then type <tt>(ed)</tt>. This should open an X11 window for
+    the editor (actually two windows; the smaller window contains the
+    minibuffer).
+
+<pre class=example>
+   * (require :clx)
+   * (require :hemlock)
+   * (ed)
+</pre>
+
+<p> The keybindings in the editor are similar to those in GNU Emacs: for
+    instance <tt>M-x</tt> enters the minibuffer, and <tt>C-x C-f</tt> opens
+    a file for editing (enter the filename in the minibuffer). Completion
+    in the minibuffer works with #\Space, not with #\Tab. Command names are
+    of the form <tt>Find File</tt> rather than <tt>find-file</tt>. Dired
+    mode is available with <tt>M-x Dired</tt>. To quit Hemlock and return
+    to the listener, type <tt>C-x C-z</tt>. </p>
+
+<p> Note that the tty code in Hemlock requires termcap (on Debian systems,
+    you can install the <tt>termcap-compat</tt> package). For further notes
+    on using Hemlock, see <a href =
+    "http://www.cliki.net/CloserLookAtHemlock">CLiki:CloserLookAtHemlock</a>.
+
+
+@@FOOTER@@
+</body>
+</html>

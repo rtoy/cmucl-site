@@ -1,0 +1,120 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL News from 2001</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(what happened in 2001)
+
+<p>
+<dl>
+<dt>2001-12-20</dt>
+<dd> Experimental binaries, similar to the upcoming 18d release, are
+available in the <tt>binaries</tt> directory of the <a href =
+"../download.html">download sites</a>. 
+
+<dt>2001-12-10</dt>
+<dd> Experimental binaries for OpenBSD/x86 have been uploaded to the
+<tt>experimental</tt> directory of the download sites.
+
+<dt>2001-08-15</dt>
+<dd> A number of <a href = "../mirrors.html">mirror sites</a> have been make available.
+
+<dt>2001-07-26</dt>
+<dd> The primary CMUCL server was taken offline unexpectedly, due to a move
+of the hosting company. The mailing lists are still running, but CVS and
+FTP/HTTP downloads are currently unavailable.
+
+<dt>2001-07-16</dt>
+<dd> Added pointer to <a href =
+"http://www.geocities.com/pgplot_cl/">PGPLOT-CL</a> to the Ports page.
+
+<dt>2001-07-05</dt>
+<dd> Improvements to the way subsystems are loaded: the <tt>modules:</tt>
+pathname is initialized correctly, to make things like
+<tt>(require :clx-library)</tt> work. Also, the features <tt>:NO-CLX</tt>,
+<tt>:NO-HEMLOCK</tt> which are used to control subsystem compilation during
+the build phase are no longer present in the final cores.
+
+<dt>2001-06-28</dt>
+<dd> Various ANSI compliance fixes: <tt>:CLTL2</tt>,
+<tt>:DRAFT-ANSI-CL</tt>, <tt>:X3J13</tt> features removed. Changes in the
+precedence lists of certain conditions: for example
+<tt>NO-APPLICABLE-METHOD</tt> now subclasses <tt>TYPE-ERROR</tt>. 
+
+<dt>2001-06-19</dt>
+<dd> Beginnings of a <a href = "@@HOME@@FAQ.html">FAQ</a>. 
+
+<dt>2001-06-17</dt>
+<dd> A new version of the <a href =
+"@@DOC@@EncyCMUCLopedia/">EncyCMUCLopedia</a> (compendium of documents
+related to CMUCL) has been released. 
+
+<dt>2001-06-12</dt>
+<dd> New web pages go live.
+
+<dt>2001-06-11</dt>
+<dd> Bugfix for printing of bit vectors (printer was incorrectly respecting
+radix and base control variables). Also bugfixes to pretty printing of
+vectors. 
+
+<dt>2001-06-03</dt>
+<dd> Changes to <tt>DEFMACRO</tt> processing, to improve ANSI compliance. It
+now has compile-time effect only when at top-level. 
+
+<dt>2001-05-13</dt>
+<dd> improvements to disassembly listings on x86 and SPARC.
+<pre>
+o Sparc v9 instructions are longer so make the opcode column wider.
+o Allow printing of integer registers to use the Sparc register names
+  instead of the Lisp names.
+o Add support for printing various notes during disassembly:
+  o Assembler routines, foreign functions, and foreign constants
+  o The value of constants in the code header
+  o References to static symbols
+  o Notes about pseudo-atomic stuff
+  o Some hints on header-word types
+</pre>
+
+<dt>2001-05-03</dt>
+<dd> Linux RPMs available at <a href =
+     "http://rpmfind.net/linux/rpm2html/search.php?query=cmucl">rpmfind.net</a>. 
+
+<dt>2001-04-25</dt>
+<dd> Changes to PCL (the CLOS implementation included with CMUCL) to remove
+     code for other Common Lisp implementations. 
+
+<dt>2001-04-12</dt>
+<dd> CMUCL is reported to segfault on linux 2.2 with the bigmem patch and
+     the <tt>CONFIG_2GB</tt> option (certain distributions ship kernels
+     with these patches applied). It works ok using the option
+     <tt>CONFIG_1GB</tt>.
+
+<dt>2001-03-20</dt>
+<dd> Changes to <tt>PROCLAIM</tt> and <tt>DECLAIM</tt> to be more
+     ANSI-compliant. <tt>PROCLAIM</tt> no longer has a compile-time effect,
+     so many old uses of this should use <tt>DECLAIM</tt> instead. 
+     
+<dt>2001-03-15</dt>
+<dd> The directory <tt>src/bootfiles/18c</tt> contains a number of files
+     required to bootstrap compilation from the 18c release. See the README
+     in that directory for usage. 
+
+<dt>2001-02-10</dt>
+<dd> A PowerPC backend has been contributed by Gary Byers. Work is underway
+     to revive the code.
+
+<dt>2001-01-08</dt>
+<dd> A port of the <strong>XML parser</strong> from <a href = "http://www.franz.com/">Franz
+     Inc</a> is available from <a href =
+     "ftp://ftp2.cons.org/pub/lisp/cmucl/ports/xmlutils/">ports/xmlutils</a>.
+     The port does not support Unicode, since CMUCL has no support for
+     extended character sets. 
+</dl>
+      
+@@FOOTER@@    
+</body>
+</html>    

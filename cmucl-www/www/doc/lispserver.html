@@ -1,0 +1,64 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL as a Lisp server</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Serve Lisp requests)
+
+<p> The multiprocessing capabilities in the x86 versions of CMUCL allow it
+    to operate as a lisp server. This can be useful in a situation where
+    you wish to execute a number of small scripts, where the overhead of
+    launching a separate CMUCL instance would be penalizing. For a real
+    application you would have to take security considerations into
+    account. </p>
+
+<pre class=code>
+(in-package :user)
+
+(format t "THIS A A HUDGE SECURITY RISC. CHANGE THE PASSWORD!!!~%~%")
+(setf mp::*idle-process* mp::*initial-process*)
+(mp::start-lisp-connection-listener :port 6789 :password "Clara")
+
+;;; now you can telnet in and do:
+#|
+$telnet localhost 6789
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+Enter password: "Clara"
+
+CMU Common Lisp Experimental 18a+ release x86-linux 2.2.0 cvs, running on slartibartfast
+Send bug reports and questions to your local CMU CL maintainer,
+or to pw@snoopy.mv.com,
+or to s950045@uia.ac.be or Peter.VanEynde@uia.ua.ac.be
+or to cmucl-help@cons.org. (prefered)
+
+type (help) for help, (quit) to exit, and (demo) to see the demos
+
+Loaded subsystems:
+    Python 1.0, target Intel x86
+    CLOS based on PCL version:  September 16 92 PCL (f)
+* (+ 1 1)
+
+2
+* (quit)
+Connection closed by foreign host.
+|#
+</pre>
+
+<p> Craig Brozefsky has developed a prototype application called <a href =
+    "http://sanpietro.red-bean.com/~craig/qcmu/">qcmu</a> which generalizes
+    this technique. It allows users to obtain either a REPL or to execute a
+    script on a CMUCL server. qcmu uses a client-server protocol which
+    incorporates authentication mechanisms. </p>
+
+    
+<p class=credits> by Peter Van Eynde
+
+@@FOOTER@@
+</body>
+</html>

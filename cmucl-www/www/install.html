@@ -1,0 +1,146 @@
+@@DTD@@
+<html>
+<head>
+<title>Installing CMUCL</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(installing CMUCL)
+
+<p> This page explains how to install the release tarballs of CMUCL. If
+    you're using an alternative distribution packaging, such as
+    <tt>.deb</tt> archives, use whatever is appropriate there. </p>
+
+<p> For each <a href = "platforms.html">supported platform</a> there are
+    two bzip2 tar archives, one containing the base system, and the other
+    (with <tt>extra</tt> in the name) containing optional additional files
+    supporting CLX, Hemlock, the Motif interface, and so on. 
+
+<p> <a href = "download.html">Download the archives</a> corresponding to
+    your platform. You can check the integrity of the files you have
+    downloaded by comparing the output of <tt>md5sum filename</tt> with
+    that given in the file md5sums.txt.
+
+<p> The release tarballs extract to the following directory structure:
+  
+<pre>
+     bin/lisp
+     lib/cmucl/lib/lisp.core
+     doc/cmucl/README (this file)
+     man/man1/cmucl.1
+     ...
+</pre>  
+
+<p>  This allows you to install CMUCL directly under <tt>/usr/local</tt>, for
+     example using
+  
+<pre>
+     cd /usr/local
+     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.extra.tar.bz2
+</pre>
+     
+<p> or alternatively, install under a directory in <tt>/opt</tt>, for example
+  
+<pre>
+     mkdir /opt/cmucl-18e
+     cd /opt/cmucl-18e
+     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-18e-&lt;platform&gt;.extra.tar.bz2
+</pre> 
+ 
+<p> The 18e distribution is relocateable: the lisp binary will search for
+    the lisp.core file relative to its location. This means that it is
+    sufficient to have <tt>/usr/local/bin</tt> (or
+    <tt>/opt/cmucl-18e/bin</tt>) in your <tt>PATH</tt> to be able to invoke
+    CMUCL from your shell.
+
+<p> You can now invoke CMUCL: this should display a banner then show a
+    prompt (the default prompt is an asterisk).
+  
+<pre>
+      % lisp
+      CMU Common Lisp 18e, running on orion
+      With core: /prj/cmucl/release-18e/linux/lisp/lisp.core
+      Dumped on: Thu, 2003-04-03 15:47:12+02:00 on orion
+      See &lt;http://www.cons.org/cmucl/&gt; for support information.
+      Loaded subsystems:
+          Python 1.1, target Intel x86
+	 CLOS 18e (based on PCL September 16 92 PCL (f))
+      * (format t &quot;~&amp;Hello, world!~%&quot;)
+      Hello, world!
+      NIL
+      *
+</pre>
+
+
+<h2>Loading subsystems</h2>
+
+<p> To load precompiled subsystems (assuming that you installed the -extra-
+    tarball), just use <tt>REQUIRE</tt>:
+
+<pre>
+     * (require :gray-streams)
+     * (require :clx)
+     * (require :clm)
+     * (require :hemlock)
+</pre>
+
+<p> The DEFSYSTEM facility is not included with CMUCL, but can be obtained
+   from <a href = "http://clocc.sf.net/">CLOCC</a>. It may be installed as
+   a subsystem by compiling it (using the function <tt>COMPILE-FILE</tt>),
+   and moving the resulting <tt>defsystem.FASL</tt> file to
+   <tt>$ROOT/lib/cmucl/lib/subsystems/defsystem-library.FASL</tt> (where
+   <tt>FASL</tt> is the file extension of compiled lisp files on your
+   system, for instance <tt>.sparcf</tt> or <tt>.x86f</tt>). You can then say
+
+<pre>
+     * (require :defsystem)
+</pre>
+
+<p> to load the DEFSYSTEM facility into your running lisp. 
+
+
+
+<h2>Create a site-wide initialization file</h2>
+
+<p> CMUCL reads two initialization files: a per-user file named
+    <tt>~/.cmucl-init.lisp</tt>, or a site-wide file named
+    <tt>$ROOT/lib/cmucl/lib/site-init.lisp</tt> (where <tt>$ROOT</tt> is
+    the base directory in which you installed CMUCL, for example
+    <tt>/usr/local/</tt>). It is customary to initialize the <tt
+    class="function-name">SHORT-SITE-NAME</tt> and <tt
+    class="function-name">LONG-SITE-NAME</tt> from the site-init file.
+
+<p> CMUCL is distributed with a file called
+    <tt>$ROOT/lib/cmucl/lib/generic-site.lisp</tt> that you can use as a
+    template for your site-init file:
+
+<pre>
+   # cd $ROOT/lib/cmucl/lib
+   # cp generic-site.lisp site-init.lisp
+   # emacs site-init.lisp
+</pre>
+
+<p> If you have the CMUCL source code installed on your system, you can set
+    the <tt>target:</tt> search-list to point to them, so that the debugger
+    provides more information when a CMUCL function signals an error. See
+    the commented-out line at the end of the generic-site file. 
+
+
+
+<h2>Interacting with CMUCL</h2>
+ 
+<p> The basic commandline interface offered by CMUCL is rather basic; it
+    doesn't offer a history mechanism or commandline editing facilities.
+    You may wish to investigate using a more powerful interface than the
+    commandline, such as <a href = "http://ilisp.cons.org/">ILISP</a>, or
+    <a href = "hemlock/">Hemlock</a>, or (more basic) <tt>M-x run-lisp</tt>
+    in Emacs. </p>
+
+
+@@FOOTER@@
+</body>
+</html>

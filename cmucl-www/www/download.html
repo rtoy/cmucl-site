@@ -1,0 +1,146 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL downloads</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(how to get CMUCL)
+
+<p> The latest formal release of CMUCL (binaries and source) is available
+    from the various download sites, in the <tt>release</tt> directory.
+    For each supported platform there are two bzipped tar archives, one
+    containing the base system, and the other (with <tt>extra</tt> in the
+    name) containing additional files supporting CLX, Hemlock, Gray streams
+    and so on.
+
+<p> The download sites are: </p>
+
+<dl>
+<dt> <a href="ftp://cmucl.cons.org/pub/lisp/cmucl/">cmucl.cons.org:/pub/lisp/cmucl</a>
+<dd> The primary CMUCL machine, located in the United States. You can also
+     access the same files <a href =
+     "http://cmucl.cons.org/ftp-area/cmucl/">using HTTP</a>. </dd>
+
+<dt> <a href = "ftp://ftp.averillpark.net/cmucl/">ftp.averillpark.net/cmucl</a> 
+<dd> A complete mirror located in the United States. </dd>
+
+<dt> <a href = "ftp://ftp.linux.org.uk/pub/lisp/cmucl/">
+     ftp.linux.org.uk/pub/lisp/cmucl</a> 
+<dd> A complete mirror located in England. </dd>
+
+<dt> <a href = "http://www.pmsf.de/pub/cmucl/">www.pmsf.de/pub/cmucl</a>
+<dd> A partial mirror of the releases and ports sections, which should
+provide good bandwidth across Europe and the USA. </dd>
+
+<dt> <a href = "http://www.pmsf.net/cmucl/">www.pmsf.net/cmucl</a>
+<dd> The primary mirror and master rsync server, but only has limited
+outbound bandwidth. </dd>
+
+<dt> <a href = "ftp://ftp.cn.freebsd.org/pub/cmucl/">ftp.cn.freebsd.org/pub/cmucl</a>
+<dd> A complete mirror, which should have reasonable bandwidth from Asia. </dd>
+</dl>
+
+
+<p> Binaries built from source more recent than the latest release are
+    available from the download mirrors in the <tt>binaries</tt> directory.
+    These binaries contain bugfixes and new features that are not in the
+    release binaries, but have had less testing. </p>
+
+<p> Binaries providing experimental features (such as long floats), or
+    built with non-standard features or subsystems, are available in the
+    <tt>experimental</tt> directory. These haven't had much testing. </p>
+
+<p> Please read the <a href =
+    "ftp://ftp2.cons.org/pub/lisp/cmucl/disclaim.txt">CMUCL
+    disclaimer</a> for details of the <em>absence of warranty</em>
+    traditional with free software. </p>
+
+
+<h2>Alternative binary distributions</h2>
+
+<p> CMUCL is available as a <a href = "http://www.freebsd.org/">FreeBSD</a>
+    port (<tt>ports/lang/cmucl</tt>) for the x86, thanks to Martin Cracauer. </p>
+
+<p> CMUCL is available as a <tt>.deb</tt> <a href =
+    "http://www.debian.org/Packages/stable/devel/cmucl.html" >package</a>
+    for <a href = "http://www.debian.org/">Debian GNU/Linux</a> on x86,
+    thanks to Peter Van Eynde. Note that the Debian binaries are not
+    exactly equivalent to the cons.org binaries; they include a number of
+    modifications. In particular, they are not binary-compatible with the
+    cons.org binaries, so you cannot share FASL files between them. You can
+    use <a href = "http://kitenet.net/programs/alien/">Alien</a> to
+    <strong>convert the debian packages into RPMs</strong> to be installed
+    on RedHat or SuSE installations:
+
+<pre>
+    # alien --to-rpm cmucl-version.deb
+    # rpm -i cmucl-version.rpm
+</pre>
+
+<p> CMUCL is <a href = "http://www.caddr.com/lisp/">available in RPM
+    format</a> for Red Hat/x86, thanks for Miles Egan. The RPMs should be
+    equivalent to the official release tarballs, but may be easier to
+    install for some users. </p>
+
+<p> CMUCL is available as a package for the <a href =
+    "http://gentoo.org/">Gentoo Linux</a> distribution. The package is
+    named cmucl-bin, and is in the dev-lisp category. </p>
+
+
+
+<h2>Anonymous CVS access</h2>
+
+<p> The CMUCL source code can also be obtained by anonymous CVS from
+    <tt>anoncvs@anoncvs.cons.org:/home/anoncvs/CVS-cmucl</tt>. The anoncvs
+    tree is synchronized daily with the main CVS tree, and can be accessed
+    using a command such as
+
+<pre>
+   export CVSROOT=:pserver:anonymous@anoncvs.cons.org:/home/anoncvs/CVS-cmucl
+   cvs login  (password is `anonymous')
+   cvs co src
+</pre>
+
+<p> The anoncvs tree is available using anonymous rsync at
+    <tt>rsync://cmucl.cons.org/CVS-cmucl</tt>. This is probably the most
+    network-friendly way of keeping up to date with the current sources,
+    since the rsync protocol is very efficient. Keeping your own local CVS
+    tree also makes cvs operations much faster than when you contact the
+    main repository. Sample usage:
+
+<pre>
+    rsync -avz rsync://cmucl.cons.org/CVS-cmucl /var/cvs/CVS-cmucl
+</pre>
+
+<p> You can also browse individual CVS files (these are not outchecked
+    source files, but the RCS files!) at <a href =
+    "http://www2.cons.org/ftp-area/cmucl/CVS-cmucl/" >www2.cons.org</a>.
+    This is intended for mirroring the whole CVS tree using some web mirror
+    tool (such as GNU wget). If you want the CVS tree as a whole, there is
+    a daily tarfile of the CVS tree at <a href =
+    "http://www2.cons.org/ftp-area/cmucl/current/">www2.cons.org</a>, using
+    the filename <tt>cmucl-cvs-YYYYMMDD.tar.gz</tt>. Likewise, the file
+    named <tt>cmucl-src-YYYYMMDD.tar.gz</tt> is a tarball of the sources,
+    updated daily. </p>
+
+<!--
+<p> The code can also be <a href =
+    "http://www2.cons.org:8000/cgi-bin/cvsweb-cmucl.cgi" >accessed using
+    cvsweb</a>, an interactive web-based CVS browser. You can step through
+    the source tree interactively and see histories and diffs between
+    versions. No delay applies, you access the working sources. </p>
+-->
+
+<p> There are CVS tags for the latest releases, named <tt>RELEASE_18d</tt>,
+    <tt>RELEASE_18c</tt>, <tt>RELEASE_18b</tt> and <tt>RELEASE_18a</tt>.
+    </p>
+
+<p> Thanks for using CMUCL! </p>
+
+
+@@FOOTER@@
+</body>
+</html>

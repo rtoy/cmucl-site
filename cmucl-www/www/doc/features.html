@@ -1,0 +1,266 @@
+@@DTD@@
+<html>
+<head>
+<title>Description of *features*</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Description of <tt>*features*</tt>)
+
+<p> Common Lisp implementations use the variable <a href =
+    "http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/var_stfeaturesst.html">
+    *features*</a> to reify information on implementation- or
+    environment-specific properties and functionalities. This page explains
+    the meaning of the features provided by CMUCL. </p>
+
+
+<h2>Standardized</h2>
+
+<dl>
+<dt> <tt>:ieee-floating-point</tt>
+<dd>
+If present, indicates that the implementation purports to conform to
+the requirements of IEEE standard for binary floating-point arithmetic.
+</dd>
+
+<dt> <tt>:x3j13</tt>
+<dd>
+Indicates that the implementation conforms to some particular working draft
+of the X3J13 working group on the Common Lisp specification.
+</dd>
+
+<dt> <tt>:ansi-cl</tt>
+<dd>
+Indicates that the implementation purports to conform to the ANSI Common
+Lisp specification. 
+</dd>
+
+<dt> <tt>:common-lisp</tt>
+<dd>
+This feature identifies the language family <i>Common Lisp</i>, without
+specifying a particular dialect within that family.
+</dd>
+</dl>
+
+
+<h2>Platform-related</h2>
+
+<dl>
+<dt> <tt>:sparc</tt>
+<dd>The implementation targets the SPARC architecture.</dd>
+
+<dt> <tt>:sun4</tt>
+<dd>The implementation generates code for the Sun4 generation of
+SPARC processors.</dd>
+
+<dt> <tt>:sparcstation</tt>
+<dd>The implementation generates code for the SPARCstation generation of
+SPARC processors.</dd>
+
+<dt> <tt>:sparc-v7</tt>
+<dd> The implemenation generates code for the SPARC-V7 generation of SPARC
+processors. This allows the <tt>fsqrt</tt> instruction to be used. </dd>
+
+<dt> <tt>:sparc-v8</tt>
+<dd> The implementation generates code for the SPARC-V8 generation of SPARC
+processors. This allows fast fixnum multiplies and divides to be used. </dd>
+
+<dt> <tt>:sparc-v9</tt>
+<dd>
+The implementation generates code for the SPARC-V9 generation of SPARC
+processors. This allows certain extra floating-point instructions to be
+generated. </dd>
+
+<dt> <tt>:fast-maxmin</tt>
+<dd>
+On SPARC-V9 use conditional move instructions for min and max, which are
+(probably) faster than the normal instructions since they avoid branching.
+</dd>
+
+<dt> <tt>:x86</tt>
+<dd>The implementation targets the x86 architecture.</dd>
+
+<dt> <tt>:hppa</tt>
+<dd>The implementation targets the HP PA-RISC architecture.</dd>
+
+<dt> <tt>:alpha</tt>
+<dd>The implementation targets the Alpha architecture.</dd>
+
+<dt> <tt>:sgi</tt>
+<dd>The implementation targets the SGI MIPS architecture.</dd>
+
+<dt> <tt>:x86</tt>
+<dd>The implementation targets the x86 architecture.</dd>
+
+<dt> <tt>:solaris</tt>
+<dd>The implementation runs on the Solaris operating system.</dd>
+
+<dt> <tt>:sunos</tt>
+<dd>The implementation runs on the SunOS operating system.</dd>
+
+<dt> <tt>:svr4</tt>
+<dd>The implementation runs on some branch of the SVR4 family of operating
+systems.</dd>
+
+<dt> <tt>:linux</tt>
+<dd> The implementation runs on the Linux operating system.</dd>
+
+<dt> <tt>:glibc2</tt>
+<dd> The implementation runs above version 2 of the GNU C library.</dd>
+
+<dt> <tt>:bsd</tt>
+<dd> The implementation runs on an operating system in the BSD family.
+</dd>
+
+<dt> <tt>:freebsd</tt>
+<dd> The implementation runs on the <a href =
+"http://www.FreeBSD.org/">FreeBSD</a> operating system. </dd>
+
+<dt> <tt>:mach</tt>
+<dd> The implementation runs on the Mach operating system.</dd>
+
+<dt> <tt>:irix</tt>
+<dd> The implementation runs on the IRIX operating system.</dd>
+
+<dt> <tt>:hpux</tt>
+<dd> The implementation runs on the HPUX operating system.</dd>
+
+<dt> <tt>:unix</tt>
+<dd> The implementation runs on some member of the Unix family of operating
+systems.</dd>
+
+<dt> <tt>:x86</tt>
+<dd>The implementation targets the x86 architecture.</dd>
+
+</dl>
+
+
+
+<h2>Implementation-specific</h2>
+
+<dl>
+<dt> <tt>:cgc</tt>
+<dd>
+Conservative garbage collector (currently only implemented for the x86
+architecture). The standard garbage collector is stop-and-copy, based on
+Cheney's algorithm.
+</dd>
+
+<dt> <tt>:gencgc</tt>
+<dd> A conservative generational garbage collector is present. </dd>
+
+<dt> <tt>:mp</tt>
+<dd> Support for multiprocessing is present. </dd>
+
+<dt> <tt>:small</tt>
+<dd>
+Tells the compiler to try to reduce the size of generated code. This leads
+it to byte-compile certain functions instead of generating native code.
+</dd>
+
+<dt> <tt>:random-mt19937</tt>
+<dd>
+Indicates that a random number generator based on the Mersenne Twister
+algorithm is present. See the article <i>Mersenne twister: A
+623-dimensionally equidistributed uniform pseudorandom number
+generator</i>, ACM Transactions on Modeling and Computer Simulation, 1997
+by Makoto Matsumoto and T. Nishimura.
+</dd>
+
+<dt> <tt>:hash-new</tt>
+<dd>
+Indicates that a new implementation of hash tables supporting EQUALP is
+present.
+ </dd>
+
+<dt> <tt>:propagate-fun-type</tt>
+<dd>
+Allows the compiler to infer types for many mathematical functions,
+including square root, exponential and logarithmic functions, trignometric
+functions and their inverses, and hyperbolic functions and their inverses.
+For numeric code, this can greatly enhance efficiency by allowing the
+compiler to use specialized versions of the functions instead of the
+generic versions. The greatest benefit of this type inference is
+determining that the result of the function is real-valued number instead
+of possibly being a complex-valued number.
+</dd>
+
+<dt> <tt>:propagate-float-type</tt>
+<dd>
+Enables list-style float type specifiers such as <tt>(single-float 0.0
+1.0)</tt> to be taken into account.
+</dd>
+
+<dt> <tt>:constrain-float-type</tt>
+<dd>
+Allows the constraint propagation phase of the compiler to apply global
+flow analysis to floating point numbers, in order to obtain dynamic type
+information. 
+</dd>
+
+<dt> <tt>:complex-fp-vops</tt>
+<dd>
+Enable VOPS to be used for operations on complex floating point numbers.
+Currently only used on the SPARC port.
+</dd>
+
+<dt> <tt>:pcl</tt>
+<dd>
+Indicates that the PCL implementation of CLOS is present.
+</dd>
+
+<dt> <tt>:portable-commonloops</tt>
+<dd>
+An alias for <i>PCL</i>.
+</dd>
+
+<dt> <tt>:pcl-structures</tt>
+<dd>
+??
+</dd>
+
+<dt> <tt>:new-assembler</tt>
+<dd>
+Indicates that a new version of the assembler is present.
+</dd>
+
+<dt> <tt>:new-compiler</tt>
+<dd>
+Indicates that a new version of the Python compiler is present.
+</dd>
+
+<dt> <tt>:python</tt>
+<dd> Indicates that the Python native compiler is present.</dd>
+
+<dt> <tt>:cmu</tt>
+<dd> Identifies the CMUCL implementation. </dd>
+
+<dt> <tt>:cmu17</tt>
+<dd> Identifies version 17 or later of the CMUCL implementation. </dd>
+
+<dt> <tt>:cmu18</tt>
+<dd> Identifies version 18 or later of the CMUCL implementation. </dd>
+
+<dt> <tt>:common</tt>
+<dd> Similar to the <tt>:common-lisp</tt> feature. </dd>
+
+<dt> <tt>:clx</tt>
+<dd> The implementation includes the CLX subsystem for writing X11
+programs. </dd>
+
+<dt> <tt>:clm</tt>
+<dd> The implementation includes the CLM subsystem for writing Motif
+applications. </dd>
+
+<dt> <tt>:hemlock</tt>
+<dd> The Hemlock editor is loaded. </dd>
+</dl>
+
+
+
+
+@@FOOTER@@
+</body>
+</html>    

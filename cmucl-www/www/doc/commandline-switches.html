@@ -1,0 +1,82 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Adding customized commandline switches</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Adding customized commandline switches)
+
+<p> Certain implementations such as <a href =
+"http://clisp.cons.org/">CLISP</a> have a <tt>-c</tt> commandline switch
+that allows you to invoke the file compiler from the shell. CMUCL's
+commandline switches are user-extensible, so you can emulate this behaviour
+with code such as the following, in your <tt>site-init.lisp</tt> or
+<tt>~/.cmucl-init</tt> initialization files.
+
+<pre class=code>
+(macrolet ((with-batch-processing (&amp;body body)
+             `(handler-case (prog1 t ,@body)
+                (serious-condition (condition)
+                  (format *error-output* &quot;Error in batch processing:~%~A~%&quot;
+		          condition)
+                  (finish-output *error-output*)
+                  (throw 'lisp::%end-of-the-world 1))
+                (:no-error (value)
+                  (declare (ignore value))
+                  (throw 'lisp::%end-of-the-world 0)))))
+
+(ext:defswitch &quot;compile&quot;
+   #'(lambda (switch)
+        (with-batch-processing
+           (mapc #'compile-file (ext:cmd-switch-words switch)))))
+
+(ext:defswitch &quot;compile-and-load&quot;
+   #'(lambda (switch)
+        (with-batch-processing
+           (mapc #'(lambda (file) (compile-file file :load t))
+                 (ext:cmd-switch-words switch)))))
+
+) ; macrolet
+</pre>
+
+<p> Now you can use the following to compile (and load) from the command line:
+
+<pre>
+   lisp -compile-and-load demo.lisp demo2.lisp
+</pre>
+
+<p> If errors are encountered during processing, CMUCL is aborted, with a
+return value of 1, otherwise it returns 0 (i.e. success). This can be
+combined with the <tt>-quiet</tt> flag (put it at the start of the
+commandline) if wanted. </p>
+
+<p> An alternative to this form of interaction with the file compiler is to
+load the files and compile them from a stream, so you don't have any FASL
+files hanging around on disk (thus avoiding problems with binary
+compatibility between different CMUCL releases), yet still benefit from
+compiled performance. You can do this with code such as:
+
+<pre class=code>
+(defun process-switch-demon (switch)
+  (let ((files (copy-list (ext:cmd-switch-words switch))))
+    (push #'(lambda ()
+              (dolist (file files)
+                (format *terminal-io*
+                        &quot;~&amp;;;; Processing compiled code from ~A.~%&quot; file)
+                (with-open-file (s file)
+                  (ext:compile-from-stream s))))
+          *run-actions*)))
+
+(ext:defswitch "process" #'process-switch-demon)
+</pre>
+
+<p class=credits> Adapted from article
+<tt>87g06vubxi.fsf@orion.bln.pmsf.de</tt> posted to <tt>comp.lang.lisp</tt>
+by Pierre Mai, on 2001-11-30. </p>
+
+@@FOOTER@@
+</body>
+</html>    

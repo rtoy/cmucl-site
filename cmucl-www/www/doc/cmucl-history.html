@@ -1,0 +1,121 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Project history</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(History of the CMUCL Project)
+
+<p> This page is derived from an email message from Rob MacLachlan, in
+response to a question as to the recursive nature of CMUCL bootstrapping.
+Given that CMUCL requires CMUCL to build itself; how were the first
+iterations of CMUCL developed?
+
+<p> Lisp implementation work at <a href = "http://www.cmu.edu/">Carnegie
+Mellon University</a> started with <i>Spice Lisp</i> as a part of the Spice
+project (circa 1980). [SPICE stood for <i>Scientific Personal Integrated
+Computing Environment</i>.] ARPA's funding of Spice Lisp was one of the
+reasons that ARPA felt it had an interest in some common lisp dialect. This
+standardization effort came to be called (rather unimaginitively) <i>Common
+Lisp</i>.
+
+<p> So Spice Lisp was committed to being Common Lisp before anyone knew
+what that would be. We started calling it CMU Common Lisp when the Spice
+project ended (around 1985). The code base has gown tremendously and
+mutated greatly, but some parts, such as the core of <tt class =
+"function-name">RANDOM</tt> do go back to the very beginning.
+
+
+<h2>Target machines</h2>
+
+<p> The first machine that CMUCL was developed on was the PDP10; this was
+where the compiler and genesis ran. We also had an instruction-level
+simulator for the target machine which ran on the PDP10. This was used to
+debug many core parts of the original runtime.
+
+<p class=technical> The PDP-10 computer and its predecessor the PDP-6
+computer were, by design, especially well-suited to Lisp because they had
+36-bit words and 18-bit addresses. This architecture allowed a cons cell to
+be stored in one word; single instructions could extract the car and cdr
+parts. The PDP-6 and PDP-10 had fast, powerful stack instructions that
+enabled fast function calling. [from lisp.org]
+
+<p> The first target machine was the <a href =
+"http://www.chiark.greenend.org.uk/~pmaydell/PERQ/">Perq</a>, which was a
+microcoded graphics workstation inspired by the Xerox Alto and D-machines.
+We wrote our own Lisp instruction set in microcode.
+
+<p> Starting in about 1984, we hacked over the the compiler to emit code
+for the IBM RT PC RISC architecture. This was sort of a post-pass that
+translated the high-level operations (formerly bytecodes) into assembler.
+There was about 6000 lines of hand-coded assembly support for the runtime,
+including bignum arithmetic, etc.
+
+<p> It was in 1985 that I [Rob MacLachlan] started work on Python. This was
+a total compiler rewrite aimed toward efficient support for multiple
+&quot;conventional&quot; architectures. People have run the CMUCL compiler
+code in other Common Lisp implementations, but we never did.
+
+<p> The first Python backend was for the IBM RT PC. This was sort of
+halfway to the system we know now, since it still used the handcoded
+assembly runtime. The next backend was for the MIPS in the form of the DEC
+PMAX workstation. This shook out a lot of problems in the porting model,
+and was also when we moved everything possible into Lisp (such as bignums).
+This happened in about 1991.
+
+<p> Next came the SPARC, but initially only under Mach. The first supported
+operating system that CMUCL ran on was SunOS. After this port was done by
+volunteer effort, people outside CMU started to use CMUCL. This was around
+1992.
+
+<p> This first compiler ran in MacLISP. It was called "xc" for
+cross-compiler. It did not support full Common Lisp (macros had to be
+written in MacLISP, and there was no support for lexical closures.) This
+code evolved into "clc" (Common Lisp Compiler) which self-compiled in
+Common Lisp.
+
+<p> An interesting example of the process of Lisp specification:
+
+<p> The initial implementation of Common Lisp DEFSTRUCT had to be written in
+MacLisp, since "xc" ran in MacLisp. This code was initially used under
+Spice Lisp with minor modifications, but eventually we decided to rewrite
+it.
+
+<p> This version was written in idiomatic Common Lisp, therefore it used
+DEFSTRUCT structures to describe the format of DEFSTRUCT structures. This
+was initially compiled and debugged using the previous DEFSTRUCT
+implementation, but once it worked, we threw the old code away.
+
+
+<h2>Capabilities of early CMUCL</h2>
+
+<p> The Perq had 1 or 2 meg of memory, and the Lisp image was was about 1.5
+meg. Code density was high. The loop of NTHCDR was less than 8 bytes.
+Hemlock was written on this platform, and was widely used by non-lisp
+programmers because it was the only sophisticated editor that ran on the
+Perq. Speed was not great. TAK ran initially in 30 seconds, and that was
+one of our better benchmarks. Floating point performance was measured in
+Kflops. There was virtual memory (translation done in microcode), and we
+frequently thrashed. The OS was research, and we frequently crashed.
+
+
+<p> I believe that Scott Fahlman published a paper somewhere about the
+bootstrapping path of Spice Lisp. See also:
+
+<pre>
+@inproceedings(wholey,
+	author = "Skef Wholey and Scott E. Fahlman",
+	title = "The Design of an Instruction Set for Common Lisp",
+	booktitle = "ACM Conference on Lisp and Functional Programming",
+	year = 1984,
+	pages = "150--158")
+</pre>
+
+<p class=credits> by Rob MacLachlan
+
+@@FOOTER@@
+</body>
+</html>

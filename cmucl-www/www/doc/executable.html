@@ -1,0 +1,71 @@
+@@DTD@@
+<html>
+<head>
+<title>Making CMUCL-compiled files executable on GNU/Linux</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Making CMUCL-compiled files executable)
+
+<p> On GNU/Linux systems running kernel 2.2 or greater, CMUCL-compiled
+    FASL files can be made directly executable by the kernel by registering them
+    with the <a href =
+    "http://www.tat.physik.uni-tuebingen.de/~rguenth/linux/binfmt_misc.html">
+    binfmt_misc module</a>. This mechanism requires the user to have root
+    access, and obviously to have compiled binfmt_misc support in the
+    kernel (you can check for this in <tt>/proc/filesystems</tt>).  </p>
+
+<pre class="code">
+     # mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
+     # echo ':lisp:E::x86f::/usr/local/bin/lisp-start:' &gt; /proc/sys/fs/binfmt_misc/register
+</pre>
+
+<p> These steps require root privileges; you may wish to add those lines to
+    your boot files (for instance in a file in the directory
+    <tt>/etc/rc.local</tt>), so that they are executed automatically each
+    time your machine boots. [The first step (mounting the binfmt_misc
+    filesystem) is only required for kernel versions after 2.4.13 or
+    2.4.2-ac.]
+
+<p> You must also create an executable shell script
+    <tt>/usr/local/bin/lisp-start</tt> containing the following (you may
+    need to adjust paths, depending on where you installed CMUCL):
+
+<pre class="code">
+   #!/bin/sh
+
+   CMUCLLIB=/opt/cmucl/lib/cmucl/lib
+   export CMUCLLIB
+
+   exec /opt/cmucl/bin/lisp -quiet -noinit -batch -load ${1+&quot;$@&quot;}
+</pre>
+
+<p> The next step is to generate a FASL file for your application. The FASL
+    file, which has a platform-dependent filename extension such as
+    <tt>x86f</tt> or <tt>sparcf</tt>, contains a fast-loading, compiled
+    representation of your CL source code. A FASL file can be obtained by
+    using the <tt class="function-name">COMPILE-FILE</tt> function. If the
+    application comprises more than a single source file, compile each one
+    individually, then concatenate all the FASL files into a single one, in
+    the same order as you would have loaded them. You then need to make the
+    FASL file executable, using the <tt>chmod</tt> command.
+
+<pre class="code">
+     % chmod a+x whatever.x86f
+     % ./whatever.x86f
+</pre>
+
+<p> Any commandline arguments can be accessed at the end of the list
+    <tt class=variable>EXT:*COMMAND-LINE-STRINGS*</tt>. See <a href =
+    "http://users.actrix.co.nz/mycroft/runlisp.html">Paul Foley's extended
+    solution</a> to this problem, that also allows you to make CL source
+    files executable. </p>
+
+
+<p class=credits> by Paul Foley and Eric Marsden
+
+@@FOOTER@@
+</body>
+</html>

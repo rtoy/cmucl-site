@@ -1,0 +1,71 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Alien access to a tcl interpreter</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Alien access to a tcl interpreter)
+
+<p> This page provides an example of using the CMUCL foreign function
+interface to call a Tcl interpreter. </p>
+
+<p> This is a naive way of calling out to Tcl; it wouldn't be much more
+complicated to bind to a persistent interpreter to avoid instance creation
+overhead on each call to <tt class="function-name">EVAL-IN-TCL</tt>. </p>
+
+<pre class="code">
+;;; Evaluate (alien:load-foreign &quot;/usr/lib/libtcl8.0.so&quot;) before
+;;; compiling or loading this file.
+
+(in-package :CL-USER)
+
+(alien:def-alien-type tcl-interp (* t))
+
+(declaim (inline tcl-createinterp))
+(alien:def-alien-routine &quot;Tcl_CreateInterp&quot; tcl-interp)
+
+(declaim (inline tcl-eval))
+(alien:def-alien-routine &quot;Tcl_Eval&quot; c-call:int
+  (interp tcl-interp :in)
+  (string c-call:c-string :in))
+
+(declaim (inline tcl-getstringresult))
+(alien:def-alien-routine &quot;Tcl_GetStringResult&quot; c-call:c-string
+  (interp tcl-interp :in))
+
+(declaim (inline tcl-deleteinterp))
+(alien:def-alien-routine &quot;Tcl_DeleteInterp&quot; c-call:void
+  (interp tcl-interp :in))
+
+(defun eval-in-tcl (string)
+  (let ((inter (tcl-createinterp)))
+    (unwind-protect
+	 (let* ((result-code (tcl-eval inter string))
+		(result-string (tcl-getstringresult inter)))
+	   (values result-code (copy-seq result-string)))
+      (tcl-deleteinterp inter))))
+</pre>
+
+<p> Once you have loaded the code, you can evaluate expressions in Tcl from
+CMUCL as follows:
+
+<pre class=code>
+USER> (eval-in-tcl &quot;puts [expr 2 + 3]&quot;)
+5
+
+0
+&quot;&quot;
+
+</pre>
+
+<p class=credits> This description is adapted from an article
+<tt>&lt;87ya8j77df.fsf@orion.dent.isdn.cs.tu-berlin.de&gt;</tt> posted to
+the USENET group comp.lang.lisp on 2000-02-18 by Pierre Mai. </p>
+
+
+@@FOOTER@@
+</body>
+</html>    

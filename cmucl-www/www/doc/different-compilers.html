@@ -1,0 +1,92 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Different compilers</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Compilers and interpreters in CMUCL)
+
+<p> You can execute Common Lisp code in CMUCL in several different ways:
+using the interpreter, the byte-code compiler, or the native-code compiler.
+This document provides more information on the differences between these
+parts of CMUCL.
+
+<p> CMUCL has the following:
+
+<ol>
+
+<li> A trivial &quot;baby&quot; interpreter, that handles things like
+function application and SETQ, and which is present in all CMUCL cores, even
+those without a compiler present. </li>
+
+<li> A complete, &quot;grownup&quot; interpreter, which can handle the full
+language. It works by using the first stages of the compiler, to convert
+the source code to the IR1 internal representation (which is a flow-graph
+based representation, with implicit control-flow information; also called
+ICR: Implicit Continuation Representation), which is then interpreted. This
+interpreter depends on the compiler being present (and thus can't be used
+when CMUCL is rebuilding itself; this is why there's also a baby
+interpreter). Since it converts before interpreting, it behaves like a
+compiler when it comes to things like macro-expansion, or handling of
+circular source forms.
+
+<p> The interpreter is invoked when you enter forms into the listener (i.e.
+the interactive read-eval-print loop), or when you <tt
+class="function-name">LOAD</tt> code from a file without first compiling it
+using <tt class="function-name">COMPILE-FILE</tt>.
+
+<li> A byte-code compiler. This also works off the IR1 internal
+representation, but instead of interpreting that directly, it transforms it
+to byte-codes for a stack-based VM, which can be written to a
+processor-independent byte-fasl file. The byte-code is finally interpreted
+by a byte-code interpreter.
+
+<p> The main advantage of the byte-code compiler are space-savings, since
+the byte-coded representation is fairly compact (the cmu-user manual gives
+a factor of 6), yet still faster (by an order of magnitude, says the
+manual) than interpretation. It also gives you processor-independence,
+though not endianness-independence.
+
+<p> You can byte-compile whole files, or you can tell the file compiler to
+only byte-compile certain parts, like e.g. top-level forms, which aren't
+usually time-critical (this is the default).
+
+<li> The native compiler. This also runs through IR1, which is -- after
+extensive optimizations -- transformed into IR2, the virtual machine
+representation (VMR). The virtual machine that the VMR is based-on is
+defined by the processor-specific backends of the compiler, so that it can
+be tailored to the target processor as needed, yet still allows things like
+register allocation algorithms, etc. to be shared between backends. Finally
+the VMR is converted to assembly code, through the VOP's code-generators.
+The assembly code is slightly optimized, then assembled to machine code,
+and finally emitted to the FASL file.
+
+</ol>
+
+
+<h2>Controlling the choice of compiler</h2>
+
+<p> The baby interpreter is only used when evaluating simple forms at the
+listener: simple function calls, <tt class="function-name">SETQ</tt>, PROGN
+and so forth. Anything more complicated at the listener is evaluated by the
+grownup interpreter. Compilation is provoked by the function <tt
+class="function-name">COMPILE</tt>, or by compiling from a file with <tt
+class = "function-name">COMPILE-FILE</tt>. The choice between native and
+byte-code compilation depends on a number of factors, as documented in the
+CMUCL Users' Manual. 
+
+
+<p> Further details can be obtained from the CMUCL User Manual, and the
+<i>Design of CMU Common Lisp</i> document. 
+
+
+<p class=credits>
+adapted from a USENET posting by Pierre Mai, in a posting to comp.lang.lisp on 2002-02-14
+
+
+@@FOOTER@@
+</body>
+</html>

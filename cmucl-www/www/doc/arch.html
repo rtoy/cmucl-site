@@ -1,0 +1,179 @@
+@@DTD@@
+<html>
+<head>
+<title>Architecture-specific information</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Pointers to architecture-specific documentation)
+
+
+<h2>IA32</h2>
+
+<p> Also known as i386 or x86, the most common ISA on desktop machines for
+    historical reasons. Recent implementations have many sophisticated
+    features such as deep pipelines with out of order execution and good
+    branch prediction. </p> 
+
+<ul>
+<li> <a href = "http://x86.org/">x86.org</a> has links to the Intel
+     architecture reference manauls. </li>
+
+<li> <a href = "http://sandpile.org/">sandpile.org</a> has information on
+     the x86 architecture. </li>
+     
+<li> The <a href =
+     "http://www.sco.com/developer/devspecs/abi386-4.pdf">i386 SYSV
+     Application Binary Interface</a> specification. </li>
+
+<li> <a href = "http://www.amd.com/support/techdocdir.html">Technical
+     documents</a> from AMD. </li>
+
+<li> Documentation on <a href = "http://www.agner.org/assem/">optimizing
+     for Pentium processors</a> by Agner Fog. </li>
+
+<li> <a href = "http://www.df.lth.se/~john_e/gems.html">Assembly gems</a>.
+     </li>
+
+<li> The <a href = "http://www.linuxassembly.org/articles/startup.html">startup state of
+     an ELF binary</a> under Linux: process details, stack and register
+     contents. </li>
+
+<li> Online drafts of the book <a href = "http://www.iecc.com/linker/">Linkers
+     and Loaders</a> by John Levine: talks about object file formats,
+     dynamic linking and loading, symbol management. </li>
+     
+</ul>
+
+
+<h2>SPARC</h2>
+
+<p> The SPARC is a reduced instruction set architecture whose origins go
+    back to the early work on RISC at Berkeley. Its original features
+    include register windows and support for tagged arithmetic. Recent
+    members of the family are 64 bit. Most SPARCS now have deep pipelines,
+    but are in order. </p>
+
+<ul>
+<li> <a href = "http://www.sparc.com/standards.html">Sparc
+     International</a> have Architecture Manuals and Application Binary
+     Interface specifications available for download. </li>
+
+<li> <a href = "http://www.sun.com/microelectronics/whitepapers/">
+     Whitepapers on the SPARC</a> from Sun microelectronics. </li>
+
+<li> Information on the <a href =
+     "http://docs.sun.com:80/ab2/@LegacyPageView?Ab2Lang=C&Ab2Enc=iso-8859-1&toc=SUNWab_44_4%3A%2Fsafedir%2Fspace3%2Fcoll1%2FSUNWspro%2FDOC4.0%2Flib%2Flocale%2FC%2Fab_docs%2Fcommon%2Ftoc%2FNUMCOMPGD%3A1090;bt=Numerical+Computation+Guide;ps=ps%2FSUNWab_44_4%2FNUMCOMPGD%2FB.SPARC_Behavior_and_Implementation">
+     SPARC FPU units</a> and their implementation of IEEE exceptions. </li>    
+
+<li> An introduction to SPARC <a href =
+     "http://www.sics.se/~psm/sparcstack.html">stacks and register
+     windows</a>. </li>
+
+<li> A <a href =
+     "http://www.cs.virginia.edu/zephyr/csdl/sparcall.html">description of
+     the SPARC v8 architecture</a> in Lambda-RTL, part of the Zephyr
+     research project. </li>
+
+<li> A <a href =
+     "http://www.cs.nyu.edu/leunga/www/MLRISC/Doc/html/sparc.html">similar
+     description</a> from the MLRISC project. </li>
+     
+</ul>
+
+
+
+
+<h2>Alpha</h2>
+
+<ul>
+<li> Digital's <a href =
+     "http://ftp.digital.com/pub/Digital/info/semiconductor/literature/dsc-library.html">Documentation
+     Library</a>. </li>
+</ul>
+     
+
+<h2>MIPS</h2>
+
+<ul>
+<li> <a href = "http://www.mips.com/publications/">MIPS publications</a>.
+     </li>
+</ul>     
+
+
+<h2>PowerPC</h2>
+
+<ul>
+<li> <a href =
+     "http://developer.apple.com/techpubs/macosx/DeveloperTools/OS_X_PPC_RuntimeConventions/OS_X_PPC_RuntimeConventions.pdf">
+     ABI on MacOS X</a> </li>
+
+<li> <a href = "http://developer.apple.com/hardware/ve/acgresearch.html">
+Papers from Apple's Advanced Computation Group</a>, in particular the paper
+on multiprecision arithmetic using <a href =
+"http://www.altivec.org/">Altivec</a>. </li>
+</ul>
+    
+
+
+<h2>Misc</h2>
+
+<ul>
+<li> The <a href = "http://www.eecs.harvard.edu/~nr/toolkit/">New Jersey
+     Machine-code toolkit</a> aims to facilitate the development of
+     applications which manipulate machine code, such as assemblers, code
+     generators and debuggers. It allows the encoding and decoding of
+     machine instructions symbolically, based on a compact specification of
+     the target architecture (<a href =
+     "http://www.eecs.harvard.edu/~nr/toolkit/specs/sparc.html">example
+     description</a> of the SPARC). </li>
+
+<li> <a href =
+     "http://www.cs.nyu.edu/leunga/www/MLRISC/Doc/html/">MLRISC</a> is a
+     customizable optimizing back-end written in Standard ML. </li>
+
+<li> Papers published by the <a href =
+     "http://suif.stanford.edu/papers/">SUIF group</a> at Stanford on
+     advanced compilation techniques. </li>
+
+<li> Article on <a href = "http://citeseer.nj.nec.com/62423.html">static
+     instruction scheduling for dynamic issue processors</a>. </li>
+     
+<li> Research on binary translation: IBM's <a href =
+     "http://oss.software.ibm.com/developerworks/opensource/daisy/">DAISY
+     project</a>. They dynamically translate PowerPC code to a VLIW
+     instruction set, while introducing the maximum amount of instruction
+     level parallelism. </li>
+     
+<li> The <a href = "http://www.cminusminus.org/">C-- project</a> aims to
+     specify a portable assembly language which could serve as an
+     intermediary between high-level compilers and retargeteable,
+     optimizing code generators. </li>
+             
+<li> The <a href = "http://www.memorymanagement.org/">Memory
+     Management reference</a>. </li>
+
+<li> Papers on <a href =
+     "http://www.cs.utexas.edu/users/oops/papers.html">garbage
+     collection</a>, and the <a href =
+     "http://www.memorymanagement.org/">Memory Management Reference</a>.  </li>
+
+<li> Information on <a href =
+     "http://www.irisa.fr/prive/dmentre/linux-counters/">hardware
+     performance counters</a>, such as <a href =
+     "http://www.cps.msu.edu/~enbody/perfmon/">perfmon</a> for UltraSPARC.
+     See also the cpustat(1M) and cputrack(1) tools, the cpc library, and
+     tracing(3TNF) in Solaris 8. </li>
+
+<li> Information on writing <a href =
+"http://gcc.gnu.org/java/port-signals.html">signal handling code</a> from
+ the Java GCC frontend. </li>
+              
+</ul>     
+
+
+@@FOOTER@@
+</body>
+</html>    

@@ -1,0 +1,106 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Supported platforms</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(what does it run on?)
+
+<p> CMUCL should work on the following combinations of operating system and
+    architecture:
+
+<dl>
+<dt> Linux/x86 </dt>
+<dd> The 18e release binaries should work on any i586 or better processor.
+     The 18e binaries are compiled against version 2.1 of the GNU C Library
+     (glibc2.1), but also work with glibc2.2. They should
+     run with any Linux kernel after 2.0 (but beware early kernels in the
+     2.4 series, which had poor virtual memory characteristics). There are
+     known problems running CMUCL on kernels using certain configurations of the
+     HIGHMEM support (this option allows larger process address spaces, and
+     certain distributions ship kernels with these patches enabled). The
+     <tt>CONFIG_64GB</tt> and <tt>CONFIG_1GB</tt> options work fine. The
+     runtime support for the CMUCL Motif interface is statically linked, so
+     you won't need the Motif libraries installed on your system.
+
+     <p> CMUCL is known not to run under libsafe, whose system call
+     interposition mechanism interferes with the foreign function
+     interface. CMUCL does not run on kernels with &quot;hardening&quot;
+     patches such as grsecurity, since their all-the-world-is-C
+     assumptions are too strong.
+</dd>
+
+<dt> FreeBSD/x86 </dt>
+<dd>
+     The 18e release binaries should work on any i586 or better processor.
+     The 18e binaries should work with FreeBSD releases 4.x and
+     -current (5.x). </dd>
+
+<dt> OpenBSD/x86 </dt>
+<dd> The 18e release binaries should work on any i486 or better processor.
+     The 18e binaries were build on OpenBSD 3.1. </dd>
+
+<dt> NetBSD/x86 </dt>
+<dd> there are binaries for NetBSD 1.5.2 in the <tt>experimental</tt>
+     directory of the download sites. Unfortunately NetBSD doesn't provide
+     access to the faulting memory address in SIGSEGV handlers, hence the
+     generational GC can't use a hardware-based write-barrier in order to
+     reduce the need to track pointers from older generations to newer
+     ones, resulting in degraded GC performance. Also, the runtime has to
+     work around a limitation in the <tt>mmap</tt> system call, which
+     refuses to map zones larger than 128MiB.  </dd>
+
+<dt> Solaris/SPARC </dt>
+<dd> the 18e binaries should work with SunOS 5.5, 5.7 and
+     5.8 (also known respectively as Solaris 2.5, Solaris 7 and Solaris 8).
+     If you have an UltraSPARC processor you can get the <tt>v9</tt>
+     binaries, which use instructions which are only present on SPARC-v9
+     implementations; otherwise you should get the binaries without
+     <tt>v9</tt> in the name of the tarball. If you have an UltraSPARC the
+     command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you have an
+     older machine such as a SparcStation it will probably say
+     <tt>sun4m</tt>. </dd>
+
+<dt> Alpha/Linux </dt>
+<dd> The 18e binaries are known to work on ev56 and ev6 machines, running
+     Linux 2.4.x.  </dd>
+
+<dt> IRIX/MIPS </dt>
+<dd> The 18e release binaries are known to work with Irix 6.2, and should
+     work on any later version. They use the o32 ABI. </dd>
+
+<dt> HPUX/HPPA </dt>
+<dd> this port has not been maintained for quite a while, so
+     you'll have to go back to the 18a release to find binaries for this
+     platform. </dd>
+</dl>
+
+<p> There is some ongoing work on the creation of a PowerPC backend,
+    targeting LinuxPPC. There is no win32 port of CMUCL, and making this
+    port would involve a considerable amount of work. The <a href =
+    "http://sbcl.sf.net/">SBCL implementation</a> (a fork from CMUCL) runs
+    on some platforms that CMUCL doesn't currently support, such as
+    Linux/SPARC, Linux/PowerPC, Linux/Alpha -- check their web site for
+    current status. </p>
+
+
+<h3>Platform-specific build options</h3>
+
+<p> The builds for x86 platforms include a generational conservative
+garbage collector (this can be tested for through the presence of the
+<tt>:gencgc</tt> feature). The other architectures use a stop-and-copy
+garbage collector. </p>
+
+<p> The x86 builds also include basic multiprocessing support (this can be
+tested for through the presence of the <tt>:mp</tt> feature). The
+implementation is based on stack groups, ie user-level threads, and not on
+kernel threads. The interface is very similar to the <a href =
+"http://www.mikemac.com/mike/clim/clim-sys.html">CLIM-SYS
+specification</a>. </p>
+
+@@FOOTER@@
+</body>
+</html>    

@@ -1,0 +1,90 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Analyzing memory usage</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Analyzing memory usage)
+
+<p> CMUCL includes a number of tools that allow a user to determine how
+    many objects of a given type have been allocated in a given image, and
+    why certain objects are not being reclaimed by the garbage collector.
+    These functions are called <tt
+    class="function-name">VM::LIST-ALLOCATED-OBJECTS</tt> and <tt
+    class="function-name">VM::LIST-REFERENCING-OBJECTS</tt>. Each takes a
+    first SPACE argument indicating whether to scan dynamic space, static
+    space or read-only space. </p>
+
+<p> The example below shows how to obtain a list all objects of type
+    double-float in read-only space, and a list of all strings of length 42
+    in read-only space:
+
+<pre class=code>
+USER&gt; (vm::list-allocated-objects :read-only :type vm::double-float-type)
+(0.0d0 1.8446744073709553d+19 -1.8446744073709553d+19 -3.141592653589793d0
+ 1.5707963267948966d0 -1.5707963267948966d0 3.141592653589793d0 -1.0d0 1.0d0
+ -0.0d0 0.0d0 0.0d0 -0.0d0 0.0d0 0.0d0 1.0d0 177.61896501848597d0
+ 2.147483648d+9 -2.1474836490000002d+9 1.1102230246251568d-16
+ 5.551115123125784d-17 -2.2250738585072014d-308 -2.2250738585072014d-308
+ 4.940656458412465d-324 -1.7976931348623157d+308 1.7976931348623157d+308
+ -4.940656458412465d-324 1.1102230246251568d-16 5.551115123125784d-17
+ -1.7976931348623157d+308 4.940656458412465d-324 -4.940656458412465d-324
+ 1.7976931348623157d+308 2.2250738585072014d-308 2.2250738585072014d-308
+ 5.368709110000001d+8 0.0d0 -5.36870912d+8 0.0d0 0.0d0 -0.0d0
+ #.EXT:DOUBLE-FLOAT-NEGATIVE-INFINITY #.EXT:DOUBLE-FLOAT-NEGATIVE-INFINITY
+ #.EXT:DOUBLE-FLOAT-POSITIVE-INFINITY 308.2547155599167d0 -307.6526555685887d0
+ 1.0d+7 0.001d0 1.0d+16 0.1d0 1.0d0 -3.141592653589793d0 0.5d0 0.25d0 4.0d0
+ 2.983336292480083d-154 1.5707963267948966d0 -1.5707963267948966d0
+ 3.351951982485649d+153 3.0d0 1.2d0 0.7071067811865475d0 0.6931471805599453d0
+ 3.141592653589793d0 10.0d0 0.3010299914836512d0 0.0d0 0.0d0 0.5d0
+ #.EXT:DOUBLE-FLOAT-POSITIVE-INFINITY 2.0d0 4.450147717014402d-308 -1.0d0 0.0d0
+ 1.0d0 #.EXT:DOUBLE-FLOAT-POSITIVE-INFINITY -1.0d0 0.0d0 1.0d0
+ 5.368709110000001d+8 -5.36870912d+8)
+USER&gt; (vm::list-allocated-objects :read-only :type vm::simple-string-type
+                                  :test (lambda (obj) (= 42 (length obj))))
+(&quot;DEFMETHOD WRAPPER-FETCHER (STANDARD-CLASS)&quot;
+ &quot;(.pv-cell. .next-method-call. specializer)&quot;
+ &quot;DEFUN GET-COMPLEX-INITIALIZATION-FUNCTIONS&quot;
+ &quot;DEFMETHOD DOCUMENTATION (FUNCTION (EQL #))&quot;
+ [...]
+ &quot;Veritas aeterna, can't declare ~S special.&quot;
+ &quot;Can't declare ~S special, it is a keyword.&quot;
+ &quot;Trying to declare ~S special, which is ~A.&quot;
+ &quot;COMPILED-DEBUG-FUNCTION-COMPILER-DEBUG-FUN&quot;
+ &quot;Too large to be represented as a ~S:~%  ~S&quot;
+ &quot;~D is too big; ~S only has ~D dimension~:P&quot;)
+</pre>
+ 
+<p> and the example below shows how to find all references to a given object
+    in a given space:
+
+<pre class=code>
+USER&gt; (vm::list-referencing-objects :static *print-case*)
+(common-lisp::*previous-case* *print-case* #&lt;(simple-vector 4096) {28018817}&gt;
+ :downcase #&lt;(simple-vector 2729) {28002767}&gt;)
+USER&gt; (vm::list-referencing-objects :static #\Nul)
+((#\Null 8 sparc:simple-string-type) (&quot;Nul&quot; . #\Null) (&quot;^@&quot; . #\Null)
+ (&quot;Null&quot; . #\Null))
+</pre>
+
+<p> These functions can produce lots of output; you probably don't want to
+    have <tt class=variable>*PRINT-ARRAY*</tt> set. More information on the
+    breakdown of types of objets allocated and the space that they occupy
+    is available by calling <tt>(ROOM T)</tt>. </p>
+
+<p> If you have more specific needs, CMUCL includes a function <tt
+    class="function-name">VM::MAP-ALLOCATED-OBJECTS</tt> that allows you to
+    walk the heap; it calls a user-provided function on each allocated
+    object, with arguments of the object, its size and its type. Examples
+    of usage are available in the CMUCL source code, in the file
+    <tt>src/code/room.lisp</tt>. </p>
+
+
+<p class=credits> by Eric Marsden
+
+@@FOOTER@@
+</body>
+</html>

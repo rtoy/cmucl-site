@@ -1,0 +1,55 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: determining the code size of a function</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Function code size)
+
+<p> The following code prints a breakdown of the code size of functions in
+    a given package. By <i>code size</i> we mean the number of octets
+    occupied by the machine code, for a function that has been compiled to
+    native code. This size breakdown may be useful if you're trying to
+    optimize for space.
+
+<pre class=code>
+(in-package :vm)
+
+(defun print-function-sizes (package-specifier
+                             &amp;key (larger 0)
+                             (count 50)
+                             (stream *standard-output*))
+  (declare (ignorable larger count))
+  (let ((function-sizes (list))
+        (package (find-package package-specifier)))
+    (dolist (space '(:static :dynamic :read-only))
+      (map-allocated-objects
+       (lambda (obj type size)
+         (declare (optimize (safety 0)))
+         (when (eql type code-header-type)
+           (let* ((dinfo (%code-debug-info obj))
+                  (code-package-name
+                   (if (typep dinfo 'c::compiled-debug-info)
+                       (c::compiled-debug-info-package dinfo)
+                       &quot;UNKNOWN&quot;))
+                  (code-package (find-package code-package-name)))
+             (when (eq code-package package)
+               (push (cons size obj) function-sizes)))))
+       space))
+    (format stream &quot;~=== Function breakdown by size for ~a ===~%&quot;
+            package)
+    (loop :for counter :to count
+          :for (size . name) :in (sort function-sizes #'&gt; :key #'car)
+          :while (&gt; size larger)
+          :do (format stream &quot;~70a ~6d~%&quot; name size))))
+</pre>
+
+
+<p class=credits> by Eric Marsden
+
+@@FOOTER@@
+</body>
+</html>

@@ -1,0 +1,211 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: Using the disassembler</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING(Reading disassembly output)
+
+<p> The Common Lisp function <tt class="function-name">DISASSEMBLE</tt> produces an
+    implementation-specific description of the internal representation of a
+    function. Its output is very useful when you want to improve the
+    performance of your code, since it gives you an idea of what the
+    machine will do. </p>
+
+
+<h3>Disassembly of byte-compiled code</h3>
+
+<p> For example, if you use CMUCL's byte-code compiler, the <tt
+    class="function-name">DISASSEMBLE</tt> function will show you the
+    bytecodes generated for your function: </p>
+
+<pre class="code">
+  CL-USER&gt; (defun foo (x y)
+              (logand (logior x y) (logxor x y)))
+  CL-USER&gt; (let ((c::*byte-compile* t)) (compile 'foo))
+  Byte Compiling lambda (x y):
+  CL-USER&gt; (disassemble 'foo)
+   0: 00    Entry point, frame-size=0
+   1: 20    push-const #&lt;FDEFINITION object for kernel:two-arg-and&gt;
+   2: 21    push-const #&lt;FDEFINITION object for kernel:two-arg-ior&gt;
+   3: 11    push-arg 1
+   4: 10    push-arg 0
+   5: 8A    named-call, 2 args
+   6: 22    push-const #&lt;FDEFINITION object for kernel:two-arg-xor&gt;
+   7: 11    push-arg 1
+   8: 10    push-arg 0
+   9: 8A    named-call, 2 args
+  10: 9A    named-tail-call, 2 args
+  11: 00    push-local 0
+  12: 00    push-local 0
+  13: 00    push-local 0
+  14: 00    push-local 0
+  15: 00    push-local 0
+</pre>
+
+<p> This is fairly easy to interpret, once you know that the byte-code
+    interpreter is a stack machine. The references of the internal
+    TWO-ARG-AND and TWO-ARG-IOR functions are pushed onto the stack, the
+    arguments Y then X are pushed onto the stack, the TWO-ARG-IOR call is
+    executed (leaving the result on the stack), the reference of the
+    function TWO-ARG-XOR is pushed onto the stack, the arguments are pushed
+    again, the TWO-ARG-XOR is executed, and finally the TWO-ARG-AND is
+    executed in a tail-call.
+
+<!-- FIXME what are the push-local about ?
+
+     seems that push-local is like push-arg, but negative
+-->
+
+
+<h3>Disassembly of native-compiled code</h3>
+
+<p> You are more likely to be interested in disassembling functions that
+    have been compiled to native code. Understanding disassembly of native
+    code is easier if you understand what certain common sequences of
+    instructions are doing. </p>
+
+<p> The following function illustrates CMUCL's ability to use unboxed
+    arithmetic on values of type <tt>(unsigned-byte 32)</tt> and
+    <tt>(signed-byte 32)</tt>. It can also do similar things with floating
+    point values. This significantly improves performance by reducing
+    consing, and by allowing the compiler to emit instructions that operate
+    directly on machine word sized values. </p>
+
+<p> This optimization is easiest to implement inside a single function. It
+    is more difficult to apply when making a function call, since it is
+    necessary to ensure that the called function is expecting to receive
+    unboxed arguments, rather than the normal calling convention. CMUCL is
+    able to perform this type of optimization across function call
+    boundaries when functions are declared to be inline, with locally
+    defined functions (using <tt class="function-name">FLET</tt> or <tt
+    class="function-name">LABELS</tt>), and when block compilation is used.
+    See the <i>CMUCL User's Manual</i> for more information on this. </p>
+
+
+<pre class="code">
+  (defun foo (x y)
+    (declare (optimize (speed 3) (space 0) (safety 0) (debug 0))
+             (type (unsigned-byte 32) x y))
+    (logand (logior x y) (logxor x y)))
+
+  USER&gt; (compile 'foo)
+  Compiling LAMBDA (X Y):
+
+  In: LAMBDA (X Y)
+    #'(LAMBDA (X Y)
+        (DECLARE (OPTIMIZE # # # #) (TYPE # X Y))
+        (BLOCK FOO (LOGAND # #)))
+  Note: Doing unsigned word to integer coercion (cost 20) to &quot;&lt;return value&gt;&quot;.
+  Compilation unit finished.
+    1 note
+</pre>
+
+
+<p> The x86 dissassembly of the function follows below. The first line is
+    the entry point of the function, at address 0x481E0770. This is
+    followed by a standard function prologue, which checks the number of
+    arguments and their types, and unboxes them (the SAR operations at
+    labels L0 and L2). Starting at label L3 are the logical operations (OR,
+    XOR, AND), which operate directly on the 32 bit values. Since we must
+    box/tag the return value for functions that follow the normal calling
+    convention, we test whether any of the upper 3 bits of the result are
+    set (the <tt>TEST ECX, 3758096384</tt> operation, where the magic
+    number is just #xE0000000). If that's true, we create a boxed bignum
+    representation (sequence at label L5). Otherwise we can just tag the
+    result as a fixnum with a two-bit 0 tag (and a leading 0 sign bit, of
+    course), using <tt>LEA EDX, [ECX*4]</tt>. </p>
+
+
+<pre class="code">
+481E0770:       .ENTRY FOO()                 ; FUNCTION
+     788:       POP   DWORD PTR [EBP-8]
+     78B:       LEA   ESP, [EBP-32]
+     78E:       MOV   EAX, EDX
+     790:       TEST  AL, 3
+     792:       JEQ   L0
+     794:       MOV   ECX, [EAX-3]
+     797:       JMP   L1
+     799: L0:   SAR   EAX, 2
+     79C:       MOV   ECX, EAX
+     79E: L1:   MOV   EAX, EDI
+     7A0:       TEST  AL, 3
+     7A2:       JEQ   L2
+     7A4:       MOV   EAX, [EAX-3]
+     7A7:       JMP   L3
+     7A9: L2:   SAR   EAX, 2
+     7AC: L3:   MOV   EDX, ECX               ; No-arg-parsing entry point
+     7AE:       OR    EDX, EAX
+     7B0:       MOV   EBX, ECX
+     7B2:       XOR   EBX, EAX
+     7B4:       MOV   ECX, EDX
+     7B6:       AND   ECX, EBX
+     7B8:       TEST  ECX, 3758096384
+     7BE:       JNE   L5
+     7C0:       LEA   EDX, [ECX*4]
+     7C7: L4:   MOV   ECX, [EBP-8]
+     7CA:       MOV   EAX, [EBP-4]
+     7CD:       ADD   ECX, 2
+     7D0:       MOV   ESP, EBP
+     7D2:       MOV   EBP, EAX
+     7D4:       JMP   ECX
+     7D6:       NOP
+     7D7:       NOP
+     7D8: L5:   JNS   L6
+     7DA:       MOV   EDX, 522
+     7DF:       JMP   L7
+     7E1: L6:   MOV   EDX, 266
+     7E6: L7:   MOV   BYTE PTR [#x280001D4], 0 ; COMMON-LISP::*PSEUDO-ATOMIC-INTERRUPTED*
+     7ED:       MOV   BYTE PTR [#x280001BC], 4 ; COMMON-LISP::*PSEUDO-ATOMIC-ATOMIC*
+     7F4:       MOV   EAX, 16
+     7F9:       ADD   EAX, [#x8069724]       ; current_region_free_pointer
+     7FF:       CMP   EAX, [#x80696F8]       ; current_region_end_addr
+     805:       JBE   L8
+     807:       CALL  #x80536F8              ; alloc_overflow_eax
+     80C: L8:   XCHG  EAX, [#x8069724]       ; current_region_free_pointer
+     812:       MOV   [EAX], EDX
+     814:       LEA   EDX, [EAX+7]
+     817:       MOV   [EDX-3], ECX
+     81A:       MOV   BYTE PTR [#x280001BC], 0 ; COMMON-LISP::*PSEUDO-ATOMIC-ATOMIC*
+     821:       CMP   BYTE PTR [#x280001D4], 0 ; COMMON-LISP::*PSEUDO-ATOMIC-INTERRUPTED*
+     828:       JEQ   L9
+     82A:       BREAK 9                      ; Pending interrupt trap
+     82C: L9:   JMP   L4
+</pre>
+
+<p> FIXME: Explain the fact that the compiler can generate fast calls to
+    the no-arg-parsing entry point, that bypass the checking of the number
+    of arguments and their types, assuming that code has been compiled with
+    low safety.
+
+<p> The code at label L4 is the normal function epilogue. FIXME explain.
+
+<p> The code at label L5 checks first whether the most-significant bit is
+    set. If it is, we have to alloc two words for the bignum, since a full
+    32 bits, plust the now required sign bit will not fit inside a single
+    machine word. If we only have 31 bits worth of integer, we can fit it
+    and the leading sign bit inside a single machine word. Since we also
+    need a word for the header, we thus allocate either 2 or 4 words of
+    storage, (the heap is 8 byte aligned). </p>
+
+<p> The code at labels L7 to L8 is ... FIXME.
+
+<p> While this example doesn't show it, CMUCL can handle unboxed values on
+    the stack, so even when intermediate or argument values spill from
+    registers to the stack, they can remain unboxed. On x86 platforms, this
+    is handled using a conversative garbage collector. On other platforms,
+    this is done by using separate unboxed stacks, on platforms that
+    segregate unboxed and boxed values in stacks and the register file. </p>
+
+
+<p class=credits>
+    <strong>Acknowledgment</strong>: This description is based on a USENET
+    article <tt>&lt;m2fzxapiug.fsf@ibook.bln.pmsf.net&gt;</tt> on
+    comp.lang.lisp, dated 2002-08-20, by Pierre Mai. </p>
+
+@@FOOTER@@
+</body>
+</html>

@@ -11,227 +11,54 @@
 
 <p>
 <dl>
-<dt>2003-11-01</dt>
-<dd> The <strong>November snapshot binaries</strong> have been uploaded, for
+<dt>2004-05-05</dt>
+<dd> The <strong>May snapshot binaries</strong> have been uploaded, for
 sparcv9/Solaris, x86/FreeBSD and x86/Linux.
 
-<dt>2003-10-28</dt>
-<dd> <a href = "http://common-lisp.net/project/lgtk/">lGTk</a> is a set of
-bindings to the GTk GUI toolkit. It contains bindings to a subset of the
-GTk version 2.0 widgets, and requires a recent CMUCL with callback support
-(try one of the recent snapshots). 
+<dt>2004-05-04</dt>
+<dd> Support for an separate stack for delivering signals (via the
+<tt>sigaltstack()</tt> system call) has been committed. This makes it
+possible to trap overflows of the C stack and print a diagnostic message
+before aborting. 
 
-<dt>2003-10-24</dt>
-<dd> Support for <strong>graceful heap overflow</strong> has been committed
-by Raymond Toy. This means that when the heap is exhausted, instead of getting
-the dreaded <tt>*A2 gc_alloc_new_region failed</tt> abort, you will be put
-in the debugger. Currently implemented for SPARC and x86 platforms, and
-announced by a <tt>:heap-overflow-check</tt> feature. 
+<dt>2004-04-22</dt>
+<dd> The behaviour of <tt class="function-name">EXT:LOAD-FOREIGN</tt> when
+called with a single shared library has been changed to call <tt
+class="function-name">SYS::LOAD-OBJECT-FILE</tt> directly, without invoking
+the linker as previously. 
 
-<dt>2003-10-03</dt>
-<dd> The <strong>October snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD and x86/Linux. There are two builds for
-sparcv9, one with the new generational garbage collector (please test and
-report any problems!), and the other with the traditional two-space
-collector.
+<dt>2004-04-06</dt>
+<dd> Improved support for <strong>source-location recording</strong> has been
+contributed by Helmut Eller. This improves the support for
+a FIND-DEFINITION like facility in editors for classes, generic functions
+and methods.
 
-<dt>2003-09-08</dt>
-<dd> An experimental <strong>statistical profiler</strong> has been posted
-to the cmucl-imp mailing list by Gerd Moellmann. The principle is to take
-periodic samples of the currently executing function and call stack, to
-record where CMUCL is spending the most time. The profiling is driven by
-the <tt>SIGPROF</tt> signal. The profiler is able to generate a time usage
-histogram, and to produce a call graph with breakdown into cycles. 
+<dt>2004-04-04</dt>
+<dd> Support for <strong>efficient modular arithmetic</strong> on x86 and
+SPARC platforms has been ported from SBCL by Raymond Toy. This allows the
+compiler to generate better code for certain operations on 32-bit
+quantities.
 
-<dt>2003-09-05</dt>
-<dd> Some preliminary work on <strong>instruction scheduling</strong> for
-the SPARC platform has been carried out by Raymond Toy. The aim is for
-CMUCL to emit code that is cleverer about instruction latencies and
-dependencies: for example, trying to insert a few instructions between a
-load and the use of the loaded register (to avoid the pipeline being
-stalled). This slows down compilation, but has the potential to improve the
-performance of generated code. More work is needed on ways to rearrange and
-group instructions. 
+<dt>2004-04-02</dt>
+<dd> The <strong>April snapshot binaries</strong> have been uploaded, for
+sparcv9/Solaris, x86/FreeBSD and x86/Linux.
 
-<dt>2003-09-03</dt>
-<dd> Support for <strong>dynamic-extent on SPARC</strong> has been
-committed, thanks to Raymond Toy. 
+<dt>2004-03-20</dt>
+<dd> The CMUCL CVS repository is back online at <a href =
+"http://common-lisp.net/project/cmucl/">common-lisp.net</a>. Thanks to the
+site admins for providing this service! This will lead to changes to
+CVS access and to the primary download host.
 
-<dt>2003-09-02</dt>
-<dd> The <strong>September snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD and x86/Linux. There are two builds for
-sparcv9, one with the new generational garbage collector (please test and
-report any problems!), and the other with the traditional two-space
-collector.
-
-<dt>2003-08-22</dt>
-<dd> The generational garbage collector (:gencgc feature) has been ported
-to SPARC, thanks to Raymond Toy. This feature will remain experimental
-until further testing has been undertaken. Unlike the x86 version of
-gencgc, which is a conservative collector, the SPARC gencgc is a precise
-collector.
-
-<dt>2003-08-21</dt>
-<dd> Preliminary support for <strong>delivery as a standalone
-executable</strong> on ELF platforms (currently only FreeBSD) has been
-developed by Fred Gilham. This involves linking the CMUCL runtime and the
-different spaces in a core file together in a single executable, that can
-then be run without runtime dependencies on anything other than standard
-platform libraries. 
-
-<dt>2003-08-08</dt>
-<dd> Snapshots of the CMUCL User's Manual have been uploaded to the
-<tt>snapshots</tt> directory of the download sites. PDF, A4 Postscript and
-dvi formats are available. These snapshots are intended to help users who
-are experimenting with the binaries that are regularly built from CVS. 
-
-<dt>2003-08-06</dt>
-<dd> Support for the <strong>dynamic-extent declaration</strong> on x86 has
-been contributed by Gerd Moellmann. This means that <tt>&amp;rest</tt>
-argument lists can be allocated on the stack (instead of on the heap), and
-be freed automatically when the function exits. 
-
-<dt>2003-07-06</dt>
-<dd> Support for the <strong>dynamic-extent declaration</strong> on x86 has
-been contributed by Gerd Moellmann. This means that <tt>&amp;rest</tt>
-argument lists can be allocated on the stack (instead of on the heap), and
-be freed automatically when the function exits. 
-
-<dt>2003-06-06</dt>
-<dd> An implementation of <strong>simple streams</strong>, based on work by
-Paul Foley, has been committed.
-
-<dt>2003-05-29</dt>
-<dd> An experimental CMUCL binding to the Qt graphical libraries, called <a
-href = "http://mypage.bluewin.ch/bandersnatch">Idolino</a>, has been
-announced by Heiner Schwarte.
-
-<dt>2003-05-25</dt>
-<dd> An experimental way of delivering programs as <strong>standalone
-executables</strong> has been posted to the cmucl-imp mailing list. The
-idea consists of stuffing the lisp image into an ELF section of the
-runtime, and extracting it on startup. This makes it possible to use CMUCL
-to produce an executable program that has no runtime dependencies other than
-the platform's standard shared libraries. 
-
-<dt>2003-05-23</dt>
-<dd> An implementation of <strong>fwrappers</strong> has been committed,
-and the profiling and trace facilities have been modified to use it. This
-provides a more uniform way of implementing mechanisms that use function
-encapsulation. 
-
-<dt>2003-05-13</dt>
-<dd> CMUCL now supports <strong>package locks</strong>, with an API very
-similar to the same feature in Allegro CL. Attempts to change the structure
-of a locked package (for example by changing its export or use list) lead
-to a continuable PACKAGE-LOCKED-ERROR being signaled. Symbols in a package
-whose definition-lock is enabled are protected from redefinition. The
-<tt>EXT:WITHOUT-PACKAGE-LOCKS</tt> macro can be used to execute forms with
-all package locks disabled.
-
-<dt>2003-04-29</dt>
-<dd> ANSI compliance fixes: in safe code, the CMUCL compiler no longer
-deletes dead code that could lead to errors being signaled at runtime.
-
-<dt>2003-04-26</dt>
-<dd> Binaires from CVS HEAD for x86-linux, x86-FreeBSD, sparcv9-solaris and
-alpha-linux have been uploaded to the download sites.
-
-<dt>2003-04-20</dt>
-<dd> Many bugs in CMUCL's type system (detected by Paul Dietz's ansi-test
-suite, distributed with GCL) have been fixed. 
-
-<dt>2003-04-15</dt>
-<dd> <strong>Control stack overflow checking</strong> has been implemented
-for x86-FreeBSD and x86-Linux, thanks to Gerd Moellmann. Previously, code
-that overflowed the control stack (for example due to unchecked recursion)
-would cause CMUCL to crash with a segmentation violation; it will now lead
-to a continuable STORAGE-ERROR being signaled.
-
-<dt>2003-04-10</dt>
-<dd> CMUCL 18e has been released. See the <a href =
-"release-18e.txt">release notes</a> for details of all the improvements
-since 18d. 
-
-<dt>2003-04-03</dt>
-<dd> Binaries for the 18e release for different platforms will start
-appearing on the download site and mirrors. The release will be announced
-officially once binaries are available for most platforms. 
-
-<dt>2003-03-22</dt>
-<dd> The CVS repository has been tagged for the 18e release. Binaries for
-different platforms will be made available in the binaries directory of the
-download mirrors; please test them on your applications and report any
-problems. The release should occur in early April.
-
-<dt>2003-03-10</dt>
-<dd> The anoncvs repository is available again, following an OS upgrade on
-the main CMUCL server.
-
-<dt>2003-03-01</dt>
-<dd> CMUCL on MIPS running IRIX: Mike McDonald has revived the MIPS
-support, which should be included in the next release.
-
-<dt>2003-02-22</dt>
-<dd> A new GerdsPCL tarball is available in the experimental/pcl directory
-of the download sites. Binaries for x86-FreeBSD and x86-Linux are also
-provided. This release adds support for profiling methods.
-
-<dt>2003-02-20</dt>
-<dd> Experimental support for hardware cycle counters has been added for
-x86 and UltraSPARC platforms. This is based on the RDTSC instruction on
-Pentium and better processors, and on reading the <tt>%TICK</tt> register
-on UltraSPARC.
-
-<dt>2003-02-17</dt>
-<dd> A new GerdsPCL tarball is available in the experimental directory of
-the download sites. This adds improved tracing support and a <tt
-class="function-name">PRINT-OBJECT</tt> method for conditions.
-
-<dt>2003-02-06</dt>
-<dd> A cross-referencing facility has been added to the compiler, thanks to
-Eric Marsden. This provides functions <tt class = "function-name"
->WHO-CALLS</tt>, <tt class = "function-name" >WHO-REFERENCES</tt>, <tt
-class = "function-name" >WHO-BINDS</tt> and <tt class = "function-name"
->WHO-SETS</tt> for functions and global variables. Documentation is
-provided in the CMUCL User's Manual.
-
-<dt>2003-02-05</dt>
-<dd> Support for generalized function names has been added, thanks to Gerd
-Moellmann. Standard function names are restricted to symbol like <tt>FOO</tt>,
-and the special case of <tt>(SETF FOO)</tt>. This patch allows general
-names of the form <tt>(FOO BAR BAZ)</tt>, which should be particularly
-useful for naming CLOS-related functions. 
-
-<dt>2003-02-03</dt>
-<dd> Documentation: a new document with information on <a href =
-"../doc/cmucl-history.html">boostrapping early versions of CMUCL</a> has
-been added to the website.
-
-<dt>2003-01-26</dt>
-<dd> Binaries for x86-linux, x86-freebsd and sparcv9-solaris from
-2003-01-23 source have been uploaded to the binaries directory of the
-download sites.
-
-<dt>2003-01-22</dt>
-<dd> Anoncvs access has been temporarily disabled, pending a fix to the
-security problem in cvsd. Apologies for the inconvenience.
-
-<dt>2003-01-13</dt>
-<dd> Documentation: a new document provinding <a href =
-"../doc/gc-tuning.html">hints on tuning the CMUCL garbage collector</a> has
-been added to the website. 
-
-<dt>2003-01-10</dt>
-<dd> Antonio Leitao has posted the code of an Emacs-based debugger and
-inspector for CMUCL, that is based on ILISP. See the cmucl-imp mailing list
-for the source code. 
+<dt>2004-01</dt>
+<dd> The CMUCL CVS server suffered a disk crash, and the project repository
+has been offline for a while. Apologies for the interruption. 
 
 </dl>
 
 <p> Also see older news:
 
 <ul>
+<li> <a href = "2003.html">news items from 2003</a>
 <li> <a href = "2002.html">news items from 2002</a>
 <li> <a href = "2001.html">news items from 2001</a>
 </ul>

@@ -63,37 +63,6 @@ allows you to control this behaviour. </p>
 <hr>
 
 
-<li> <b>Q</b>: CMUCL barfs <tt>Function %%PROCLAIM is not defined</tt>
-    when loading code.
-
-<p> <b>A</b>: You are very likely trying to load code compiled with an
-    experimental release into an older image. This may occur with the
-    Debian-packaged binaries, since they may be built from more recent
-    sources than the official binaries. CMUCL releases are in general not
-    binary compatible, so you need to recompile all your Lisp files when
-    migrating to a new release. </p>
-
-<hr>
-
-
-<li> <b>Q</b>: CMUCL emits bogus warnings about functions not being
-     defined when compiling CLOS code. Stuff like
-
-<pre>
-Warning: Undefined function: PCL::|MAKE-INSTANCE
-KEE-GRAPHICAL-USER-INTERFACE:ROOT-SHELL-STREAM (:CONNECTION :ROOT-SHELL
-:SHELL-STREAMS) NIL|
-</pre>
-
-<p> <b>A</b>: CMUCL does indeed emit bogus warnings while compiling CLOS
-    code -- this is because of an insufficient level of integration of the
-    PCL CLOS implementation with the compiler. Hopefully this will be fixed
-    in a future release.
-
-<hr>
-
-
-
 <li> <b>Q</b>: How do I compile my Lisp program to an executable?
 
 <p> <b>A</b>: CMUCL does not support delivery as an executable. If this
@@ -112,34 +81,7 @@ KEE-GRAPHICAL-USER-INTERFACE:ROOT-SHELL-STREAM (:CONNECTION :ROOT-SHELL
 <hr>
 
 
-<li> <b>Q</b>: On my Linux machine, CMUCL dies on startup saying
-
-<pre>
-Error in allocating memory, please do &quot;echo 1 > /proc/sys/vm/overcommit_memory&quot;
-or get more memory+swap.
-</pre>
-
-<p> <b>A</b>: Hopefully the message is fairly clear. The problem is that
-    due to implementation choices, CMUCL reserves a large address space
-    when it starts up, instead of allocating memory on demand, as do most
-    applications. In its default configuration, the linux kernel may refuse
-    to reserve amounts of memory which are far greater than the amout of
-    available RAM and swap (this is called overcommitting, since the kernel
-    commits itself to satisfy more memory than is actually available). You
-    can either increase the amount of swap available (see the
-    <tt>mkswap</tt> command), or change the kernel's policy using (as root)
-    the command quoted above. </p>
-
-<p> The Debian-packaged CMUCL includes a <tt>-lazy</tt> commandline option
-    which reserves memory incrementally, and which should also solve this
-    problem. [2003-01-03: the -lazy option has been disabled in recent
-    Debian-packaged CMUCL binaries, following problems.] </p>
-
-<hr>
-
-
-
-<li> <b>Q</b>: Why does CMUCL say it's called Python 1.0 when it starts up?
+<li> <b>Q</b>: Why does CMUCL say it's called Python 1.1 when it starts up?
     Isn't that the name of a scripting language?
 
 <p> <b>A</b>: The CMUCL native code compiler is called Python. This use
@@ -372,6 +314,65 @@ or get more memory+swap.
 
 <p> This causes a different mechanism (which is implemented on x86) to be
     used for the breakpoints that are used by tracing facility.
+<hr>
+
+
+
+
+<li> <b>Q</b>: On my Linux machine, CMUCL dies on startup saying
+
+<pre>
+Error in allocating memory, please do &quot;echo 1 > /proc/sys/vm/overcommit_memory&quot;
+or get more memory+swap.
+</pre>
+
+<p> <b>A</b>: Hopefully the message is fairly clear. The problem is that
+    due to implementation choices, CMUCL reserves a large address space
+    when it starts up, instead of allocating memory on demand, as do most
+    applications. In its default configuration, the linux kernel may refuse
+    to reserve amounts of memory which are far greater than the amout of
+    available RAM and swap (this is called overcommitting, since the kernel
+    commits itself to satisfy more memory than is actually available). You
+    can either increase the amount of swap available (see the
+    <tt>mkswap</tt> command), or change the kernel's policy using (as root)
+    the command quoted above. </p>
+
+<p> The Debian-packaged CMUCL includes a <tt>-lazy</tt> commandline option
+    which reserves memory incrementally, and which should also solve this
+    problem. [2003-01-03: the -lazy option has been disabled in recent
+    Debian-packaged CMUCL binaries, following problems.] </p>
+
+<hr>
+
+
+
+<li> <b>Q</b>: CMUCL barfs <tt>Function %%PROCLAIM is not defined</tt>
+    when loading code.
+
+<p> <b>A</b>: You are very likely trying to load code compiled with an
+    experimental release into an older image. This may occur with the
+    Debian-packaged binaries, since they may be built from more recent
+    sources than the official binaries. CMUCL releases are in general not
+    binary compatible, so you need to recompile all your Lisp files when
+    migrating to a new release. </p>
+
+<hr>
+
+
+<li> <b>Q</b>: CMUCL emits bogus warnings about functions not being
+     defined when compiling CLOS code. Stuff like
+
+<pre>
+Warning: Undefined function: PCL::|MAKE-INSTANCE
+KEE-GRAPHICAL-USER-INTERFACE:ROOT-SHELL-STREAM (:CONNECTION :ROOT-SHELL
+:SHELL-STREAMS) NIL|
+</pre>
+
+<p> <b>A</b>: CMUCL does indeed emit bogus warnings while compiling CLOS
+    code -- this is because of an insufficient level of integration of the
+    PCL CLOS implementation with the compiler. Hopefully this will be fixed
+    in a future release.
+
 <hr>
 
 

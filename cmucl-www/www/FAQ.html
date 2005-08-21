@@ -121,29 +121,31 @@ allows you to control this behaviour. </p>
     can't get a support contract from the vendor (though you could probably
     find experienced CMUCL developers prepared to freelance -- contact the
     cmucl-imp mailing list), and CMUCL is missing certain features present
-    in the commercial implementations (graphical browsers, GUI widgets,
-    add-on libraries ...). </p>
+    in the commercial implementations (portability to Microsoft Windows
+    platforms, graphical browsers, GUI widgets, add-on libraries ...). </p>
 
 <p> Compared with <a href = "http://clisp.cons.org/">CLISP</a>, CMUCL runs
     on fewer platforms and has significantly higher memory usage. CLISP has
     better internationalization support, in particular support for UNICODE.
     Since CMUCL compiles to native code, it is an order of magnitude faster
-    on most applications than CLISP's bytecode execution model. However,
-    the mathematical primitives in CLISP are very fast, in particular its
+    on most applications than CLISP's bytecode execution model, and
+    generally provides more useful debugging output. However, the
+    mathematical primitives in CLISP are very fast, in particular its
     bignum operations. CLISP also provides floats of unlimited precision,
     while CMUCL is limited to IEEE-754 single-float and double-float (and
     extended-precision on certain platforms). CMUCL has a more powerful
-    foreign function interface than CLISP, supports multiprocessing on x86,
-    and has a more powerful networking library. The builtin CLOS
-    implementation in CLISP is missing certain features, notably the
-    metaobject protocol. </p>
+    foreign function interface than CLISP, and supports multiprocessing on
+    x86 platforms. </p>
 
 <p> Compared with <a href = "http://sbcl.sf.net/">SBCL</a> (a fork from the
-    CMUCL implementation), CMUCL has more features (such a Motif interface)
-    and has a faster compiler (though compiled code runs at a similar speed
-    to CMUCL-generated code). SBCL is closer to the ANSI CL specification
-    in some respects, and emits different warnings for some types of code.
-    SBCL currently runs on a larger number of platforms than CMUCL.
+    CMUCL implementation), CMUCL a different set of features (it includes a
+    Motif interface, but does not have SBCL's native threads on Linux/x86
+    platforms, nor Unicode support). CMUCL has a faster compiler, but
+    compiled code runs at a similar speed to SBCL-generated code. SBCL is
+    closer to the ANSI CL specification in some respects, and generally
+    emits more warnings about ANSI-compliance. SBCL runs on a larger number
+    of platforms than CMUCL, and in general is more actively developed than
+    CMUCL. 
 
 <hr>
 
@@ -344,36 +346,6 @@ or get more memory+swap.
 
 <hr>
 
-
-
-<li> <b>Q</b>: CMUCL barfs <tt>Function %%PROCLAIM is not defined</tt>
-    when loading code.
-
-<p> <b>A</b>: You are very likely trying to load code compiled with an
-    experimental release into an older image. This may occur with the
-    Debian-packaged binaries, since they may be built from more recent
-    sources than the official binaries. CMUCL releases are in general not
-    binary compatible, so you need to recompile all your Lisp files when
-    migrating to a new release. </p>
-
-<hr>
-
-
-<li> <b>Q</b>: CMUCL emits bogus warnings about functions not being
-     defined when compiling CLOS code. Stuff like
-
-<pre>
-Warning: Undefined function: PCL::|MAKE-INSTANCE
-KEE-GRAPHICAL-USER-INTERFACE:ROOT-SHELL-STREAM (:CONNECTION :ROOT-SHELL
-:SHELL-STREAMS) NIL|
-</pre>
-
-<p> <b>A</b>: CMUCL does indeed emit bogus warnings while compiling CLOS
-    code -- this is because of an insufficient level of integration of the
-    PCL CLOS implementation with the compiler. Hopefully this will be fixed
-    in a future release.
-
-<hr>
 
 
 </ol>

@@ -15,14 +15,14 @@
 <dl>
 <dt> Linux/x86 </dt>
 
-<dd> The 19a release binaries should work on any i586 or better processor.
-     The binaries are compiled against version 2.1 of the GNU C Library
-     (glibc2.1), but also work with glibc2.2 and glibc2.3. The runtime
-     support for the CMUCL Motif interface is dynamically linked, so you
-     will need the Motif or Lesstif libraries installed on your system to
-     use it. The binaries should run with any Linux kernel after 2.0 (but
-     beware early kernels in the 2.4 series, which had poor virtual memory
-     characteristics).
+<dd> The 19c release binaries should work on any i586 or better processor.
+     The binaries are compiled against version 2.2 of the GNU C Library
+     (glibc2.2), but also work with glibc2.3. The runtime support for the
+     CMUCL Motif interface is dynamically linked, so you will need the
+     Motif or Lesstif libraries (preferably version 2) installed on your
+     system to use it. The binaries should run with any Linux kernel after
+     2.0 (but beware early kernels in the 2.4 series, which had poor
+     virtual memory characteristics).
 
      <p> There are problems running CMUCL on certain kernels that are built
      with address-space randomization techniques, such as certain Fedora
@@ -42,49 +42,41 @@
 </dd>
 
 <dt> FreeBSD/x86 </dt>
-<dd> The 19a release binaries should work on any i586 or better processor.
-     The 19a binaries should work with FreeBSD releases 4.x and
+<dd> The 19c release binaries should work on any i586 or better processor.
+     The 19c binaries should work with FreeBSD releases 4.x and
      -current (5.x). </dd>
 
+<dt> NetBSD/x86 </dt>
+<dd> The 19c release binaries should work on any i586 or better processor.
+     The 19c binaries should work with NetBSD releases xx and yy. </dd>
+
 <dt> OpenBSD/x86 </dt>
-<dd> There are currently no 19a binaries for OpenBSD (it seems that address
+<dd> There are currently no 19c binaries for OpenBSD (it seems that address
      space randomization techniques introduced with recent versions of
      OpenBSD interfere with CMUCL's memory management). The 18e release
      binaries should work on any i486 or better processor. The 18e binaries
      were build on OpenBSD 3.1. </dd>
 
-<dt> NetBSD/x86 </dt>
-<dd> there are binaries for NetBSD 1.5.2 in the <tt>experimental</tt>
-     directory of the download sites. Unfortunately NetBSD doesn't provide
-     access to the faulting memory address in SIGSEGV handlers, hence the
-     generational GC can't use a hardware-based write-barrier in order to
-     reduce the need to track pointers from older generations to newer
-     ones, resulting in degraded GC performance. Also, the runtime has to
-     work around a limitation in the <tt>mmap</tt> system call, which
-     refuses to map zones larger than 128MiB.  </dd>
-
 <dt> Solaris/SPARC </dt>
 
-<dd> the 19a binaries should work with SunOS 5.5 or later (also known
+<dd> the 19c binaries should work with SunOS 5.5 or later (also known
      respectively as Solaris 2.5, Solaris 7 and later). They require an
      UltraSPARC processor. If you have an ancient SPARC machine, you can
      get the non-v9 version of the 18e release. If you have an UltraSPARC
      the command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you
      have an older machine such as a SparcStation it will probably say
-     <tt>sun4m</tt>.
+     <tt>sun4m</tt>. </dd>
 
-     <p> Two sets of binaries are available for 19a, one with the
-     traditional stop-and-copy garbage collector (tarballs with
-     <tt>cheney-gc</tt> in the filename), and another with a generational
-     collector (tarballs with <tt>gencgc</tt> in the filename). FASL files
-     from the two versions are incompatible. </dd>
+<dt> PowerPC/MacOS X </dt>
+<dd> The 19c release binaries work with MacOS X version 10.4 (Tiger),
+     10.3 (Panther) and 10.2 (Jaguar). </dd>
 
 <dt> Alpha/Linux </dt>
-<dd> There are no 19a binaries for Alpha. The 18e binaries are known to
+<dd> There are no 19c binaries for Alpha. The 18e binaries are known to
      work on ev56 and ev6 machines, running Linux 2.4.x. </dd>
 
 <dt> IRIX/MIPS </dt>
-<dd> There are no 19a binaries for IRIX. The 18e release binaries are known
+<dd> There are no 19c binaries for IRIX. The 18e release binaries are known
      to work with Irix 6.2, and should work on any later version. They use
      the o32 ABI. </dd>
 
@@ -93,13 +85,9 @@
      you'll have to go back to the 18a release to find binaries for this
      platform. </dd>
 
-<dt> PowerPC/MacOS X </dt>
-<dd> CMUCL has an experimental port to this platform. Binaries are
-     available from <a href = "http://www.pmsf.de/personal/darwin/">Pierre
-     Mai's page</a>.  </dd>
-
 <dt> x86/win32 </dt>
-<dd> There is an ongoing effort to port CMUCL to win32. </dd>
+<dd> There is an ongoing effort to port CMUCL to win32, but no public
+     source code or binaries are available at present.. </dd>
 </dl>
 
 

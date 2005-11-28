@@ -24,9 +24,9 @@
     can check that they have not been modified by using GPG:
 
 <pre>
-    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19a/cmucl-19a-x86-linux.tar.bz2
-    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19a/cmucl-19a-x86-linux.tar.bz2.asc
-    gpg --verify cmucl-19a-x86-linux.tar.bz2.asc
+    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19c/cmucl-19c-x86-linux.tar.bz2
+    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19c/cmucl-19c-x86-linux.tar.bz2.asc
+    gpg --verify cmucl-19c-x86-linux.tar.bz2.asc
 </pre>
 
 <p> GPG should tell you that the file has a good signature from one of the
@@ -52,23 +52,23 @@
   
 <pre>
      cd /usr/local
-     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.extra.tar.bz2
+     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.extra.tar.bz2
 </pre>
      
 <p> or alternatively, install under a directory in <tt>/opt</tt>, for example
   
 <pre>
-     mkdir /opt/cmucl-19a
-     cd /opt/cmucl-19a
-     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-19a-&lt;platform&gt;.extra.tar.bz2
+     mkdir /opt/cmucl-19c
+     cd /opt/cmucl-19c
+     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.extra.tar.bz2
 </pre> 
  
-<p> The 19a distribution is relocateable: the lisp binary will search for
+<p> The 19c distribution is relocateable: the lisp binary will search for
     the lisp.core file relative to its location. This means that it is
     sufficient to have <tt>/usr/local/bin</tt> (or
-    <tt>/opt/cmucl-19a/bin</tt>) in your <tt>PATH</tt> to be able to invoke
+    <tt>/opt/cmucl-19c/bin</tt>) in your <tt>PATH</tt> to be able to invoke
     CMUCL from your shell.
 
 <p> You can now invoke CMUCL: this should display a banner then show a
@@ -76,9 +76,9 @@
   
 <pre>
       % lisp
-      CMU Common Lisp 19a, running on melbourne
-      With core: /opt/cmucl-19a/lib/cmucl/lib/lisp.core
-      Dumped on: Wed, 2004-07-28 18:51:48+02:00 on lorien
+      CMU Common Lisp 19c (19C), running on mansuetude
+      With core: /opt/cmucl-19c/lib/cmucl/lib/lisp.core
+      Dumped on: Thu, 2005-11-17 15:12:58+01:00 on lorien
       See &lt;http://www.cons.org/cmucl/&gt; for support information.
       Loaded subsystems:
           Python 1.1, target Intel x86

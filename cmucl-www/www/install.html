@@ -24,15 +24,16 @@
     can check that they have not been modified by using GPG:
 
 <pre>
-    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19c/cmucl-19c-x86-linux.tar.bz2
-    wget ftp://ftp.common-lisp.net/pub/project/cmucl/release/19c/cmucl-19c-x86-linux.tar.bz2.asc
-    gpg --verify cmucl-19c-x86-linux.tar.bz2.asc
+    wget http://common-lisp.net/project/cmucl/downloads/release/19d/cmucl-19d-x86-linux.tar.bz2
+    wget http://common-lisp.net/project/cmucl/downloads/release/19d/cmucl-19d-x86-linux.tar.bz2.asc
+    gpg --verify cmucl-19d-x86-linux.tar.bz2.asc
 </pre>
 
 <p> GPG should tell you that the file has a good signature from one of the
-    CMUCL developers. Unless you have a web-of-trust relationship with that
-    developer it will warn you that the key is not certified with a trusted
-    signature.
+    CMUCL developers (you may need to fetch the developer's key with
+    <tt>gpg --recv-key</tt>). Unless you have a web-of-trust relationship
+    with that developer it will warn you that the key is not certified with
+    a trusted signature.
 
 
 <h2> Extract the tarballs</h2>
@@ -52,23 +53,23 @@
   
 <pre>
      cd /usr/local
-     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.extra.tar.bz2
+     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.extra.tar.bz2
 </pre>
      
 <p> or alternatively, install under a directory in <tt>/opt</tt>, for example
   
 <pre>
-     mkdir /opt/cmucl-19c
-     cd /opt/cmucl-19c
-     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-19c-&lt;platform&gt;.extra.tar.bz2
+     mkdir /opt/cmucl-19d
+     cd /opt/cmucl-19d
+     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.extra.tar.bz2
 </pre> 
  
-<p> The 19c distribution is relocateable: the lisp binary will search for
+<p> The 19d distribution is relocateable: the lisp binary will search for
     the lisp.core file relative to its location. This means that it is
     sufficient to have <tt>/usr/local/bin</tt> (or
-    <tt>/opt/cmucl-19c/bin</tt>) in your <tt>PATH</tt> to be able to invoke
+    <tt>/opt/cmucl-19d/bin</tt>) in your <tt>PATH</tt> to be able to invoke
     CMUCL from your shell.
 
 <p> You can now invoke CMUCL: this should display a banner then show a
@@ -76,10 +77,10 @@
   
 <pre>
       % lisp
-      CMU Common Lisp 19c (19C), running on mansuetude
-      With core: /opt/cmucl-19c/lib/cmucl/lib/lisp.core
-      Dumped on: Thu, 2005-11-17 15:12:58+01:00 on lorien
-      See &lt;http://www.cons.org/cmucl/&gt; for support information.
+      CMU Common Lisp 19d (19D), running on mansuetude
+      With core: /opt/cmucl-19d/lib/cmucl/lib/lisp.core
+      Dumped on: Thu, 2006-11-16 03:43:04+01:00 on lorien
+      See <http://www.cons.org/cmucl/> for support information.
       Loaded subsystems:
           Python 1.1, target Intel x86
           CLOS based on Gerd's PCL 2004/04/14 03:32:47
@@ -151,8 +152,10 @@
     doesn't offer a history mechanism or commandline editing facilities.
     You may wish to investigate using a more powerful interface than the
     commandline, such as <a href = "http://common-lisp.net/project/slime/">
-    SLIME</a>, or <a href = "hemlock/">Hemlock</a>, or (more basic) <tt>M-x
-    run-lisp</tt> in Emacs. </p>
+    SLIME</a>, or <a href =
+    "http://common-lisp.net/project/climacs/">Climacs</a>, or <a href =
+    "hemlock/">Hemlock</a>, or (more basic) <tt>M-x run-lisp</tt> in Emacs.
+    </p>
 
 
 @@FOOTER@@

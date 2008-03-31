@@ -1,0 +1,22 @@
+Here are some notes on how to handle CMUCL web pages.
+
+CMUCL's home page is at www.cons.org/cmucl, not at
+www.common-lisp.net.  To update the webpages, check out cmucl-www like
+so:
+
+cvs -z3 -d <path> co cmucl-www
+
+Edit the desired pages, but be sure to preserve the @@<foo>@@ tags.
+Check in your changes.  Log on to common-lisp.net and check out
+cmucl-www.  Change to the cmucl-www/cmucl-www/www directory and run
+/home/emarsden/bin/cmucl-www-update. 
+
+If you look in the script, the key part is that from the www directory
+you run
+
+emacs -batch -q -l ../build.el -f wb-make
+
+This updates the files in /project/cmucl/public_html/mirror.  From
+here, a cron job on www.cons.org does a periodic rsync to update the
+web pages on www.cons.org with these pages.  After a day or so, the
+new webpages should appear on www.cons.org.

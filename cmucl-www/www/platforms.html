@@ -9,13 +9,13 @@
 
 @@HEADING(what does it run on?)
 
-<p> CMUCL should work on the following combinations of operating system and
-    architecture:
+<p> The current release of CMUCL should work on the following combinations
+    of operating system and architecture:
 
 <dl>
 <dt> Linux/x86 </dt>
 
-<dd> The 19c release binaries should work on any i586 or better processor.
+<dd> The 19e release binaries should work on any i586 or better processor.
      The binaries are compiled against version 2.2 of the GNU C Library
      (glibc2.2), but also work with glibc2.3. The runtime support for the
      CMUCL Motif interface is dynamically linked, so you will need the
@@ -41,11 +41,29 @@
      assumptions are too strong.
 </dd>
 
+<dt> Darwin/x86 </dt>
+<dd> The 19e release binaries should work on any processor supported by
+     MacOS X (x86). 
+
 <dt> FreeBSD/x86 </dt>
-<dd> The 19c release binaries should work on any i586 or better processor.
-     The 19c binaries should work with FreeBSD releases 4.x and
+<dd> The 19e release binaries should work on any i586 or better processor.
+     The 19e binaries should work with FreeBSD releases 4.x and
      -current (5.x). </dd>
 
+<dt> Solaris/SPARC </dt>
+<dd> the 19e binaries should work with SunOS 5.5 or later (also known
+     respectively as Solaris 2.5, Solaris 7 and later). They require an
+     UltraSPARC processor. If you have an ancient SPARC machine, you can
+     get the non-v9 version of the 18e release. If you have an UltraSPARC
+     the command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you
+     have an older machine such as a SparcStation it will probably say
+     <tt>sun4m</tt>. </dd>
+</dl>
+
+<p> The following platforms are not supported by the current CMUCL release,
+    but were supported by previous releases:
+
+<dl>
 <dt> NetBSD/x86 </dt>
 <dd> The 19c release binaries should work on any i586 or better processor.
      The 19c binaries should work with NetBSD releases xx and yy. </dd>
@@ -56,16 +74,6 @@
      OpenBSD interfere with CMUCL's memory management). The 18e release
      binaries should work on any i486 or better processor. The 18e binaries
      were build on OpenBSD 3.1. </dd>
-
-<dt> Solaris/SPARC </dt>
-
-<dd> the 19c binaries should work with SunOS 5.5 or later (also known
-     respectively as Solaris 2.5, Solaris 7 and later). They require an
-     UltraSPARC processor. If you have an ancient SPARC machine, you can
-     get the non-v9 version of the 18e release. If you have an UltraSPARC
-     the command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you
-     have an older machine such as a SparcStation it will probably say
-     <tt>sun4m</tt>. </dd>
 
 <dt> PowerPC/MacOS X </dt>
 <dd> The 19c release binaries work with MacOS X version 10.4 (Tiger),
@@ -84,10 +92,6 @@
 <dd> this port has not been maintained for quite a while, so
      you'll have to go back to the 18a release to find binaries for this
      platform. </dd>
-
-<dt> x86/win32 </dt>
-<dd> There is an ongoing effort to port CMUCL to win32, but no public
-     source code or binaries are available at present.. </dd>
 </dl>
 
 
@@ -113,4 +117,4 @@ specification</a>. </p>
 
 @@FOOTER@@
 </body>
-</html>    
+</html>

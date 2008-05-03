@@ -24,9 +24,9 @@
     can check that they have not been modified by using GPG:
 
 <pre>
-    wget http://common-lisp.net/project/cmucl/downloads/release/19d/cmucl-19d-x86-linux.tar.bz2
-    wget http://common-lisp.net/project/cmucl/downloads/release/19d/cmucl-19d-x86-linux.tar.bz2.asc
-    gpg --verify cmucl-19d-x86-linux.tar.bz2.asc
+    wget http://common-lisp.net/project/cmucl/downloads/release/19e/cmucl-19e-x86-linux.tar.bz2
+    wget http://common-lisp.net/project/cmucl/downloads/release/19e/cmucl-19e-x86-linux.tar.bz2.asc
+    gpg --verify cmucl-19e-x86-linux.tar.bz2.asc
 </pre>
 
 <p> GPG should tell you that the file has a good signature from one of the
@@ -53,34 +53,34 @@
   
 <pre>
      cd /usr/local
-     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.extra.tar.bz2
+     tar xjf /path/to/cmucl-19e-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19e-&lt;platform&gt;.extra.tar.bz2
 </pre>
      
 <p> or alternatively, install under a directory in <tt>/opt</tt>, for example
   
 <pre>
-     mkdir /opt/cmucl-19d
-     cd /opt/cmucl-19d
-     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.tar.bz2
-     tar xjf /path/to/cmucl-19d-&lt;platform&gt;.extra.tar.bz2
+     mkdir /opt/cmucl-19e
+     cd /opt/cmucl-19e
+     tar xjf /path/to/cmucl-19e-&lt;platform&gt;.tar.bz2
+     tar xjf /path/to/cmucl-19e-&lt;platform&gt;.extra.tar.bz2
 </pre> 
  
-<p> The 19d distribution is relocateable: the lisp binary will search for
+<p> The 19e distribution is relocateable: the lisp binary will search for
     the lisp.core file relative to its location. This means that it is
     sufficient to have <tt>/usr/local/bin</tt> (or
-    <tt>/opt/cmucl-19d/bin</tt>) in your <tt>PATH</tt> to be able to invoke
+    <tt>/opt/cmucl-19e/bin</tt>) in your <tt>PATH</tt> to be able to invoke
     CMUCL from your shell.
 
 <p> You can now invoke CMUCL: this should display a banner then show a
     prompt (the default prompt is an asterisk).
-  
+
 <pre>
       % lisp
-      CMU Common Lisp 19d (19D), running on mansuetude
-      With core: /opt/cmucl-19d/lib/cmucl/lib/lisp.core
-      Dumped on: Thu, 2006-11-16 03:43:04+01:00 on lorien
-      See <http://www.cons.org/cmucl/> for support information.
+      CMU Common Lisp 19e (19E), running on mansuetude
+      With core: /opt/cmucl-19e/lib/cmucl/lib/lisp.core
+      Dumped on: Thu, 2008-05-01 18:56:07+02:00 on usrtc3142
+      See &lt;http://www.cons.org/cmucl/&gt; for support information.
       Loaded subsystems:
           Python 1.1, target Intel x86
           CLOS based on Gerd's PCL 2004/04/14 03:32:47

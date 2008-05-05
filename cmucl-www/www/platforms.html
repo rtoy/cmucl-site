@@ -46,9 +46,27 @@
      MacOS X (x86). 
 
 <dt> FreeBSD/x86 </dt>
-<dd> The 19e release binaries should work on any i586 or better processor.
-     The 19e binaries should work with FreeBSD releases 4.x and
-     -current (5.x). </dd>
+
+<dd> The 19e release binaries should work on any i586 or better
+     processor.
+
+     <p> An appropriately chosen distibution
+     (e.g. `cmucl-19e-x86-freebsd7.0.*', for FreeBSD 7.0) should work
+     on FreeBSD 6.3, 7.0 and 8.0.  Using a "later" FreeBSD
+     distribution on an "earlier" FreeBSD release
+     (e.g. `cmucl-19e-x86-freebsd7.0.*' on FreeBSD 6.3) is either not
+     possible or not tested.  Using an "earlier" FreeBSD distribution
+     on a "later" FreeBSD release should be possible with appropriate
+     compatibility libraries installed but has not be tested and is
+     advised against --- use the binaries built on the OS release they
+     are going to run on.
+
+     <p> Legacy FreeBSD releases (earlier than 6.3) have not been
+     tested as runtime platforms and will be not supported, although
+     the 6.3 distribution may run on them.
+
+     <p> FreeBSD 6 will be not supported after CMUCL release 19e.
+</dd>
 
 <dt> Solaris/SPARC </dt>
 <dd> the 19e binaries should work with SunOS 5.5 or later (also known

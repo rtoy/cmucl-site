@@ -45,10 +45,19 @@
 <dd> The 19e release binaries should work on any processor supported by
      MacOS X (x86). 
 
-<dt> FreeBSD/x86 </dt>
+<dt> FreeBSD/i386 and amd64 </dt>
 
-<dd> The 19e release binaries should work on any i586 or better
-     processor.
+<dd> The 19e release binaries have been built on the i386
+     architecture, on which they will, of course, work; they will also
+     work, with proper i386 compatibility library installed, on the
+     amd64 architecture.  New binaries can't be at this point built on
+     the amd64 architecture, though -- i386 binaries should be used
+     there.
+
+     <p> Notice that the architecture in question is the OS
+     architecture ("target"), not the processor ones -- FreeBSD/i386
+     running on an amd64 processor is good for all CMUCL purposes,
+     including building new binaries.
 
      <p> An appropriately chosen distibution
      (e.g. `cmucl-19e-x86-freebsd7.0.*', for FreeBSD 7.0) should work

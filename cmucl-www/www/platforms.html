@@ -15,7 +15,11 @@
 <dl>
 <dt> Linux/x86 </dt>
 
-<dd> The 19e release binaries should work on any i586 or better processor.
+<dd> The 19f release should work on any i586 or better processor.  If
+     the processor supports SSE2, CMUCL will automatically detect that
+     and use SSE2.  Otherwise the legacy x87 support will be used.
+
+     <p>The 19e release binaries should work on any i586 or better processor.
      The binaries are compiled against version 2.2 of the GNU C Library
      (glibc2.2), but also work with glibc2.3. The runtime support for the
      CMUCL Motif interface is dynamically linked, so you will need the
@@ -42,8 +46,14 @@
 </dd>
 
 <dt> Darwin/x86 </dt>
-<dd> The 19e release binaries should work on any processor supported by
-     MacOS X (x86). 
+<dd> The 19f release binaries should work on any processor supported by
+     MacOS X (x86). They require 10.4 (Tiger) or later.
+</dd>
+
+<dt> Darwin/ppc </dt>
+<dd> The 19f release binaries work with MacOS X version 10.4.  For
+older versions of MacOS X, use the 19c binaries.
+</dd>
 
 <dt> FreeBSD/i386 and amd64 </dt>
 
@@ -78,12 +88,12 @@
 </dd>
 
 <dt> Solaris/SPARC </dt>
-<dd> the 19e binaries should work with SunOS 5.5 or later (also known
-     respectively as Solaris 2.5, Solaris 7 and later). They require an
-     UltraSPARC processor. If you have an ancient SPARC machine, you can
-     get the non-v9 version of the 18e release. If you have an UltraSPARC
-     the command <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you
-     have an older machine such as a SparcStation it will probably say
+<dd> the 19f binaries should work with Solaris 8 or later (also known
+     as Solaris 2.8). They require an UltraSPARC processor. If you
+     have an ancient SPARC machine, you can get the non-v9 version of
+     the 18e release. If you have an UltraSPARC the command
+     <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you have an
+     older machine such as a SparcStation it will probably say
      <tt>sun4m</tt>. </dd>
 </dl>
 
@@ -101,10 +111,6 @@
      OpenBSD interfere with CMUCL's memory management). The 18e release
      binaries should work on any i486 or better processor. The 18e binaries
      were build on OpenBSD 3.1. </dd>
-
-<dt> PowerPC/MacOS X </dt>
-<dd> The 19c release binaries work with MacOS X version 10.4 (Tiger),
-     10.3 (Panther) and 10.2 (Jaguar). </dd>
 
 <dt> Alpha/Linux </dt>
 <dd> There are no 19c binaries for Alpha. The 18e binaries are known to

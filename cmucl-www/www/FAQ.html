@@ -65,7 +65,7 @@ allows you to control this behaviour. </p>
 
 <li> <b>Q</b>: How do I compile my Lisp program to an executable?
 
-<p> <b>A</b>: CMUCL does not support delivery as an executable. If this
+<p> <b>A</b>: CMUCL does not, in general, support delivery as an executable. If this
     bothers you, note that this is also the case of most other programming
     language implementations: for example Sun's java implementation
     requires a bundle of class files.
@@ -76,7 +76,14 @@ allows you to control this behaviour. </p>
     image, the lisp runtime, and a shell script which launches the runtime
     with your image (see the <tt>sample-wrapper</tt> distributed with CMUCL
     for guidance). Also see the following <a href =
-    "doc/executable.html">hint on making Lisp files executable</a>. </p>
+    "doc/executable.html">hint on making Lisp files
+    executable</a>. </p>
+<p> However, on Linux and FreeBSD x86 platforms, CMUCL can actually
+    produce an executable.  This is done by specifying
+    <code>:executable t</code> option for <code>save-lisp</code>.  The
+    executable file contains the current entire core image and
+    runtime.  See the section <em>Saving a Core Image</em> in the
+    <em>CMUCL User's Manual</em> for more information.
 
 <hr>
 
@@ -85,7 +92,35 @@ allows you to control this behaviour. </p>
     Isn't that the name of a scripting language?
 
 <p> <b>A</b>: The CMUCL native code compiler is called Python. This use
-    of the name predates the existence of that other scripting language. </p>
+    of the name predates the existence of that other scripting
+    language. </p>
+<p> On the history of the name, Rob MacLachlan says
+    <blockquote> Scott Fahlman said that he wanted a really smart
+    compiler that would digest your program the way a Python digests a
+    pig.  It was a colorful metaphor for the idea of a compiler that
+    pushed farther in the direction of trading compile efficiency for
+    runtime efficiency.  We achieved this to such a degree that the
+    original <a
+    href="http://en.wikipedia.org/wiki/Spice_Lisp">Spice</a> machine,
+    the <a href="http://en.wikipedia.org/wiki/PERQ ">Perq</a>,
+    couldn't usefully run Python, though we tried it.  It ran
+    first on the IBM RT PC.  This was cross-compiled using the
+    previous Spice Lisp compiler (CLC, Common Lisp Compiler), which
+    had a large runtime of assembler written by David B. Mcdonald, and
+    the first Python backend used all of that assembly runtime.  The
+    first port setting the pattern of later ports was the MIPS port,
+    which was largely done by William Lott.
+    </blockquote>
+</p>
+
+<p> Scott Fahlman says he
+    <blockquote>
+    thought Python was a good name because a compiler is a long
+    pipeline.  A pig goes in one end, the snake goes off to rest under
+    a bush for a surprisingly long time, the pipeline does its thing,
+    and compact little pellet eventually comes out the other end.
+    </blockquote>
+</p>
 
 <hr>
 
@@ -132,8 +167,8 @@ allows you to control this behaviour. </p>
     generally provides more useful debugging output. However, the
     mathematical primitives in CLISP are very fast, in particular its
     bignum operations. CLISP also provides floats of unlimited precision,
-    while CMUCL is limited to IEEE-754 single-float and double-float (and
-    extended-precision on certain platforms). CMUCL has a more powerful
+    while CMUCL is limited to IEEE-754 single-float and double-float, and
+    an extended double-double-float. CMUCL has a more powerful
     foreign function interface than CLISP, and supports multiprocessing on
     x86 platforms. </p>
 
@@ -307,14 +342,15 @@ allows you to control this behaviour. </p>
      functions: <tt>:FUNCTION-END breakpoints are currently unsupported for
      the known return convention</tt> ?
 
-<p> <b>A</b>: This error message occurs sometimes when you try to trace
-    functions on the x86 ports of CMUCL. A simple workaround is to use
+<p> <b>A</b>: This is a deficiency in the tracing support that has
+been fixed.  It shouldn't happen anymore, but if you do see this,
+please report this bug.   A simple workaround is to use
 
 <pre class=code>
    USERL&gt; (trace my-function :encapsulate t)
 </pre>
 
-<p> This causes a different mechanism (which is implemented on x86) to be
+<p> This causes a different mechanism to be
     used for the breakpoints that are used by tracing facility.
 <hr>
 

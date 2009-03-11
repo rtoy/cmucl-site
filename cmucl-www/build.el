@@ -320,7 +320,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           ;; ensure-directories-exist
           (make-directory (file-name-directory target) t)
           (write-file target)
-          (set-file-modes target ?\644)
+          (set-file-modes target ?\664)
           (kill-buffer nil)
           ;; now do a printable version of the file
           ;; replace ".html" by "-print.html" in the filename
@@ -330,7 +330,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           (let ((wb-printable t))
             (wb-frob-buffer file))
           (write-file target)
-          (set-file-modes target ?\644)
+          (set-file-modes target ?\664)
           (kill-buffer nil))))
 
 

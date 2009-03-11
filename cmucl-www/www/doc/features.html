@@ -73,12 +73,6 @@ The implementation generates code for the SPARC-V9 generation of SPARC
 processors. This allows certain extra floating-point instructions to be
 generated. </dd>
 
-<dt> <tt>:fast-maxmin</tt>
-<dd>
-On SPARC-V9 use conditional move instructions for min and max, which are
-(probably) faster than the normal instructions since they avoid branching.
-</dd>
-
 <dt> <tt>:x86</tt>
 <dd>The implementation targets the x86 architecture.</dd>
 
@@ -144,12 +138,16 @@ systems.</dd>
 <dt> <tt>:cgc</tt>
 <dd>
 Conservative garbage collector (currently only implemented for the x86
-architecture). The standard garbage collector is stop-and-copy, based on
-Cheney's algorithm.
+architecture).  This is no longer supported on x86.  Only the
+generational gc is supported now.  The standard garbage collector on
+other platforms is stop-and-copy, based on Cheney's algorithm.
 </dd>
 
 <dt> <tt>:gencgc</tt>
-<dd> A conservative generational garbage collector is present. </dd>
+<dd> A conservative generational garbage collector is present.
+Currently available for x86, sparc, and ppc, and is the default for
+these.
+</dd>
 
 <dt> <tt>:mp</tt>
 <dd> Support for multiprocessing is present. </dd>
@@ -175,40 +173,21 @@ Indicates that a new implementation of hash tables supporting EQUALP is
 present.
  </dd>
 
-<dt> <tt>:propagate-fun-type</tt>
-<dd>
-Allows the compiler to infer types for many mathematical functions,
-including square root, exponential and logarithmic functions, trignometric
-functions and their inverses, and hyperbolic functions and their inverses.
-For numeric code, this can greatly enhance efficiency by allowing the
-compiler to use specialized versions of the functions instead of the
-generic versions. The greatest benefit of this type inference is
-determining that the result of the function is real-valued number instead
-of possibly being a complex-valued number.
-</dd>
-
-<dt> <tt>:propagate-float-type</tt>
-<dd>
-Enables list-style float type specifiers such as <tt>(single-float 0.0
-1.0)</tt> to be taken into account.
-</dd>
-
-<dt> <tt>:constrain-float-type</tt>
-<dd>
-Allows the constraint propagation phase of the compiler to apply global
-flow analysis to floating point numbers, in order to obtain dynamic type
-information. 
-</dd>
-
 <dt> <tt>:complex-fp-vops</tt>
 <dd>
 Enable VOPS to be used for operations on complex floating point numbers.
-Currently only used on the SPARC port.
+Currently only used on the SPARC and x86 ports.
 </dd>
 
 <dt> <tt>:pcl</tt>
 <dd>
 Indicates that the PCL implementation of CLOS is present.
+</dd>
+
+<dt> <tt>:gerds-pcl</tt>
+<dd>
+Indicates that the PCL implementation of CLOS is present, with
+modifications by Gerd Moellmann.
 </dd>
 
 <dt> <tt>:portable-commonloops</tt>
@@ -226,11 +205,6 @@ An alias for <i>PCL</i>.
 Indicates that a new version of the assembler is present.
 </dd>
 
-<dt> <tt>:new-compiler</tt>
-<dd>
-Indicates that a new version of the Python compiler is present.
-</dd>
-
 <dt> <tt>:python</tt>
 <dd> Indicates that the Python native compiler is present.</dd>
 
@@ -242,6 +216,9 @@ Indicates that a new version of the Python compiler is present.
 
 <dt> <tt>:cmu18</tt>
 <dd> Identifies version 18 or later of the CMUCL implementation. </dd>
+
+<dt> <tt>:cmu19</tt>
+<dd> Identifies version 19 or later of the CMUCL implementation. </dd>
 
 <dt> <tt>:common</tt>
 <dd> Similar to the <tt>:common-lisp</tt> feature. </dd>
@@ -256,7 +233,76 @@ applications. </dd>
 
 <dt> <tt>:hemlock</tt>
 <dd> The Hemlock editor is loaded. </dd>
+
+<dt> <tt>:modular-arith</tt>
+<dd> Indicates that modular arithmetic is supported.  That is,
+unsigned 32-bit arithmetic can be done without consing of intermediate
+results if it is know that the final result is an unsigned 32-bit
+number.  This can be done by <tt>(logand x #xffffffff)</tt>, for
+example.</dd>
+
+<dt> <tt>:double-double</tt>
+<dd> Indicates support for double-double floats.  These are extended
+precision floats consisting of 2 double-float numbers that allow
+approximately 106 bits (32 digits) of precision
+</dd>
+
+<dt> <tt>:stack-checking</tt>
+<dd> Indicates that stack overflow checking is supported.  Instead of
+producing a segfault when the control stack overflows, the error is
+caught instead and the user is given an opportunity to abort the
+computation with causing Lisp to exit.</dd>
+
+<dt> <tt>:heap-overflow-check</tt>
+<dd> Indicates that heap overflow checking is available.  When the
+heap is about to run out of room, Lisp throws an error that allows the
+user to possibly do something before all of heap is consumed.</dd>
+
 </dl>
+
+<h2>Deprecated features no longer used</h2>
+
+<p>Here is a list of some of the features that used to be available
+but are no longer available.  Many of these features are now standard
+parts of the build.</p>
+
+<dt> <tt>:fast-maxmin</tt>
+<dd> 
+On SPARC-V9 use conditional move instructions for min and max, which are
+(probably) faster than the normal instructions since they avoid
+branching.  <em>This is always true now.</em>
+</dd>
+
+<dt> <tt>:propagate-fun-type</tt>
+<dd>
+Allows the compiler to infer types for many mathematical functions,
+including square root, exponential and logarithmic functions, trignometric
+functions and their inverses, and hyperbolic functions and their inverses.
+For numeric code, this can greatly enhance efficiency by allowing the
+compiler to use specialized versions of the functions instead of the
+generic versions. The greatest benefit of this type inference is
+determining that the result of the function is real-valued number instead
+of possibly being a complex-valued number.  <em>This is always done now.</em>
+</dd>
+
+<dt> <tt>:propagate-float-type</tt>
+<dd>
+Enables list-style float type specifiers such as <tt>(single-float 0.0
+1.0)</tt> to be taken into account.  <em>This is always done now.</em>
+</dd>
+
+<dt> <tt>:constrain-float-type</tt>
+<dd>
+Allows the constraint propagation phase of the compiler to apply global
+flow analysis to floating point numbers, in order to obtain dynamic type
+information.  <em>This is always done now.</em>
+</dd>
+
+<dt> <tt>:new-compiler</tt>
+<dd>
+Indicates that a new version of the Python compiler is present.
+<em>No longer used.</em>
+</dd>
 
 
 

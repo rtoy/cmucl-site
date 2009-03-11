@@ -14,7 +14,8 @@
     For each supported platform there are two bzipped tar archives, one
     containing the base system, and the other (with <tt>extra</tt> in the
     name) containing additional files supporting CLX, Hemlock, Gray streams
-    and so on.
+    and so on.  In addition, there is the source archive containing
+    the sources used to compile the binaries.
 
 <p> The download sites are: </p>
 
@@ -44,6 +45,13 @@
 -->
 </dl>
 
+<p> Monthly binaries are also available from the download sites.
+    These are binaries that are built at the beginning of each
+    month (roughly) and are based on the code base at that time.
+    These may differ significantly from the release, because they may
+    have bug fixes or new features added.  Although we try to be sure
+    that they work and are capable of compiling themselves, they are
+    only lightly tested.  Use with caution.
 
 <p> Binaries built from source more recent than the latest release are
     available from the download mirrors in the <tt>binaries</tt> directory.
@@ -82,9 +90,21 @@
     # rpm -i cmucl-version.rpm
 </pre>
 
+<p> CMUCL is available as a <a
+    href="https://admin.fedoraproject.org/pkgdb/packages/name/cmucl">package</a>
+    for RedHat Fedora and RHEL, thanks to Rex Dieter.  These are also
+    a part of <a href="http://fedoraproject.org/wiki/EPEL">Fedora
+    EPEL</a>.  These are slightly different from the binaries
+    distributed on common-lisp.net.  In particular, different compiler
+    flags may have been used, and only the x87 core is provided, but
+    that may change.</p>
+
 <p> CMUCL is available as a package for the <a href =
-    "http://gentoo.org/">Gentoo Linux</a> distribution. The package is
-    named cmucl-bin, and is in the dev-lisp category. </p>
+    "http://gentoo.org/">Gentoo Linux</a> distribution, thanks to
+    Stelian Ionescu. The package is named cmucl, and is in the
+    dev-lisp category.  These are slightly different from the
+    common-lisp.net binaries in that different compiler flags may have
+    been used and only one "flavor" of x87 or sse2 is built.</p>
 
 
 
@@ -115,10 +135,11 @@
     the repository via viewCVS</a>, and access histories and diffs between
     versions.
 
-<p> There are CVS tags for the latest releases, named <tt>RELEASE_19e</tt>,
-    <tt>RELEASE_19d</tt>, <tt>RELEASE_19c</tt>, <tt>RELEASE_19b</tt>,
-    <tt>RELEASE_19a</tt>, <tt>RELEASE_18e</tt>, <tt>RELEASE_18d</tt>,
-    <tt>RELEASE_18c</tt>, <tt>RELEASE_18b</tt> and <tt>RELEASE_18a</tt>.
+<p> There are CVS tags for the latest releases, named
+    <tt>RELEASE_19f</tt>, <tt>release-19e</tt>, <tt>release-19d</tt>,
+    <tt>release-19c</tt>, <tt>release-19b</tt>, <tt>release-19a</tt>,
+    <tt>release-18e</tt>, <tt>RELEASE_18d</tt>, <tt>RELEASE_18c</tt>,
+    <tt>RELEASE_18b</tt> and <tt>RELEASE_18a</tt>.
     </p>
 
 <p> Thanks for using CMUCL! </p>

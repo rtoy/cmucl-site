@@ -45,10 +45,12 @@
      issues to resolve are memory management and signal handling. </li>
 
 <li> add <strong>UNICODE support</strong> -- currently CMUCL only supports
-     octet-sized characters. Requires changes to the streams and sequence
-     handling functions. Brian Spilsbury is <a href =
-     "http://rm-f.net/~zhivago/">working on this</a>, as well as support
-     for locales and dialects. </li>
+     octet-sized characters. Requires changes to the streams and
+     sequence handling functions. There is Brian Spilsbury's
+     experimental <a
+     href="http://common-lisp.net/project/cmucl/downloads/experimental/cmucl-unicode-2002-10-05-x86-linux.tar.bz2">unicode
+     effort</a> with some support for locales and dialects.  There is
+     also a new effort on unicode support.</li>
 
 <li> add 64-bit support. CMUCL currently only works with 32 bit addresses,
      even on platforms like UltraSPARC, which could support 64-bit
@@ -58,9 +60,9 @@
 <li> add a peephole optimizer to the CMUCL assembler, to remove useless
      bits of the instruction stream. </li>
 
-<li> Porting multiprocessing and generational garbage collecting to other
+<li> Porting multiprocessing to other
      platforms than x86. This requires knowledge of assembly and of the
-     internals of CMUCL. Raymond Toy is working on this. </li>
+     internals of CMUCL. </li>
 
 <li> Write a soft-real-time garbage collector for CMUCL, for applications
      such as games where bounded response time is very important. </li>

@@ -44,14 +44,6 @@
      licencing issues, a native port would be more useful. The primary
      issues to resolve are memory management and signal handling. </li>
 
-<li> add <strong>UNICODE support</strong> -- currently CMUCL only supports
-     octet-sized characters. Requires changes to the streams and
-     sequence handling functions. There is Brian Spilsbury's
-     experimental <a
-     href="http://common-lisp.net/project/cmucl/downloads/experimental/cmucl-unicode-2002-10-05-x86-linux.tar.bz2">unicode
-     effort</a> with some support for locales and dialects.  There is
-     also a new effort on unicode support.</li>
-
 <li> add 64-bit support. CMUCL currently only works with 32 bit addresses,
      even on platforms like UltraSPARC, which could support 64-bit
      applications. Raymond Toy is thinking about how to approach this

@@ -157,6 +157,26 @@
     "hemlock/">Hemlock</a>, or (more basic) <tt>M-x run-lisp</tt> in Emacs.
     </p>
 
+<h2>Patching CMUCL</h2>
+<p>On occasion, patches for CMUCL releases are created for critical
+issues found after the release.  These are normally fixed by the next
+snapshot, but in case it is not desirable to use the snapshot, patches
+are created.  The patches are in the <code>patches</code> subdirectory
+of the release directory.  
+
+These patches are tarballs containing an asd file and the necessary
+files to implement the patch.  To apply a patch, you need to have <a
+href="http://www.cliki.net/asdf">asdf</a>
+available.  Untar the patch somewhere where asdf will be able to find
+it.  Then simply use 
+<pre>
+(require :patch-<nnn>)
+</pre>
+if you your version of asdf has the hooks needed for this.  Otherwise,
+you can do
+<pre>
+(asdf:oos 'asdf:load-op :patch-<nnn>)
+</pre>
 
 @@FOOTER@@
 </body>

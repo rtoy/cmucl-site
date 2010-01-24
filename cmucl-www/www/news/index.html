@@ -11,6 +11,22 @@
 
 <p>
 <dl>
+<dt>2010-01-04</dt>
+<dd><p>Experimental support for static arrays has been added.  These
+are allocated in foreign (malloc) space and are never moved by GC.
+They are, however, properly garbage collected.  To create an array,
+use MAKE-ARRAY with :ALLOCATION :MALLOC.  Only arrays of character; 8,
+16, and 32-bit integers (signed or unsigned); single and double
+floats; and complex single and double floats are supported.
+<dl>
+<dt>2009-10-29</dt>
+<dd> <p>CMUCL has a faster unicode reader now.  Tests show that the
+CMUCL can process utf8 streams upto two times faster.  A serious bug
+in SSE2 support has been fixed.  (The sum or difference of a complex
+and a float would sometimes produce an incorrect imaginary part.)
+</p>
+</dd>
+<dl>
 <dt>2009-10-02</dt>
 <dd> <p><strong>CMUCL 20a patch 000</strong> A serious bug in the
 printer was found in the Unicode builds.  The bug caused '|\||

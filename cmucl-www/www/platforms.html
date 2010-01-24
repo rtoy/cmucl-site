@@ -50,11 +50,6 @@
      MacOS X (x86). They require 10.4 (Tiger) or later.
 </dd>
 
-<dt> Darwin/ppc </dt>
-<dd> The 19f release binaries work with MacOS X version 10.4.  For
-older versions of MacOS X, use the 19c binaries.
-</dd>
-
 <dt> FreeBSD/i386 and amd64 </dt>
 
 <dd> The 19e release binaries have been built on the i386
@@ -101,6 +96,12 @@ older versions of MacOS X, use the 19c binaries.
     but were supported by previous releases:
 
 <dl>
+<dt> Darwin/ppc </dt>
+<dd> The 19f release binaries work with MacOS X version 10.4.  For
+older versions of MacOS X, use the 19c binaries.  No developer has
+access to a ppc running MacOS X anymore.
+</dd>
+
 <dt> NetBSD/x86 </dt>
 <dd> The 19c release binaries should work on any i586 or better processor.
      The 19c binaries should work with NetBSD releases xx and yy. </dd>
@@ -136,10 +137,10 @@ older versions of MacOS X, use the 19c binaries.
 
 <h3>Platform-specific build options</h3>
 
-<p> The builds for x86 platforms include a generational conservative
-garbage collector (this can be tested for through the presence of the
-<tt>:gencgc</tt> feature). The other architectures use a stop-and-copy
-garbage collector. </p>
+<p> The builds for x86, sparc, and ppc platforms include a
+generational conservative garbage collector (this can be tested for
+through the presence of the <tt>:gencgc</tt> feature). The other
+architectures use a stop-and-copy garbage collector. </p>
 
 <p> The x86 builds also include basic multiprocessing support (this can be
 tested for through the presence of the <tt>:mp</tt> feature). The

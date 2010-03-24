@@ -64,6 +64,42 @@ precision. </li>
 
 </ul>
 
+<h2>Latest News</h2>
+
+Also see <a href="news/index.html">News</a> for older news.
+<dl>
+<dt>2010-03 snapshot</dt>
+<dd><p>
+  <ul>
+   <li> FROUND is much faster for single and double float numbers.
+   This is available everywhere, except for x87 (due to potential
+   roundoff errors.) </li>
+   <li> CMUCL no longer segfaults on Linux when running on a kernel
+      without COMPAT_BRK.  CMUCL will set the personality
+      appropriately and re-exec itself.</li>
+   <li> GET-MACRO-CHARACTER would return the wrong second value because
+      *READTABLE* was always being used instead of the specified
+      readtable. </li>
+   <li> COMPILE-FILE was generating an error when compiling COMPILE
+      forms.  This is fixed.</li>
+   <li> A critical bug in SSE2 support has been fixed.  Multiplying a
+      complex single-float by a single-float produced the wrong
+      result. </li>
+   <li> Fix issue where CMUCL does not correctly handle FLETs in
+      DEFMETHOD bodies which use the same name as that of the generic
+      function.   The generic function was called instead of the local
+      function.</li>
+   <li> CMUCL would fail to compile external formats if *readtable* was
+      not the standard readtable.  This is fixed by binding
+      *readtable* to the standard readtable before compiling the
+      external format.</li>
+   <li> The debugger help messages is updated to reflect the actual
+      implementation.  In particular L and PP have been updated, and help
+      for the DESCRIBE command has been added</li>
+  </ul>
+</dd>
+</dl>
+
 
 <h2>What is Common Lisp?</h2>
 

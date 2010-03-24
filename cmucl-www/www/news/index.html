@@ -11,6 +11,28 @@
 
 <p>
 <dl>
+<dt>2010-02</dt>
+<dd><p>
+  <ul>
+   <li>Some issues with FILE-POSITION on unicode builds have been
+   fixed.  However, FILE-POSITION is still incorrect for files using
+   external formats that have a byte-order mark.</li>
+   <li>The error-output and trace-file files are now opened using the
+   same external format as specified in COMPILE-FILE.  This ensures
+   that these output files can correctly represent the same characters
+   as used for the input file.</li>
+   <li>The debugger now opens files using the same external format as
+   used to compile them.  Previously, the default format was used,
+   which would be wrong if the file is in a different format.  This
+   resulted in the debugger being unable to find the source
+   forms. </li>
+   <li>TRANSLATE-PATHNAMES now creates the resulting path to be an
+   absolute or relative path according to whether the TO  pathname
+   is abslute or relative.  Previously, the result was take from
+   the SOURCE pathname, except if TO were absolute, in which case
+   the result was absolute.</li>
+  </ul>
+</dd>
 <dt>2010-01-04</dt>
 <dd><p>Experimental support for static arrays has been added.  These
 are allocated in foreign (malloc) space and are never moved by GC.

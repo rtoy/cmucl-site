@@ -66,7 +66,8 @@
           ;; (setf found (append (wb-find-files file) found))
           if (or (string-match "\\.html\\'" file)
                  (string-match "\\.txt\\'" file)
-                 (string-match "\\.css\\'" file))
+                 (string-match "\\.css\\'" file)
+		 (string-match "\\.inc\\'" file))
           do (push file found)
           finally return found)))
 

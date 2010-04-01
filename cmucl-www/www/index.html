@@ -68,35 +68,24 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt>2010-03 snapshot</dt>
+<dt>2010-04 snapshot</dt>
 <dd><p>
-  <ul>
-   <li> FROUND is much faster for single and double float numbers.
-   This is available everywhere, except for x87 (due to potential
-   roundoff errors.) </li>
-   <li> CMUCL no longer segfaults on Linux when running on a kernel
-      without COMPAT_BRK.  CMUCL will set the personality
-      appropriately and re-exec itself.</li>
-   <li> GET-MACRO-CHARACTER would return the wrong second value because
-      *READTABLE* was always being used instead of the specified
-      readtable. </li>
-   <li> COMPILE-FILE was generating an error when compiling COMPILE
-      forms.  This is fixed.</li>
-   <li> A critical bug in SSE2 support has been fixed.  Multiplying a
-      complex single-float by a single-float produced the wrong
-      result. </li>
-   <li> Fix issue where CMUCL does not correctly handle FLETs in
-      DEFMETHOD bodies which use the same name as that of the generic
-      function.   The generic function was called instead of the local
-      function.</li>
-   <li> CMUCL would fail to compile external formats if *readtable* was
-      not the standard readtable.  This is fixed by binding
-      *readtable* to the standard readtable before compiling the
-      external format.</li>
-   <li> The debugger help messages is updated to reflect the actual
-      implementation.  In particular L and PP have been updated, and help
-      for the DESCRIBE command has been added</li>
-  </ul>
+ <ul>
+  <li> Support for internalization/localization added.  Messages from
+      CMUCL can be translated, but currently only a few messages in
+      Korean are translated.  For fun, there is a full Pig Latin
+      translation (done by machine).  </li>
+  <li> COMPILE will update the macro-function if the specified names a
+      macro.  (Previously, the fdefinition of the name was set.)</li>
+  <li> CMUCL now signals a cerror when attempting to redefine a slot
+      accessor via DEFUN or COMPILE.  If continued, the accessor is
+      redefined, and CMUCL assumes the new definition is usable as a
+      slot accessor.  Previously, CMUCL would print a warning and
+      undefine the structure.</li>
+  <li> An issue with SSE2 and GC hooks has been fixed.  This shows up
+      when doing arithmetic with GC hooks that use the SSE registers.
+      The SSE state is saved along with the x87 state.</li>
+ </ul>
 </dd>
 </dl>
 

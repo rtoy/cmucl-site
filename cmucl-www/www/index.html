@@ -68,23 +68,39 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt>2010-04 snapshot</dt>
+<dt>2010-05 snapshot</dt>
 <dd><p>
  <ul>
-  <li> Support for internalization/localization added.  Messages from
-      CMUCL can be translated, but currently only a few messages in
-      Korean are translated.  For fun, there is a full Pig Latin
-      translation (done by machine).  </li>
-  <li> COMPILE will update the macro-function if the specified names a
-      macro.  (Previously, the fdefinition of the name was set.)</li>
-  <li> CMUCL now signals a cerror when attempting to redefine a slot
-      accessor via DEFUN or COMPILE.  If continued, the accessor is
-      redefined, and CMUCL assumes the new definition is usable as a
-      slot accessor.  Previously, CMUCL would print a warning and
-      undefine the structure.</li>
-  <li> An issue with SSE2 and GC hooks has been fixed.  This shows up
-      when doing arithmetic with GC hooks that use the SSE registers.
-      The SSE state is saved along with the x87 state.</li>
+  <li> Source information (file) for defstructs and deftypes is now
+  provided.  <tt>DESCRIBE</tt> will print out the name of the file
+  where the defstruct/deftype was defined. 
+  </li> 
+  <li> <tt>WITH-STANDARD-IO-SYNTAX</tt> uses the standard pprint dispatch table
+    now instead of the current table.
+  </li>
+  <li> <tt>PRINC-TO-STRING</tt> binds <tt>*PRINT-READABLY*</tt> to <tt>NIL</tt> as required.
+    Previously, it used the current value of
+    <tt>*PRINT-READABLY*</tt>.
+  </li>
+  <li> <tt>DEFCLASS</tt> signals an error if the class name already names a
+    <tt>DECLARATION</tt>. 
+  </li>
+  <li> The <tt>:METHOD-CLASS</tt> argument to <tt>ENSURE-GENERIC-FUNCTION</tt> can be a
+    class object as well as a name.
+  </li>
+  <li> Recognize but ignore the <tt>:DECLARE</tt> argument to
+    <tt>ENSURE-GENERIC-FUNCTION</tt>. 
+  </li>
+  <li> Default documentation for short form of
+  <tt>DEFINE-METHOD-COMBINATION</tt> is <tt>NIL</tt>, not "". 
+  </li>
+  <li> <tt>MAC</tt> is an alias for the <tt>CR</tt> composing external
+  format.
+  </li>
+  <li> <a href="http://trac.common-lisp.net/cmucl/ticket/39">Trac #39: non-standard-lexical syntax</a> is fixed.
+  The reader macros are no longer installed by default.  Use
+  <tt>(intl:install)</tt> to install them.
+
  </ul>
 </dd>
 </dl>

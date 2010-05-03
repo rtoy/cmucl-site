@@ -1,0 +1,92 @@
+@@DTD@@
+<html>
+<head>
+<title>CMUCL: news from 2009</title>
+@@METAS@@
+</head>
+
+<body bgColor="#FFFFFF" text="#000000">
+
+@@HEADING()
+
+<p>
+<dl>
+<dt>2009-10-29</dt>
+<dd> <p>CMUCL has a faster unicode reader now.  Tests show that the
+CMUCL can process utf8 streams upto two times faster.  A serious bug
+in SSE2 support has been fixed.  (The sum or difference of a complex
+and a float would sometimes produce an incorrect imaginary part.)
+</p>
+</dd>
+<dt>2009-10-02</dt>
+<dd> <p><strong>CMUCL 20a patch 000</strong> A serious bug in the
+printer was found in the Unicode builds.  The bug caused '|\||
+(vertical bar) and '|`| (backquote) to be printed without escapes.
+This <a
+href="http://common-lisp.net/project/cmucl/downloads/release/20a/patches/cmucl-20a-patch-000.tar.gz">patch</a>
+can be used to fix this issue.  Of course, the next snapshot will have
+this issue fixed too.  See <a href="install.html">Install</a> for
+instructions on how to apply a patch.</p>
+
+<dt>2009-09-30</dt>
+<dd> <p><strong>CMUCL 20a is released</strong>.  The <a
+href="release-20a.txt">release notes</a> and binaries for the supported
+platforms are available from the <tt>release/20a</tt>
+directory of the <a href="../download.html">download</a> sites.  Due
+to the 20a release, no snapshots are available for 2009-10.</p>
+
+<dt>2009-09</dt>
+<dd> <p>CMUCL 20a pre-release 1 is available.</p>
+
+<dt>2009-05</dt>
+<dd><p>The first builds with Unicode support are available.  These builds
+have support for Unicode that is mostly working.</p>
+
+<dt>2009-03</dt>
+<dd><p><strong>CMUCL 19f has been released</strong>.  The <a
+href="release-19f.txt">release notes</a> and binaries for the
+supported platforms are available from the <tt>release/19f</tt>
+directory of the <a href="../download.html">download</a> sites.  Due
+to the 19f release, no snapshots are available for 2009-03.</p>
+
+<dt>2009-02-09</dt>
+<dd> <p>The <strong>Feburary snapshot binaries</strong> have been uploaded to the
+<tt>snapshots/2009-02</tt> directory of the download sites.</p>
+
+<dt>2009-01-09</dt>
+<dd> <p>The <strong>January snapshot binaries</strong> have been uploaded to the
+<tt>snapshots/2009-01</tt> directory of the download sites.</p>
+
+<p> These snapshots include support for X87 and SSE2. CMUCL will
+automatically detect if the chip supports SSE2 or not. If so, the SSE2 core
+will be used. If not, the X87 (legacy) core will be used. For special
+cases, the user may override this automatic selection by using the
+<em>-fpu</em> flag. The SSE2 core should work somewhat better than the
+X87 core on chips that support both. In particular some round-off issues
+are gone, and complex arithmetic with SSE2 is faster and sometimes much
+faster than X87.</p>
+
+<dt>2009-01</dt>
+<dd> Fred Lakin, a long-time CMUCL user, has written a novel called <a href =
+"http://www.livegraphicsnightly.com">Live Graphics Nightly</a>. How does
+this relate to CMUCL? He has a nice acknowledgement to all of the CMUCL
+implementors and maintainers.
+
+</dl>
+
+<p> Also see older news:
+
+<ul>
+<li> <a href = "2008.html">news items from 2007</a>
+<li> <a href = "2007.html">news items from 2007</a>
+<li> <a href = "2006.html">news items from 2006</a>
+<li> <a href = "2005.html">news items from 2005</a>
+<li> <a href = "2004.html">news items from 2004</a>
+<li> <a href = "2003.html">news items from 2003</a>
+<li> <a href = "2002.html">news items from 2002</a>
+<li> <a href = "2001.html">news items from 2001</a>
+</ul>
+
+@@FOOTER@@
+</body>
+</html> 

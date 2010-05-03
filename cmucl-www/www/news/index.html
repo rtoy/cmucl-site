@@ -11,6 +11,46 @@
 
 <p>
 <dl>
+<dt>2010-05 snapshot</dt>
+<dd><p>
+ <ul>
+  <li> Source information (file) for defstructs and deftypes is now
+  provided.  <tt>DESCRIBE</tt> will print out the name of the file
+  where the defstruct/deftype was defined. 
+  </li> 
+  <li> <tt>COMPILE</tt> will update the macro-function if the
+  specified name names a macro.  (Previously, the fdefinition of the
+  name was set.) 
+  </li>
+  <li> <tt>WITH-STANDARD-IO-SYNTAX</tt> uses the standard pprint dispatch table
+    now instead of the current table.
+  </li>
+  <li> <tt>PRINC-TO-STRING</tt> binds <tt>*PRINT-READABLY*</tt> to <tt>NIL</tt> as required.
+    Previously, it used the current value of
+    <tt>*PRINT-READABLY*</tt>.
+  </li>
+  <li> <tt>DEFCLASS</tt> signals an error if the class name already names a
+    <tt>DECLARATION</tt>. 
+  </li>
+  <li> The <tt>:METHOD-CLASS</tt> argument to <tt>ENSURE-GENERIC-FUNCTION</tt> can be a
+    class object as well as a name.
+  </li>
+  <li> Recognize but ignore the <tt>:DECLARE</tt> argument to
+    <tt>ENSURE-GENERIC-FUNCTION</tt>. 
+  </li>
+  <li> Default documentation for short form of
+  <tt>DEFINE-METHOD-COMBINATION</tt> is <tt>NIL</tt>, not "". 
+  </li>
+  <li> <tt>MAC</tt> is an alias for the <tt>CR</tt> composing external
+  format.
+  </li>
+  <li> <a href="http://trac.common-lisp.net/cmucl/ticket/39">Trac #39: non-standard-lexical syntax</a> is fixed.
+  The reader macros are no longer installed by default.  Use
+  <tt>(intl:install)</tt> to install them.
+
+ </ul>
+</dd>
+
 <dt>2010-04 snapshot</dt>
 <dd><p>
  <ul>
@@ -109,55 +149,12 @@ can be used to fix this issue.  Of course, the next snapshot will have
 this issue fixed too.  See <a href="install.html">Install</a> for
 instructions on how to apply a patch.</p>
 
-<dt>2009-09-30</dt>
-<dd> <p><strong>CMUCL 20a is released</strong>.  The <a
-href="release-20a.txt">release notes</a> and binaries for the supported
-platforms are available from the <tt>release/20a</tt>
-directory of the <a href="../download.html">download</a> sites.  Due
-to the 20a release, no snapshots are available for 2009-10.</p>
-
-<dt>2009-09</dt>
-<dd> <p>CMUCL 20a pre-release 1 is available.</p>
-
-<dt>2009-05</dt>
-<dd><p>The first builds with Unicode support are available.  These builds
-have support for Unicode that is mostly working.</p>
-
-<dt>2009-03</dt>
-<dd><p><strong>CMUCL 19f has been released</strong>.  The <a
-href="release-19f.txt">release notes</a> and binaries for the
-supported platforms are available from the <tt>release/19f</tt>
-directory of the <a href="../download.html">download</a> sites.  Due
-to the 19f release, no snapshots are available for 2009-03.</p>
-
-<dt>2009-02-09</dt>
-<dd> <p>The <strong>Feburary snapshot binaries</strong> have been uploaded to the
-<tt>snapshots/2009-02</tt> directory of the download sites.</p>
-
-<dt>2009-01-09</dt>
-<dd> <p>The <strong>January snapshot binaries</strong> have been uploaded to the
-<tt>snapshots/2009-01</tt> directory of the download sites.</p>
-
-<p> These snapshots include support for X87 and SSE2. CMUCL will
-automatically detect if the chip supports SSE2 or not. If so, the SSE2 core
-will be used. If not, the X87 (legacy) core will be used. For special
-cases, the user may override this automatic selection by using the
-<em>-fpu</em> flag. The SSE2 core should work somewhat better than the
-X87 core on chips that support both. In particular some round-off issues
-are gone, and complex arithmetic with SSE2 is faster and sometimes much
-faster than X87.</p>
-
-<dt>2009-01</dt>
-<dd> Fred Lakin, a long-time CMUCL user, has written a novel called <a href =
-"http://www.livegraphicsnightly.com">Live Graphics Nightly</a>. How does
-this relate to CMUCL? He has a nice acknowledgement to all of the CMUCL
-implementors and maintainers.
-
 </dl>
 
 <p> Also see older news:
 
 <ul>
+<li> <a href = "2009.html">news items from 2008</a>
 <li> <a href = "2008.html">news items from 2008</a>
 <li> <a href = "2007.html">news items from 2007</a>
 <li> <a href = "2006.html">news items from 2006</a>

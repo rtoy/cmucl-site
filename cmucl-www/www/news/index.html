@@ -18,10 +18,6 @@
   provided.  <tt>DESCRIBE</tt> will print out the name of the file
   where the defstruct/deftype was defined. 
   </li> 
-  <li> <tt>COMPILE</tt> will update the macro-function if the
-  specified name names a macro.  (Previously, the fdefinition of the
-  name was set.) 
-  </li>
   <li> <tt>WITH-STANDARD-IO-SYNTAX</tt> uses the standard pprint dispatch table
     now instead of the current table.
   </li>
@@ -58,10 +54,10 @@
       CMUCL can be translated, but currently only a few messages in
       Korean are translated.  For fun, there is a full Pig Latin
       translation (done by machine).  </li>
-  <li> COMPILE will update the macro-function if the specified names a
+  <li> <tt>COMPILE</tt> will update the macro-function if the specified names a
       macro.  (Previously, the fdefinition of the name was set.)</li>
   <li> CMUCL now signals a cerror when attempting to redefine a slot
-      accessor via DEFUN or COMPILE.  If continued, the accessor is
+      accessor via <tt>DEFUN</tt> or <tt>COMPILE</tt>.  If continued, the accessor is
       redefined, and CMUCL assumes the new definition is usable as a
       slot accessor.  Previously, CMUCL would print a warning and
       undefine the structure.</li>
@@ -74,42 +70,42 @@
 <dt>2010-03 snapshot</dt>
 <dd><p>
   <ul>
-   <li> FROUND is much faster for single and double float numbers.
+   <li> <tt>FROUND</tt> is much faster for single and double float numbers.
    This is available everywhere, except for x87 (due to potential
    roundoff errors.) </li>
    <li> CMUCL no longer segfaults on Linux when running on a kernel
       without COMPAT_BRK.  CMUCL will set the personality
       appropriately and re-exec itself.</li>
-   <li> GET-MACRO-CHARACTER would return the wrong second value because
-      *READTABLE* was always being used instead of the specified
+   <li> <tt>GET-MACRO-CHARACTER</tt> would return the wrong second value because
+      <tt>*READTABLE*</tt> was always being used instead of the specified
       readtable. </li>
-   <li> COMPILE-FILE was generating an error when compiling COMPILE
+   <li> <tt>COMPILE-FILE</tt> was generating an error when compiling <tt>COMPILE</tt>
       forms.  This is fixed.</li>
    <li> A critical bug in SSE2 support has been fixed.  Multiplying a
       complex single-float by a single-float produced the wrong
       result. </li>
-   <li> Fix issue where CMUCL does not correctly handle FLETs in
-      DEFMETHOD bodies which use the same name as that of the generic
+   <li> Fix issue where CMUCL does not correctly handle <tt>FLET</tt>s in
+      <tt>DEFMETHOD</tt> bodies which use the same name as that of the generic
       function.   The generic function was called instead of the local
       function.</li>
-   <li> CMUCL would fail to compile external formats if *readtable* was
+   <li> CMUCL would fail to compile external formats if <tt>*READTABLE*</tt> was
       not the standard readtable.  This is fixed by binding
-      *readtable* to the standard readtable before compiling the
+      <tt>*READTABLE*</tt> to the standard readtable before compiling the
       external format.</li>
    <li> The debugger help messages is updated to reflect the actual
-      implementation.  In particular L and PP have been updated, and help
-      for the DESCRIBE command has been added</li>
+      implementation.  In particular <tt>L</tt> and <tt>PP</tt> have been updated, and help
+      for the <tt>DESCRIBE</tt> command has been added</li>
   </ul>
 </dd>
 
 <dt>2010-02</dt>
 <dd><p>
   <ul>
-   <li>Some issues with FILE-POSITION on unicode builds have been
-   fixed.  However, FILE-POSITION is still incorrect for files using
+   <li>Some issues with <tt>FILE-POSITION</tt> on unicode builds have been
+   fixed.  However, <tt>FILE-POSITION</tt> is still incorrect for files using
    external formats that have a byte-order mark.</li>
    <li>The error-output and trace-file files are now opened using the
-   same external format as specified in COMPILE-FILE.  This ensures
+   same external format as specified in <tt>COMPILE-FILE</tt>.  This ensures
    that these output files can correctly represent the same characters
    as used for the input file.</li>
    <li>The debugger now opens files using the same external format as
@@ -117,7 +113,7 @@
    which would be wrong if the file is in a different format.  This
    resulted in the debugger being unable to find the source
    forms. </li>
-   <li>TRANSLATE-PATHNAMES now creates the resulting path to be an
+   <li><tt>TRANSLATE-PATHNAMES</tt> now creates the resulting path to be an
    absolute or relative path according to whether the TO  pathname
    is abslute or relative.  Previously, the result was take from
    the SOURCE pathname, except if TO were absolute, in which case
@@ -128,33 +124,16 @@
 <dd><p>Experimental support for static arrays has been added.  These
 are allocated in foreign (malloc) space and are never moved by GC.
 They are, however, properly garbage collected.  To create an array,
-use MAKE-ARRAY with :ALLOCATION :MALLOC.  Only arrays of character; 8,
+use <tt>MAKE-ARRAY</tt> with <tt>:ALLOCATION</tt> <tt>:MALLOC</tt>.  Only arrays of character; 8,
 16, and 32-bit integers (signed or unsigned); single and double
 floats; and complex single and double floats are supported.
 </dd>
-<dt>2009-10-29</dt>
-<dd> <p>CMUCL has a faster unicode reader now.  Tests show that the
-CMUCL can process utf8 streams upto two times faster.  A serious bug
-in SSE2 support has been fixed.  (The sum or difference of a complex
-and a float would sometimes produce an incorrect imaginary part.)
-</p>
-</dd>
-<dt>2009-10-02</dt>
-<dd> <p><strong>CMUCL 20a patch 000</strong> A serious bug in the
-printer was found in the Unicode builds.  The bug caused '|\||
-(vertical bar) and '|`| (backquote) to be printed without escapes.
-This <a
-href="http://common-lisp.net/project/cmucl/downloads/release/20a/patches/cmucl-20a-patch-000.tar.gz">patch</a>
-can be used to fix this issue.  Of course, the next snapshot will have
-this issue fixed too.  See <a href="install.html">Install</a> for
-instructions on how to apply a patch.</p>
-
 </dl>
 
 <p> Also see older news:
 
 <ul>
-<li> <a href = "2009.html">news items from 2008</a>
+<li> <a href = "2009.html">news items from 2009</a>
 <li> <a href = "2008.html">news items from 2008</a>
 <li> <a href = "2007.html">news items from 2007</a>
 <li> <a href = "2006.html">news items from 2006</a>

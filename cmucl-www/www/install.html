@@ -11,12 +11,17 @@
 
 <p> This page explains how to install the release tarballs of CMUCL. If
     you're using an alternative distribution packaging, such as
-    <tt>.deb</tt> archives, use whatever is appropriate there. </p>
+    <tt>.deb</tt> archives, use whatever is appropriate there.  We use
+    the 19e release as an example, but the same idea can be used for
+    any release tarball or snapshot for CMUCL.</p>
 
 <p> For each <a href = "platforms.html">supported platform</a> there are
     two bzip2 tar archives, one containing the base system, and the other
     (with <tt>extra</tt> in the name) containing optional additional files
-    supporting CLX, Hemlock, the Motif interface, and so on. 
+    supporting CLX, Hemlock, the Motif interface, and so on. Note also
+    that there may also be Unicode and non-Unicode (8-bit characters)
+    tarballs.  The non-Unicode tarball has <tt>non-unicode</tt> in the
+    file name.  The same method can be used to install either of these.
 
 <p> <a href = "download.html">Download the archives</a> corresponding to
     your platform. Certain tarballs are PGP-signed by the packager and are
@@ -103,20 +108,13 @@
      * (require :hemlock)
 </pre>
 
-<p> The DEFSYSTEM facility is not included with CMUCL, but can be obtained
-   from <a href = "http://clocc.sf.net/">CLOCC</a>. It may be installed as
-   a subsystem by compiling it (using the function <tt>COMPILE-FILE</tt>),
-   and moving the resulting <tt>defsystem.FASL</tt> file to
-   <tt>$ROOT/lib/cmucl/lib/subsystems/defsystem-library.FASL</tt> (where
-   <tt>FASL</tt> is the file extension of compiled lisp files on your
-   system, for instance <tt>.sparcf</tt> or <tt>.x86f</tt>). You can then say
-
+<p> Starting with the 2010-06 snapshot, ASDF2 and MK-DEFSYSTEM are
+included with CMUCL.  There you can load them using
 <pre>
      * (require :defsystem)
+     * (require :asdf)
 </pre>
-
-<p> to load the DEFSYSTEM facility into your running lisp. 
-
+</p>
 
 
 <h2>Create a site-wide initialization file</h2>

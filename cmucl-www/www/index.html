@@ -68,39 +68,19 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt>2010-05 snapshot</dt>
+<dt>2010-06 snapshot</dt>
 <dd><p>
  <ul>
-  <li> Source information (file) for defstructs and deftypes is now
-  provided.  <tt>DESCRIBE</tt> will print out the name of the file
-  where the defstruct/deftype was defined. 
-  </li> 
-  <li> <tt>WITH-STANDARD-IO-SYNTAX</tt> uses the standard pprint dispatch table
-    now instead of the current table.
+  <li> ASDF2 and MK-DEFSYS have been added as contrib modules.  Use
+  <code>(require :asdf)</code> or <code>(require :defsystem)</code> to
+  load these.
   </li>
-  <li> <tt>PRINC-TO-STRING</tt> binds <tt>*PRINT-READABLY*</tt> to <tt>NIL</tt> as required.
-    Previously, it used the current value of
-    <tt>*PRINT-READABLY*</tt>.
+  <li> A new switch, <code>-help</code> has been added.  This prints
+  out a brief summary of the available command line switches and
+  exists.  You may also use <code>--help</code>.
+  <li> The GCD of positive integers sometimes returned a negative
+  result.  This is fixed.
   </li>
-  <li> <tt>DEFCLASS</tt> signals an error if the class name already names a
-    <tt>DECLARATION</tt>. 
-  </li>
-  <li> The <tt>:METHOD-CLASS</tt> argument to <tt>ENSURE-GENERIC-FUNCTION</tt> can be a
-    class object as well as a name.
-  </li>
-  <li> Recognize but ignore the <tt>:DECLARE</tt> argument to
-    <tt>ENSURE-GENERIC-FUNCTION</tt>. 
-  </li>
-  <li> Default documentation for short form of
-  <tt>DEFINE-METHOD-COMBINATION</tt> is <tt>NIL</tt>, not "". 
-  </li>
-  <li> <tt>MAC</tt> is an alias for the <tt>CR</tt> composing external
-  format.
-  </li>
-  <li> <a href="http://trac.common-lisp.net/cmucl/ticket/39">Trac #39: non-standard-lexical syntax</a> is fixed.
-  The reader macros are no longer installed by default.  Use
-  <tt>(intl:install)</tt> to install them.
-
  </ul>
 </dd>
 </dl>

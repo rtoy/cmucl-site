@@ -11,6 +11,20 @@
 
 <p>
 <dl>
+<dt>2010-07 snapshot</dt>
+<dd><p>
+ <ul>
+  <li> DELETE-FILE, ENSURE-DIRECTORIES-EXIST, FILE-AUTHOR,
+  FILE-WRITE-DATE, and OPEN now merge the given pathname with
+  *DEFAULT-PATHNAME-DEFAULTS* as required by CLHS sec 19.2.3. 
+  </li>
+  <li> When printing out argument values in the debugger and also
+  during TRACE, the incorrect values were returned for the SSE2 core.
+  This was caused by using the x87 values instead of the sse2 values
+  in the sigcontext.  This is fixed now. </li>
+ </ul>
+</dd>
+
 <dt>2010-06 snapshot</dt>
 <dd><p>
  <ul>

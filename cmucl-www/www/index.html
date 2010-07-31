@@ -68,19 +68,17 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt>2010-06 snapshot</dt>
+<dt>2010-07 snapshot</dt>
 <dd><p>
  <ul>
-  <li> ASDF2 and MK-DEFSYS have been added as contrib modules.  Use
-  <code>(require :asdf)</code> or <code>(require :defsystem)</code> to
-  load these.
+  <li> DELETE-FILE, ENSURE-DIRECTORIES-EXIST, FILE-AUTHOR,
+  FILE-WRITE-DATE, and OPEN now merge the given pathname with
+  *DEFAULT-PATHNAME-DEFAULTS* as required by CLHS sec 19.2.3. 
   </li>
-  <li> A new switch, <code>-help</code> has been added.  This prints
-  out a brief summary of the available command line switches and
-  exits.  You may also use <code>--help</code>.
-  <li> The GCD of positive integers sometimes returned a negative
-  result.  This is fixed.
-  </li>
+  <li> When printing out argument values in the debugger and also
+  during TRACE, the incorrect values were returned for the SSE2 core.
+  This was caused by using the x87 values instead of the sse2 values
+  in the sigcontext.  This is fixed now. </li>
  </ul>
 </dd>
 </dl>

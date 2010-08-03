@@ -11,6 +11,70 @@
 
 <p>
 <dl>
+<dt>2010-08 snapshot and 20b prerelease 1</dt>
+<dd><p>
+ CMUCL 20b prelease 1 has been released, in preparation for the
+ upcoming 20b release.  Therefore there will not
+ be a 2010-08 snapshot.
+ <ul>
+  <li> <p>Error handling has been added to external formats.  Previously,
+      all external formats would silently replace bad encodings with a
+      suitable replacement character.  Now, the user can specify how
+      the errors are handled by using the <tt>:DECODING-ERROR</tt> and
+      <tt>:ENCODING-ERROR</tt> parameters to <tt>OPEN</tt>.  The default is the previous
+      behavior.</p>
+	    
+      <p>For decoding-error, a character, symbol, or function
+      can be given.  If a character, then that character is used as
+      the replacement character.  For a symbol or function, it must be
+      a function of 3 arguments:  a message string, the offending
+      octet (or nil), and the number of octets read in the encoding.
+      If the function returns, it must be the codepoint of the desired
+      replacement.</p>
+
+      <p>For encoding-error, a character, symbol, or function can be
+      given.  If a character, then that character is used as the
+      replacement character.  For a symbol or function, it must be a
+      function of 2 arguments: a message string and the offending
+      codepoint.  If the function returns, it must be the codepoint of
+      the desired replacement.</p>
+    </li>
+    <li> Add <tt>EXT:LIST-ALL-EXTERNAL-FORMATS</tt> to list all known external
+      formats and their aliases.
+    </li>
+    <li> ADD <tt>EXT:DESCRIBE-EXTERNAL-FORMAT</tt> to print a description of the
+      specified exernal format.  To support this, the macros
+      <tt>DEFINE-EXTERNAL-FORMAT</tt> and <tt>DEFINE-COMPOSING-EXTERNAL-FORMAT</tt> have
+      changed.
+    </li>
+    <li> The sparc port now supports the :executable feature.</li>
+    <li> The Mac OS X port now support the :executable feature.</li>
+    <li> A critical bug in the fast unicode stream buffering routine has
+      been fixed.  This bug manifests itself by causing valid
+      sequences to be incorrectly decoded, resulting in a replacement
+      character.
+    <li> UTF-8 correctly catches overlong sequences now.  Previously,
+      overlong sequences were missed.
+    <li> When UTF-8 decoder encounters an overlong sequence, a surrogate
+      code point, or a too-large codepoint, the entire sequence is
+      converted to the replacement character.  Previously, all of the
+      octets except the first were put back, and the data read again.
+    <li> Some GC improvements for sparc and ppc.  (Changes for ppc
+      untested).  GC could incorrectly move the PC and other
+      registers, causing a segfault.
+    <li> A bug inadvertently introduced in the 2010-04 non-unicode
+      snapshot has been fixed.  The bug prevented the non-unicode
+      versions of CMUCL from loading the external format aliases
+      file. 
+    <li> With SSE2, the imaginary part of a (complex single-float) is now
+      returned correctly.
+    <li> The method used to create executable images for Linux has been
+      cleaned up and should be far more robust against different
+      versions of the OS.  The same is true on sparc as well as Mac OS
+      X.
+ </ul>
+</dd>
+
 <dt>2010-07 snapshot</dt>
 <dd><p>
  <ul>

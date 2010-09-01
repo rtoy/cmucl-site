@@ -86,13 +86,26 @@
 </dd>
 
 <dt> Solaris/SPARC </dt>
-<dd> the 19f binaries should work with Solaris 8 or later (also known
+<dd> <p>The 19f binaries should work with Solaris 8 or later (also known
      as Solaris 2.8). They require an UltraSPARC processor. If you
      have an ancient SPARC machine, you can get the non-v9 version of
      the 18e release. If you have an UltraSPARC the command
      <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you have an
      older machine such as a SparcStation it will probably say
-     <tt>sun4m</tt>. </dd>
+     <tt>sun4m</tt>. </p>
+     
+     <p>
+     Note that starting with the 2010-02 snapshot, Solaris 8 builds
+     are being dropped in favor of Solaris 10 builds.  The Solaris 10
+     builds will not run on Solaris 8, but Solaris 8 builds will run
+     just fine on Solaris 10.  However, Solaris 8 builds may be
+     available. </p>
+</dd>
+
+<dt> NetBSD/x86 </dt>
+<dd> The 19c release binaries should work on any i586 or better processor.
+     The 19c binaries should work with NetBSD releases xx and yy. </dd>
+
 </dl>
 
 <p> The following platforms are not supported by the current CMUCL release,
@@ -104,10 +117,6 @@
 older versions of MacOS X, use the 19c binaries.  No developer has
 access to a ppc running MacOS X anymore.
 </dd>
-
-<dt> NetBSD/x86 </dt>
-<dd> The 19c release binaries should work on any i586 or better processor.
-     The 19c binaries should work with NetBSD releases xx and yy. </dd>
 
 <dt> OpenBSD/x86 </dt>
 <dd> There are currently no 19c binaries for OpenBSD (it seems that address

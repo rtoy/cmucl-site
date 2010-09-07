@@ -11,6 +11,29 @@
 
 <p>
 <dl>
+<dt>2010-09 snapshot and 20b prerelease 2</dt>
+<dd><p>
+ CMUCL 20b prelease 2 has been released, in preparation for the
+ upcoming 20b release.  Therefore there will not
+ be a 2010-09 snapshot.
+ <ul>
+  <li> It is possible to hash NaNs (IEEE Not-a-Number)
+  </li>
+  <li> For SSE2 builds, = no longer signals an error if one operand is
+  NaN.  This matches what happens for x87.
+  </li>
+  <li> For SSE2 builds, <code>SIGCONTEXT-FLOAT-REGISTER</code> returned the wrong
+  value for single-floats.  Easily noticead when tracing a function
+  with single-float arguments. 
+  </li>
+  <li> Trac issue #36: file-position broken for utf16 and utf32. 
+       <code>FILE-POSITION</code> returns the correct value for UTF16
+       and UTF32 when there is a BOM (byte-order mark) at the
+       beginning of the file.
+  </li>
+ </ul>
+</dd>
+
 <dt>2010-08 snapshot and 20b prerelease 1</dt>
 <dd><p>
  CMUCL 20b prelease 1 has been released, in preparation for the

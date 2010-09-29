@@ -30,7 +30,8 @@
 
 (require 'cl)
 
-(defconst wb-base-url "http://www.cons.org/cmucl/")
+(defconst wb-base-url "http://www.cmucl.org/")
+;;(defconst wb-base-url "http://www.cons.org/cmucl/")
 ;; (defconst wb-doc-url  "ftp://ftp.linux.org.uk/pub/lisp/cmucl/doc/")
 (defconst wb-doc-url  "http://common-lisp.net/project/cmucl/doc/")
 (defconst wb-target-dir "/project/cmucl/public_html/mirror/")

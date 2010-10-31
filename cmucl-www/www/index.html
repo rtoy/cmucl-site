@@ -68,8 +68,31 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
+<dt><strong>Snapshot 2010-11</strong>
+<dd>
+ The 2010-11 snapshot has been released.  See the release notes for
+ details, but here is a quick summary of the changes between the
+ snapshot and the 20b release:
+ <ul>
+  <li> Update to Unicode 5.2.0.</li>
+  <li> Support for character name completion for use with Slime.</li>
+  <li> <code>COMPILE-FILE</code> accepts a
+  <code>:DECODING-ERROR</code> argument that indicates how to handle
+  decoding errors when reading the file.</li>
+  <li> <code>RUN-PROGRAM</code> accepts <code>:EXTERNAL-FORMAT</code>
+  parameter to specify the external format for streams that are
+  created.</li> 
+  <li> <code>READ-CHAR</code> signals errors on non-character
+  streams.  <code>READ-BYTE</code> signals errors on character
+  streams.  This is a change from previous versions.  However, both
+  will work if the stream is a <code>binary-text-stream</code>.</li>
+  <li> <code>REALPART</code> and <code>IMAGPARG</code> no longer
+  returns 0 instead of the correct part of a complex number in some
+  situations. </li>
+ </ul>
+</dd>
 <dt><strong>CMUCL 20b released</strong></dt>
-<dd><p>
+<dd>
  CMUCL 20b has been released,  For information on the changes between
  20b and 20a, we refer the reader to the <a href="news/release-20b.txt">20b release
   notes</a>. 

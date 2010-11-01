@@ -164,16 +164,19 @@ of the release directory.
 
 These patches are tarballs containing an asd file and the necessary
 files to implement the patch.  To apply a patch, you need to have <a
-href="http://www.cliki.net/asdf">asdf</a>
-available.  Untar the patch somewhere where asdf will be able to find
-it.  Then simply use 
+href="http://www.cliki.net/asdf">asdf</a> available.  (Note that 20b
+now includes asdf2.)  Untar the patch somewhere where asdf will be
+able to find it.  Then simply use
 <pre>
-(require :patch-nnn)
+(require :cmucl-xxx-patch-nnn)
 </pre>
-if your version of asdf has the hooks needed for this.  Otherwise,
-you can do
+where <emph>xx</emph> is the the release version of cmucl (such as
+19a) and <emph>nnn</emph> is the patch number.
+This works if your version of asdf has the hooks needed for this.
+Otherwise, you can do
 <pre>
-(asdf:oos 'asdf:load-op :patch-nnn)
+(load "patch-nnn.asd")
+(asdf:oos 'asdf:load-op :cmucl-xx-patch-nnn)
 </pre>
 
 @@FOOTER@@

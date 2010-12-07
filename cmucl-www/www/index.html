@@ -68,35 +68,40 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
+<dt><strong>Snapshot 2010-12</strong>
+<dd>
+ The 2010-11 snapshot has been released.  See the release notes for
+ details, but here is a quick summary of the changes between the
+ this snapshot and the 2010-11 snapshot.
+ <ul>
+  <li> ASDF2 updated to version 2.010.</li>
+  <li> On x86, <code>REALPART</code> and <code>IMAGPART</code> no longer incorrectly returns 0
+       instead of the correct part of a complex number in some
+       situations.</li>
+  <li> The command line parser now correctly handles the case where
+       "--" is the first command option.</li>
+  <li> <code>build.sh</code> was accidenally loading the site-init file, but it
+       shouldn't. </li>
+  <li> On sparc, the vops to add a float to a complex were broken,
+       resulting in a complex number with the float as realpart and
+       garbage for the imaginary part.  This is now fixed.</li>
+  <li> <code>XLIB::GET-BEST-AUTHORIZATION</code> will now return authorization data
+       if the protocol is :local, if the xauth file contains just
+       "localhost/unix:0".  Previously, no authorization data was
+       returned because <code>GET-BEST-AUTHORIZATION</code> was looking for the
+       hostname.</li>
+  <li> <code>FORMAT</code> signals an warning if <code>~:;</code> is used inside <code>~:[.</code></li>
+  <li> <code>SET-SYSTEM-EXTERNAL-FORMAT</code> was not actually setting the filename
+       encoding if given.</li>
+ </ul>
+</dd>
+
 <dt><strong>20b patch 000</strong>
 <dd>
  A critical bug in <code>REALPART</code> and <code>IMAGPART</code> has
  been fixed in the 2010-11 snapshot.  A <a href="http://common-lisp.net/project/cmucl/downloads/release/20b/patches/cmucl-20b-patch-000.tar.gz">patch</a> is provided now to fix
  this issue in the 20b release.  <a href="install.html">Installation</a>
  instructions are available.
-</dd>
-<dt><strong>Snapshot 2010-11</strong>
-<dd>
- The 2010-11 snapshot has been released.  See the release notes for
- details, but here is a quick summary of the changes between the
- snapshot and the 20b release:
- <ul>
-  <li> Update to Unicode 5.2.0.</li>
-  <li> Support for character name completion for use with Slime.</li>
-  <li> <code>COMPILE-FILE</code> accepts a
-  <code>:DECODING-ERROR</code> argument that indicates how to handle
-  decoding errors when reading the file.</li>
-  <li> <code>RUN-PROGRAM</code> accepts <code>:EXTERNAL-FORMAT</code>
-  parameter to specify the external format for streams that are
-  created.</li> 
-  <li> <code>READ-CHAR</code> signals errors on non-character
-  streams.  <code>READ-BYTE</code> signals errors on character
-  streams.  This is a change from previous versions.  However, both
-  will work if the stream is a <code>binary-text-stream</code>.</li>
-  <li> <code>REALPART</code> and <code>IMAGPARG</code> no longer
-  returns 0 instead of the correct part of a complex number in some
-  situations. </li>
- </ul>
 </dd>
 <dt><strong>CMUCL 20b released</strong></dt>
 <dd>

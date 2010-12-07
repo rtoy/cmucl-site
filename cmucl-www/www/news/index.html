@@ -11,6 +11,33 @@
 
 <p>
 <dl>
+<dt>2010-12 snapshot
+<dd>
+Some of the important changes are listed below.  See the <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2010/11/release-20c.txt">release
+notes</a> for more details.
+ <ul>
+  <li> ASDF2 updated to version 2.010.</li>
+  <li> On x86, <code>REALPART</code> and <code>IMAGPART</code> no longer incorrectly returns 0
+       instead of the correct part of a complex number in some
+       situations.</li>
+  <li> The command line parser now correctly handles the case where
+       "--" is the first command option.</li>
+  <li> <code>build.sh</code> was accidenally loading the site-init file, but it
+       shouldn't. </li>
+  <li> On sparc, the vops to add a float to a complex were broken,
+       resulting in a complex number with the float as realpart and
+       garbage for the imaginary part.  This is now fixed.</li>
+  <li> <code>XLIB::GET-BEST-AUTHORIZATION</code> will now return authorization data
+       if the protocol is :local, if the xauth file contains just
+       "localhost/unix:0".  Previously, no authorization data was
+       returned because <code>GET-BEST-AUTHORIZATION</code> was looking for the
+       hostname.</li>
+  <li> <code>FORMAT</code> signals an warning if <code>~:;</code> is used inside <code>~:[.</code></li>
+  <li> <code>SET-SYSTEM-EXTERNAL-FORMAT</code> was not actually setting the filename
+       encoding if given.</li>
+ </ul>
+</dd>
 <dt><strong>20b patch 000</strong>
 <dd>
  A critical bug in <code>REALPART</code> and <code>IMAGPART</code> has

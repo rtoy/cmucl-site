@@ -68,31 +68,36 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt><strong>Snapshot 2010-12</strong>
+<dt><strong>Snapshot 2011-01</strong>
 <dd>
- The 2010-11 snapshot has been released.  See the release notes for
+ The 2011-01 snapshot has been released.  See the release notes for
  details, but here is a quick summary of the changes between the
- this snapshot and the 2010-11 snapshot.
+ this snapshot and the previous snapshot.
  <ul>
-  <li> ASDF2 updated to version 2.010.</li>
-  <li> On x86, <code>REALPART</code> and <code>IMAGPART</code> no longer incorrectly returns 0
-       instead of the correct part of a complex number in some
-       situations.</li>
-  <li> The command line parser now correctly handles the case where
-       "--" is the first command option.</li>
-  <li> <code>build.sh</code> was accidenally loading the site-init file, but it
-       shouldn't. </li>
-  <li> On sparc, the vops to add a float to a complex were broken,
-       resulting in a complex number with the float as realpart and
-       garbage for the imaginary part.  This is now fixed.</li>
-  <li> <code>XLIB::GET-BEST-AUTHORIZATION</code> will now return authorization data
-       if the protocol is :local, if the xauth file contains just
-       "localhost/unix:0".  Previously, no authorization data was
-       returned because <code>GET-BEST-AUTHORIZATION</code> was looking for the
-       hostname.</li>
-  <li> <code>FORMAT</code> signals an warning if <code>~:;</code> is used inside <code>~:[.</code></li>
-  <li> <code>SET-SYSTEM-EXTERNAL-FORMAT</code> was not actually setting the filename
-       encoding if given.</li>
+  <li> Initial support for Solaris/x86.  CMUCL will run on Solaris/x86
+       with all features available. </li>
+  <li> <code>UNINTERN</code> no longer removes the wrong symbol.  <code>UNINTERN</code> would
+       remove the symbol when inherited from another package although it
+       should not.
+  <li> <code>DEFSTRUCT</code> allows multiple keyword constructors as required by the spec..
+  </li>
+  <li> <code>SUBSEQ</code> with an end index less than the start index sometimes
+  crashes CMUCL. Now, signal an error if the boudns are not
+  valid. 
+  </li>
+  <li> Localization support was causing many calls to stat trying to
+  find non-existent translation files.  This has been fixed so
+  that the results are cached.  (If new translations are added,
+  the cache will need to be cleared or cmucl restarted.)  This
+  change cuts building time by half on Solaris/sparc.
+  </li>
+  <li> On NetBSD, function-end breakpoints, especially for
+  tail-recursive functions, are working now.
+  </li>
+  <li> On NetBSD, display of FP numbers (sse2 and x87) during tracing
+  has been corrected.  Previously, random values were displayed.
+  </li>
+  <li> Executables images can now be created on NetBSD again.</li>
  </ul>
 </dd>
 

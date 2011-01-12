@@ -11,6 +11,39 @@
 
 <p>
 <dl>
+<dt><strong>Snapshot 2011-01</strong>
+<dd>
+ The 2011-01 snapshot has been released.  See the release notes for
+ details, but here is a quick summary of the changes between the
+ this snapshot and the previous snapshot.
+ <ul>
+  <li> Initial support for Solaris/x86.  CMUCL will run on Solaris/x86
+       with all features available. </li>
+  <li> <code>UNINTERN</code> no longer removes the wrong symbol.  <code>UNINTERN</code> would
+       remove the symbol when inherited from another package although it
+       should not.
+  <li> <code>DEFSTRUCT</code> allows multiple keyword constructors as required by the spec..
+  </li>
+  <li> <code>SUBSEQ</code> with an end index less than the start index sometimes
+  crashes CMUCL. Now, signal an error if the boudns are not
+  valid. 
+  </li>
+  <li> Localization support was causing many calls to stat trying to
+  find non-existent translation files.  This has been fixed so
+  that the results are cached.  (If new translations are added,
+  the cache will need to be cleared or cmucl restarted.)  This
+  change cuts building time by half on Solaris/sparc.
+  </li>
+  <li> On NetBSD, function-end breakpoints, especially for
+  tail-recursive functions, are working now.
+  </li>
+  <li> On NetBSD, display of FP numbers (sse2 and x87) during tracing
+  has been corrected.  Previously, random values were displayed.
+  </li>
+  <li> Executables images can now be created on NetBSD again.</li>
+ </ul>
+</dd>
+
 <dt>2010-12 snapshot
 <dd>
 Some of the important changes are listed below.  See the <a

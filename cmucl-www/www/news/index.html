@@ -11,6 +11,21 @@
 
 <p>
 <dl>
+<dt><strong>Snapshot 2011-02</strong>
+<dd>
+ The 2011-02 snapshot has been released.  See the release notes for
+ details, but here is a quick summary of the changes between the
+ this snapshot and the previous snapshot.
+ <ul>
+  <li> <code>EXT::DESCRIBE-EXTERNAL-FORMAT</code> was not exported.</li>
+
+  <li> <code>TRACE</code> was erroneously allowing encapsulation when
+   tracing local flet/labels functions.  This doesn't actually trace
+   anything. An error is now signaled in this case.  If you are sure,
+   you can specify <code>:ENCAPSULATE NIL</code> to disable
+   encapsulation.  
+ </ul>
+</dd>
 <dt><strong>Snapshot 2011-01</strong>
 <dd>
  The 2011-01 snapshot has been released.  See the release notes for

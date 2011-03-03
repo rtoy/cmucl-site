@@ -68,6 +68,26 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
+<dt><strong>Snapshot 2011-03</strong>
+<dd>
+ The 2011-02 snapshot has been released.  See the release notes for
+ details, but here is a quick summary of the changes between the
+ this snapshot and the previous snapshot.
+ <ul>
+  <li> In <code>COMPILE-FILE</code>, the <code>:OUTPUT-FILE</code> can
+    also be a stream.  CMUCL was erroneously signaling an error..</li>
+
+  <li> <code>(OPEN f :DIRECTION :IO :IF-DOES-NOT-EXIST NIL)</code> no
+    longer signals an error if the file <code>f</code> does not exist.
+    It returns <code>NIL</code> now.</li>
+  <li> In some situations the compiler could not constant fold <code>SQRT</code>
+    calls because <code>KERNEL:%SQRT</code> was not defined on x86
+    with SSE2.  This is fixed now.</li>
+  <li> In an earlier snapshot to add support for character name
+    completion with slime, a bug was introduced where cmucl could no
+    longer read <code>#\latin_small_letter_a</code>.  This is fixed
+    in this version.<li>
+ </ul>
 <dt><strong>Snapshot 2011-02</strong>
 <dd>
  The 2011-02 snapshot has been released.  See the release notes for
@@ -80,7 +100,7 @@ Also see <a href="news/index.html">News</a> for older news.
    tracing local flet/labels functions.  This doesn't actually trace
    anything. An error is now signaled in this case.  If you are sure,
    you can specify <code>:ENCAPSULATE NIL</code> to disable
-   encapsulation.  
+   encapsulation.  </li>
  </ul>
 </dd>
 <dt><strong>Snapshot 2011-01</strong>

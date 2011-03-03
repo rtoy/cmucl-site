@@ -11,7 +11,27 @@
 
 <p>
 <dl>
-<dt><strong>Snapshot 2011-02</strong>
+<dt><strong>Snapshot 2011-03</strong>
+<dd>
+ The 2011-02 snapshot has been released.  See the release notes for
+ details, but here is a quick summary of the changes between the
+ this snapshot and the previous snapshot.
+ <ul>
+  <li> In <code>COMPILE-FILE</code>, the <code>:OUTPUT-FILE</code> can
+    also be a stream.  CMUCL was erroneously signaling an error..</li>
+
+  <li> <code>(OPEN f :DIRECTION :IO :IF-DOES-NOT-EXIST NIL)</code> no
+    longer signals an error if the file <code>f</code> does not exist.
+    It returns <code>NIL</code> now.</li>
+  <li> In some situations the compiler could not constant fold <code>SQRT</code>
+    calls because <code>KERNEL:%SQRT</code> was not defined on x86
+    with SSE2.  This is fixed now.</li>
+  <li> In an earlier snapshot to add support for character name
+    completion with slime, a bug was introduced where cmucl could no
+    longer read <code>#\latin_small_letter_a</code>.  This is fixed
+    in this version.<li>
+ </ul>
+<dt>Snapshot 2011-02
 <dd>
  The 2011-02 snapshot has been released.  See the release notes for
  details, but here is a quick summary of the changes between the
@@ -26,7 +46,7 @@
    encapsulation.  
  </ul>
 </dd>
-<dt><strong>Snapshot 2011-01</strong>
+<dt>Snapshot 2011-01
 <dd>
  The 2011-01 snapshot has been released.  See the release notes for
  details, but here is a quick summary of the changes between the
@@ -59,7 +79,7 @@
  </ul>
 </dd>
 
-<dt>2010-12 snapshot
+<dt>Snapshot 2010-12
 <dd>
 Some of the important changes are listed below.  See the <a
 href="http://common-lisp.net/project/cmucl/downloads/snapshots/2010/11/release-20c.txt">release

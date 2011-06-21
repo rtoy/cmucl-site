@@ -92,7 +92,7 @@
 (defun wb-home-as-relative-url (path-components)
   (loop for path in path-components
         unless (string-match "\\.html\\'" path)
-        concat "../"))
+        concat "./"))
 
 ;; generate a title string for STR, from the information in
 ;; `wb-jumpbar-titles' if present, else defaulting to the file's

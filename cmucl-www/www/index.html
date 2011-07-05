@@ -68,7 +68,30 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt><strong>Snapshot 2011-06</strong>
+<dt><strong>Snapshot 2011-07</strong>
+
+<dd> The 2011-07 snapshot has been released. See the release notes for
+details, but here is a quick summary of the changes between the this
+snapshot and the previous snapshot.
+ <ul>
+  <li> Unicode database updated to Unicode 6.0.0.</li>
+  <li> ASDF2 updated to version 2.016.1</li>
+
+  <li> Add <code>LISP:LOAD-ALL-UNICODE-DATA</code> to load all the
+  unicode information into core. This is useful for creating an
+  executable image that does not need unidata.bin.</li>
+
+  <li> CMUCL no longer exits if you specify a core file with an
+  executable image. A warning is printed instead and the core file is
+  used.</li>
+
+  <li> <a href="http://trac.common-lisp.net/cmucl/ticket/43">Trac
+  #43</a> has been fixed in a better way. The previous fix was
+  incorrect and causes some Unicode tests to fail.</li>
+ </ul>
+</dd>
+
+<dt>Snapshot 2011-06
 
 <dd> The 2011-06 snapshot has been released. See the release notes for
 details, but here is a quick summary of the changes between the this
@@ -78,10 +101,15 @@ snapshot and the previous snapshot.
   <li> Added command line option, <code>-unidata</code>, to allow user
   to specify the location and name of the unidata.bin file. This is
   used instead of the default location.
-  <li> Opening a file whose name contains "[" with <code>:IF-EXISTS
-  :NEW-VERSION</code> no longer causes an error.
+  <li> Opening a file with <code>:IF-EXISTS
+  :NEW-VERSION</code> no longer causes an error if the file name
+   contains "[".
  </ul>
 </dd>
+
+<dt>Snapshot 2011-05
+<dd> Due to the upgrade on common-lisp.net, no snapshot is available
+for this month.
 
 <dt>Snapshot 2011-04
 
@@ -97,7 +125,7 @@ snapshot and the previous snapshot.
 </dd>
 <dt>Snapshot 2011-03
 <dd>
- The 2011-02 snapshot has been released.  See the release notes for
+ The 2011-03 snapshot has been released.  See the release notes for
  details, but here is a quick summary of the changes between the
  this snapshot and the previous snapshot.
  <ul>
@@ -115,7 +143,7 @@ snapshot and the previous snapshot.
     longer read <code>#\latin_small_letter_a</code>.  This is fixed
     in this version.<li>
  </ul>
-<dt><strong>Snapshot 2011-02</strong>
+<dt>Snapshot 2011-02
 <dd>
  The 2011-02 snapshot has been released.  See the release notes for
  details, but here is a quick summary of the changes between the
@@ -130,7 +158,7 @@ snapshot and the previous snapshot.
    encapsulation.  </li>
  </ul>
 </dd>
-<dt><strong>Snapshot 2011-01</strong>
+<dt>Snapshot 2011-01
 <dd>
  The 2011-01 snapshot has been released.  See the release notes for
  details, but here is a quick summary of the changes between the

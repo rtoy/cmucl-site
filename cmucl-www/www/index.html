@@ -68,7 +68,24 @@ precision. </li>
 
 Also see <a href="news/index.html">News</a> for older news.
 <dl>
-<dt><strong>Snapshot 2011-07</strong>
+<dt><strong>Snapshot 2011-09</strong>
+
+<dd> The 2011-09 snapshot has been released. See the release notes for
+details, but here is a quick summary of the changes between the this
+snapshot and the previous snapshot.
+ <ul>
+  <li> ASDF2 updated to version 2.017.
+  <li> Improve type propagation for LOAD-TIME-VALUE.
+  <li> Getting documentation of a structure via DOCUMENTATION no longer signals an error.
+  <li> Reduce unnecessary consing of SAPs in ROOM.
+  <li> Make stack overflow checking actually work on Mac OS X.  The
+   implementation had the :stack-checking feature, but it didn't
+   actually prevent stack overflows from crashing lisp.
+  <li> Fix rounding of numbers larger than a fixnum.
+ </ul>
+</dd>
+
+<dt>Snapshot 2011-07
 
 <dd> The 2011-07 snapshot has been released. See the release notes for
 details, but here is a quick summary of the changes between the this

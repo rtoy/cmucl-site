@@ -41,7 +41,7 @@
 ;;(defconst wb-base-url "http://www.cons.org/cmucl/")
 ;; (defconst wb-doc-url  "ftp://ftp.linux.org.uk/pub/lisp/cmucl/doc/")
 (defconst wb-doc-url  "http://common-lisp.net/project/cmucl/doc/")
-(defconst wb-target-dir "/project/cmucl/public_html/mirror/")
+(defconst wb-target-dir "/tmp/project/cmucl/public_html/mirror/")
 (defconst wb-base-directory default-directory)
 
 ;; these override names which are otherwise generated automatically
@@ -90,9 +90,13 @@
 
 ;; when we're at PATH-COMPONENTS, what we have to prefix to get home.
 (defun wb-home-as-relative-url (path-components)
-  (loop for path in path-components
-        unless (string-match "\\.html\\'" path)
-        concat "./"))
+  (let ((p (loop for path in path-components
+	     unless (string-match "\\.html\\'" path)
+	     concat "../")))
+    ;; Remove the first "../" because one too many.
+    (if (listp p)
+	(cdr p)
+      p)))
 
 ;; generate a title string for STR, from the information in
 ;; `wb-jumpbar-titles' if present, else defaulting to the file's
@@ -132,8 +136,12 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 ;; split "./doc/internal/comp.html" into '("doc" "internal" "comp.html")
 (defun wb-path-components (filename)
   ;; split any trailing `index.html' or leading `./'
-  (when (string-match "index\\.html\\'" filename)
-    (setq filename (replace-match "" t t filename)))
+  
+  ;; XXX: I (rtoy) don't know why when is needed.  What makes
+  ;; index.html special?
+  
+  ;;(when (string-match "index\\.html\\'" filename)
+  ;;  (setq filename (replace-match "" t t filename)))
   (when (string-match "^\\./" filename)
     (setq filename (replace-match "" t t filename)))
   (wb-split-string filename "/"))
@@ -330,7 +338,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           ;; ensure-directories-exist
           (make-directory (file-name-directory target) t)
           (write-file target)
-          (set-file-modes target ?\664)
+          (set-file-modes target #o664)
           (kill-buffer nil)
           ;; now do a printable version of the file
           ;; replace ".html" by "-print.html" in the filename
@@ -340,7 +348,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           (let ((wb-printable t))
             (wb-frob-buffer file))
           (write-file target)
-          (set-file-modes target ?\664)
+          (set-file-modes target #o664)
           (kill-buffer nil))))
 
 

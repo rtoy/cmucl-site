@@ -10,7 +10,7 @@
 <link rel="banner" href="@@HOME@@projects.html" title="Projects">
 <link rel="banner" href="@@HOME@@ports.html" title="Ports">
 <link rel="banner" href="@@HOME@@support.html" title="Support">
-<link href="https://plus.google.com/111360785690907674471" rel="publisher" />
+<link href="https://plus.google.com/111360785690907674471" rel="publisher">
 
 <script type="text/javascript">
 

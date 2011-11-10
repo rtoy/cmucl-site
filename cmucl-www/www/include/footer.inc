@@ -10,4 +10,5 @@ Validate
 <a href="http://validator.w3.org/check?uri=@@URL@@">HTML</a>,
 <a href="http://jigsaw.w3.org/css-validator/validator?uri=@@BASE@@cmucl.css">stylesheet</a>.
 </font>
+<a href="https://plus.google.com/111360785690907674471?prsrc=3" style="text-decoration: none;"><img src="https://ssl.gstatic.com/images/icons/gplus-16.png" width="16" height="16" style="border: 0;"/></a>
 

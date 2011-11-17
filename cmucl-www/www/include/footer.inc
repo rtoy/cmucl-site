@@ -12,5 +12,6 @@ Validate
 <a href="http://jigsaw.w3.org/css-validator/validator?uri=@@BASE@@cmucl.css">stylesheet</a>.
 </font>
 
+<br>
 <!-- Where to render the Google+ badge -->
 <g:plus href="https://plus.google.com/111360785690907674471" size="badge"></g:plus>

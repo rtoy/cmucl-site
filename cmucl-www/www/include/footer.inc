@@ -1,5 +1,5 @@
 <hr noshade>
-<a href="https://plus.google.com/111360785690907674471?prsrc=3" style="text-decoration: none;"><img src="https://ssl.gstatic.com/images/icons/gplus-32.png" width="32" height="32" style="border: 0;" align="right" alt=""></a>
+<g:plus href="https://plus.google.com/111360785690907674471" size="badge"></g:plus>
 		
 <img border=0 src="http://validator.w3.org/images/vh40.gif"
      align="right" alt="" height=31 width=88>

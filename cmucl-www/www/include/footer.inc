@@ -7,6 +7,7 @@
 <!-- Render the Google g+ badge -->	
 <a href="https://plus.google.com/111360785690907674471?prsrc=3" style="cursor:pointer;display:inline-block;text-decoration:none;color:#333;font:13px/16px arial,sans-serif;"><span style="display:inline-block;font-weight:bold;vertical-align:top;margin-right:5px;margin-top:8px;">CMUCL</span><span style="display:inline-block;vertical-align:top;margin-right:15px;margin-top:8px;">on</span><img src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt="" style="border:0;width:32px;height:32px;"/></a>		
 
+<br>		
 <font size="-1" face="Helvetica, Arial">
 Last modified @@DATE@@ by &lt;webmaster@cmucl.cons.org&gt; <br>
 Copyright &copy; 1999-2010 CMUCL Project <br>

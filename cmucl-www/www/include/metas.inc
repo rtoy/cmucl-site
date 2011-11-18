@@ -12,14 +12,16 @@
 <link rel="banner" href="@@HOME@@support.html" title="Support">
 <!-- Google+ badge.  See footer.inc too. -->
 <link href="https://plus.google.com/111360785690907674471" rel="publisher">
+<!-- For Google +1 button -->
 <script type="text/javascript">
-(function() 
-{var po = document.createElement("script");
-po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
-var s = document.getElementsByTagName("script")[0];
-s.parentNode.insertBefore(po, s);
-})();</script>
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
 
+<!-- For Google analytics -->		
 <script type="text/javascript">
 
   var _gaq = _gaq || [];

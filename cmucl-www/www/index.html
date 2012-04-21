@@ -66,11 +66,80 @@ precision. </li>
 
 <h2>Latest News</h2>
 
-For older news see <a href="news/index.html">News</a>.  For other
-news, also see <a href="http://trac.common-lisp.net/cmucl">CMUCL
+For older news see <a href="news/index.html">News</a>.  For the most
+up-to-date info and news, see <a href="http://trac.common-lisp.net/cmucl">CMUCL
 Trac</a>.
 
 <dl>
+
+<dt><strong>Snapshot 2012-04</strong></dt>
+ <dd> The 2012-04 snapshot has been released. See the 
+    <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/04/release-20d.txt">release notes</a> for
+    details, but here is a quick summary of the changes between the
+    this snapshot and the 20c release..
+
+  <ul>
+    <li>Added a new contrib, <code>contrib-packed-sse2</code> to allow packed
+    operations ala SSE2. Support for some packed sse2 operations like
+    multiply, divide, and shuffle for both packed singles and
+    doubles. All operations are done on top of <code>(complex double-float)</code>
+    numbers. Functions are provided to put and get packed
+    singles/doubles from <code>(complex double-float)</code>.
+    </li>
+
+    <li>Some VOP costs were incorrect which prevented the fast complex
+    double-float multiplier from being used when sse3 is available.
+    </li>
+
+    <li>Add micro-optimization for x86 (already available on sparc and
+    ppc) where (logand <signed-byte 32> #xffffffff) generates a
+    register move instead of and'ing with #xffffffff. 
+    </li>
+
+    <li>Updated to Unicode 6.1.0.</li>
+
+    <li><code>LISP:UNICODE-COMPLETE</code> no longer signals an error
+    if the prefix isn't a prefix of the name of any Unicode character.
+    </li>
+
+    <li>Add <code>-R</code> option to build.sh to force recompiling the C runtime. </li>
+
+    <li>UTF-8 is now build into the core and always available.</li>
+
+    <li>A bug in <code>UNICODE-COMPLETE-NAME</code> has been
+    fixed. (Mostly useful with Slime when completing character
+    names.)
+    </li>
+
+    <li>An issue with blocked signals after an interrupt has been fixed.</li>
+
+    <li>The ppc port has been revived; only a Unicode version is currently
+    available. 
+    </li>
+
+    <li>CMUCL was not printing pathnames like <code>(make-pathname :directory
+    '(:absolute "tmp" "" "/"))</code> correctly. This is now printed
+    using <code>#P(...)</code>. 
+    </li>
+
+    <li>The directory structure has been changed.</li>
+
+    </li><code>ASDF2</code> updated to version 2.019.</li>
+
+    <li>Behavior of <code>STRING-TO-OCTETS</code> has changed. This is
+    an incompatible change from the previous version but should be
+    more useful when a buffer is given which is not large enough to
+    hold all the octets for the given string. See docstring for more
+    details.
+    </li>
+    
+    <li>DECODE-FLOAT was not correctly declared and could not be
+    compiled to handle double-double-floats. 
+   </li> 
+
+  </ul>
+ </dd>
+
 <dt><strong>20c released</strong></dt>
 <dd>CMUCL 20c has been released, For information on the changes between
 20c and 20b, we refer the reader to the <a href="http://trac.common-lisp.net/cmucl/wiki/ReleaseNotes20c">20c release notes</a>.

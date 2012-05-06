@@ -61,7 +61,15 @@
      tar xjf /path/to/cmucl-19e-&lt;platform&gt;.tar.bz2
      tar xjf /path/to/cmucl-19e-&lt;platform&gt;.extra.tar.bz2
 </pre>
-     
+
+<p> If you do not have a version of \code{tar} that understand the \code{j} option,
+you may need to replace the \code{tar} command above with
+</p>
+
+<pre>
+     bunzip2 < /path/to/cmucl-19e-<platform>.tar.bz2 | tar xf -
+</pre>
+
 <p> or alternatively, install under a directory in <tt>/opt</tt>, for example
   
 <pre>

@@ -72,7 +72,51 @@ Trac</a>.
 
 <dl>
 
-<dt><strong>Snapshot 2012-04</strong></dt>
+<dt><strong>Snapshot 2012-06</strong></dt>
+ <dd> The 2012-06 snapshot has been released. See the 
+   <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/06/release-20d.txt">release notes</a> 
+    for details, but here is a quick summary of the changes between
+    the this snapshot and the previous snapshot.
+
+  <ul>
+    <li>Implement faster <code>LOGCOUNT</code> function on x86, if
+    <code>:SSE3</code> feature is available. (Only applies to new uses
+    of <code>LOGCOUNT</code>. The core uses the default version.)
+    </li>
+
+    <li>On x86, <code>SET-FLOATING-POINT-MODES</code> clears any
+    current and accrued exceptions that match exceptions in
+    <code>:TRAPS</code>. Previously, enabling a trap when the current
+    exception also listed that trap caused the exception to be
+    immediately signaled. This no longer happens and now matches how
+    ppc and sparc behave. </li>
+  </ul>
+ </dd>
+
+<dt>Snapshot 2012-05</dt>
+ <dd> The 2012-05 snapshot has been released. See the release notes
+ for details, but here is a quick summary of the changes between the
+ this snapshot and the previous snapshot.
+
+  <ul>
+    <li> ASDF2 updated to version 2.21.</li>
+    <li>Many additional aliases for external formats added that match
+    the glibc iconv aliases.</li>
+    <li>External format for UTF-32 was generating an error when
+    converting octets to a string.</li>
+    <li> The UTF-16-BE and UTF-16-LE external formats were returning
+    the incorrect number of octets when surrogates pairs were
+    decoded. This confuses the stream buffering code.</li>
+    <li> Fix typo in ISO8859-2 external format that caused it not to
+    work correctly. This type potentially also caused failures for all
+    other external formats that were based on ISO8859-2.</li>
+    <li> Fix <a
+    href="http://trac.common-lisp.net/cmucl/ticket/58">ticket:58</a>:
+    UTF-16 buffering problem.</li>
+  </ul>
+ </dd>
+
+<dt>Snapshot 2012-04</dt>
  <dd> The 2012-04 snapshot has been released. See the 
     <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/04/release-20d.txt">release notes</a> for
     details, but here is a quick summary of the changes between the

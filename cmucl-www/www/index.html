@@ -72,7 +72,38 @@ Trac</a>.
 
 <dl>
 
-<dt><strong>Snapshot 2012-08</strong></dt>
+<dt><strong>Snapshot 2012-10</strong></dt>
+ <dd> The <a
+ href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/10/">2012-10 snapshot</a> has been released. See the 
+   <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/10/release-20d.txt">release notes</a> 
+    for details, but here is a quick summary of the changes between
+    the this snapshot and the previous snapshot.
+
+  <ul>
+   <li> <code>READ-CYCLE-COUNTER</code> no longer destroys any live values in the <code>EDX</code> or <code>ECX</code> registers.</li>
+   <li> Add <code>VM::WITH-CYCLE-COUNTER<code> to return the number of ticks elapsed
+    when executing the body. The number of ticks is the number of CPU
+    cycles, except for ppc/darwin.</li>
+  </ul>
+ </dd>
+
+<dt><strong>Snapshot 2012-09</strong></dt>
+ <dd> The <a
+ href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/09/">2012-09 snapshot</a> has been released. See the 
+   <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/09/release-20d.txt">release notes</a> 
+    for details, but here is a quick summary of the changes between
+    the this snapshot and the previous snapshot.
+
+  <ul>
+   <li> ASDF2 updated to version 2.24</li>
+   <li> Add microptimization of <code>2*x</code> and
+     <code>x/(2^n)</code> when <code>x</code> is a float and
+     <code>n</code> is an integer.</li> 
+   <li> Fixed a minor build issue in the CLM debugger. </li>
+  </ul>
+ </dd>
+
+<dt>Snapshot 2012-08</dt>
  <dd> The <a
  href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/08/">2012-08 snapshot</a> has been released. See the 
    <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/08/release-20d.txt">release notes</a> 

@@ -71,6 +71,28 @@ up-to-date info and news, see <a href="http://trac.common-lisp.net/cmucl">CMUCL
 Trac</a>.
 
 <dl>
+<dt><strong>Snapshot 2012-12</strong></dt>
+<dd>The <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/12/">2012-12
+snapshot </a> has been released, See the <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/10/release-20e.txt">release
+notes</a> for details, but here is a quick summary of the changes
+between the this snapshot and the previous snapshot.
+
+<ul>
+ <li> ASDF2 updated to 2.26</li>
+ <li> Unicode completion has been reverted to the older version due to
+ the inability to complete <code>#\hangul_syllable_</code>. Trac 
+ <a href=http://trac.common-lisp.net/cmucl/ticket/52"">ticket:52</a>
+ reopened.</li>
+ <li> Starting with this snapshot, only the unicode version of CMUCL
+ is officially supported. The 8-bit version and code will not be
+ deleted, but binaries will no longer be supplied for the 8-bit
+ (non-unicode) version. </li>
+
+</ul>
+</dd>
+
 <dt><strong>CMUCL 20d released</strong></dt>
 <dd><a href="http://common-lisp.net/project/cmucl/downloads/release/20d/">CMUCL 20d</a> has been released, For information on the changes between
 20d and 20c, we refer the reader to the <a href="http://trac.common-lisp.net/cmucl/wiki/Release20d">20d release notes</a>.

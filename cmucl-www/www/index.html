@@ -71,7 +71,57 @@ up-to-date info and news, see <a href="http://trac.common-lisp.net/cmucl">CMUCL
 Trac</a>.
 
 <dl>
-<dt><strong>Snapshot 2013-02</strong></dt>
+<dt><strong>Snapshot 2013-04</strong></dt>      
+<dd>
+The <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/04/">2013-04
+snapshot</a> has been released. See <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/04/release-20e.txt">the
+release notes</a> for details, but here is a quick summary of the
+changes between the this snapshot and the previous snapshot.
+ <ul>
+  <li> Fix startup crashes on some Debian Linux versions.  This was
+   caused by the release string not having a patch version.</li>
+  <li> <code>FILE-POSITION</code> no longer returns incorrect values.
+  See <a href="http://trac.common-lisp.net/cmucl/ticket/79">ticket
+   #79</a>.</li>
+  <li> Fix error in <code>(format t "~ve" 21 5d-324)</code>.  (See <a href="http://trac.common-lisp.net/cmucl/ticket/80">ticket #80</a>).</li>
+ </ul>
+</dd>
+      
+<dt>Snapshot 2013-03-a</dt>
+<dd>
+Due to a serious error (see <a href="http://trac.common-lisp.net/cmucl/ticket/76">ticket #76</a>) introduced in 2013-02 and
+persisting in 2013-03, a new snapshot, <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03-a/">2013-03-a</a>, has been
+released. See <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03-a/release-20e.txt">the
+release notes</a> for details, but here is a quick summary of the
+changes between the this snapshot and the previous snapshot.
+
+ <ul>
+  <li> ASDF updated to version 2.32.</li>
+  <li> Update to support Unicode 6.2</li>
+  <li> Ticket #76 fixed.</li>
+ </ul>	    
+<dd>
+</dd>
+<dt><del>Snapshot 2013-03<del></dt>
+<dd>
+The <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03/">2013-03
+snapshot</a> has been released. See <a
+href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03/release-20e.txt">the
+release notes</a> for details, but here is a quick summary of the
+changes between the this snapshot and the previous snapshot.
+ <ul>
+  <li> ASDF updated to version 2.30.</li>
+  <li> Attempts to modify the standard readtable or standard pprint
+  dispatch table will signal an error.</li>
+	  
+  <li> An error in <code>FILE-POSITION</code> has been fixed (Ticket #74).
+ </ul>
+</dd>	
+<dt><del>Snapshot 2013-02</del></dt>
 <dd> The <a
 href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/02/">2013-02</a>
 snapshot has been released. See the <a

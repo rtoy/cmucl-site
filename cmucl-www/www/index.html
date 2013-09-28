@@ -66,125 +66,16 @@ precision. </li>
 
 <h2>Latest News</h2>
 
-For older news see <a href="news/index.html">News</a>.  For the most
-up-to-date info and news, see <a href="http://trac.common-lisp.net/cmucl">CMUCL
-Trac</a>.
+For the most up-to-date info and news, see 
+<a href="http://trac.common-lisp.net/cmucl">CMUCL Trac</a>. For older
+news see <a href="news/index.html">News</a>.
 
 <dl>
-<dt><strong>Snapshot 2013-04</strong></dt>      
-<dd>
-The <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/04/">2013-04
-snapshot</a> has been released. See <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/04/release-20e.txt">the
-release notes</a> for details, but here is a quick summary of the
-changes between the this snapshot and the previous snapshot.
- <ul>
-  <li> Fix startup crashes on some Debian Linux versions.  This was
-   caused by the release string not having a patch version.</li>
-  <li> <code>FILE-POSITION</code> no longer returns incorrect values.
-  See <a href="http://trac.common-lisp.net/cmucl/ticket/79">ticket
-   #79</a>.</li>
-  <li> Fix error in <code>(format t "~ve" 21 5d-324)</code>.  (See <a href="http://trac.common-lisp.net/cmucl/ticket/80">ticket #80</a>).</li>
- </ul>
-</dd>
-      
-<dt>Snapshot 2013-03-a</dt>
-<dd>
-Due to a serious error (see <a href="http://trac.common-lisp.net/cmucl/ticket/76">ticket #76</a>) introduced in 2013-02 and
-persisting in 2013-03, a new snapshot, <a href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03-a/">2013-03-a</a>, has been
-released. See <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03-a/release-20e.txt">the
-release notes</a> for details, but here is a quick summary of the
-changes between the this snapshot and the previous snapshot.
+<dt><strong>CMUCL 20e released</strong></dt>
+<dd><a href="http://common-lisp.net/project/cmucl/downloads/release/20e/">CMUCL 20e</a> has been released, For information on the changes between
+20e and 20d, we refer the reader to the <a href="http://trac.common-lisp.net/cmucl/wiki/Release20e">20e release notes</a>.
 
- <ul>
-  <li> ASDF updated to version 2.32.</li>
-  <li> Update to support Unicode 6.2</li>
-  <li> Ticket #76 fixed.</li>
- </ul>	    
-<dd>
-</dd>
-<dt><del>Snapshot 2013-03<del></dt>
-<dd>
-The <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03/">2013-03
-snapshot</a> has been released. See <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/03/release-20e.txt">the
-release notes</a> for details, but here is a quick summary of the
-changes between the this snapshot and the previous snapshot.
- <ul>
-  <li> ASDF updated to version 2.30.</li>
-  <li> Attempts to modify the standard readtable or standard pprint
-  dispatch table will signal an error.</li>
-	  
-  <li> An error in <code>FILE-POSITION</code> has been fixed (Ticket #74).
- </ul>
-</dd>	
-<dt><del>Snapshot 2013-02</del></dt>
-<dd> The <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/02/">2013-02</a>
-snapshot has been released. See the <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/02/release-20e.txt">release
-notes</a> for details, but
-here is a quick summary of the changes between the this snapshot and
-the previous snapshot.
-
- <ul>
-  <li>  ASDF updated to version 2.28.</li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/65">#65</a> fixed.</li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/69">#69</a> fixed.</li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/70">#70</a> fixed.</li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/71">#71</a> fixed.</li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/72">#72</a> fixed.</li> 
- </ul>
-</dd>
-
-<dt>Snapshot 2013-01</dt>
-<dd> The <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/01/">2013-01</a>
-snapshot has been released. See the <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2013/01/release-20e.txt">release
-notes</a> for details, but
-here is a quick summary of the changes between the this snapshot and
-
- <ul>
-  <li>  <code>DEFINE-COMPILER-MACRO</code> has source-location information for the definition.</li>
-  <li>  <code>:ALIEN-CALLBACK</code> added to <code>*FEATURES*</code> for platforms that support alien callbacks. This is currently available for all supported platforms.</li>
-  <li>  REPLACE can now handle strings of any supported size.</li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/66">#66</a> fixed. </li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/67">#67</a> fixed. </li>
-  <li>  Ticket <a href="http://trac.common-lisp.net/cmucl/ticket/68">#68</a> fixed: </li>
- </ul>
-</dd>
-
-<dt>Snapshot 2012-12</dt>
-<dd>The <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/12/">2012-12
-snapshot </a> has been released, See the <a
-href="http://common-lisp.net/project/cmucl/downloads/snapshots/2012/12/release-20e.txt">release
-notes</a> for details, but here is a quick summary of the changes
-between the this snapshot and the previous snapshot:
-
-<ul>
- <li> ASDF2 updated to 2.26</li>
- <li> Unicode completion has been reverted to the older version due to
- the inability to complete <code>#\hangul_syllable_</code>. Trac 
- <a href="http://trac.common-lisp.net/cmucl/ticket/52">ticket:52</a>
- reopened.</li>
- <li> Starting with this snapshot, only the unicode version of CMUCL
- is officially supported. The 8-bit version and code will not be
- deleted, but binaries will no longer be supplied for the 8-bit
- (non-unicode) version. </li>
-
-</ul>
-</dd>
-
-<dt><strong>CMUCL 20d released</strong></dt>
-<dd><a href="http://common-lisp.net/project/cmucl/downloads/release/20d/">CMUCL 20d</a> has been released, For information on the changes between
-20d and 20c, we refer the reader to the <a href="http://trac.common-lisp.net/cmucl/wiki/Release20d">20d release notes</a>.
-
-Because of the release, there will not be a 2011-11 snapshot. . 
+Because of the release, there will not be a 2013-10 snapshot. . 
 </dd>
 </dl>
 

@@ -8,7 +8,7 @@ It's not enough just to update the pages; they need to be processed to
 generate the actual site.
 
 First, check out the cmucl-www repo.  Edit the desired pages, but be
-sure to preserve the @@<foo>@@ tags.  Check in your changes.  Log on
+sure to preserve the `@@<foo>@@` tags.  Check in your changes.  Log on
 to common-lisp.net and check out cmucl-www somewhere.
 
 Then cd to cmucl-www/cmucl-www/www directory and run
@@ -24,4 +24,3 @@ results immediately at
 In a few minutes the pages should be updated on
 [www.cmucl.org](http://www.cmucl.org).  After a day or so, the new
 webpages should appear on [www.cons.org](http://www.cons.org/cmucl).
-

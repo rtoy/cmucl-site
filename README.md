@@ -9,13 +9,13 @@ generate the actual site.
 
 First, check out the cmucl-www repo.  Edit the desired pages, but be
 sure to preserve the `@@<foo>@@` tags.  Check in your changes.  Log on
-to common-lisp.net and check out cmucl-www somewhere.
+to common-lisp.net and check out `cmucl-www` somewhere.
 
-Then cd to cmucl-www/cmucl-www/www directory and run
+Then `cd` to `cmucl-www/cmucl-www/www` directory and run
 
     emacs -batch -q -l ../build.el -f wb-make
 
-This updates the files in /project/cmucl/public_html/mirror.  From
+This updates the files in `/project/cmucl/public_html/mirror`.  From
 here, a cron job on www.cmucl.org and www.cons.org does a periodic
 rsync to update the web pages with these pages.  You can view the
 results immediately at

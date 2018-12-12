@@ -41,7 +41,7 @@
 ;;(defconst wb-base-url "http://www.cons.org/cmucl/")
 ;; (defconst wb-doc-url  "ftp://ftp.linux.org.uk/pub/lisp/cmucl/doc/")
 (defconst wb-doc-url  "http://common-lisp.net/project/cmucl/doc/")
-(defconst wb-target-dir "/project/cmucl/public_html/mirror/")
+(defconst wb-target-dir "../../public/")
 (defconst wb-base-directory default-directory)
 
 ;; these override names which are otherwise generated automatically
@@ -338,7 +338,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           ;; ensure-directories-exist
           (make-directory (file-name-directory target) t)
           (write-file target)
-          (set-file-modes target #o664)
+          ;;(set-file-modes target #o664)
           (kill-buffer nil)
           ;; now do a printable version of the file
           ;; replace ".html" by "-print.html" in the filename
@@ -348,7 +348,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           (let ((wb-printable t))
             (wb-frob-buffer file))
           (write-file target)
-          (set-file-modes target #o664)
+          ;;(set-file-modes target #o664)
           (kill-buffer nil))))
 
 

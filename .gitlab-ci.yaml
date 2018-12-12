@@ -1,4 +1,0 @@
-deploy:
-  script:
-    - echo Running7
-    - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)

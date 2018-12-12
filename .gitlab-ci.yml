@@ -1,0 +1,9 @@
+pages:
+  stage: deploy
+  script:
+    - (mkdir public ; cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
+  artifacts:
+     paths:
+       - public
+  tags:
+    - site-gen

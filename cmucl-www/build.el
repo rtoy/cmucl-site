@@ -348,7 +348,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           (let ((wb-printable t))
             (wb-frob-buffer file))
           (write-file target)
-          (set-file-modes target #o664)
+          ;;(set-file-modes target #o664)
           (kill-buffer nil))))
 
 

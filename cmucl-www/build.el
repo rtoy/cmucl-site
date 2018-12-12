@@ -338,7 +338,7 @@ If SEPARATORS is absent, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
           ;; ensure-directories-exist
           (make-directory (file-name-directory target) t)
           (write-file target)
-          (set-file-modes target #o664)
+          ;;(set-file-modes target #o664)
           (kill-buffer nil)
           ;; now do a printable version of the file
           ;; replace ".html" by "-print.html" in the filename

@@ -1,7 +1,7 @@
 pages:
   stage: deploy
   script:
-    - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
+    - (mkdir public ; cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
   artifacts:
      paths:
        - public

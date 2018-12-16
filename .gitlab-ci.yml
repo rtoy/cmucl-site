@@ -2,7 +2,8 @@ pages:
   stage: deploy
   script:
     - (mkdir public ; cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
-    - (cd public; tar cf - .) | (cd /project/cmucl/downloads/mirror; tar xf -)
+    - (cd public; tar cf ../html.tar .)
+    - cat html.tar | (cd /project/cmucl/downloads/mirror; tar xf -)
   artifacts:
      paths:
        - public

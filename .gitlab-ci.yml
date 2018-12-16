@@ -4,6 +4,7 @@ pages:
     - (mkdir public ; cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
     - id
     - ls -l /project/cmucl/downloads/mirror
+    - echo "Testing" >> /project/cmucl/downloads/mirror/test.txt
     - (cd public; tar cf ../html.tar .)
     - cat html.tar | (cd /project/cmucl/downloads/mirror; tar xf -)
   artifacts:

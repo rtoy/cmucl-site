@@ -1,7 +1,11 @@
 pages:
   stage: deploy
   script:
-    - (mkdir public ; cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
+    - mkdir public
+    - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
+    - (cd docs/internals; makeinfo --force --html design.texi)
+    - mkdir public/docs/internals
+    - cp -r docs/internals/design public/docs/internals
   artifacts:
      paths:
        - public

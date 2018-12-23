@@ -17,6 +17,18 @@ Hemlock
 Python
 @end macro
 
+@macro credits {arg}
+@center @b{\arg\}
+@end macro
+
+@macro dash {}
+---
+@end macro
+
+@macro kwd {keyword}
+@code{:\keyword\}
+@end macro
+
 @titlepage
 @title CMUCL User's Manual
 @subtitle October 2017

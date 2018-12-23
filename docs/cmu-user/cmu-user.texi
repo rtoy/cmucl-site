@@ -51,4 +51,6 @@ language implementation, programming environment
 @end ifnottex
 
 @include introduction.texi
+@c @include extensions.texi
+@include debugger.texi
 @bye

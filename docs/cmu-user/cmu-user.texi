@@ -23,6 +23,9 @@ Python
 @subtitle 21c
 @author Robert A. MacLachlan, @i{Editor}
 
+@iftex
+@vskip 10pt
+@end iftex
 @quotation
 @cmucl{} is a free, high-performance implementation of the Common Lisp
 programming language, which runs on most major Unix platforms. It
@@ -31,6 +34,9 @@ sophisticated native-code compiler, a foreign function interface, a
 graphical source-level debugger, an interface to the X11 Window
 System, and an Emacs-like editor.
 
+@iftex
+@vskip 5pt
+@end iftex
 @b{Keywords}: lisp, Common Lisp, manual, compiler, programming
 language implementation, programming environment
 @end quotation

@@ -1,0 +1,1031 @@
+@node The Debugger
+@chapter The Debugger
+@anchor{#the-debugger}
+[debugger]
+
+@menu
+* Debugger Introduction::
+* The Command Loop::
+* Stack Frames::
+* Variable Access::
+* Source Location Printing::
+* Compiler Policy Control::
+* Exiting Commands::
+* Information Commands::
+* Breakpoint Commands::
+* Function Tracing::
+* Specials::
+@end menu
+
+@node Debugger Introduction
+@section Debugger Introduction
+@anchor{#debugger-introduction}
+The debugger is unique in its level of support for source-level
+debugging of compiled code. Although some other debuggers allow access
+of variables by name, this seems to be the first debugger that:
+
+@itemize
+@item
+Tells you when a variable doesn't have a value because it hasn't been
+initialized yet or has already been deallocated, or
+
+@item
+Can display the precise source location corresponding to a code location
+in the debugged program.
+
+@end itemize
+
+These features allow the debugging of compiled code to be made almost
+indistinguishable from interpreted code debugging.
+
+The debugger is an interactive command loop that allows a user to
+examine the function call stack. The debugger is invoked when:
+
+@itemize
+@item
+A is signaled, and it is not handled, or
+
+@item
+is called, and the condition it signals is not handled, or
+
+@item
+The debugger is explicitly invoked with the or functions.
+
+@end itemize
+
+@emph{Note: there are two debugger interfaces in : the TTY debugger
+(described below) and the Motif debugger. Since the difference is only
+in the user interface, much of this chapter also applies to the Motif
+version. for a very brief discussion of the graphical interface.}
+
+When you enter the TTY debugger, it looks something like this:
+
+Error in function CAR. Wrong type argument, 3, should have been of type
+LIST.
+
+Restarts: 0: Return to Top-Level.
+
+Debug (type H for help)
+
+(CAR 3) 0]
+
+The first group of lines describe what the error was that put us in the
+debugger. In this case was called on . After is a list of all the ways
+that we can restart execution after this error. In this case, the only
+option is to return to top-level. After printing its banner, the
+debugger prints the current frame and the debugger prompt.
+
+@node The Command Loop
+@section The Command Loop
+@anchor{#the-command-loop}
+The debugger is an interactive read-eval-print loop much like the normal
+top-level, but some symbols are interpreted as debugger commands instead
+of being evaluated. A debugger command starts with the symbol name of
+the command, possibly followed by some arguments on the same line. Some
+commands prompt for additional input. Debugger commands can be
+abbreviated by any unambiguous prefix: can be typed as , , etc. For
+convenience, some commands have ambiguous one-letter abbreviations: for
+.
+
+The package is not significant in debugger commands; any symbol with the
+name of a debugger command will work. If you want to show the value of a
+variable that happens also to be the name of a debugger command, you can
+use the command or the function, or you can wrap the variable in a to
+hide it from the command loop.
+
+The debugger prompt is ``'', where is the number of the current frame.
+Frames are numbered starting from zero at the top (most recent call),
+increasing down to the bottom. The current frame is the frame that
+commands refer to. The current frame also provides the lexical
+environment for evaluation of non-command forms.
+
+The debugger evaluates forms in the lexical environment of the functions
+being debugged. The debugger can only access variables. You can't or
+into a function, and you can't call local functions. Special variable
+references are evaluated with their current value (the innermost binding
+around the debugger invocation)you don't get the value that the special
+had in the current frame. for more information on debugger variable
+access.
+
+@node Stack Frames
+@section Stack Frames
+@anchor{#stack-frames}
+A stack frame is the run-time representation of a call to a function;
+the frame stores the state that a function needs to remember what it is
+doing. Frames have:
+
+@itemize
+@item
+Variables (), which are the values being operated on, and
+
+@item
+Arguments to the call (which are really just particularly interesting
+variables), and
+
+@item
+A current location (), which is the place in the program where the
+function was running when it stopped to call another function, or
+because of an interrupt or error.
+
+@end itemize
+
+@menu
+* Stack Motion::
+* How Arguments are Printed::
+* Function Names::
+* Funny Frames::
+* Debug Tail Recursion::
+* Unknown Locations and Interrupts::
+@end menu
+
+@node Stack Motion
+@subsection Stack Motion
+@anchor{#stack-motion}
+These commands move to a new stack frame and print the name of the
+function and the values of its arguments in the style of a Lisp function
+call:
+
+Move up to the next higher frame. More recent function calls are
+considered to be higher on the stack.
+
+Move down to the next lower frame.
+
+Move to the highest frame.
+
+Move to the lowest frame.
+
+] Move to the frame with the specified number. Prompts for the number if
+not supplied.
+
+@node How Arguments are Printed
+@subsection How Arguments are Printed
+@anchor{#how-arguments-are-printed}
+A frame is printed to look like a function call, but with the actual
+argument values in the argument positions. So the frame for this call in
+the source:
+
+(myfun (+ 3 4) 'a)
+
+would look like this:
+
+(MYFUN 7 A)
+
+All keyword and optional arguments are displayed with their actual
+values; if the corresponding argument was not supplied, the value will
+be the default. So this call:
+
+(subseq "foo" 1)
+
+would look like this:
+
+(SUBSEQ "foo" 1 3)
+
+And this call:
+
+(string-upcase "test case")
+
+would look like this:
+
+(STRING-UPCASE "test case" :START 0 :END NIL)
+
+The arguments to a function call are displayed by accessing the argument
+variables. Although those variables are initialized to the actual
+argument values, they can be set inside the function; in this case the
+new value will be displayed.
+
+arguments are handled somewhat differently. The value of the rest
+argument variable is displayed as the spread-out arguments to the call,
+so:
+
+(format t "@ A is a @ A." "This" 'test)
+
+would look like this:
+
+(FORMAT T "@ A is a @ A." "This" 'TEST)
+
+Rest arguments cause an exception to the normal display of keyword
+arguments in functions that have both and arguments. In this case, the
+keyword argument variables are not displayed at all; the rest arg is
+displayed instead. So for these functions, only the keywords actually
+supplied will be shown, and the values displayed will be the argument
+values, not values of the (possibly modified) variables.
+
+If the variable for an argument is never referenced by the function, it
+will be deleted. The variable value is then unavailable, so the debugger
+prints instead of the value. Similarly, if for any of a number of
+reasons (described in more detail in section @ref{#debug-vars,1.4}) the
+value of the variable is unavailable or not known to be available, then
+will be printed instead of the argument value.
+
+Printing of argument values is controlled by and .
+
+@node Function Names
+@subsection Function Names
+@anchor{#function-names}
+If a function is defined by , , or , then the debugger will print the
+actual function name after the open parenthesis, like:
+
+(STRING-UPCASE "test case" :START 0 :END NIL) ((SETF AREF) # "for" 1)
+
+Otherwise, the function name is a string, and will be printed in quotes:
+
+("DEFUN MYFUN" BAR) ("DEFMACRO DO" (DO ((I 0 (1+ I))) ((= I 13))) NIL)
+("SETQ *GC-NOTIFY-BEFORE*")
+
+This string name is derived from the form that encloses or expanded into
+the lambda, or the outermost enclosing form if there is no .
+
+@node Funny Frames
+@subsection Funny Frames
+@anchor{#funny-frames}
+Sometimes the evaluator introduces new functions that are used to
+implement a user function, but are not directly specified in the source.
+The main place this is done is for checking argument type and syntax.
+Usually these functions do their thing and then go away, and thus are
+not seen on the stack in the debugger. But when you get some sort of
+error during lambda-list processing, you end up in the debugger on one
+of these funny frames.
+
+These funny frames are flagged by printing ``'' after the parentheses.
+For example, this call:
+
+(car 'a 'b)
+
+will look like this:
+
+(CAR 2 A) [:EXTERNAL]
+
+And this call:
+
+(string-upcase "test case" :end)
+
+would look like this:
+
+("DEFUN STRING-UPCASE" "test case" 335544424 1) [:OPTIONAL]
+
+As you can see, these frames have only a vague resemblance to the
+original call. Fortunately, the error message displayed when you enter
+the debugger will usually tell you what problem is (in these cases, too
+many arguments and odd keyword arguments.) Also, if you go down the
+stack to the frame for the calling function, you can display the
+original source (.)
+
+With recursive or block compiled functions (), an frame may appear
+before the frame representing the first call to the recursive function
+or entry to the compiled block. This is a consequence of the way the
+compiler does block compilation: there is nothing odd with your program.
+You will also see frames during the execution of cleanup code. Note that
+inline expansion and open-coding affect what frames are present in the
+debugger, see sections @ref{#debugger-policy,1.6} and
+@ref{#open-coding,[open-coding]}.
+
+@node Debug Tail Recursion
+@subsection Debug Tail Recursion
+@anchor{#debug-tail-recursion}
+Both the compiler and the interpreter are ``properly tail recursive.''
+If a function call is in a tail-recursive position, the stack frame will
+be deallocated @emph{at the time of the call}, rather than after the
+call returns. Consider this backtrace:
+
+(BAR ...) (FOO ...)
+
+Because of tail recursion, it is not necessarily the case that directly
+called . It may be that called some other function which then called
+tail-recursively, as in this example:
+
+(defun foo () ... (foo2 ...) ...)
+
+(defun foo2 (...) ... (bar ...))
+
+(defun bar (...) ...)
+
+Usually the elimination of tail-recursive frames makes debugging more
+pleasant, since theses frames are mostly uninformative. If there is any
+doubt about how one function called another, it can usually be
+eliminated by finding the source location in the calling frame (section
+@ref{#source-locations,1.5}.)
+
+The elimination of tail-recursive frames can be prevented by disabling
+tail-recursion optimization, which happens when the optimization quality
+is greater than (.)
+
+For a more thorough discussion of tail recursion, .
+
+@node Unknown Locations and Interrupts
+@subsection Unknown Locations and Interrupts
+@anchor{#unknown-locations-and-interrupts}
+The debugger operates using special debugging information attached to
+the compiled code. This debug information tells the debugger what it
+needs to know about the locations in the code where the debugger can be
+invoked. If the debugger somehow encounters a location not described in
+the debug information, then it is said to be . If the code location for
+a frame is unknown, then some variables may be inaccessible, and the
+source location cannot be precisely displayed.
+
+There are three reasons why a code location could be unknown:
+
+@itemize
+@item
+There is inadequate debug information due to the value of the
+optimization quality. .
+
+@item
+The debugger was entered because of an interrupt such as .
+
+@item
+A hardware error such as ``'' occurred in code that was compiled
+unsafely due to the value of the optimization quality. .
+
+@end itemize
+
+In the last two cases, the values of argument variables are accessible,
+but may be incorrect. for more details on when variable values are
+accessible.
+
+It is possible for an interrupt to happen when a function call or return
+is in progress. The debugger may then flame out with some obscure error
+or insist that the bottom of the stack has been reached, when the real
+problem is that the current stack frame can't be located. If this
+happens, return from the interrupt and try again.
+
+When running interpreted code, all locations should be known. However,
+an interrupt might catch some subfunction of the interpreter at an
+unknown location. In this case, you should be able to go up the stack a
+frame or two and reach an interpreted frame which can be debugged.
+
+@node Variable Access
+@section Variable Access
+@anchor{#variable-access}
+There are three ways to access the current frame's local variables in
+the debugger. The simplest is to type the variable's name into the
+debugger's read-eval-print loop. The debugger will evaluate the variable
+reference as though it had appeared inside that frame.
+
+The debugger doesn't really understand lexical scoping; it has just one
+namespace for all the variables in a function. If a symbol is the name
+of multiple variables in the same function, then the reference appears
+ambiguous, even though lexical scoping specifies which value is visible
+at any given source location. If the scopes of the two variables are not
+nested, then the debugger can resolve the ambiguity by observing that
+only one variable is accessible.
+
+When there are ambiguous variables, the evaluator assigns each one a
+small integer identifier. The function and the command use this
+identifier to distinguish between ambiguous variables:
+
+This command prints the name and value of all variables in the current
+frame whose name has the specified . may be a string or a symbol. If no
+is given, then all available variables are printed. If a variable has a
+potentially ambiguous name, then the name is printed with a ``'' suffix,
+where is the small integer used to make the name unique.
+
+debug:var
+
+This function returns the value of the variable in the current frame
+with the specified . If supplied, determines which value to return when
+there are ambiguous variables.
+
+When is a symbol, it is interpreted as the symbol name of the variable,
+i.e. the package is significant. If is an uninterned symbol (gensym),
+then return the value of the uninterned variable with the same name. If
+is a string, interprets it as the prefix of a variable name, and must
+unambiguously complete to the name of a valid variable.
+
+This function is useful mainly for accessing the value of uninterned or
+ambiguous variables, since most variables can be evaluated directly.
+
+@menu
+* Variable Value Availability::
+* Note On Lexical Variable Access::
+@end menu
+
+@node Variable Value Availability
+@subsection Variable Value Availability
+@anchor{#variable-value-availability}
+The value of a variable may be unavailable to the debugger in portions
+of the program where says that the variable is defined. If a variable
+value is not available, the debugger will not let you read or write that
+variable. With one exception, the debugger will never display an
+incorrect value for a variable. Rather than displaying incorrect values,
+the debugger tells you the value is unavailable.
+
+The one exception is this: if you interrupt (e.g., with ) or if there is
+an unexpected hardware error such as ``'' (which should only happen in
+unsafe code), then the values displayed for arguments to the interrupted
+frame might be incorrect.@footnote{Since the location of an interrupt or
+hardware error will always be an unknown location (), non-argument
+variable values will never be available in the interrupted frame.} This
+exception applies only to the interrupted frame: any frame farther down
+the stack will be fine.
+
+The value of a variable may be unavailable for these reasons:
+
+@itemize
+@item
+The value of the optimization quality may have omitted debug information
+needed to determine whether the variable is available. Unless a variable
+is an argument, its value will only be available when is at least .
+
+@item
+The compiler did lifetime analysis and determined that the value was no
+longer needed, even though its scope had not been exited. Lifetime
+analysis is inhibited when the optimization quality is .
+
+@item
+The variable's name is an uninterned symbol (gensym). To save space, the
+compiler only dumps debug information about uninterned variables when
+the optimization quality is .
+
+@item
+The frame's location is unknown () because the debugger was entered due
+to an interrupt or unexpected hardware error. Under these conditions the
+values of arguments will be available, but might be incorrect. This is
+the exception above.
+
+@item
+The variable was optimized out of existence. Variables with no reads are
+always optimized away, even in the interpreter. The degree to which the
+compiler deletes variables will depend on the value of the optimization
+quality, but most source-level optimizations are done under all
+compilation policies.
+
+@end itemize
+
+Since it is especially useful to be able to get the arguments to a
+function, argument variables are treated specially when the optimization
+quality is less than and the quality is at least . With this compilation
+policy, the values of argument variables are almost always available
+everywhere in the function, even at unknown locations. For non-argument
+variables, must be at least for values to be available, and even then,
+values are only available at known locations.
+
+@node Note On Lexical Variable Access
+@subsection Note On Lexical Variable Access
+@anchor{#note-on-lexical-variable-access}
+When the debugger command loop establishes variable bindings for
+available variables, these variable bindings have lexical scope and
+dynamic extent.@footnote{The variable bindings are actually created
+using the special form.} You can close over them, but such closures
+can't be used as upward funargs.
+
+You can also set local variables using , but if the variable was closed
+over in the original source and never set, then setting the variable in
+the debugger may not change the value in all the functions the variable
+is defined in. Another risk of setting variables is that you may assign
+a value of a type that the compiler proved the variable could never take
+on. This may result in bad things happening.
+
+@node Source Location Printing
+@section Source Location Printing
+@anchor{#source-location-printing}
+One of 's unique capabilities is source level debugging of compiled
+code. These commands display the source location for the current frame:
+
+This command displays the file that the current frame's function was
+defined from (if it was defined from a file), and then the source form
+responsible for generating the code that the current frame was
+executing. If is specified, then it is an integer specifying the number
+of enclosing levels of list structure to print.
+
+This command is identical to , except that it uses the global values of
+and instead of the debugger printing control variables and .
+
+The source form for a location in the code is the innermost list present
+in the original source that encloses the form responsible for generating
+that code. If the actual source form is not a list, then some enclosing
+list will be printed. For example, if the source form was a reference to
+the variable , then the innermost enclosing evaluated form will be
+printed. Here are some possible enclosing forms:
+
+(let ((a *some-random-special*)) ...)
+
+(+ *some-random-special* ...)
+
+If the code at a location was generated from the expansion of a macro or
+a source-level compiler optimization, then the form in the original
+source that expanded into that code will be printed. Suppose the file
+looked like this:
+
+(defmacro mymac () '(myfun))
+
+(defun foo () (mymac) ...)
+
+If has called , and is waiting for it to return, then the command would
+print:
+
+; File: /usr/me/mystuff.lisp
+
+(MYMAC)
+
+Note that the macro use was printed, not the actual function call form,
+.
+
+If enclosing source is printed by giving an argument to or , then the
+actual source form is marked by wrapping it in a list whose first
+element is . In the previous example, would print:
+
+; File: /usr/me/mystuff.lisp
+
+(DEFUN FOO () (#:***HERE*** (MYMAC)) ...)
+
+@menu
+* How the Source is Found::
+* Source Location Availability::
+@end menu
+
+@node How the Source is Found
+@subsection How the Source is Found
+@anchor{#how-the-source-is-found}
+If the code was defined from by or , then the source can always be
+reliably located. If the code was defined from a file created by , then
+the debugger gets the source forms it prints by reading them from the
+original source file. This is a potential problem, since the source file
+might have moved or changed since the time it was compiled.
+
+The source file is opened using the of the source file pathname
+originally given to the compiler. This is an absolute pathname with all
+logical names and symbolic links expanded. If the file can't be located
+using this name, then the debugger gives up and signals an error.
+
+If the source file can be found, but has been modified since the time it
+was compiled, the debugger prints this warning:
+
+; File has been modified since compilation: ; ; Using form offset
+instead of character position.
+
+where is the name of the source file. It then proceeds using a robust
+but not foolproof heuristic for locating the source. This heuristic
+works if:
+
+@itemize
+@item
+No top-level forms before the top-level form containing the source have
+been added or deleted, and
+
+@item
+The top-level form containing the source has not been modified much.
+(More precisely, none of the list forms beginning before the source form
+have been added or deleted.)
+
+@end itemize
+
+If the heuristic doesn't work, the displayed source will be wrong, but
+will probably be near the actual source. If the ``shape'' of the
+top-level form in the source file is too different from the original
+form, then an error will be signaled. When the heuristic is used, the
+the source location commands are noticeably slowed.
+
+Source location printing can also be confused if (after the source was
+compiled) a read-macro you used in the code was redefined to expand into
+something different, or if a read-macro ever returns the same list
+twice. If you don't define read macros and don't use in perverted ways,
+you don't need to worry about this.
+
+@node Source Location Availability
+@subsection Source Location Availability
+@anchor{#source-location-availability}
+Source location information is only available when the optimization
+quality is at least . If source location information is unavailable, the
+source commands will give an error message.
+
+If source location information is available, but the source location is
+unknown because of an interrupt or unexpected hardware error (), then
+the command will print:
+
+Unknown location: using block start.
+
+and then proceed to print the source location for the start of the
+@emph{basic block} enclosing the code location. It's a bit complicated
+to explain exactly what a basic block is, but here are some properties
+of the block start location:
+
+@itemize
+@item
+The block start location may be the same as the true location.
+
+@item
+The block start location will never be later in the the program's flow
+of control than the true location.
+
+@item
+No conditional control structures (such as , , ) will intervene between
+the block start and the true location (but note that some conditionals
+present in the original source could be optimized away.) Function calls
+@emph{do not} end basic blocks.
+
+@item
+The head of a loop will be the start of a block.
+
+@item
+The programming language concept of ``block structure'' and the special
+form are totally unrelated to the compiler's basic block.
+
+@end itemize
+
+In other words, the true location lies between the printed location and
+the next conditional (but watch out because the compiler may have
+changed the program on you.)
+
+@node Compiler Policy Control
+@section Compiler Policy Control
+@anchor{#compiler-policy-control}
+The compilation policy specified by declarations affects the behavior
+seen in the debugger. The quality directly affects the debugger by
+controlling the amount of debugger information dumped. Other
+optimization qualities have indirect but observable effects due to
+changes in the way compilation is done.
+
+Unlike the other optimization qualities (which are compared in relative
+value to evaluate tradeoffs), the optimization quality is directly
+translated to a level of debug information. This absolute interpretation
+allows the user to count on a particular amount of debug information
+being available even when the values of the other qualities are changed
+during compilation. These are the levels of debug information that
+correspond to the values of the quality:
+
+Only the function name and enough information to allow the stack to be
+parsed.
+
+Any level greater than gives level plus all argument variables. Values
+will only be accessible if the argument variable is never set and is not
+. allows any real value for optimization qualities. It may be useful to
+specify to get backtrace argument display without argument
+documentation.
+
+Level provides argument documentation (printed arglists) and derived
+argument/result type information. This makes more informative, and
+allows the compiler to do compile-time argument count and type checking
+for any calls compiled at run-time.
+
+Level plus all interned local variables, source location information,
+and lifetime information that tells the debugger when arguments are
+available (even when is or the argument is set.) This is the default.
+
+Any level greater than gives level and in addition disables tail-call
+optimization, so that the backtrace will contain frames for all invoked
+functions, even those in tail positions.
+
+Level plus all uninterned variables. In addition, lifetime analysis is
+disabled (even when is ), ensuring that all variable values are
+available at any known location within the scope of the binding. This
+has a speed penalty in addition to the obvious space penalty.
+
+As you can see, if the quality is , debugger performance is degraded.
+This effect comes from the elimination of argument variable
+special-casing (.) Some degree of speed/debuggability tradeoff is
+unavoidable, but the effect is not too drastic when is at least .
+
+In addition to and declarations, the relative values of the and
+qualities also change whether functions are inline expanded (.) If a
+function is inline expanded, then there will be no frame to represent
+the call, and the arguments will be treated like any other local
+variable. Functions may also be ``semi-inline'', in which case there is
+a frame to represent the call, but the call is to an optimized local
+version of the function, not to the original function.
+
+@node Exiting Commands
+@section Exiting Commands
+@anchor{#exiting-commands}
+These commands get you out of the debugger.
+
+Throw to top level.
+
+Invokes the th restart case as displayed by the command. If is not
+specified, the available restart cases are reported.
+
+Calls on the condition given to . If there is no restart case named ,
+then an error is signaled.
+
+Calls on the condition given to . This is useful for popping debug
+command loop levels or aborting to top level, as the case may be.
+
+@node Information Commands
+@section Information Commands
+@anchor{#information-commands}
+Most of these commands print information about the current frame or
+function, but a few show general information.
+
+Displays a synopsis of debugger commands.
+
+Calls on the current function, displays number of local variables, and
+indicates whether the function is compiled or interpreted.
+
+Displays the current function call as it would be displayed by moving to
+this frame.
+
+Displays the current function call using and instead of and . is a small
+integer (default 2) that controls other dimensions of verbosity.
+
+Prints the condition given to and the active proceed cases.
+
+@*
+Displays all the frames from the current to the bottom. Only shows
+frames if specified. The printing is controlled by and .
+
+@node Breakpoint Commands
+@section Breakpoint Commands
+@anchor{#breakpoint-commands}
+supports setting of breakpoints inside compiled functions and stepping
+of compiled code. Breakpoints can only be set at at known locations (),
+so these commands are largely useless unless the optimize quality is at
+least (). These commands manipulate breakpoints:
+
+Set a breakpoint in some function. may be an integer code location
+number (as displayed by ) or a keyword. The keyword can be used to
+indicate setting a breakpoint at the function start (, ) or function end
+(, ). The command has , , and options which work similarly to the
+options.
+
+List all the code locations in the current frame's function, or in if it
+is supplied. The display format is the code location number, a colon and
+then the source form for that location:
+
+3: (1- N)
+
+If consecutive locations have the same source, then a numeric range like
+will be printed. For example, a default function call has a known
+location both immediately before and after the call, which would result
+in two code locations with the same source. The listed function becomes
+the new default function for breakpoint setting (via the ) command.
+
+List all currently active breakpoints with their breakpoint number.
+
+Delete a breakpoint specified by its breakpoint number. If no number is
+specified, delete all breakpoints.
+
+Step to the next possible breakpoint location in the current function.
+This always steps over function calls, instead of stepping into them
+
+@menu
+* Breakpoint Example::
+@end menu
+
+@node Breakpoint Example
+@subsection Breakpoint Example
+@anchor{#breakpoint-example}
+Consider this definition of the factorial function:
+
+(defun ! (n) (if (zerop n) 1 (* n (! (1- n)))))
+
+This debugger session demonstrates the use of breakpoints:
+
+common-lisp-user> (break) ; Invoke debugger
+
+Break
+
+Restarts: 0: [CONTINUE] Return from BREAK. 1: [ABORT ] Return to
+Top-Level.
+
+Debug (type H for help)
+
+(INTERACTIVE-EVAL (BREAK)) 0] ll #'! 0: #'(LAMBDA (N) (BLOCK ! (IF # 1
+#))) 1: (ZEROP N) 2: (* N (! (1- N))) 3: (1- N) 4: (! (1- N)) 5: (* N (!
+(1- N))) 6: #'(LAMBDA (N) (BLOCK ! (IF # 1 #))) 0] br 2 (* N (! (1- N)))
+1: 2 in ! Added. 0] q
+
+common-lisp-user> (! 10) ; Call the function
+
+*Breakpoint hit*
+
+Restarts: 0: [CONTINUE] Return from BREAK. 1: [ABORT ] Return to
+Top-Level.
+
+Debug (type H for help)
+
+(! 10) ; We are now in first call (arg 10) before the multiply Source:
+(* N (! (1- N))) 3] st
+
+*Step*
+
+(! 10) ; We have finished evaluation of (1- n) Source: (1- N) 3] st
+
+*Breakpoint hit*
+
+Restarts: 0: [CONTINUE] Return from BREAK. 1: [ABORT ] Return to
+Top-Level.
+
+Debug (type H for help)
+
+(! 9) ; We hit the breakpoint in the recursive call Source: (* N (! (1-
+N))) 3]
+
+@node Function Tracing
+@section Function Tracing
+@anchor{#function-tracing}
+The tracer causes selected functions to print their arguments and their
+results whenever they are called. Options allow conditional printing of
+the trace information and conditional breakpoints on function entry or
+exit.
+
+trace
+
+is a debugging tool that prints information when specified functions are
+called. In its simplest form:
+
+(trace ...)
+
+causes a printout on each time that one of the named functions is
+entered or returns (the are not evaluated.) Trace output is indented
+according to the number of pending traced calls, and this trace depth is
+printed at the beginning of each line of output. Printing verbosity of
+arguments and return values is controlled by and .
+
+Local functions defined by and can be traced using the syntax or where
+is the or function we want to trace and , , are the functions containing
+the local function . Invidiual methods can also be traced using the
+syntax . See@ @ref{#sec:method-tracing,[sec:method-tracing]} for more
+information.
+
+If no or are are given, returns the list of all currently traced
+functions, .
+
+Trace options can cause the normal printout to be suppressed, or cause
+extra information to be printed. Each option is a pair of an option
+keyword and a value form. Options may be interspersed with function
+names. Options only affect tracing of the function whose name they
+appear immediately after. Global options are specified before the first
+name, and affect all functions traced by a given use of . If an already
+traced function is traced again, any new options replace the old
+options. The following options are defined:
+
+If is specified, then does nothing unless evaluates to true at the time
+of the call. is similar, but suppresses the initial printout, and is
+tested when the function returns. tries both before and after.
+
+If specified, is a function name or list of names. does nothing unless a
+call to one of those functions encloses the call to this function (i.e.
+it would appear in a backtrace.) Anonymous functions have string names
+like . Individual methods can also be traced. See
+section@ @ref{#sec:method-tracing,[sec:method-tracing]}.
+
+If specified, this is just like , but trace produces output only if the
+immediate caller of the traced function is one of the functions listed
+in .
+
+If specified, and evaluates to true, then the debugger is invoked at the
+start of the function, at the end of the function, or both, according to
+the respective option.
+
+In addition to the usual printout, the result of evaluating is printed
+at the start of the function, at the end of the function, or both,
+according to the respective option. Multiple print options cause
+multiple values to be printed.
+
+This is a not really an option, but rather another way of specifying
+what function to trace. The is evaluated immediately, and the resulting
+function is traced.
+
+In , tracing can be done either by temporarily redefining the function
+name (encapsulation), or using breakpoints. When breakpoints are used,
+the function object itself is destructively modified to cause the
+tracing action. The advantage of using breakpoints is that tracing works
+even when the function is anonymously called via .
+
+When is true, tracing is done via encapsulation. is the default, and
+means to use encapsulation for interpreted functions and funcallable
+instances, breakpoints otherwise. When encapsulation is used, forms are
+@emph{not} evaluated in the function's lexical environment, but can
+still be used.
+
+Note that if you trace using , you will only get a trace or breakpoint
+at the outermost call to the traced function, not on recursive calls.
+
+In the case of functions where the known return convention is used to
+optimize, encapsulation may be necessary in order to make tracing work
+at all. The symptom of this occurring is an error stating
+
+Error in function : :FUNCTION-END breakpoints are currently unsupported
+for the known return convention.
+
+in such cases we recommend using
+
+, and forms are evaluated in the lexical environment of the called
+function; and can be used. The and forms are evaluated in the null
+environment.
+
+untrace
+
+This macro turns off tracing for the specified functions, and removes
+their names from . If no are given, then all currently traced functions
+are untraced.
+
+extensions:traced-function-list
+
+A list of function names maintained and used by , , and . This list
+should contain the names of all functions currently being traced.
+
+extensions:max-trace-indentation
+
+The maximum number of spaces which should be used to indent trace
+printout. This variable is initially set to 40.
+
+debug:trace-encapsulate-package-names
+
+A list of package names. Functions from these packages are traced using
+encapsulation instead of function-end breakpoints. This list should at
+least include those packages containing functions used directly or
+indirectly in the implementation of .
+
+@menu
+* Encapsulation Functions::
+* Tracing Examples::
+@end menu
+
+@node Encapsulation Functions
+@subsection Encapsulation Functions
+@anchor{#encapsulation-functions}
+The encapsulation functions provide a mechanism for intercepting the
+arguments and results of a function. changes the function definition of
+a symbol, and saves it so that it can be restored later. The new
+definition normally calls the original definition. The function always
+returns the original definition, stripping off any encapsulation.
+
+The original definition of the symbol can be restored at any time by the
+function. and allow a symbol to be multiply encapsulated in such a way
+that different encapsulations can be completely transparent to each
+other.
+
+Each encapsulation has a type which may be an arbitrary lisp object. If
+a symbol has several encapsulations of different types, then any one of
+them can be removed without affecting more recent ones. A symbol may
+have more than one encapsulation of the same type, but only the most
+recent one can be undone.
+
+extensions:encapsulate
+
+Saves the current definition of , and replaces it with a function which
+returns the result of evaluating the form, . is an arbitrary lisp object
+which is the type of encapsulation.
+
+When the new function is called, the following variables are bound for
+the evaluation of :
+
+A list of the arguments to the function.
+
+The unencapsulated definition of the function.
+
+The unencapsulated definition may be called with the original arguments
+by including the form
+
+(apply extensions:basic-definition extensions:argument-list)
+
+always returns .
+
+extensions:unencapsulate
+
+Undoes 's most recent encapsulation of type . is compared with .
+Encapsulations of other types are left in place.
+
+extensions:encapsulated-p
+
+Returns if has an encapsulation of type . Returns otherwise. is compared
+with .
+
+@node Tracing Examples
+@subsection Tracing Examples
+@anchor{#tracing-examples}
+Here is an example of tracing with some of the possible options. For
+simplicity, this is the function:
+
+(defun fact (n) (declare (double-float n) (optimize speed)) (if (zerop
+n) 1d0 (* n (fact (1- n))))) (compile 'fact)
+
+This example shows how to use the :condition option:
+
+(trace fact :condition (= 4d0 (debug:arg 0))) (fact 10d0) -> 0: (FACT
+4.0d0) 0: FACT returned 24.0d0 3628800.0d0
+
+As we can see, we produced output when the condition was satisfied.
+
+Here's another example:
+
+(untrace) (trace fact :break (= 4d0 (debug:arg 0))) (fact 10d0) -> 0:
+(FACT 5.0d0) 1: (FACT 4.0d0)
+
+Breaking before traced call to FACT: [Condition of type
+SIMPLE-CONDITION]
+
+Restarts: 0: [CONTINUE] Return from BREAK. 1: [ABORT ] Return to
+Top-Level.
+
+Debug (type H for help)
+
+In this example, we see that normal tracing occurs until we the argument
+reaches 4d0, at which point, we break into the debugger.
+
+@node Specials
+@section Specials
+@anchor{#specials}
+These are the special variables that control the debugger action.
+
+debug:debug-print-level
+
+and are bound to these values during the execution of some debug
+commands. When evaluating arbitrary expressions in the debugger, the
+normal values of and are in effect. These variables are initially set to
+3 and 5, respectively.
+
+@c Local Variables:
+@c mode: texinfo
+@c TeX-master: "cmu-user"
+@c End:

@@ -1,0 +1,48 @@
+\input texinfo
+@settitle CMUCL User's Manual
+
+@macro cmucl {}
+@sc{CMUCL}
+@end macro
+
+@macro clisp {}
+Common Lisp
+@end macro
+
+@macro hemlock {}
+Hemlock
+@end macro
+
+@macro python {}
+Python
+@end macro
+
+@titlepage
+@title CMUCL User's Manual
+@author Robert A. MacLachlan, @i{Editor}
+October 2017
+21c
+
+@quotation
+@cmucl{} is a free, high-performance implementation of the Common Lisp
+programming language, which runs on most major Unix platforms. It
+mainly conforms to the ANSI Common Lisp Standard. @cmucl{} features a
+sophisticated native-code compiler, a foreign function interface, a
+graphical source-level debugger, an interface to the X11 Window
+System, and an Emacs-like editor.
+
+@b{Keywords}: lisp, Common Lisp, manual, compiler, programming
+language implementation, programming environment
+@end quotation
+
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top CMUCL User's Manual
+@end ifnottex
+
+@include introduction.texi
+@bye

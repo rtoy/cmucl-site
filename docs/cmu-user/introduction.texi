@@ -44,13 +44,7 @@ volunteers collaborating over the Internet.
 This user's manual contains only implementation-specific information
 about @cmucl{}. Users will also need a separate manual describing the
 @clisp{} standard, for example, the
-@c \ifpdf
-@c \href{http://www.lispworks.com/documentation/HyperSpec/Front/index.htm}
-@c {Hyperspec}.
-@c \else
-@c \emph{Hyperspec} at \url{http://www.lispworks.com/documentation/HyperSpec/Front/index.htm}
-@c \fi
-
+@uref{http://www.lispworks.com/documentation/HyperSpec/Front/index.htm, Hyperspec}
 
 In addition to the language itself, this document describes a number
 of useful library modules that run in @cmucl{}. @hemlock{}, an Emacs-like
@@ -65,7 +59,7 @@ User's Manual}, and the @i{Hemlock Command Implementor's Manual}.
 @cmucl{} is developed and maintained by a group of volunteers who
 collaborate over the internet. Sources and binary releases for the
 various supported platforms can be obtained from
-@c \href{http://www.cons.org/cmucl/}{www.cons.org/cmucl}. 
+@uref{http://www.cons.org/cmucl/}. 
 These pages
 describe how to download by FTP or CVS.
 
@@ -84,25 +78,25 @@ See also @verb{|cmucl(1)|}. Currently @cmucl{} accepts the following
 switches:
 
 @table @code
-@item @code{--help}
+@item --help
 Same as @code{-help}.
 
-@item @code{-help}
+@item -help
 Print out the command line options and exit.
   
-@item @code{-batch}
+@item -batch
 specifies batch mode, where all input is
   directed from standard-input.  An error code of 0 is returned upon
   encountering an EOF and 1 otherwise.
 
-@item @code{-quiet}
+@item -quiet
 enters quiet mode. This implies setting the
   variables @code{*load-verbose*}, @code{*compile-verbose*},
   @code{*compile-print*}, @code{*compile-progress*},
   @code{*require-verbose*} and @code{*gc-verbose*} to NIL, and
   disables the printing of the startup banner.
 
-@item @code{-core}
+@item -core
 requires an argument that should be the name of a
   core file.  Rather than using the default core file, which is searched
   in a number of places, according to the initial value of the
@@ -110,13 +104,13 @@ requires an argument that should be the name of a
   switch overrides the value of the @code{CMUCLCORE} environment variable,
   if present.
   
-@item @code{-lib}
+@item -lib
 requires an argument that should be the path to the
   CMUCL library directory, which is going to be used to initialize the
   @code{library:} search-list, among other things.  This switch overrides
   the value of the @code{CMUCLLIB} environment variable, if present.
 
-@item @code{-dynamic-space-size}
+@item -dynamic-space-size
 requires an argument that should be
   the number of megabytes (1048576 bytes) that should be allocated to
   the heap.  If not specified, a platform-specific default is used.
@@ -125,27 +119,28 @@ requires an argument that should be
   Currently, this option is only available for the x86 and sparc
   platforms. 
 
-@item @code{-edit}
+@item -edit
 specifies to enter Hemlock.  A file to edit may be
   specified by placing the name of the file between the program name
   (usually @code{lisp} and the first switch.
   
-@item @code{-eval}
+@item -eval
 accepts one argument which should be a Lisp form
   to evaluate during the start up sequence.  The value of the form
   will not be printed unless it is wrapped in a form that does output.
   
-@item @code{-hinit}
+@item -hinit
 accepts an argument that should be the name of
   the hemlock init file to load the first time the function
   @c \findexed{ed}
+  @code{ed}
    is invoked.  The default is to load
-  @code{hemlock-init.\@var{object-type}}, or if that does not exist,
+  @code{hemlock-init.@var{object-type}}, or if that does not exist,
   @code{hemlock-init.lisp} from the user's home directory.  If the
   file is not in the user's home directory, the full path must be
   specified.
   
-@item @code{-init}
+@item -init
 accepts an argument that should be the name of an
   init file to load during the normal start up sequence.  The default
   is to load @code{init.@var{object-type}} or, if that does not exist,
@@ -155,22 +150,22 @@ accepts an argument that should be the name of an
   in the user's home directory, the full path must be specified.  If
   the file does not exist, @cmucl{} silently ignores it.
   
-@item @code{-noinit}
+@item -noinit
 accepts no arguments and specifies that an init
   file should not be loaded during the normal start up sequence.
   Also, this switch suppresses the loading of a hemlock init file when
   Hemlock is started up with the @code{-edit} switch.
 
-@item @code{-nositeinit}
+@item -nositeinit
 accepts no arguments and specifies that the
   site init file should not be loaded during the normal start up
   sequence. 
 
-@item @code{-load}
+@item -load
 accepts an argument which should be the name of a
   file to load into Lisp before entering Lisp's read-eval-print loop.
   
-@item @code{-slave}
+@item -slave
 specifies that Lisp should start up as a
   @i{slave} Lisp and try to connect to an editor Lisp.  The name of
   the editor to connect to must be specified---to find the
@@ -183,7 +178,7 @@ specifies that Lisp should start up as a
   where @var{machine-name} is the internet host name for the machine
   and @var{socket} is the decimal number of the socket to connect to.
 
-@item @code{-fpu}
+@item -fpu
 specifies what fpu should be used for x87 machines.
   The possible values are ``@code{x87}'', ``@code{sse2}'', or
   ``@code{auto}'', which is the default.  By default, @cmucl{} will
@@ -193,7 +188,7 @@ specifies what fpu should be used for x87 machines.
   available or if @code{-fpu x87} is given, the legacy x87 core is
   loaded.
 
-@item @code{--}
+@item --
 indicates that everything after ``@code{--}'' is not
   subject to @cmucl{}'s command line parsing.  Everything after
   ``@code{--}'' is placed in the variable

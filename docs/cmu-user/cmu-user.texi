@@ -19,9 +19,9 @@ Python
 
 @titlepage
 @title CMUCL User's Manual
+@subtitle October 2017
+@subtitle 21c
 @author Robert A. MacLachlan, @i{Editor}
-October 2017
-21c
 
 @quotation
 @cmucl{} is a free, high-performance implementation of the Common Lisp

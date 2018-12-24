@@ -25,8 +25,20 @@ Python
 ---
 @end macro
 
+@macro false {}
+@code{nil}
+@end macro
+
+@macro true {}
+@code{t}
+@end macro
+
 @macro kwd {keyword}
 @code{:\keyword\}
+@end macro
+
+@macro cltl {}
+@i{Common Lisp: The Language}
 @end macro
 
 @titlepage
@@ -65,4 +77,5 @@ language implementation, programming environment
 @include introduction.texi
 @c @include extensions.texi
 @include debugger.texi
+@include compiler.texi
 @bye

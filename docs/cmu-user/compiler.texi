@@ -1,0 +1,1088 @@
+@node The Compiler
+@chapter The Compiler
+@anchor{#the-compiler}
+
+@menu
+* Compiler Introduction::
+* Calling the Compiler::
+* Compilation Units::
+* Interpreting Error Messages::
+* Types in Python::
+* Getting Existing Programs to Run::
+* Compiler Policy::
+* Open Coding and Inline Expansion::
+@end menu
+
+@node Compiler Introduction
+@section Compiler Introduction
+@anchor{#compiler-introduction}
+This chapter contains information about the compiler that every user
+should be familiar with. Chapter
+@ref{#advanced-compiler,[advanced-compiler]} goes into greater depth,
+describing ways to use more advanced features.
+
+The @cmucl{} compiler (also known as @python{}, not to be confused with the programming
+language of the same name) has many features that are seldom or never
+supported by conventional @clisp{} compilers:
+
+@itemize
+@item
+Source level debugging of compiled code (see chapter
+@ref{#debugger,[debugger]}.)
+
+@item
+Type error compiler warnings for type errors detectable at compile time.
+
+@item
+Compiler error messages that provide a good indication of where the
+error appeared in the source.
+
+@item
+Full run-time checking of all potential type errors, with optimization
+of type checks to minimize the cost.
+
+@item
+Scheme-like features such as proper tail recursion and extensive
+source-level optimization.
+
+@item
+Advanced tuning and optimization features such as comprehensive
+efficiency notes, flow analysis, and untagged number representations
+(see chapter @ref{advanced-compiler,[advanced-compiler]}.)
+
+@end itemize
+
+@node Calling the Compiler
+@section Calling the Compiler
+@anchor{#calling-the-compiler}
+Functions may be compiled using @code{compile}, @code{compile-file}, or @code{compile-from-stream}.
+
+@defun compile @var{name} &optional @var{definition}
+
+This function compiles the function whose name is @var{name}. If
+@var{name} is @false{}, the compiled
+function object is returned. If @var{definition} is supplied, it should be a lambda
+expression that is to be compiled and then placed in the function cell
+of @var{name}. As per the proposed X3J13 cleanup ``compile-argument-problems'',
+@var{definition} may also be an interpreted function.
+
+The return values are as per the proposed X3J13 cleanup
+``compiler-diagnostics''. The first value is the function name or
+function object. The second value is @false{} if no compiler diagnostics were
+issued, and @true{} otherwise. The third value is @false{} if no compiler diagnostics
+other than style warnings were issued. A non-@false{} value indicates that there
+were ``serious'' compiler diagnostics issued, or that other conditions
+of type @code{error} or @code{warning} (but not @code{style-warning}) were signaled during compilation.
+@end defun
+
+@defun compile-file  @var{input-pathname} &key @kwd{output-file} @kwd{error-file} @kwd{trace-file} @kwd{error-output} @kwd{verbose} @kwd{print} @kwd{progress} @kwd{load} @kwd{block-compile} @kwd{entry-points} @kwd{byte-compile} @kwd{xref}
+
+The @cmucl{} @code{compile-file} is extended through the addition of several new keywords and an
+additional interpretation of @var{input-pathname}:
+@table @var
+@item input-pathname
+If this argument is a list of input files, rather than a single input
+pathname, then all the source files are compiled into a single object
+file. In this case, the name of the first file is used to determine the
+default output file names. This is especially useful in combination with
+@var{block-compile}.
+
+@item @kwd{output-file}
+This argument specifies the name of the output file. @true{} gives the default
+name, @false{} suppresses the output file.
+
+@item @kwd{error-file}
+A listing of all the error output is directed to this file. If there are
+no errors, then no error file is produced (and any existing error file
+is deleted.) @true{} gives @w{@var{name}@code{.err}} (the default),
+and @false{} suppresses the output file.
+
+@item @kwd{error-output}
+If @true{} (the default), then error output is sent to @code{*error-output*}. If a stream, then
+output is sent to that stream instead. If @false{}, then error output is
+suppressed. Note that this error output is in addition to (but the same
+as) the output placed in the @var{error-file}.
+
+@item @kwd{verbose}
+If @true{} (the default), then the compiler prints to error output at the start
+and end of compilation of each file. See @ref{compile-verbose}.
+
+@item @kwd{print}
+If @true{} (the default), then the compiler prints to error output when each
+function is compiled. See @ref{compile-print}.
+
+@item @kwd{progress}
+If @true{} (default @false{}), then the compiler prints to error output progress
+information about the phases of compilation of each function. This is a
+@cmucl{} extension that is useful mainly in large block compilations. See @ref{compile-progress}.
+
+@item @kwd{trace-file}
+If @true{}, several of the intermediate representations (including annotated
+assembly code) are dumped out to this file. @true{} gives @w{``@var{name}@code{.trace}''}. Trace output is off
+by default. @xref{trace-files}.
+
+@item @kwd{load}
+If @true{}, load the resulting output file.
+
+@item @kwd{block-compile}
+Controls the compile-time resolution of function calls. By default, only
+self-recursive calls are resolved, unless an @code{ext:block-start} declaration appears in the
+source file. @xref{compile-file-block}.
+
+@item @kwd{entry-points}
+If non-@false{}, then this is a list of the names of all functions in the file
+that should have global definitions installed (because they are
+referenced in other files.) @xref{compile-file-block}.
+
+@item @kwd{byte-compile}
+If @true{}, compiling to a compact interpreted byte code is enabled. Possible
+values are @true{}, @false{}, and @kwd{mabye} (the default). See
+@ref{byte-compile-default} and @pxref{byte-compile}.
+
+@item @kwd{xref}
+If non-@false{}, enable recording of cross-reference information. The default is
+the value of @code{c:*record-xref-info*}. @xref{xref}. Note that the compiled fasl file will also contain
+cross-reference information and loading the fasl later will populate the
+cross-reference database.
+@end table
+
+The return values are as per the proposed X3J13 cleanup
+``compiler-diagnostics''. The first value from @code{compile-file} is the truename of the
+output file, or @false{} if the file could not be created. The interpretation of
+the second and third values is described above for @code{compile}.
+@end defun
+
+@defvar compile-verbose
+@defvarx compile-print
+@defvarx compile-progress
+These variables determine the default values for the @kwd{verbose},
+@kwd{print} and @kwd{progress} arguments to @code{compile-file}.
+@end defvar
+
+@defun extensions:compile-from-stream @var{input-stream} &key @kwd{error-stream} @kwd{trace-stream} @kwd{block-compile} @kwd{entry-points} @kwd{byte-compile}
+
+This function is similar to @code{compile-file}, but it takes all its arguments as streams.
+It reads @clisp{} code from @var{input-stream} until end of file is reached, compiling into the
+current environment. This function returns the same two values as the
+last two values of @code{compile}. No output files are produced.
+@end defun
+
+@node Compilation Units
+@section Compilation Units
+@anchor{#compilation-units}
+supports the macro added to the language by the X3J13
+``with-compilation-unit'' compiler cleanup issue. This provides a
+mechanism for eliminating spurious undefined warnings when there are
+forward references across files, and also provides a standard way to
+access compiler extensions.
+
+@defmac with-compilation-unit (@{key value@}*) @{form@}*
+
+This macro evaluates the @var{forms} in an environment that causes warnings for
+undefined variables, functions and types to be delayed until all the
+forms have been evaluated. Each keyword @var{value} is an evaluated form. These
+keyword options are recognized:
+
+@table @code
+@item @kwd{override}
+If uses of @code{with-compilation-unit} are dynamically nested, the outermost use will take
+precedence, suppressing printing of undefined warnings by inner uses.
+However, when the option @kwd{override} is true this shadowing is inhibited; an inner
+use will print summary warnings for the compilations within the inner
+scope.
+
+@item @kwd{optimize}
+This is a @cmucl{} extension that specifies of the ``global'' compilation policy
+for the dynamic extent of the body. The argument should evaluate to an
+@code{optimize} 
+declare form, like:
+@lisp
+(optimize (speed 3) (safety 0))
+@end lisp
+@xref{optimize-declaration}
+
+@item @kwd{optimize-interface}
+Similar to @kwd{optimize}, but specifies the compilation policy for function
+interfaces (argument count and type checking) for the dynamic extent of
+the body. @xref{optimize-interface-declaration}.
+
+@item @kwd{context-declarations}
+This is a @cmucl{} extension that pattern-matches on function names,
+automatically splicing in any appropriate declarations at the head of
+the function definition. @xref{context-declarations}.
+@end table
+@end defmac
+
+@menu
+* Undefined Warnings::
+@end menu
+
+@node Undefined Warnings
+@subsection Undefined Warnings
+@anchor{#undefined-warnings}
+Warnings about undefined variables, functions and types are delayed
+until the end of the current compilation unit. The compiler entry
+functions (@code{compile}, etc.) implicitly use @code{with-compilation-unit}, so undefined warnings will be
+printed at the end of the compilation unless there is an enclosing @code{with-compilation-unit}. In
+order the gain the benefit of this mechanism, you should wrap a single
+@code{with-compilation-unit} around the calls to @code{compile-file}, i.e.:
+
+@lisp
+(with-compilation-unit ()
+  (compile-file "file1")
+  (compile-file "file2")
+  ...)
+@end lisp
+
+Unlike for functions and types, undefined warnings for variables are not
+suppressed when a definition (e.g. @code{defvar}) appears after the reference (but in
+the same compilation unit.) This is because doing special declarations
+out of order just doesn't workalthough early references will be compiled
+as special, bindings will be done lexically.
+
+Undefined warnings are printed with full source context (@pxref{error-messages}), which
+tremendously simplifies the problem of finding undefined references that
+resulted from macroexpansion. After printing detailed information about
+the undefined uses of each name, @code{with-compilation-unit} also prints summary listings of the
+names of all the undefined functions, types and variables.
+
+@defvar *undefined-warning-limit*
+
+This variable controls the number of undefined warnings for each
+distinct name that are printed with full source context when the
+compilation unit ends. If there are more undefined references than this,
+then they are condensed into a single warning:
+@example
+Warning: @var{count} more uses of undefined function @var{name}.
+@end example
+When the value is @code{0}, then the undefined warnings are not broken down by
+name at all: only the summary listing of undefined names is printed.
+@end defvar
+
+@node Interpreting Error Messages
+@section Interpreting Error Messages
+@anchor{#interpreting-error-messages}
+One of @python{}'s unique features is the level of source location information it
+provides in error messages. The error messages contain a lot of detail
+in a terse format, to they may be confusing at first. Error messages
+will be illustrated using this example program:
+@lisp
+(defmacro zoq (x)
+  ‘(roq (ploq (+ ,x 3))))
+
+(defun foo (y)
+  (declare (symbol y))
+  (zoq y))
+@end lisp
+The main problem with this program is that it is trying to add
+@code{3} to a
+symbol. Note also that the functions and aren't defined anywhere.
+
+@menu
+* The Parts of the Error Message::
+* The Original and Actual Source::
+* The Processing Path::
+* Error Severity::
+* Errors During Macroexpansion::
+* Read Errors::
+* Error Message Parameterization::
+@end menu
+
+@node The Parts of the Error Message
+@subsection The Parts of the Error Message
+@anchor{#the-parts-of-the-error-message}
+The compiler will produce this warning:
+@example
+File: /usr/me/stuff.lisp
+In: DEFUN FOO
+  (ZOQ Y)
+--> ROQ PLOQ + 
+==>
+  Y
+Warning: Result is a SYMBOL, not a NUMBER.
+@end example
+
+In this example we see each of the six possible parts of a compiler
+error message:
+@table @code
+@item File:  /usr/me/stuff.lisp
+This is the @var{file} that the compiler read the relevant code from. The file name
+is displayed because it may not be immediately obvious when there is an
+error during compilation of a large system, especially when
+@code{with-compilation-unit} is used to
+delay undefined warnings.
+
+@item In: DEFUN FOO
+This is the @var{definition} or top-level form responsible for the error. It is obtained
+by taking the first two elements of the enclosing form whose first
+element is a symbol beginning with ``@code{DEF}''. If there is no enclosing @var{def}mumbles, then
+the outermost form is used. If there are multiple @var{def}mumbles, then they are all
+printed from the out in, separated by @code{=>}'s. In this example, the problem
+was in the @code{defun} for @code{foo}.
+
+@item (ZOQ Y)
+This is the @emph{original source} form responsible for the error.
+Original source means that the form directly appeared in the original
+input to the compiler, i.e. in the lambda passed to @code{compile} or the top-level
+form read from the source file. In this example, the expansion of
+the @code{zoq} 
+macro was responsible for the error.
+
+@item --> ROQ PLOQ +
+This is the @emph{processing path} that the compiler used to produce the
+errorful code. The processing path is a representation of the evaluated
+forms enclosing the actual source that the compiler encountered when
+processing the original source. The path is the first element of each
+form, or the form itself if the form is not a list. These forms result
+from the expansion of macros or source-to-source transformation done by
+the compiler. In this example, the enclosing evaluated forms are the
+calls to @code{roq}, @code{ploq} and @code{+}. These calls resulted
+from the expansion of the @code{zoq} macro.
+
+@item ==> Y
+This is the @emph{actual source} responsible for the error. If the
+actual source appears in the explanation, then we print the next
+enclosing evaluated form, instead of printing the actual source twice.
+(This is the form that would otherwise have been the last form of the
+processing path.) In this example, the problem is with the evaluation of
+the reference to the variable @code{y}.
+
+@item Warning: Result is a SYMBOL, not a NUMBER.
+This is the @var{explanation} of problem. In this example, the problem
+is that @code{y} evaluates
+to a @code{symbol}, but is in a context where a number is required
+(the argument to @code{+}).
+@end table
+
+Note that each part of the error message is distinctively marked:
+
+@itemize
+@item
+@code{File:} and @code{In:} mark the file and definition, respectively.
+
+@item
+The original source is an indented form with no prefix.
+
+@item
+Each line of the processing path is prefixed with @code{-->}.
+
+@item
+The actual source form is indented like the original source, but is
+marked by a preceding @code{==>}line. This is like the ``macroexpands to''
+notation used in @cltl{}.
+
+@item
+The explanation is prefixed with the error severity (), either , , or .
+
+@end itemize
+
+Each part of the error message is more specific than the preceding one.
+If consecutive error messages are for nearby locations, then the front
+part of the error messages would be the same. In this case, the compiler
+omits as much of the second message as in common with the first. For
+example:
+@example
+File: /usr/me/stuff.lisp
+In: DEFUN FOO
+  (ZOQ Y)
+--> ROQ 
+==>
+  (PLOQ (+ Y 3))
+Warning: Undefined function: PLOQ
+
+==>
+  (ROQ (PLOQ (+ Y 3)))
+Warning: Undefined function: ROQ
+@end example
+
+In this example, the file, definition and original source are identical
+for the two messages, so the compiler omits them in the second message.
+If consecutive messages are entirely identical, then the compiler prints
+only the first message, followed by:
+@example
+[Last message occurs @var{repeats} times]
+@end example
+where @var{repeats} is the number of times the message was given.
+
+If the source was not from a file, then no file line is printed. If the
+actual source is the same as the original source, then the processing
+path and actual source will be omitted. If no forms intervene between
+the original source and the actual source, then the processing path will
+also be omitted.
+
+@node The Original and Actual Source
+@subsection The Original and Actual Source
+@anchor{#the-original-and-actual-source}
+The @emph{original source} displayed will almost always be a list. If
+the actual source for an error message is a symbol, the original source
+will be the immediately enclosing evaluated list form. So even if the
+offending symbol does appear in the original source, the compiler will
+print the enclosing list and then print the symbol as the actual source
+(as though the symbol were introduced by a macro.)
+
+When the @emph{actual source} is displayed (and is not a symbol), it
+will always be code that resulted from the expansion of a macro or a
+source-to-source compiler optimization. This is code that did not appear
+in the original source program; it was introduced by the compiler.
+
+Keep in mind that when the compiler displays a source form in an error
+message, it always displays the most specific (innermost) responsible
+form. For example, compiling this function:
+@lisp
+(defun bar (x)
+  (let (a)
+    (declare (fixnum a))
+    (setq a (foo x))
+    a))
+@end lisp
+gives this error message:
+@example
+In: DEFUN BAR
+  (LET (A) (DECLARE (FIXNUM A)) (SETQ A (FOO X)) A)
+Warning: The binding of A is not a FIXNUM:
+  NIL
+@end example
+This error message is not saying ``there's a problem somewhere in this
+''@dash{}it is saying that there is a problem with the @code{let} itself. In this example,
+the problem is that @code{a}'s @false{} initial value is not a @code{fixnum}.
+
+@node The Processing Path
+@subsection The Processing Path
+@anchor{#the-processing-path}
+The processing path is mainly useful for debugging macros, so if you
+don't write macros, you can ignore the processing path. Consider this
+example:
+@lisp
+(defun foo (n)
+  (dotimes (i n *undefined*)))
+@end lisp
+Compiling results in this error message:
+@example
+In: DEFUN FOO
+  (DOTIMES (I N *UNDEFINED*))
+--> DO BLOCK LET TAGBODY RETURN-FROM 
+==>
+  (PROGN *UNDEFINED*)
+Warning: Undefined variable: *UNDEFINED*
+@end example
+
+Note that @code{do} appears in the processing path. This is because
+@code{dotimes} expands into:
+@lisp
+(do ((i 0 (1+ i)) (#:g1 n))
+    ((>= i #:g1) *undefined*)
+  (declare (type unsigned-byte i)))
+@end lisp
+
+The rest of the processing path results from the expansion of @code{do}:
+@lisp
+(block nil
+  (let ((i 0) (#:g1 n))
+    (declare (type unsigned-byte i))
+    (tagbody (go #:g3)
+     #:g2    (psetq i (1+ i))
+     #:g3    (unless (>= i #:g1) (go #:g2))
+             (return-from nil (progn *undefined*)))))
+@end lisp
+
+In this example, the compiler descended into the @code{block},
+@code{let}, @code{tagbody} and @code{return-from} to reach the @code{progn}
+printed as the actual source. This is a place where the ``actual source
+appears in explanation'' rule was applied. The innermost actual source
+form was the symbol @code{*undefined*} itself, but that also appeared in the explanation,
+so the compiler backed out one level.
+
+@node Error Severity
+@subsection Error Severity
+@anchor{#error-severity}
+There are three levels of compiler error severity:
+@table @code
+@item Error
+This severity is used when the compiler encounters a problem serious
+enough to prevent normal processing of a form. Instead of compiling the
+form, the compiler compiles a call to @code{error}. Errors are used mainly for
+signaling syntax errors. If an error happens during macroexpansion, the
+compiler will handle it. The compiler also handles and attempts to
+proceed from read errors.
+
+@item Warning
+Warnings are used when the compiler can prove that something bad will
+happen if a portion of the program is executed, but the compiler can
+proceed by compiling code that signals an error at runtime if the
+problem has not been fixed:
+
+@itemize
+@item
+Violation of type declarations, or
+
+@item
+Function calls that have the wrong number of arguments or malformed
+keyword argument lists, or
+
+@item
+Referencing a variable declared @code{ignore}, or unrecognized declaration
+specifiers.
+
+@end itemize
+
+In the language of the @clisp{} standard, these are situations where the compiler
+can determine that a situation with undefined consequences or that would
+cause an error to be signaled would result at runtime.
+
+@item Note
+Notes are used when there is something that seems a bit odd, but that
+might reasonably appear in correct programs.
+
+@end table
+
+Note that the compiler does not fully conform to the proposed X3J13
+``compiler-diagnostics'' cleanup. Errors, warnings and notes mostly
+correspond to errors, warnings and style-warnings, but many things that
+the cleanup considers to be style-warnings are printed as warnings
+rather than notes. Also, warnings, style-warnings and most errors aren't
+really signaled using the condition system.
+
+@node Errors During Macroexpansion
+@subsection Errors During Macroexpansion
+@anchor{#errors-during-macroexpansion}
+The compiler handles errors that happen during macroexpansion, turning
+them into compiler errors. If you want to debug the error (to debug a
+macro), you can set @code{*break-on-signals*} to @code{error}. For example, this definition:
+@lisp
+(defun foo (e l)
+  (do ((current l (cdr current))
+       ((atom current) nil))
+      (when (eq (car current) e) (return current))))
+@end lisp
+
+gives this error:
+
+@example
+In: DEFUN FOO
+  (DO ((CURRENT L #) (# NIL)) (WHEN (EQ # E) (RETURN CURRENT)) )
+Error: (during macroexpansion)
+
+Error in function LISP::DO-DO-BODY.
+DO step variable is not a symbol: (ATOM CURRENT)
+@end example
+
+@node Read Errors
+@subsection Read Errors
+@anchor{#read-errors}
+The compiler also handles errors while reading the source. For example:
+@example
+Error: Read error at 2:
+ "(,/\foo)"
+Error in function LISP::COMMA-MACRO.
+Comma not inside a backquote.
+@end example
+
+The ``@code{at 2}'' refers to the character position in the source file at which
+the error was signaled, which is generally immediately after the
+erroneous text. The next line, ``@code{(,/\foo)}'', is the line in the source that
+contains the error file position. The ``@code{/\}'' indicates the error position
+within that line (in this example, immediately after the offending
+comma.)
+
+When in @hemlock{} (or any other EMACS-like editor), you can go to a character
+position with:
+@example
+M-< C-u @var{position} C-f
+@end example
+
+Note that if the source is from a @hemlock{} buffer, then the position is relative
+to the start of the compiled region or @code{defun}, not the file or buffer start.
+
+After printing a read error message, the compiler attempts to recover
+from the error by backing up to the start of the enclosing top-level
+form and reading again with @code{*read-suppress*} true. If the compiler can recover from the
+error, then it substitutes a call to @code{error} for the unreadable form and
+proceeds to compile the rest of the file normally.
+
+If there is a read error when the file position is at the end of the
+file (i.e., an unexpected EOF error), then the error message looks like
+this:
+@example
+Error: Read error in form starting at 14:
+ "(defun test ()"
+Error in function LISP::FLUSH-WHITESPACE.
+EOF while reading #<Stream for file "/usr/me/test.lisp">
+@end example
+
+In this case, ``@code{starting at 14}'' indicates the character position at which the
+compiler started reading, i.e. the position before the start of the form
+that was missing the closing delimiter. The line @w{@code{(defun test ()}}is first line after the
+starting position that the compiler thinks might contain the unmatched
+open delimiter.
+
+@node Error Message Parameterization
+@subsection Error Message Parameterization
+@anchor{#error-message-parameterization}
+There is some control over the verbosity of error messages. See also ,
+and .
+
+enclosing-source-cutoff
+
+This variable specifies the number of enclosing actual source forms that
+are printed in full, rather than in the abbreviated processing path
+format. Increasing the value from its default of allows you to see more
+of the guts of the macroexpanded source, which is useful when debugging
+macros.
+
+error-print-length
+
+These variables are the print level and print length used in printing
+error messages. The default values are and . If null, the global values
+of and are used.
+
+extensions:def-source-context
+
+This macro defines how to extract an abbreviated source context from the
+d form when it appears in the compiler input. is a style lambda-list
+used to parse the arguments. The should return a list of subforms that
+can be printed on about one line. There are predefined methods for , ,
+etc. If no method is defined, then the first two subforms are returned.
+Note that this facility implicitly determines the string name associated
+with anonymous functions.
+
+@node Types in Python
+@section Types in Python
+@anchor{#types-in-python}
+A big difference between and all other compilers is the approach to type
+checking and amount of knowledge about types:
+
+@itemize
+@item
+treats type declarations much differently that other Lisp compilers do.
+doesn't blindly believe type declarations; it considers them assertions
+about the program that should be checked.
+
+@item
+also has a tremendously greater knowledge of the type system than other
+compilers. Support is incomplete only for the , and types.
+
+@end itemize
+
+See also sections @ref{#advanced-type-stuff,[advanced-type-stuff]} and
+@ref{#type-inference,[type-inference]}.
+
+@menu
+* Compile Time Type Errors::
+* Precise Type Checking::
+* Weakened Type Checking::
+@end menu
+
+@node Compile Time Type Errors
+@subsection Compile Time Type Errors
+@anchor{#compile-time-type-errors}
+If the compiler can prove at compile time that some portion of the
+program cannot be executed without a type error, then it will give a
+warning at compile time. It is possible that the offending code would
+never actually be executed at run-time due to some higher level
+consistency constraint unknown to the compiler, so a type warning
+doesn't always indicate an incorrect program. For example, consider this
+code fragment:
+
+(defun raz (foo) (let ((x (case foo (:this 13) (:that 9) (:the-other
+42)))) (declare (fixnum x)) (foo x)))
+
+Compilation produces this warning:
+
+In: DEFUN RAZ (CASE FOO (:THIS 13) (:THAT 9) (:THE-OTHER 42)) --> LET
+COND IF COND IF COND IF ==> (COND) Warning: This is not a FIXNUM: NIL
+
+In this case, the warning is telling you that if isn't any of , or ,
+then will be initialized to , which the declaration makes illegal. The
+warning will go away if is used instead of , or if is changed to .
+
+This sort of spurious type warning happens moderately often in the
+expansion of complex macros and in inline functions. In such cases,
+there may be dead code that is impossible to correctly execute. The
+compiler can't always prove this code is dead (could never be executed),
+so it compiles the erroneous code (which will always signal an error if
+it is executed) and gives a warning.
+
+extensions:required-argument
+
+This function can be used as the default value for keyword arguments
+that must always be supplied. Since it is known by the compiler to never
+return, it will avoid any compile-time type warnings that would result
+from a default value inconsistent with the declared type. When this
+function is called, it signals an error indicating that a required
+keyword argument was not supplied. This function is also useful for slot
+defaults corresponding to required arguments. .
+
+Although this function is a extension, it is relatively harmless to use
+it in otherwise portable code, since you can easily define it yourself:
+
+(defun required-argument () (error "A required keyword argument was not
+supplied."))
+
+Type warnings are inhibited when the optimization quality is (.) This
+can be used in a local declaration to inhibit type warnings in a code
+fragment that has spurious warnings.
+
+@node Precise Type Checking
+@subsection Precise Type Checking
+@anchor{#precise-type-checking}
+With the default compilation policy, all type assertions@footnote{There
+are a few circumstances where a type declaration is discarded rather
+than being used as type assertion. This doesn't affect safety much,
+since such discarded declarations are also not believed to be true by
+the compiler.} are precisely checked. Precise checking means that the
+check is done as though had been called with the exact type specifier
+that appeared in the declaration. uses to determine whether to trust
+type assertions (). Type assertions from declarations are
+indistinguishable from the type assertions on arguments to built-in
+functions. In , adding type declarations makes code safer.
+
+If a variable is declared to be , then its value must always always be
+an integer between and . If multiple type declarations apply to a single
+variable, then all the declarations must be correct; it is as though all
+the types were intersected producing a single type specifier.
+
+Argument type declarations are automatically enforced. If you declare
+the type of a function argument, a type check will be done when that
+function is called. In a function call, the called function does the
+argument type checking, which means that a more restrictive type
+assertion in the calling function (e.g., from ) may be lost.
+
+The types of structure slots are also checked. The value of a structure
+slot must always be of the type indicated in any slot
+option.@footnote{The initial value need not be of this type as long as
+the corresponding argument to the constructor is always supplied, but
+this will cause a compile-time type warning unless is used.} Because of
+precise type checking, the arguments to slot accessors are checked to be
+the correct type of structure.
+
+In traditional compilers, not all type assertions are checked, and type
+checks are not precise. Traditional compilers blindly trust explicit
+type declarations, but may check the argument type assertions for
+built-in functions. Type checking is not precise, since the argument
+type checks will be for the most general type legal for that argument.
+In many systems, type declarations suppress what little type checking is
+being done, so adding type declarations makes code unsafe. This is a
+problem since it discourages writing type declarations during initial
+coding. In addition to being more error prone, adding type declarations
+during tuning also loses all the benefits of debugging with checked type
+assertions.
+
+To gain maximum benefit from 's type checking, you should always declare
+the types of function arguments and structure slots as precisely as
+possible. This often involves the use of , and other list-style type
+specifiers. Paradoxically, even though adding type declarations
+introduces type checks, it usually reduces the overall amount of type
+checking. This is especially true for structure slot type declarations.
+
+uses the optimization quality (rather than presence or absence of
+declarations) to choose one of three levels of run-time type error
+checking: . for more information about types in .
+
+@node Weakened Type Checking
+@subsection Weakened Type Checking
+@anchor{#weakened-type-checking}
+When the value for the optimization quality is greater than , and is not
+, then type checking is weakened to reduce the speed and space penalty.
+In structure-intensive code this can double the speed, yet still catch
+most type errors. Weakened type checks provide a level of safety similar
+to that of ``safe'' code in other compilers.
+
+A type check is weakened by changing the check to be for some convenient
+supertype of the asserted type. For example, is changed to , to , and
+structure types are changed to . A complex check like:
+
+(or node hunk (member :foo :bar :baz))
+
+will be omitted entirely (i.e., the check is weakened to .) If a precise
+check can be done for no extra cost, then no weakening is done.
+
+Although weakened type checking is similar to type checking done by
+other compilers, it is sometimes safer and sometimes less safe. Weakened
+checks are done in the same places is precise checks, so all the
+preceding discussion about where checking is done still applies.
+Weakened checking is sometimes somewhat unsafe because although the
+check is weakened, the precise type is still input into type inference.
+In some contexts this will result in type inferences not justified by
+the weakened check, and hence deletion of some type checks that would be
+done by conventional compilers.
+
+For example, if this code was compiled with weakened checks:
+
+(defstruct foo (a nil :type simple-string))
+
+(defstruct bar (a nil :type single-float))
+
+(defun myfun (x) (declare (type bar x)) (* (bar-a x) 3.0))
+
+and was passed a , then no type error would be signaled, and we would
+try to multiply a as though it were a float (with unpredictable
+results.) This is because the check for was weakened to , yet when
+compiling the call to , the compiler thinks it knows it has a .
+
+Note that normally even weakened type checks report the precise type in
+error messages. For example, if 's check is weakened to , and the
+argument is , then the error will be:
+
+Type-error in MYFUN: NIL is not of type BAR
+
+However, there is some speed and space cost for signaling a precise
+error, so the weakened type is reported if the optimization quality is
+or quality is less than :
+
+Type-error in MYFUN: NIL is not of type STRUCTURE
+
+for further discussion of the declaration.
+
+@node Getting Existing Programs to Run
+@section Getting Existing Programs to Run
+@anchor{#getting-existing-programs-to-run}
+Since does much more comprehensive type checking than other Lisp
+compilers, will detect type errors in many programs that have been
+debugged using other compilers. These errors are mostly incorrect
+declarations, although compile-time type errors can find actual bugs if
+parts of the program have never been tested.
+
+Some incorrect declarations can only be detected by run-time type
+checking. It is very important to initially compile programs with full
+type checks and then test this version. After the checking version has
+been tested, then you can consider weakening or eliminating type checks.
+@strong{This applies even to previously debugged programs.} does much
+more type inference than other compilers, so believing an incorrect
+declaration does much more damage.
+
+The most common problem is with variables whose initial value doesn't
+match the type declaration. Incorrect initial values will always be
+flagged by a compile-time type error, and they are simple to fix once
+located. Consider this code fragment:
+
+(prog (foo) (declare (fixnum foo)) (setq foo ...) ...)
+
+Here the variable is given an initial value of , but is declared to be a
+. Even if it is never read, the initial value of a variable must match
+the declared type. There are two ways to fix this problem. Change the
+declaration:
+
+(prog (foo) (declare (type (or fixnum null) foo)) (setq foo ...) ...)
+
+or change the initial value:
+
+(prog ((foo 0)) (declare (fixnum foo)) (setq foo ...) ...)
+
+It is generally preferable to change to a legal initial value rather
+than to weaken the declaration, but sometimes it is simpler to weaken
+the declaration than to try to make an initial value of the appropriate
+type.
+
+Another declaration problem occasionally encountered is incorrect
+declarations on arguments. This probably usually happens when a function
+is converted into a macro. Consider this macro:
+
+(defmacro my-1+ (x) (declare (fixnum x)) ‘(the fixnum (1+ ,x)))
+
+Although legal and well-defined , this meaning of this definition is
+almost certainly not what the writer intended. For example, this call is
+illegal:
+
+(my-1+ (+ 4 5))
+
+The call is illegal because the argument to the macro is , which is a ,
+not a . Because of macro semantics, it is hardly ever useful to declare
+the types of macro arguments. If you really want to assert something
+about the type of the result of evaluating a macro argument, then put a
+in the expansion:
+
+(defmacro my-1+ (x) ‘(the fixnum (1+ (the fixnum ,x))))
+
+In this case, it would be stylistically preferable to change this macro
+back to a function and declare it inline. Macros have no efficiency
+advantage over inline functions when using . .
+
+Some more subtle problems are caused by incorrect declarations that
+can't be detected at compile time. Consider this code:
+
+(do ((pos 0 (position # string :start (1+ pos)))) ((null pos)) (declare
+(fixnum pos)) ...)
+
+Although is almost always a , it is at the end of the loop. If this
+example is compiled with full type checks (the default), then running it
+will signal a type error at the end of the loop. If compiled without
+type checks, the program will go into an infinite loop (or perhaps will
+complain because isn't a sensible start.) Why? Because if you compile
+without type checks, the compiler just quietly believes the type
+declaration. Since is always a , it is never , so is never true, and the
+loop exit test is optimized away. Such errors are sometimes flagged by
+unreachable code notes (), but it is still important to initially
+compile any system with full type checks, even if the system works fine
+when compiled using other compilers.
+
+In this case, the fix is to weaken the type declaration to
+.@footnote{Actually, this declaration is totally unnecessary in , since
+it already knows returns a non-negative or .} Note that there is usually
+little performance penalty for weakening a declaration in this way. Any
+numeric operations in the body can still assume the variable is a ,
+since is not a legal numeric argument. Another possible fix would be to
+say:
+
+(do ((pos 0 (position # string :start (1+ pos)))) ((null pos)) (let
+((pos pos)) (declare (fixnum pos)) ...))
+
+This would be preferable in some circumstances, since it would allow a
+non-standard representation to be used for the local variable in the
+loop body (see section @ref{#ND-variables,[ND-variables]}.)
+
+In summary, remember that @emph{all} values that a variable @emph{ever}
+has must be of the declared type, and that you should test using safe
+code initially.
+
+@node Compiler Policy
+@section Compiler Policy
+@anchor{#compiler-policy}
+The policy is what tells the compiler to compile a program. This is
+logically (and often textually) distinct from the program itself. Broad
+control of policy is provided by the declaration; other declarations and
+variables control more specific aspects of compilation.
+
+@menu
+* The Optimize Declaration::
+* The Optimize-Interface Declaration::
+@end menu
+
+@node The Optimize Declaration
+@subsection The Optimize Declaration
+@anchor{#the-optimize-declaration}
+The declaration recognizes six different . The qualities are
+conceptually independent aspects of program performance. In reality,
+increasing one quality tends to have adverse effects on other qualities.
+The compiler compares the relative values of qualities when it needs to
+make a trade-off; i.e., if is greater than , then improve speed at the
+cost of safety.
+
+The default for all qualities (except ) is . Whenever qualities are
+equal, ties are broken according to a broad idea of what a good default
+environment is supposed to be. Generally this downplays , and in favor
+of and . Novice and casual users should stick to the default policy.
+Advanced users often want to improve speed and memory usage at the cost
+of safety and debuggability.
+
+If the value for a quality is or , then it may have a special
+interpretation. A value of means ``totally unimportant'', and a means
+``ultimately important.'' These extreme optimization values enable
+``heroic'' compilation strategies that are not always desirable and
+sometimes self-defeating. Specifying more than one quality as is not
+desirable, since it doesn't tell the compiler which quality is most
+important.
+
+These are the optimization qualities:
+
+How fast the program should is run. enables some optimizations that hurt
+debuggability.
+
+How fast the compiler should run. Note that increasing this above
+weakens type checking.
+
+How much space the compiled code should take up. Inline expansion is
+mostly inhibited when is greater than . A value of enables promiscuous
+inline expansion. Wide use of a value is not recommended, as it may
+waste so much space that run time is slowed. for a discussion of inline
+expansion.
+
+How debuggable the program should be. The quality is treated differently
+from the other qualities: each value indicates a particular level of
+debugger information; it is not compared with the other qualities. for
+more details.
+
+How much error checking should be done. If , or is more important than ,
+then type checking is weakened (). If if , then no run time error
+checking is done. In addition to suppressing type checks, also
+suppresses argument count checking, unbound-symbol checking and array
+bounds checks.
+
+This is a extension that determines how little (or how much) diagnostic
+output should be printed during compilation. This quality is compared to
+other qualities to determine whether to print style notes and warnings
+concerning those qualities. If is greater than , then notes about how to
+improve speed will be printed, etc. The default value is , so raising
+the value for any standard quality above its default enables notes for
+that quality. If is , then all notes and most non-serious warnings are
+inhibited. This is useful with to suppress warnings about unavoidable
+problems.
+
+@node The Optimize-Interface Declaration
+@subsection The Optimize-Interface Declaration
+@anchor{#the-optimize-interface-declaration}
+The declaration is identical in syntax to the declaration, but it
+specifies the policy used during compilation of code the compiler
+automatically generates to check the number and type of arguments
+supplied to a function. It is useful to specify this policy separately,
+since even thoroughly debugged functions are vulnerable to being passed
+the wrong arguments. The declaration can specify that arguments should
+be checked even when the general policy is unsafe.
+
+Note that this argument checking is the checking of user-supplied
+arguments to any functions defined within the scope of the declaration,
+the checking of arguments to primitives that appear in those
+definitions.
+
+The idea behind this declaration is that it allows the definition of
+functions that appear fully safe to other callers, but that do no
+internal error checking. Of course, it is possible that arguments may be
+invalid in ways other than having incorrect type. Functions compiled
+unsafely must still protect themselves against things like user-supplied
+array indices that are out of bounds and improper lists. See also the
+option to .
+
+@node Open Coding and Inline Expansion
+@section Open Coding and Inline Expansion
+@anchor{open-coding}
+Since forbids the redefinition of standard functions@footnote{See the
+proposed X3J13 ``lisp-symbol-redefinition'' cleanup.}, the compiler can
+have special knowledge of these standard functions embedded in it. This
+special knowledge is used in various ways (open coding, inline
+expansion, source transformation), but the implications to the user are
+basically the same:
+
+@itemize
+@item
+Attempts to redefine standard functions may be frustrated, since the
+function may never be called. Although it is technically illegal to
+redefine standard functions, users sometimes want to implicitly redefine
+these functions when they are debugging using the macro. Special-casing
+of standard functions can be inhibited using the declaration.
+
+@item
+The compiler can have multiple alternate implementations of standard
+functions that implement different trade-offs of speed, space and
+safety. This selection is based on the compiler policy, .
+
+@end itemize
+
+When a function call is @emph{open coded}, inline code whose effect is
+equivalent to the function call is substituted for that function call.
+When a function call is @emph{closed coded}, it is usually left as is,
+although it might be turned into a call to a different function with
+different arguments. As an example, if were to be open coded, then
+
+(nthcdr 4 foobar)
+
+might turn into
+
+(cdr (cdr (cdr (cdr foobar))))
+
+or even
+
+(do ((i 0 (1+ i)) (list foobar (cdr foobar))) ((= i 4) list))
+
+If is closed coded, then
+
+(nth x l)
+
+might stay the same, or turn into something like:
+
+(car (nthcdr x l))
+
+In general, open coding sacrifices space for speed, but some functions
+(such as ) are so simple that they are always open-coded. Even when not
+open-coded, a call to a standard function may be transformed into a
+different function call (as in the last example) or compiled as
+@emph{static call}. Static function call uses a more efficient calling
+convention that forbids redefinition.

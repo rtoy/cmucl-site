@@ -1,6 +1,6 @@
 @node The Debugger
 @chapter The Debugger
-@anchor{#the-debugger}
+@anchor{#debugger}
 @credits{by Robert MacLachlan}
 
 @menu

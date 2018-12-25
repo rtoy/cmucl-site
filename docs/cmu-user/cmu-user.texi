@@ -21,6 +21,17 @@ Hemlock
 Python
 @end macro
 
+@macro alien {}
+Alien
+@end macro
+
+@macro hide {arg}
+@end macro
+
+@macro F {arg}
+@code{\arg\}
+@end macro
+
 @macro credits {arg}
 @center @b{\arg\}
 @end macro
@@ -53,8 +64,16 @@ Python
 @i{Common Lisp: The Language II}
 @end macro
 
+@macro argtype {arg}
+@var{\arg\}
+@end macro
+
 @macro amprest {}
 &rest
+@end macro
+
+@macro ampbody {}
+&body
 @end macro
 
 @macro ampoptional {}
@@ -100,8 +119,17 @@ Python
 @macro mgroup {arg}
 @{@var{\arg\}@}
 @end macro
+
 @macro keys {arg}
 &key \arg\
+@end macro
+
+@macro morekeys {arg}
+\arg\
+@end macro
+
+@macro yetmorekeys {arg}
+\arg\
 @end macro
 
 @macro varref {arg}
@@ -146,8 +174,17 @@ language implementation, programming environment
 @end ifnottex
 
 @include introduction.texi
-@c @include extensions.texi
+@include extensions.texi
 @include debugger.texi
 @include compiler.texi
 @include compiler-hint.texi
+@include unix.texi
+@include serve-event.texi
+@c @include aliens.texi
+@c @include ipc.texi
+@c @include internet.texi
+@c @include debug-internals.texi
+@c @include cross-referencing.texi
+@c @include unicode.texi
+
 @bye

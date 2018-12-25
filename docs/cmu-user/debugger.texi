@@ -1,65 +1,67 @@
 @node The Debugger
+@cindex debugger
 @chapter The Debugger
-@anchor{#debugger}
+@anchor{debugger}
+
 @credits{by Robert MacLachlan}
 
+
 @menu
-* Debugger Introduction::
-* The Command Loop::
-* Stack Frames::
-* Variable Access::
-* Source Location Printing::
-* Compiler Policy Control::
-* Exiting Commands::
-* Information Commands::
-* Breakpoint Commands::
-* Function Tracing::
-* Specials::
+* Debugger Introduction::       
+* The Command Loop::            
+* Stack Frames::                
+* Variable Access::             
+* Source Location Printing::    
+* Compiler Policy Control::     
+* Exiting Commands::            
+* Information Commands::        
+* Breakpoint Commands::         
+* Function Tracing::            
+* Specials::                    
 @end menu
 
 @node Debugger Introduction
 @section Debugger Introduction
-@anchor{#debugger-introduction}
 
-The debugger is unique in its level of support for source-level
-debugging of compiled code. Although some other debuggers allow access
-of variables by name, this seems to be the first debugger that:
-
+The @cmucl{} debugger is unique in its level of support for source-level
+debugging of compiled code.  Although some other debuggers allow access of
+variables by name, this seems to be the first @llisp{} debugger that:
 @itemize
+
 @item
 Tells you when a variable doesn't have a value because it hasn't been
 initialized yet or has already been deallocated, or
 
 @item
-Can display the precise source location corresponding to a code location
-in the debugged program.
-
+Can display the precise source location corresponding to a code
+location in the debugged program.
 @end itemize
-
 These features allow the debugging of compiled code to be made almost
 indistinguishable from interpreted code debugging.
 
-The debugger is an interactive command loop that allows a user to
-examine the function call stack. The debugger is invoked when:
-
+The debugger is an interactive command loop that allows a user to examine
+the function call stack.  The debugger is invoked when:
 @itemize
-@item
-A is signaled, and it is not handled, or
 
 @item
-is called, and the condition it signals is not handled, or
+A @tindexed{serious-condition} is signaled, and it is not handled, or
 
 @item
-The debugger is explicitly invoked with the or functions.
+@findexed{error} is called, and the condition it signals is not handled, or
 
+@item
+The debugger is explicitly invoked with the @clisp{} @findexed{break}
+or @findexed{debug} functions.
 @end itemize
 
-@emph{Note: there are two debugger interfaces in : the TTY debugger
-(described below) and the Motif debugger. Since the difference is only
-in the user interface, much of this chapter also applies to the Motif
-version. for a very brief discussion of the graphical interface.}
+@emph{Note: there are two debugger interfaces in @cmucl{}: the TTY
+debugger (described below) and the Motif debugger. Since the
+difference is only in the user interface, much of this chapter also
+applies to the Motif version. @xref{motif-interface} for a very brief
+discussion of the graphical interface.}
 
 When you enter the TTY debugger, it looks something like this:
+
 @example
 Error in function CAR.
 Wrong type argument, 3, should have been of type LIST.
@@ -74,15 +76,15 @@ Debug  (type H for help)
 @end example
 
 The first group of lines describe what the error was that put us in the
-debugger. In this case @code{car} was called on @code{3}. After
-@code{Restarts:} is a list of all the ways
-that we can restart execution after this error. In this case, the only
-option is to return to top-level. After printing its banner, the
-debugger prints the current frame and the debugger prompt.
+debugger.  In this case @code{car} was called on @code{3}.  After @code{Restarts:}
+is a list of all the ways that we can restart execution after this error.  In
+this case, the only option is to return to top-level.  After printing its
+banner, the debugger prints the current frame and the debugger prompt.
+
 
 @node The Command Loop
 @section The Command Loop
-@anchor{#the-command-loop}
+
 The debugger is an interactive read-eval-print loop much like the normal
 top-level, but some symbols are interpreted as debugger commands instead
 of being evaluated.  A debugger command starts with the symbol name of
@@ -105,97 +107,113 @@ recent call), increasing down to the bottom.  The current frame is the frame
 that commands refer to.  The current frame also provides the lexical
 environment for evaluation of non-command forms.
 
-@c \cpsubindex{evaluation}{debugger} 
+@c @cpsubindex{evaluation}{debugger}
 The debugger evaluates forms in the lexical
 environment of the functions being debugged.  The debugger can only
 access variables.  You can't @code{go} or @code{return-from} into a
 function, and you can't call local functions.  Special variable
 references are evaluated with their current value (the innermost binding
 around the debugger invocation)@dash{}you don't get the value that the
-special had in the current frame.  
-@c \xlref{debug-vars}
- for more
+special had in the current frame.  @xref{debug-vars} for more
 information on debugger variable access.
+
 
 @node Stack Frames
 @section Stack Frames
-@anchor{#stack-frames}
+@cindex stack frames
+@c @cpsubindex{frames}{stack}
+
 A stack frame is the run-time representation of a call to a function;
 the frame stores the state that a function needs to remember what it is
-doing. Frames have:
-
+doing.  Frames have:
 @itemize
+
 @item
-Variables (), which are the values being operated on, and
+Variables (@pxref{debug-vars}), which are the values being operated
+on, and
 
 @item
 Arguments to the call (which are really just particularly interesting
 variables), and
 
 @item
-A current location (), which is the place in the program where the
-function was running when it stopped to call another function, or
-because of an interrupt or error.
-
+A current location (@pxref{source-locations}), which is the place in
+the program where the function was running when it stopped to call another
+function, or because of an interrupt or error.
 @end itemize
 
+
 @menu
-* Stack Motion::
-* How Arguments are Printed::
-* Function Names::
-* Funny Frames::
-* Debug Tail Recursion::
-* Unknown Locations and Interrupts::
+* Stack Motion::                
+* How Arguments are Printed::   
+* Function Names::              
+* Funny Frames::                
+* Debug Tail Recursion::        
+* Unknown Locations and Interrupts::  
 @end menu
 
 @node Stack Motion
 @subsection Stack Motion
-@anchor{#stack-motion}
-These commands move to a new stack frame and print the name of the
-function and the values of its arguments in the style of a Lisp function
-call:
 
+These commands move to a new stack frame and print the name of the function
+and the values of its arguments in the style of a Lisp function call:
 @table @code
-@item up
-Move up to the next higher frame. More recent function calls are
-considered to be higher on the stack.
 
-@item down
+@item[@code{up}]
+Move up to the next higher frame.  More recent function calls are considered
+to be higher on the stack.
+
+@item[@code{down}]
 Move down to the next lower frame.
 
-@item top
+@item[@code{top}]
 Move to the highest frame.
 
-@item bottom
+@item[@code{bottom}]
 Move to the lowest frame.
 
-@item frame [@var{n}]
- Move to the frame with the specified number. Prompts for the number if
-not supplied.
+@item[@code{frame} [@var{n}]]
+Move to the frame with the specified number.  Prompts for the number if not
+supplied.
+
+@c @key{S} [@var{function-name} [@var{n}]]
+@c 
+@c @item
+@c Search down the stack for function.  Prompts for the function name if not
+@c supplied.  Searches an optional number of times, but doesn't prompt for
+@c this number; enter it following the function.
+@c 
+@c @item[@key{R} [@var{function-name} [@var{n}]]]
+@c Search up the stack for function.  Prompts for the function name if not
+@c supplied.  Searches an optional number of times, but doesn't prompt for
+@c this number; enter it following the function.
 @end table
+
 
 @node How Arguments are Printed
 @subsection How Arguments are Printed
-@anchor{#how-arguments-are-printed}
-A frame is printed to look like a function call, but with the actual
-argument values in the argument positions. So the frame for this call in
-the source:
+
+A frame is printed to look like a function call, but with the actual argument
+values in the argument positions.  So the frame for this call in the source:
 
 @lisp
 (myfun (+ 3 4) 'a)
 @end lisp
+
 would look like this:
 
-@lisp
+@example
 (MYFUN 7 A)
-@end lisp
+@end example
+
 All keyword and optional arguments are displayed with their actual
 values; if the corresponding argument was not supplied, the value will
-be the default. So this call:
+be the default.  So this call:
 
 @lisp
 (subseq "foo" 1)
 @end lisp
+
 would look like this:
 
 @example
@@ -215,52 +233,55 @@ would look like this:
 @end example
 
 The arguments to a function call are displayed by accessing the argument
-variables. Although those variables are initialized to the actual
-argument values, they can be set inside the function; in this case the
-new value will be displayed.
+variables.  Although those variables are initialized to the actual argument
+values, they can be set inside the function; in this case the new value will be
+displayed.
 
-@code{&rest} arguments are handled somewhat differently. The value of the rest
-argument variable is displayed as the spread-out arguments to the call,
-so:
+@code{@amprest{}} arguments are handled somewhat differently.  The value of
+the rest argument variable is displayed as the spread-out arguments to
+the call, so:
 
 @lisp
-(format t "@ A is a @ A." "This" 'test)
+(format t "~A is a ~A." "This" 'test)
 @end lisp
 
 would look like this:
 
 @example
-(FORMAT T "@ A is a @ A." "This" 'TEST)
+(FORMAT T "~A is a ~A." "This" 'TEST)
 @end example
 
 Rest arguments cause an exception to the normal display of keyword
-arguments in functions that have both @code{&rest} and @code{&key} arguments. In this case, the
-keyword argument variables are not displayed at all; the rest arg is
-displayed instead. So for these functions, only the keywords actually
-supplied will be shown, and the values displayed will be the argument
-values, not values of the (possibly modified) variables.
+arguments in functions that have both @code{@amprest{}} and @code{&key}
+arguments.  In this case, the keyword argument variables are not
+displayed at all; the rest arg is displayed instead.  So for these
+functions, only the keywords actually supplied will be shown, and the
+values displayed will be the argument values, not values of the
+(possibly modified) variables.
 
-If the variable for an argument is never referenced by the function, it
-will be deleted. The variable value is then unavailable, so the debugger
-prints @code{#<unused-arg>} instead of the value. Similarly, if for any of a number of
-reasons (described in more detail in section @ref{debug-vars}) the
-value of the variable is unavailable or not known to be available, then
-will be printed instead of the argument value.
+If the variable for an argument is never referenced by the function, it will be
+deleted.  The variable value is then unavailable, so the debugger prints
+@code{#<unused-arg>} instead of the value.  Similarly, if for any of a number of
+reasons (described in more detail in section @ref{debug-vars}) the value of the
+variable is unavailable or not known to be available, then
+@code{#<unavailable-arg>} will be printed instead of the argument value.
 
-Printing of argument values is controlled by @var{*debug-print-level*} and
-@var{*debug-print-length*}.
-
+Printing of argument values is controlled by @code{*debug-print-level*} and
+@varref{debug-print-length}.
 
 @node Function Names
 @subsection Function Names
-@anchor{#function-names}
-If a function is defined by @code{defun}, @code{labels}, or @code{flet}, then the debugger will print the
-actual function name after the open parenthesis, like:
+@c @cpsubindex{function}{names}
+@c @cpsubindex{names}{function}
+
+If a function is defined by @code{defun}, @code{labels}, or @code{flet}, then the
+debugger will print the actual function name after the open parenthesis, like:
 
 @example
-(STRING-UPCASE "test case" :START 0 :END NIL) 
-((SETF AREF) # "for" 1)
+(STRING-UPCASE "test case" :START 0 :END NIL)
+((SETF AREF) #\a "for" 1)
 @end example
+
 Otherwise, the function name is a string, and will be printed in quotes:
 
 @example
@@ -269,22 +290,28 @@ Otherwise, the function name is a string, and will be printed in quotes:
 ("SETQ *GC-NOTIFY-BEFORE*")
 @end example
 
-This string name is derived from the @code{def}@var{mumble} form that encloses or expanded into
-the lambda, or the outermost enclosing form if there is no @code{def}@var{mumble}.
+This string name is derived from the @w{@code{def}@var{mumble}} form
+that encloses or expanded into the lambda, or the outermost enclosing
+form if there is no @w{@code{def}@var{mumble}}.
 
 @node Funny Frames
 @subsection Funny Frames
-@anchor{#funny-frames}
-Sometimes the evaluator introduces new functions that are used to
-implement a user function, but are not directly specified in the source.
-The main place this is done is for checking argument type and syntax.
-Usually these functions do their thing and then go away, and thus are
-not seen on the stack in the debugger. But when you get some sort of
-error during lambda-list processing, you end up in the debugger on one
-of these funny frames.
+@cindex external entry points
+@c @cpsubindex{entry points}{external}
+@c @cpsubindex{block compilation}{debugger implications}
+@c @cpsubindex{external}{stack frame kind}
+@c @cpsubindex{optional}{stack frame kind}
+@c @cpsubindex{cleanup}{stack frame kind}
 
-These funny frames are flagged by printing ``@code{[}@var{keyword}@code{]}'' after the parentheses.
-For example, this call:
+Sometimes the evaluator introduces new functions that are used to implement a
+user function, but are not directly specified in the source.  The main place
+this is done is for checking argument type and syntax.  Usually these functions
+do their thing and then go away, and thus are not seen on the stack in the
+debugger.  But when you get some sort of error during lambda-list processing,
+you end up in the debugger on one of these funny frames.
+
+These funny frames are flagged by printing ``@code{[}@var{keyword}@code{]}'' after the
+parentheses.  For example, this call:
 
 @lisp
 (car 'a 'b)
@@ -308,38 +335,40 @@ would look like this:
 ("DEFUN STRING-UPCASE" "test case" 335544424 1) [:OPTIONAL]
 @end example
 
-As you can see, these frames have only a vague resemblance to the
-original call. Fortunately, the error message displayed when you enter
-the debugger will usually tell you what problem is (in these cases, too
-many arguments and odd keyword arguments.) Also, if you go down the
-stack to the frame for the calling function, you can display the
-original source (@pxref{source-locations})
+As you can see, these frames have only a vague resemblance to the original
+call.  Fortunately, the error message displayed when you enter the debugger
+will usually tell you what problem is (in these cases, too many arguments
+and odd keyword arguments.)  Also, if you go down the stack to the frame for
+the calling function, you can display the original source (@pxref{source-locations}.)
 
-With recursive or block compiled functions (), an frame may appear
+With recursive or block compiled functions
+(@pxref{block-compilation}), an @kwd{EXTERNAL} frame may appear
 before the frame representing the first call to the recursive function
 or entry to the compiled block. This is a consequence of the way the
-compiler does block compilation: there is nothing odd with your program.
-You will also see @code{:CLEANUP} frames during the execution of
-@code{unwind-protect} cleanup code. Note that
-inline expansion and open-coding affect what frames are present in the
-debugger, see sections @ref{debugger-policy} and
-@ref{open-coding,[open-coding]}.
+compiler does block compilation: there is nothing odd with your
+program. You will also see @kwd{CLEANUP} frames during the execution
+of @code{unwind-protect} cleanup code. Note that inline expansion and
+open-coding affect what frames are present in the debugger, see
+sections @ref{debugger-policy} and @ref{open-coding}.
+
 
 @node Debug Tail Recursion
 @subsection Debug Tail Recursion
 @anchor{debug-tail-recursion}
-Both the compiler and the interpreter are ``properly tail recursive.''
-If a function call is in a tail-recursive position, the stack frame will
-be deallocated @emph{at the time of the call}, rather than after the
-call returns. Consider this backtrace:
+@cindex tail recursion
+@c @cpsubindex{recursion}{tail}
+
+Both the compiler and the interpreter are ``properly tail recursive.''  If a
+function call is in a tail-recursive position, the stack frame will be
+deallocated @emph{at the time of the call}, rather than after the call returns.
+Consider this backtrace:
 @example
-(BAR ...)
+(BAR ...) 
 (FOO ...)
 @end example
 Because of tail recursion, it is not necessarily the case that
-@code{FOO} directly
-called @code{BAR}. It may be that called some other function
-@code{FOO2} which then called @code{BAR}
+@code{FOO} directly called @code{BAR}.  It may be that @code{FOO} called
+some other function @code{FOO2} which then called @code{BAR}
 tail-recursively, as in this example:
 @example
 (defun foo ()
@@ -354,214 +383,241 @@ tail-recursively, as in this example:
 (defun bar (...)
   ...)
 @end example
+
 Usually the elimination of tail-recursive frames makes debugging more
-pleasant, since theses frames are mostly uninformative. If there is any
+pleasant, since theses frames are mostly uninformative.  If there is any
 doubt about how one function called another, it can usually be
 eliminated by finding the source location in the calling frame (section
 @ref{source-locations}.)
 
 The elimination of tail-recursive frames can be prevented by disabling
-tail-recursion optimization, which happens when the @code{debug} optimization quality
-is greater than @code{2} (@pxref{debugger-policy}).
+tail-recursion optimization, which happens when the @code{debug}
+optimization quality is greater than @code{2}
+(@pxref{debugger-policy}.)
 
 For a more thorough discussion of tail recursion, @pxref{tail-recursion}.
+
 
 @node Unknown Locations and Interrupts
 @subsection Unknown Locations and Interrupts
 @anchor{unknown-locations}
+@cindex unknown code locations
+@c @cpsubindex{locations}{unknown}
+@cindex interrupts
+@c @cpsubindex{errors}{run-time}
+
 The debugger operates using special debugging information attached to
-the compiled code. This debug information tells the debugger what it
+the compiled code.  This debug information tells the debugger what it
 needs to know about the locations in the code where the debugger can be
-invoked. If the debugger somehow encounters a location not described in
-the debug information, then it is said to be . If the code location for
-a frame is unknown, then some variables may be inaccessible, and the
-source location cannot be precisely displayed.
+invoked.  If the debugger somehow encounters a location not described in
+the debug information, then it is said to be @var{unknown}.  If the code
+location for a frame is unknown, then some variables may be
+inaccessible, and the source location cannot be precisely displayed.
 
 There are three reasons why a code location could be unknown:
-
 @itemize
+
 @item
-There is inadequate debug information due to the value of the
-optimization quality. @xref{debugger-policy}.
+There is inadequate debug information due to the value of the @code{debug}
+optimization quality.  @xref{debugger-policy}.
 
 @item
 The debugger was entered because of an interrupt such as @code{^C}.
 
 @item
-A hardware error such as ``@code{bus error}'' occurred in code that was compiled
-unsafely due to the value of the optimization quality. @xref{optimize-declaration}.
+A hardware error such as ``@code{bus error}'' occurred in code that was
+compiled unsafely due to the value of the @code{safety} optimization
+quality.  @xref{optimize-declaration}.
 @end itemize
 
 In the last two cases, the values of argument variables are accessible,
-but may be incorrect. @xref{debug-var-validity} for more details on when variable values are
-accessible.
+but may be incorrect.  @xref{debug-var-validity} for more details on
+when variable values are accessible.
 
-It is possible for an interrupt to happen when a function call or return
-is in progress. The debugger may then flame out with some obscure error
-or insist that the bottom of the stack has been reached, when the real
-problem is that the current stack frame can't be located. If this
-happens, return from the interrupt and try again.
+It is possible for an interrupt to happen when a function call or return is in
+progress.  The debugger may then flame out with some obscure error or insist
+that the bottom of the stack has been reached, when the real problem is that
+the current stack frame can't be located.  If this happens, return from the
+interrupt and try again.
 
-When running interpreted code, all locations should be known. However,
+When running interpreted code, all locations should be known.  However,
 an interrupt might catch some subfunction of the interpreter at an
-unknown location. In this case, you should be able to go up the stack a
+unknown location.  In this case, you should be able to go up the stack a
 frame or two and reach an interpreted frame which can be debugged.
+
 
 @node Variable Access
 @section Variable Access
 @anchor{debug-vars}
-There are three ways to access the current frame's local variables in
-the debugger. The simplest is to type the variable's name into the
-debugger's read-eval-print loop. The debugger will evaluate the variable
-reference as though it had appeared inside that frame.
+@c @cpsubindex{variables}{debugger access}
+@cindex debug variables
+
+There are three ways to access the current frame's local variables in the
+debugger.  The simplest is to type the variable's name into the debugger's
+read-eval-print loop.  The debugger will evaluate the variable reference as
+though it had appeared inside that frame.
 
 The debugger doesn't really understand lexical scoping; it has just one
-namespace for all the variables in a function. If a symbol is the name
-of multiple variables in the same function, then the reference appears
-ambiguous, even though lexical scoping specifies which value is visible
-at any given source location. If the scopes of the two variables are not
-nested, then the debugger can resolve the ambiguity by observing that
-only one variable is accessible.
+namespace for all the variables in a function.  If a symbol is the name of
+multiple variables in the same function, then the reference appears ambiguous,
+even though lexical scoping specifies which value is visible at any given
+source location.  If the scopes of the two variables are not nested, then the
+debugger can resolve the ambiguity by observing that only one variable is
+accessible.
 
 When there are ambiguous variables, the evaluator assigns each one a
-small integer identifier. The @code{debug:var} function and the
-@code{list-locals} command use this
-identifier to distinguish between ambiguous variables:
+small integer identifier.  The @code{debug:var} function and the
+@code{list-locals} command use this identifier to distinguish between
+ambiguous variables:
 @table @code
 
-@item list-locals @{@var{prefix}@}
+@item[@code{list-locals} @mopt{@var{prefix}}]
 This command prints the name and value of all variables in the current
-frame whose name has the specified @var{prefix}. @var{prefix} may be a
-string or a symbol. If no @var{prefix}
-is given, then all available variables are printed. If a variable has a
-potentially ambiguous name, then the name is printed with a ``@code{#}@var{identifier}'' suffix,
-where @var{prefix} is the small integer used to make the name unique.
+frame whose name has the specified @var{prefix}.  @var{prefix} may be a
+string or a symbol.  If no @var{prefix} is given, then all available
+variables are printed.  If a variable has a potentially ambiguous name,
+then the name is printed with a ``@code{#}@var{identifier}'' suffix, where
+@var{identifier} is the small integer used to make the name unique.
 @end table
 
-@defun  debug:var name &optional identifier
-This function returns the value of the variable in the current frame
-with the specified @var{name}. If supplied, @var{identifier} determines which value to return when
-there are ambiguous variables.
-
-When @var{name} is a symbol, it is interpreted as the symbol name of the variable,
-i.e. the package is significant. If @var{name} is an uninterned symbol (gensym),
-then return the value of the uninterned variable with the same
-name. If @var{name}
-is a string, @code{debug:var} interprets it as the prefix of a variable name, and must
-unambiguously complete to the name of a valid variable.
-
-This function is useful mainly for accessing the value of uninterned or
-ambiguous variables, since most variables can be evaluated directly.
+@defun debug:var @args{@var{name} @ampoptional{} @var{identifier}}
+  
+  This function returns the value of the variable in the current frame
+  with the specified @var{name}.  If supplied, @var{identifier}
+  determines which value to return when there are ambiguous variables.
+  
+  When @var{name} is a symbol, it is interpreted as the symbol name of
+  the variable, i.e. the package is significant.  If @var{name} is an
+  uninterned symbol (gensym), then return the value of the uninterned
+  variable with the same name.  If @var{name} is a string,
+  @code{debug:var} interprets it as the prefix of a variable name, and
+  must unambiguously complete to the name of a valid variable.
+  
+  This function is useful mainly for accessing the value of uninterned
+  or ambiguous variables, since most variables can be evaluated
+  directly.
 @end defun
 
+
 @menu
-* Variable Value Availability::
-* Note On Lexical Variable Access::
+* Variable Value Availability::  
+* Note On Lexical Variable Access::  
 @end menu
 
 @node Variable Value Availability
 @subsection Variable Value Availability
 @anchor{debug-var-validity}
-The value of a variable may be unavailable to the debugger in portions
-of the program where @clisp{} says that the variable is defined. If a variable
-value is not available, the debugger will not let you read or write that
-variable. With one exception, the debugger will never display an
-incorrect value for a variable. Rather than displaying incorrect values,
-the debugger tells you the value is unavailable.
+@cindex availability of debug variables
+@cindex validity of debug variables
+@cindex debug optimization quality
+
+The value of a variable may be unavailable to the debugger in portions of the
+program where @clisp{} says that the variable is defined.  If a variable value is
+not available, the debugger will not let you read or write that variable.  With
+one exception, the debugger will never display an incorrect value for a
+variable.  Rather than displaying incorrect values, the debugger tells you the
+value is unavailable.
 
 The one exception is this: if you interrupt (e.g., with @code{^C}) or if there is
-an unexpected hardware error such as ``@code{bus error}'' (which should only happen in
-unsafe code), then the values displayed for arguments to the interrupted
-frame might be incorrect.@footnote{Since the location of an interrupt or
-hardware error will always be an unknown location (), non-argument
-variable values will never be available in the interrupted frame.} This
-exception applies only to the interrupted frame: any frame farther down
+an unexpected hardware error such as ``@code{bus error}'' (which should only happen
+in unsafe code), then the values displayed for arguments to the interrupted
+frame might be incorrect.@footnote{Since the location of an interrupt or hardware
+error will always be an unknown location (@pxref{unknown-locations}),
+non-argument variable values will never be available in the interrupted frame.}
+This exception applies only to the interrupted frame: any frame farther down
 the stack will be fine.
 
 The value of a variable may be unavailable for these reasons:
-
 @itemize
-@item
-The value of the @code{debug} optimization quality may have omitted debug information
-needed to determine whether the variable is available. Unless a variable
-is an argument, its value will only be available when @code{debug} is at least @code{2}.
 
 @item
-The compiler did lifetime analysis and determined that the value was no
-longer needed, even though its scope had not been exited. Lifetime
-analysis is inhibited when the @code{debug} optimization quality is @code{3}.
+The value of the @code{debug} optimization quality may have omitted debug
+information needed to determine whether the variable is available.
+Unless a variable is an argument, its value will only be available when
+@code{debug} is at least @code{2}.
 
 @item
-The variable's name is an uninterned symbol (gensym). To save space, the
-compiler only dumps debug information about uninterned variables when
-the @code{debug} optimization quality is @code{3}.
+The compiler did lifetime analysis and determined that the value was no longer
+needed, even though its scope had not been exited.  Lifetime analysis is
+inhibited when the @code{debug} optimization quality is @code{3}.
 
 @item
-The frame's location is unknown (@pxref{unknown-locations}) because the debugger was entered due
-to an interrupt or unexpected hardware error. Under these conditions the
-values of arguments will be available, but might be incorrect. This is
-the exception above.
+The variable's name is an uninterned symbol (gensym).  To save space, the
+compiler only dumps debug information about uninterned variables when the
+@code{debug} optimization quality is @code{3}.
 
 @item
-The variable was optimized out of existence. Variables with no reads are
-always optimized away, even in the interpreter. The degree to which the
-compiler deletes variables will depend on the value of the
-@code{compilation-speed} optimization
-quality, but most source-level optimizations are done under all
+The frame's location is unknown (@pxref{unknown-locations}) because
+the debugger was entered due to an interrupt or unexpected hardware error.
+Under these conditions the values of arguments will be available, but might be
+incorrect.  This is the exception above.
+
+@item
+The variable was optimized out of existence.  Variables with no reads are
+always optimized away, even in the interpreter.  The degree to which the
+compiler deletes variables will depend on the value of the @code{compile-speed}
+optimization quality, but most source-level optimizations are done under all
 compilation policies.
-
 @end itemize
 
-Since it is especially useful to be able to get the arguments to a
-function, argument variables are treated specially when the
-@code{speed} optimization
-quality is less than @code{3} and the @code{debug} quality is at least @code{1}. With this compilation
-policy, the values of argument variables are almost always available
-everywhere in the function, even at unknown locations. For non-argument
-variables, @code{debug} must be at least @code{2} for values to be available, and even then,
-values are only available at known locations.
+
+Since it is especially useful to be able to get the arguments to a function,
+argument variables are treated specially when the @code{speed} optimization
+quality is less than @code{3} and the @code{debug} quality is at least @code{1}.
+With this compilation policy, the values of argument variables are almost
+always available everywhere in the function, even at unknown locations.  For
+non-argument variables, @code{debug} must be at least @code{2} for values to be
+available, and even then, values are only available at known locations.
+
 
 @node Note On Lexical Variable Access
 @subsection Note On Lexical Variable Access
-@anchor{#note-on-lexical-variable-access}
-When the debugger command loop establishes variable bindings for
-available variables, these variable bindings have lexical scope and
-dynamic extent.@footnote{The variable bindings are actually created
-using the special form.} You can close over them, but such closures
+@c @cpsubindex{evaluation}{debugger}
+ 
+When the debugger command loop establishes variable bindings for available
+variables, these variable bindings have lexical scope and dynamic
+extent.@footnote{The variable bindings are actually created using the @clisp{}
+@code{symbol-macrolet} special form.}  You can close over them, but such closures
 can't be used as upward funargs.
 
 You can also set local variables using @code{setq}, but if the variable was closed
-over in the original source and never set, then setting the variable in
-the debugger may not change the value in all the functions the variable
-is defined in. Another risk of setting variables is that you may assign
-a value of a type that the compiler proved the variable could never take
-on. This may result in bad things happening.
+over in the original source and never set, then setting the variable in the
+debugger may not change the value in all the functions the variable is defined
+in.  Another risk of setting variables is that you may assign a value of a type
+that the compiler proved the variable could never take on.  This may result in
+bad things happening.
+
 
 @node Source Location Printing
 @section Source Location Printing
 @anchor{source-locations}
-One of @cmucl{}'s unique capabilities is source level debugging of compiled
-code. These commands display the source location for the current frame:
-@table @code
-@item source @{@var{context}@}
-This command displays the file that the current frame's function was
-defined from (if it was defined from a file), and then the source form
-responsible for generating the code that the current frame was
-executing. If @var{context} is specified, then it is an integer specifying the number
-of enclosing levels of list structure to print.
+@c @cpsubindex{source location printing}{debugger}
 
-@item vsource @{@var{context}@}
+One of @cmucl{}'s unique capabilities is source level debugging of compiled
+code.  These commands display the source location for the current frame:
+@table @code
+
+@item[@code{source} @mopt{@var{context}}]
+This command displays the file that the current frame's function was defined
+from (if it was defined from a file), and then the source form responsible for
+generating the code that the current frame was executing.  If @var{context} is
+specified, then it is an integer specifying the number of enclosing levels of
+list structure to print.
+
+@item[@code{vsource} @mopt{@var{context}}]
 This command is identical to @code{source}, except that it uses the
-global values of @code{*print-level*} and @code{*print-length*}
-and instead of the debugger printing control variables @code{*debug-print-level*}and @code{*debug-print-length*}.
+global values of @code{*print-level*} and @code{*print-length*} instead
+of the debugger printing control variables @code{*debug-print-level*}
+and @code{*debug-print-length*}.
 @end table
 
 The source form for a location in the code is the innermost list present
 in the original source that encloses the form responsible for generating
-that code. If the actual source form is not a list, then some enclosing
-list will be printed. For example, if the source form was a reference to
-the variable @code{*some-random-special*}, then the innermost enclosing evaluated form will be
-printed. Here are some possible enclosing forms:
+that code.  If the actual source form is not a list, then some enclosing
+list will be printed.  For example, if the source form was a reference
+to the variable @code{*some-random-special*}, then the innermost
+enclosing evaluated form will be printed.  Here are some possible
+enclosing forms:
 @example
 (let ((a *some-random-special*))
   ...)
@@ -569,21 +625,20 @@ printed. Here are some possible enclosing forms:
 (+ *some-random-special* ...)
 @end example
 
-If the code at a location was generated from the expansion of a macro or
-a source-level compiler optimization, then the form in the original
-source that expanded into that code will be printed. Suppose the file
-@code{/usr/me/mystuff.lisp} looked like this:
+If the code at a location was generated from the expansion of a macro or a
+source-level compiler optimization, then the form in the original source that
+expanded into that code will be printed.  Suppose the file
+@file{/usr/me/mystuff.lisp} looked like this:
 @example
-(defmacro mymac () 
+(defmacro mymac ()
   '(myfun))
 
 (defun foo ()
   (mymac)
   ...)
 @end example
-If @code{foo} has called @code{myfun}, and is waiting for it to
-return, then the @code{source} command would
-print:
+If @code{foo} has called @code{myfun}, and is waiting for it to return, then the
+@code{source} command would print:
 @example
 ; File: /usr/me/mystuff.lisp
 
@@ -592,325 +647,348 @@ print:
 Note that the macro use was printed, not the actual function call form,
 @code{(myfun)}.
 
-If enclosing source is printed by giving an argument to @code{source} or @code{vsource}, then the
-actual source form is marked by wrapping it in a list whose first
-element is @code{#:***HERE***}. In the previous example, @w{@code{source
-1}} would print:
+If enclosing source is printed by giving an argument to @code{source} or
+@code{vsource}, then the actual source form is marked by wrapping it in a list
+whose first element is @code{#:***HERE***}.  In the previous example, 
+@w{@code{source 1}} would print:
 @example
 ; File: /usr/me/mystuff.lisp
 
 (DEFUN FOO ()
   (#:***HERE***
-  (MYMAC))
+   (MYMAC))
   ...)
 @end example
 
+
 @menu
-* How the Source is Found::
-* Source Location Availability::
+* How the Source is Found::     
+* Source Location Availability::  
 @end menu
 
 @node How the Source is Found
 @subsection How the Source is Found
-@anchor{#how-the-source-is-found}
-If the code was defined from @clisp{} by @code{compile} or @code{eval}, then the source can always be
-reliably located. If the code was defined from a @code{fasl} file created by @code{compile-file}, then
-the debugger gets the source forms it prints by reading them from the
-original source file. This is a potential problem, since the source file
-might have moved or changed since the time it was compiled.
 
-The source file is opened using the @code{truename}of the source file pathname
-originally given to the compiler. This is an absolute pathname with all
-logical names and symbolic links expanded. If the file can't be located
-using this name, then the debugger gives up and signals an error.
+If the code was defined from @llisp{} by @code{compile} or
+@code{eval}, then the source can always be reliably located.  If the
+code was defined from a @code{fasl} file created by
+@findexed{compile-file}, then the debugger gets the source forms it
+prints by reading them from the original source file.  This is a
+potential problem, since the source file might have moved or changed
+since the time it was compiled.
 
-If the source file can be found, but has been modified since the time it
-was compiled, the debugger prints this warning:
+The source file is opened using the @code{truename} of the source file
+pathname originally given to the compiler.  This is an absolute pathname
+with all logical names and symbolic links expanded.  If the file can't
+be located using this name, then the debugger gives up and signals an
+error.
+
+If the source file can be found, but has been modified since the time it was
+compiled, the debugger prints this warning:
 @example
 ; File has been modified since compilation:
 ;   @var{filename}
 ; Using form offset instead of character position.
 @end example
-where @var{filename} is the name of the source file. It then proceeds using a robust
-but not foolproof heuristic for locating the source. This heuristic
+where @var{filename} is the name of the source file.  It then proceeds using a
+robust but not foolproof heuristic for locating the source.  This heuristic
 works if:
-
 @itemize
-@item
-No top-level forms before the top-level form containing the source have
-been added or deleted, and
 
 @item
-The top-level form containing the source has not been modified much.
-(More precisely, none of the list forms beginning before the source form
-have been added or deleted.)
+No top-level forms before the top-level form containing the source have been
+added or deleted, and
 
+@item
+The top-level form containing the source has not been modified much.  (More
+precisely, none of the list forms beginning before the source form have been
+added or deleted.)
 @end itemize
 
-If the heuristic doesn't work, the displayed source will be wrong, but
-will probably be near the actual source. If the ``shape'' of the
-top-level form in the source file is too different from the original
-form, then an error will be signaled. When the heuristic is used, the
-the source location commands are noticeably slowed.
+If the heuristic doesn't work, the displayed source will be wrong, but will
+probably be near the actual source.  If the ``shape'' of the top-level form in
+the source file is too different from the original form, then an error will be
+signaled.  When the heuristic is used, the the source location commands are
+noticeably slowed.
 
 Source location printing can also be confused if (after the source was
 compiled) a read-macro you used in the code was redefined to expand into
-something different, or if a read-macro ever returns the same
-@code{eq} list
-twice. If you don't define read macros and don't use @code{##} in perverted ways,
-you don't need to worry about this.
+something different, or if a read-macro ever returns the same @code{eq}
+list twice.  If you don't define read macros and don't use @code{##} in
+perverted ways, you don't need to worry about this.
+
 
 @node Source Location Availability
 @subsection Source Location Availability
-@anchor{#source-location-availability}
-Source location information is only available when the @code{debug} optimization
-quality is at least @code{2}. If source location information is unavailable, the
-source commands will give an error message.
+
+@cindex debug optimization quality
+Source location information is only available when the @code{debug}
+optimization quality is at least @code{2}.  If source location information is
+unavailable, the source commands will give an error message.
 
 If source location information is available, but the source location is
-unknown because of an interrupt or unexpected hardware error (@pxref{unknown-locations}), then
-the command will print:
+unknown because of an interrupt or unexpected hardware error
+(@pxref{unknown-locations}), then the command will print:
+
 @example
 Unknown location: using block start.
 @end example
+
 and then proceed to print the source location for the start of the
-@emph{basic block} enclosing the code location. It's a bit complicated
-to explain exactly what a basic block is, but here are some properties
-of the block start location:
+@emph{basic block} enclosing the code location.
+@c @cpsubindex{block}{basic} 
+@c @cpsubindex{block}{start location} 
+It's a bit complicated to explain exactly what a basic block is, but
+here are some properties of the block start location:
 
 @itemize
-@item
-The block start location may be the same as the true location.
-
-@item
-The block start location will never be later in the the program's flow
-of control than the true location.
-
-@item
-No conditional control structures (such as @code{if}, @code{cond}, @code{or}) will intervene between
-the block start and the true location (but note that some conditionals
-present in the original source could be optimized away.) Function calls
-@emph{do not} end basic blocks.
-
-@item
-The head of a loop will be the start of a block.
-
-@item
-The programming language concept of ``block structure'' and the
-@clisp{} @code{block} special
-form are totally unrelated to the compiler's basic block.
-
+  
+@item The block start location may be the same as the true location.
+  
+@item The block start location will never be later in the the
+  program's flow of control than the true location.
+  
+@item No conditional control structures (such as @code{if},
+  @code{cond}, @code{or}) will intervene between the block start and
+  the true location (but note that some conditionals present in the
+  original source could be optimized away.)  Function calls @emph{do not}
+  end basic blocks.
+  
+@item The head of a loop will be the start of a block.
+  
+@item The programming language concept of ``block structure'' and the
+  @clisp{} @code{block} special form are totally unrelated to the
+  compiler's basic block.
 @end itemize
 
-In other words, the true location lies between the printed location and
-the next conditional (but watch out because the compiler may have
-changed the program on you.)
+In other words, the true location lies between the printed location and the
+next conditional (but watch out because the compiler may have changed the
+program on you.)
+
 
 @node Compiler Policy Control
 @section Compiler Policy Control
 @anchor{debugger-policy}
-The compilation policy specified by @code{optimize} declarations affects the behavior
-seen in the debugger. The @code{debug} quality directly affects the debugger by
-controlling the amount of debugger information dumped. Other
-optimization qualities have indirect but observable effects due to
-changes in the way compilation is done.
+@c @cpsubindex{policy}{debugger}
+@cindex debug optimization quality
+@cindex optimize declaration
 
-Unlike the other optimization qualities (which are compared in relative
-value to evaluate tradeoffs), the @code{debug} optimization quality is directly
-translated to a level of debug information. This absolute interpretation
-allows the user to count on a particular amount of debug information
-being available even when the values of the other qualities are changed
-during compilation. These are the levels of debug information that
-correspond to the values of the @code{debug} quality:
+The compilation policy specified by @code{optimize} declarations affects the
+behavior seen in the debugger.  The @code{debug} quality directly affects the
+debugger by controlling the amount of debugger information dumped.  Other
+optimization qualities have indirect but observable effects due to changes in
+the way compilation is done.
 
+Unlike the other optimization qualities (which are compared in relative value
+to evaluate tradeoffs), the @code{debug} optimization quality is directly
+translated to a level of debug information.  This absolute interpretation
+allows the user to count on a particular amount of debug information being
+available even when the values of the other qualities are changed during
+compilation.  These are the levels of debug information that correspond to the
+values of the @code{debug} quality:
 @table @code
-@item 0
-Only the function name and enough information to allow the stack to be
-parsed.
 
-@item > 0
-Any level greater than @code{0} gives level @code{0} plus all argument variables. Values
-will only be accessible if the argument variable is never set and
-@code{speed} is not
-@code{3}. @cmucl{} allows any real value for optimization qualities. It may be useful to
-specify @code{0.5} to get backtrace argument display without argument
-documentation.
+@item[@code{0}]
+Only the function name and enough information to allow the stack to
+be parsed.
 
-@item 1
-Level @code{1} provides argument documentation (printed arglists) and derived
-argument/result type information. This makes more @code{describe} informative, and
-allows the compiler to do compile-time argument count and type checking
-for any calls compiled at run-time.
+@item[@code{@w{$>$ 0}}]
+Any level greater than @code{0} gives level @code{0} plus all
+argument variables.  Values will only be accessible if the argument
+variable is never set and
+@code{speed} is not @code{3}.  @cmucl{} allows any real value for optimization
+qualities.  It may be useful to specify @code{0.5} to get backtrace argument
+display without argument documentation.
 
-@item 2
-Level @code{1}  plus all interned local variables, source location information,
-and lifetime information that tells the debugger when arguments are
-available (even when @code{speed} is @code{3} or the argument is set.) This is the default.
+@item[@code{1}] Level @code{1} provides argument documentation
+(printed arglists) and derived argument/result type information.
+This makes @findexed{describe} more informative, and allows the
+compiler to do compile-time argument count and type checking for any
+calls compiled at run-time.
 
-@item > 2
-Any level greater @code{2} than gives level @code{2} and in addition disables tail-call
-optimization, so that the backtrace will contain frames for all invoked
-functions, even those in tail positions.
+@item[@code{2}]
+Level @code{1} plus all interned local variables, source location
+information, and lifetime information that tells the debugger when arguments
+are available (even when @code{speed} is @code{3} or the argument is set.)  This is
+the default.
 
-@item 3
-Level @code{2} plus all uninterned variables. In addition, lifetime analysis is
-disabled (even when @code{speed} is @code{3}), ensuring that all variable values are
-available at any known location within the scope of the binding. This
-has a speed penalty in addition to the obvious space penalty.
+@item[@code{@w{$>$ 2}}]
+Any level greater than @code{2} gives level @code{2} and in addition
+disables tail-call optimization, so that the backtrace will contain
+frames for all invoked functions, even those in tail positions.
+
+@item[@code{3}]
+Level @code{2} plus all uninterned variables.  In addition, lifetime
+analysis is disabled (even when @code{speed} is @code{3}), ensuring
+that all variable values are available at any known location within
+the scope of the binding.  This has a speed penalty in addition to the
+obvious space penalty. 
 @end table
 
-As you can see, if the @code{speed} quality is @code{3}, debugger performance is degraded.
-This effect comes from the elimination of argument variable
-special-casing (@pxref{debug-var-validity}) Some degree of speed/debuggability tradeoff is
-unavoidable, but the effect is not too drastic when @code{debug} is at least @code{2}.
+As you can see, if the @code{speed} quality is @code{3}, debugger performance is
+degraded.  This effect comes from the elimination of argument variable
+special-casing (@pxref{debug-var-validity}.)  Some degree of
+speed/debuggability tradeoff is unavoidable, but the effect is not too drastic
+when @code{debug} is at least @code{2}.
 
 @cindex inline expansion
 @cindex semi-inline expansion
-In addition to @code{inline} and @code{notinline} declarations, the
-relative values of the @code{speed} and @code{space}
-qualities also change whether functions are inline expanded (@pxref{inline-expansion}) If a
-function is inline expanded, then there will be no frame to represent
-the call, and the arguments will be treated like any other local
-variable. Functions may also be ``semi-inline'', in which case there is
-a frame to represent the call, but the call is to an optimized local
-version of the function, not to the original function.
+In addition to @code{inline} and @code{notinline} declarations, the relative values
+of the @code{speed} and @code{space} qualities also change whether functions are
+inline expanded (@pxref{inline-expansion}.)  If a function is inline
+expanded, then there will be no frame to represent the call, and the arguments
+will be treated like any other local variable.  Functions may also be
+``semi-inline'', in which case there is a frame to represent the call, but the
+call is to an optimized local version of the function, not to the original
+function.
+
 
 @node Exiting Commands
 @section Exiting Commands
+
 These commands get you out of the debugger.
 
 @table @code
-@item quit
+
+@item[@code{quit}]
 Throw to top level.
 
-@item restart @{@var{n}@}
+@item[@code{restart} @mopt{@var{n}}]
 Invokes the @var{n}th restart case as displayed by the @code{error}
-command. If @var{n} is not
-specified, the available restart cases are reported.
+command.  If @var{n} is not specified, the available restart cases are
+reported.
 
-@item go
-Calls @code{continue} on the condition given to @code{debug}. If there is no restart case named @var{continue},
-then an error is signaled.
+@item[@code{go}]
+Calls @code{continue} on the condition given to @code{debug}.  If there is no
+restart case named @var{continue}, then an error is signaled.
 
-@item abort
-Calls @code{abort} on the condition given to @code{debug}. This is useful for popping debug
-command loop levels or aborting to top level, as the case may be.
+@item[@code{abort}]
+Calls @code{abort} on the condition given to @code{debug}.  This is
+useful for popping debug command loop levels or aborting to top level,
+as the case may be.
 
-@c  (\code{debug:debug-return} \var{expression} \mopt{\var{frame}})
- 
-@c  \item
-@c  From the current or specified frame, return the result of evaluating
-@c  expression.  If multiple values are expected, then this function should be
-@c  called for multiple values.
+@c (@code{debug:debug-return} @var{expression} @mopt{@var{frame}})
+@c 
+@c @item
+@c From the current or specified frame, return the result of evaluating
+@c expression.  If multiple values are expected, then this function should be
+@c called for multiple values.
 @end table
+
 
 @node Information Commands
 @section Information Commands
-@anchor{#information-commands}
+
 Most of these commands print information about the current frame or
 function, but a few show general information.
+
 @table @code
-@item help, ?
+
+@item[@code{help}, @code{?}]
 Displays a synopsis of debugger commands.
 
-@item describe
-Calls @code{describe} on the current function, displays number of local variables, and
-indicates whether the function is compiled or interpreted.
+@item[@code{describe}]
+Calls @code{describe} on the current function, displays number of local
+variables, and indicates whether the function is compiled or interpreted.
 
-@item print
+@item[@code{print}]
 Displays the current function call as it would be displayed by moving to
 this frame.
 
-@item vprint (or pp) @{@var{verbosity}@}
-Displays the current function call using @code{*print-level*}and
-@code{*print-lenth*} instead of @code{*debug-print-level*} and
-@code{*debug-print-length*}. @var{verbosity} is a small
-integer (default 2) that controls other dimensions of verbosity.
+@item[@code{vprint} (or @code{pp}) @mopt{@var{verbosity}}]
+Displays the current function call using @code{*print-level*} and
+@code{*print-length*} instead of @code{*debug-print-level*} and
+@code{*debug-print-length*}.  @var{verbosity} is a small integer
+(default 2) that controls other dimensions of verbosity.
 
-@item error
-Prints the condition given to and the active proceed cases.
+@item[@code{error}]
+Prints the condition given to @code{invoke-debugger} and the active
+proceed cases.
 
-@item backtrace @{@var{n}@}
-Displays all the frames from the current to the bottom. Only shows
-@var{n} frames if specified. The printing is controlled by
-@code{*debug-print-level*} and @code{*debug-print-lenth*}.
+@item[@code{backtrace} @mopt{@var{n}}]
+Displays all the frames from the current to the bottom.  Only shows
+@var{n} frames if specified.  The printing is controlled by
+@code{*debug-print-level*} and @code{*debug-print-length*}.
 
-@c (\code{debug:debug-function} \mopt{\var{n}})
-
-@c \item
+@c (@code{debug:debug-function} @mopt{@var{n}})
+@c 
+@c @item
 @c Returns the function from the current or specified frame.
-
-@c \item[(\code{debug:function-name} \mopt{\var{n}])]
+@c 
+@c @item[(@code{debug:function-name} @mopt{@var{n}])]
 @c Returns the function name from the current or specified frame.
-
-@c \item[(\code{debug:pc} \mopt{\var{frame}})]
+@c 
+@c @item[(@code{debug:pc} @mopt{@var{frame}})]
 @c Returns the index of the instruction for the function in the current or
-@c specified frame.  This is useful in conjunction with \code{disassemble}.
+@c specified frame.  This is useful in conjunction with @code{disassemble}.
 @c The pc returned points to the instruction after the one that was fatal.
 @end table
 
+
 @node Breakpoint Commands
+@cindex breakpoints
 @section Breakpoint Commands
-@anchor{#breakpoint-commands}
-@cmucl{} supports setting of breakpoints inside compiled functions and stepping
-of compiled code. Breakpoints can only be set at at known locations (@pxref{unknown-locations}),
-so these commands are largely useless unless the @code{debug} optimize quality is at
-least @code{2} (@pxref{debugger-policy}). These commands manipulate breakpoints:
 
+@cmucl{} supports setting of breakpoints inside compiled functions and
+stepping of compiled code.  Breakpoints can only be set at at known
+locations (@pxref{unknown-locations}), so these commands are largely
+useless unless the @code{debug} optimize quality is at least @code{2}
+(@pxref{debugger-policy}).  These commands manipulate breakpoints:
 @table @code
-@item breakpoint @var{location} @{@var{option} @var{value}@}*
-Set a breakpoint in some function. @var{location} may be an integer code location
-number (as displayed by @code{list-locations}) or a keyword. The keyword can be used to
-indicate setting a breakpoint at the function start (@code{:start}, @code{:s}) or function end
-(@code{:end}, @code{:e}). The command has @code{:condition},
-@code{:break}, and @code{:function} options which work similarly to
-the @code{trace}
-options.
+@item[@code{breakpoint} @var{location} @mstar{@var{option} @var{value}}]
+Set a breakpoint in some function.  @var{location} may be an integer
+code location number (as displayed by @code{list-locations}) or a
+keyword.  The keyword can be used to indicate setting a breakpoint at
+the function start (@kwd{start}, @kwd{s}) or function end
+(@kwd{end}, @kwd{e}).  The @code{breakpoint} command has
+@kwd{condition}, @kwd{break}, @kwd{print} and @kwd{function}
+options which work similarly to the @code{trace} options.
 
-@item list-locations (or ll) @{@var{function}@}
+@item[@code{list-locations} (or @code{ll}) @mopt{@var{function}}]
 List all the code locations in the current frame's function, or in
-@var{function} if it
-is supplied. The display format is the code location number, a colon and
-then the source form for that location:
+@var{function} if it is supplied.  The display format is the code
+location number, a colon and then the source form for that location:
 @example
 3: (1- N)
 @end example
+If consecutive locations have the same source, then a numeric range like
+@code{3-5:} will be printed.  For example, a default function call has a
+known location both immediately before and after the call, which would
+result in two code locations with the same source.  The listed function
+becomes the new default function for breakpoint setting (via the
+@code{breakpoint}) command.
 
-If consecutive locations have the same source, then a numeric range
-like @code{3-5:}
-will be printed. For example, a default function call has a known
-location both immediately before and after the call, which would result
-in two code locations with the same source. The listed function becomes
-the new default function for breakpoint setting (via the
-@code{breakpoint}) command. 
-
-@item list-breakpoints (or lb)
+@item[@code{list-breakpoints} (or @code{lb})]
 List all currently active breakpoints with their breakpoint number.
 
-@item delete-breakpoints (or db) @{@var{number}@}*
-Delete a breakpoint specified by its breakpoint number. If no number is
+@item[@code{delete-breakpoint} (or @code{db}) @mopt{@var{number}}]
+Delete a breakpoint specified by its breakpoint number.  If no number is
 specified, delete all breakpoints.
 
-@item step
+@item[@code{step}]
 Step to the next possible breakpoint location in the current function.
 This always steps over function calls, instead of stepping into them
 @end table
 
+
 @menu
-* Breakpoint Example::
+* Breakpoint Example::          
 @end menu
 
 @node Breakpoint Example
 @subsection Breakpoint Example
-@anchor{#breakpoint-example}
+
 Consider this definition of the factorial function:
+
 @lisp
 (defun ! (n)
   (if (zerop n)
-    1
-    (* n (! (1- n)))))
+      1
+      (* n (! (1- n)))))
 @end lisp
+
 This debugger session demonstrates the use of breakpoints:
+
 @example
 common-lisp-user> (break) ; Invoke debugger
 
@@ -918,9 +996,9 @@ Break
 
 Restarts:
   0: [CONTINUE] Return from BREAK.
-  1: [ABORT ] Return to Top-Level.
+  1: [ABORT   ] Return to Top-Level.
 
-Debug (type H for help)
+Debug  (type H for help)
 
 (INTERACTIVE-EVAL (BREAK))
 0] ll #'!
@@ -943,9 +1021,9 @@ common-lisp-user> (! 10) ; Call the function
 
 Restarts:
   0: [CONTINUE] Return from BREAK.
-  1: [ABORT ] Return to Top-Level.
+  1: [ABORT   ] Return to Top-Level.
 
-Debug (type H for help)
+Debug  (type H for help)
 
 (! 10) ; We are now in first call (arg 10) before the multiply
 Source: (* N (! (1- N)))
@@ -954,350 +1032,370 @@ Source: (* N (! (1- N)))
 *Step*
 
 (! 10) ; We have finished evaluation of (1- n)
-Source: (1- N) 3] st
+Source: (1- N)
+3] st
 
 *Breakpoint hit*
 
 Restarts:
   0: [CONTINUE] Return from BREAK.
-  1: [ABORT ] Return to Top-Level.
+  1: [ABORT   ] Return to Top-Level.
 
-Debug (type H for help)
+Debug  (type H for help)
 
 (! 9) ; We hit the breakpoint in the recursive call
-Source: (* N (! (1- N))) 
-3]
+Source: (* N (! (1- N)))
+3] 
 @end example
+
 
 @node Function Tracing
 @section Function Tracing
-@anchor{#function-tracing}
-The tracer causes selected functions to print their arguments and their
-results whenever they are called. Options allow conditional printing of
-the trace information and conditional breakpoints on function entry or
-exit.
+@cindex tracing
+@c @cpsubindex{function}{tracing}
 
-@defmac trace @{option global-value@}* @{name @{option value@}*@}*
+The tracer causes selected functions to print their arguments and
+their results whenever they are called.  Options allow conditional
+printing of the trace information and conditional breakpoints on
+function entry or exit.
 
-@code{trace} is a debugging tool that prints information when specified functions are
-called. In its simplest form:
-@example
-(trace @var{name-1} @var{name-2} ...)
-@end example
+@defmac traced @args{@mstar{option global-value} @mstar{name @mstar{option value}}}
+  
+  @code{trace} is a debugging tool that prints information when
+  specified functions are called.  In its simplest form:
+  @example
+    (trace @var{name-1} @var{name-2} ...)
+  @end example
+  @code{trace} causes a printout on @vindexed{trace-output} each time
+  that one of the named functions is entered or returns (the
+  @var{names} are not evaluated.)  Trace output is indented according
+  to the number of pending traced calls, and this trace depth is
+  printed at the beginning of each line of output.  Printing verbosity
+  of arguments and return values is controlled by
+  @vindexed{debug-print-level} and @vindexed{debug-print-length}.
 
-@code{trace} causes a printout on @code{trace-output} each time that one of the named functions is
-entered or returns (the @var{names} are not evaluated.) Trace output is indented
-according to the number of pending traced calls, and this trace depth is
-printed at the beginning of each line of output. Printing verbosity of
-arguments and return values is controlled by @code{*debug-print-level*}and @code{*debug-print-length*}.
+  Local functions defined by @code{flet} and @code{labels} can be
+  traced using the syntax @code{(flet f f1 f2 ...)} or @code{(labels f
+    f1 f2 ...)} where @code{f} is the @code{flet} or @code{labels}
+  function we want to trace and @code{f1}, @code{f2}, are the
+  functions containing the local function @code{f}.
+  Invidiual methods can also be traced using the syntax @code{(method
+    @var{name} @var{qualifiers} @var{specializers})}.
+  See~@ref{sec:method-tracing} for more information.
 
-Local functions defined by @code{flet} and @code{labels}can be traced
-using the syntax @code{(flet f f1 f2 ...} or @code{(labels f f1 f2
-...} where @code{f}
-is the @code{flet} or @code{lable} function we want to trace and @code{f1}, @code{f2}, are the functions containing
-the local function @code{f}. Invidiual methods can also be traced using the
-syntax @code{(method @var{name} @var{qualifiers} @var{specializers})}. See @ref{#sec:method-tracing,[sec:method-tracing]} for more
-information.
+  If no @var{names} or @var{options} are are given, @code{trace}
+  returns the list of all currently traced functions,
+  @code{*traced-function-list*}.
+  
+  Trace options can cause the normal printout to be suppressed, or
+  cause extra information to be printed.  Each option is a pair of an
+  option keyword and a value form.  Options may be interspersed with
+  function names.  Options only affect tracing of the function whose
+  name they appear immediately after.  Global options are specified
+  before the first name, and affect all functions traced by a given
+  use of @code{trace}.  If an already traced function is traced again,
+  any new options replace the old options.  The following options are
+  defined:
+  @table @code
+  @item[@kwd{condition} @var{form}, @kwd{condition-after} @var{form},
+    @kwd{condition-all} @var{form}] If @kwd{condition} is specified,
+    then @code{trace} does nothing unless @var{form} evaluates to true
+    at the time of the call.  @kwd{condition-after} is similar, but
+    suppresses the initial printout, and is tested when the function
+    returns.  @kwd{condition-all} tries both before and after.
+    
+  @item[@kwd{wherein} @var{names}] If specified, @var{names} is a
+    function name or list of names.  @code{trace} does nothing unless
+    a call to one of those functions encloses the call to this
+    function (i.e. it would appear in a backtrace.)  Anonymous
+    functions have string names like @code{"DEFUN FOO"}.  Individual
+    methods can also be traced.  See section~@ref{sec:method-tracing}.
 
-If no @var{names} or @var{options} are are given, returns the list of all currently traced
-functions, @code{*traced-function-list*}.
+  @item[@kwd{wherein-only} @var{names}] If specified, this is just
+    like @kwd{wherein}, but trace produces output only if the
+    immediate caller of the traced function is one of the functions
+    listed in @var{names}.
+    
+  @item[@kwd{break} @var{form}, @kwd{break-after} @var{form},
+    @kwd{break-all} @var{form}] If specified, and @var{form} evaluates
+    to true, then the debugger is invoked at the start of the
+    function, at the end of the function, or both, according to the
+    respective option.
+    
+  @item[@kwd{print} @var{form}, @kwd{print-after} @var{form},
+    @kwd{print-all} @var{form}] In addition to the usual printout, the
+    result of evaluating @var{form} is printed at the start of the
+    function, at the end of the function, or both, according to the
+    respective option.  Multiple print options cause multiple values
+    to be printed.
+    
+  @item[@kwd{function} @var{function-form}] This is a not really an
+    option, but rather another way of specifying what function to
+    trace.  The @var{function-form} is evaluated immediately, and the
+    resulting function is traced.
+    
+  @item[@kwd{encapsulate @mgroup{:default | t | nil}}] In @cmucl,
+    tracing can be done either by temporarily redefining the function
+    name (encapsulation), or using breakpoints.  When breakpoints are
+    used, the function object itself is destructively modified to
+    cause the tracing action.  The advantage of using breakpoints is
+    that tracing works even when the function is anonymously called
+    via @code{funcall}.
+  
+    When @kwd{encapsulate} is true, tracing is done via encapsulation.
+    @kwd{default} is the default, and means to use encapsulation for
+    interpreted functions and funcallable instances, breakpoints
+    otherwise.  When encapsulation is used, forms are @emph{not}
+    evaluated in the function's lexical environment, but
+    @code{debug:arg} can still be used.
 
-Trace options can cause the normal printout to be suppressed, or cause
-extra information to be printed. Each option is a pair of an option
-keyword and a value form. Options may be interspersed with function
-names. Options only affect tracing of the function whose name they
-appear immediately after. Global options are specified before the first
-name, and affect all functions traced by a given use of @code{trace}. If an already
-traced function is traced again, any new options replace the old
-options. The following options are defined:
-@table @code
-@item @kwd{condition} @var{form}
-@itemx @kwd{condition-after} @var{form}
-@itemx @kwd{condition-all} @var{form}
-If @kwd{condition} is specified, then @code{trace} does nothing unless
-@var{form} evaluates to true at the time
-of the call. @kwd{condition-after} is similar, but suppresses the initial printout, and is
-tested when the function returns. @kwd{condition-all} tries both before and after.
+    Note that if you trace using @kwd{encapsulate}, you will
+    only get a trace or breakpoint at the outermost call to the traced
+    function, not on recursive calls.
 
-@item @kwd{wherein} @var{names}
-If specified, @var{names} is a function name or list of
-names. @code{trace} does nothing unless a
-call to one of those functions encloses the call to this function (i.e.
-it would appear in a backtrace.) Anonymous functions have string names
-like @code{``DEFUN FOO''}. Individual methods can also be traced. See
-section @ref{#sec:method-tracing,[sec:method-tracing]}.
+  @end table
 
-@item @kwd{wherein-only} @var{names}
-If specified, this is just like @kwd{wherein}, but trace produces output only if the
-immediate caller of the traced function is one of the functions listed
-in @var{names}.
-
-@item @kwd{break} @var{form}
-@itemx @kwd{break-after} @var{form},
-@itemx @kwd{break-all} @var{form}
-If specified, and @var{form} evaluates to true, then the debugger is invoked at the
-start of the function, at the end of the function, or both, according to
-the respective option.
-
-@item @kwd{print} @var{form}
-@itemx @kwd{print-after} @var{form},
-@itemx @kwd{print-all} @var{form}
-In addition to the usual printout, the result of evaluating @var{form}
-is printed
-at the start of the function, at the end of the function, or both,
-according to the respective option. Multiple print options cause
-multiple values to be printed.
-
-@item @kwd{function} @var{function-form}
-This is a not really an option, but rather another way of specifying
-what function to trace. The @var{function-form} is evaluated immediately, and the resulting
-function is traced.
-
-@item @kwd{encapsulate} @{:default | t | nil@}
-In @cmucl{}, tracing can be done either by temporarily redefining the function
-name (encapsulation), or using breakpoints. When breakpoints are used,
-the function object itself is destructively modified to cause the
-tracing action. The advantage of using breakpoints is that tracing works
-even when the function is anonymously called via @code{funcall}.
-
-When @kwd{encapsulate} is true, tracing is done via
-encapsulation. @kwd{default} is the default, and
-means to use encapsulation for interpreted functions and funcallable
-instances, breakpoints otherwise. When encapsulation is used, forms are
-@emph{not} evaluated in the function's lexical environment, but
-@code{debug:arg} can
-still be used.
-
-Note that if you trace using @kwd{encapsulate}, you will only get a trace or breakpoint
-at the outermost call to the traced function, not on recursive calls.
-@end table
-
-In the case of functions where the known return convention is used to
-optimize, encapsulation may be necessary in order to make tracing work
-at all. The symptom of this occurring is an error stating
-@example
-Error in function @var{foo}: :FUNCTION-END breakpoints are
-currently unsupported for the known return convention.
-@end example
-in such cases we recommend using @code{(trace @var{foo} :encapsulate t)}.
-
-@kwd{condition}, @kwd{break} and @kwd{print} forms are evaluated in the lexical environment of the called
-function; @code{debug:arg} and can be used. The @code{-after} and
-@code{-all} forms are evaluated in the null
-environment.
+  In the case of functions where the known return convention is used
+  to optimize, encapsulation may be necessary in order to make
+  tracing work at all.  The symptom of this occurring is an error
+  stating
+  @example
+    Error in function @var{foo}: :FUNCTION-END breakpoints are
+    currently unsupported for the known return convention.
+  @end example
+  in such cases we recommend using @code{(trace @var{foo} :encapsulate
+    t)}
+  
+  @c @cpsubindex{tracing}{errors}
+  @c @cpsubindex{breakpoints}{errors}
+  @c @cpsubindex{errors}{breakpoints}
+  @cindex function-end breakpoints
+  @c @cpsubindex{breakpoints}{function-end}
+  
+  @kwd{condition}, @kwd{break} and @kwd{print} forms are evaluated in
+  the lexical environment of the called function; @code{debug:var} and
+  @code{debug:arg} can be used.  The @code{-after} and @code{-all}
+  forms are evaluated in the null environment.
 @end defmac
 
-@defmac untrace &rest @var{function-names}
-This macro turns off tracing for the specified functions, and removes
-their names from @code{*traced-function-list*}. If no are given, then all currently traced functions
-are untraced.
+@defmac untrace @args{@amprest{} @var{function-names}}
+  
+  This macro turns off tracing for the specified functions, and
+  removes their names from @code{*traced-function-list*}.  If no
+  @var{function-names} are given, then all currently traced functions
+  are untraced.
 @end defmac
 
-@defvar extensions:*traced-function-list*
-
-A list of function names maintained and used by @code{trace}, @code{untrace}, and @code{untrace-all}. This list
-should contain the names of all functions currently being traced.
+@defvar extensions:traced-function-list 
+  
+  A list of function names maintained and used by @code{trace},
+  @code{untrace}, and @code{untrace-all}.  This list should contain
+  the names of all functions currently being traced.
 @end defvar
 
-@defvar extensions:*max-trace-indentation*
-The maximum number of spaces which should be used to indent trace
-printout. This variable is initially set to 40.
+@defvar extensions:max-trace-indentation 
+  
+  The maximum number of spaces which should be used to indent trace
+  printout.  This variable is initially set to 40.
 @end defvar
 
-@defvar debug:*trace-encapsulate-package-names*
-A list of package names. Functions from these packages are traced using
-encapsulation instead of function-end breakpoints. This list should at
-least include those packages containing functions used directly or
-indirectly in the implementation of @code{trace}.
+@defvar debug:trace-encapsulate-package-names 
+  
+  A list of package names.  Functions from these packages are traced
+  using encapsulation instead of function-end breakpoints.  This list
+  should at least include those packages containing functions used
+  directly or indirectly in the implementation of @code{trace}.
 @end defvar
+
 
 @menu
-* Encapsulation Functions::
-* Tracing Examples::
+* Encapsulation Functions::     
+* Tracing Examples::            
 @end menu
 
 @node Encapsulation Functions
 @subsection Encapsulation Functions
-@anchor{#encapsulation-functions}
+@cindex encapsulation
+@cindex advising
+
 The encapsulation functions provide a mechanism for intercepting the
-arguments and results of a function. @code{encapsulate} changes the function definition of
-a symbol, and saves it so that it can be restored later. The new
-definition normally calls the original definition. The @clisp{}
-@code{fdefinition} function always
-returns the original definition, stripping off any encapsulation.
+arguments and results of a function.  @code{encapsulate} changes the
+function definition of a symbol, and saves it so that it can be
+restored later.  The new definition normally calls the original
+definition.  The @clisp{} @findexed{fdefinition} function always returns
+the original definition, stripping off any encapsulation.
 
-The original definition of the symbol can be restored at any time by the
-@code{unecapsulate} function. @code{encapsulate} and
-@code{unencapsulate} allow a symbol to be multiply encapsulated in such a way
-that different encapsulations can be completely transparent to each
-other.
+The original definition of the symbol can be restored at any time by
+the @code{unencapsulate} function.  @code{encapsulate} and @code{unencapsulate}
+allow a symbol to be multiply encapsulated in such a way that different
+encapsulations can be completely transparent to each other.
 
-Each encapsulation has a type which may be an arbitrary lisp object. If
-a symbol has several encapsulations of different types, then any one of
-them can be removed without affecting more recent ones. A symbol may
-have more than one encapsulation of the same type, but only the most
-recent one can be undone.
+Each encapsulation has a type which may be an arbitrary lisp object.
+If a symbol has several encapsulations of different types, then any
+one of them can be removed without affecting more recent ones.
+A symbol may have more than one encapsulation of the same type, but
+only the most recent one can be undone.
 
-@defun extensions:encapsulate @var{symbol} @var{type} @var{body}
+@defun extensions:encapsulate @args{@var{symbol} @var{type} @var{body}}
+  
+  Saves the current definition of @var{symbol}, and replaces it with a
+  function which returns the result of evaluating the form,
+  @var{body}.  @var{Type} is an arbitrary lisp object which is the
+  type of encapsulation.
+  
+  When the new function is called, the following variables are bound
+  for the evaluation of @var{body}:
+  @table @code
+    
+  @item[@code{extensions:argument-list}] A list of the arguments to
+    the function.
+    
+  @item[@code{extensions:basic-definition}] The unencapsulated
+    definition of the function.
+  @end table
+  The unencapsulated definition may be called with the original
+  arguments by including the form
+  @lisp
+    (apply extensions:basic-definition extensions:argument-list)
+  @end lisp
 
-Saves the current definition of @var{symbol}, and replaces it with a function which
-returns the result of evaluating the form, @var{body}. @var{type} is an arbitrary lisp object
-which is the type of encapsulation.
-
-When the new function is called, the following variables are bound for
-the evaluation of @var{body}:
-
-@table @code
-@item extensions:argument-list
-A list of the arguments to the function.
-
-@item extensions:basic-definition
-The unencapsulated definition of the function.
-@end table
-The unencapsulated definition may be called with the original arguments
-by including the form
-@lisp
-(apply extensions:basic-definition extensions:argument-list)
-@end lisp
-@code{encapsulate} always returns @var{symbol}.
+  @code{encapsulate} always returns @var{symbol}.
 @end defun
 
-@defun extensions:unencapsulate @var{symbol} @var{type}
-
-Undoes @var{symbol}'s most recent encapsulation of type
-@var{type}. @var{type} is compared with @code{eq}.
-Encapsulations of other types are left in place.
+@defun extensions:unencapsulate @args{@var{symbol} @var{type}}
+  
+  Undoes @var{symbol}'s most recent encapsulation of type @var{type}.
+  @var{Type} is compared with @code{eq}.  Encapsulations of other
+  types are left in place.
 @end defun
 
-@defun extensions:encapsulated-p @var{symbol} @var{type}
-Returns @code{t} if @var{symbol}  has an encapsulation of type
-@var{type}. Returns @code{nil} otherwise. @var{type} is compared
-with @code{eq}.
+@defun extensions:encapsulated-p @args{@var{symbol} @var{type}}
+  
+  Returns @true{} if @var{symbol} has an encapsulation of type
+  @var{type}.  Returns @nil{} otherwise.  @var{type} is compared with
+  @code{eq}.
 @end defun
 
 @node Tracing Examples
 @subsection Tracing Examples
-@anchor{#tracing-examples}
-Here is an example of tracing with some of the possible options. For
-simplicity, this is the function:
+  Here is an example of tracing with some of the possible options.
+  For simplicity, this is the function:
+  @example
+    (defun fact (n)
+      (declare (double-float n) (optimize speed))
+      (if (zerop n)
+          1d0
+          (* n (fact (1- n)))))
+    (compile 'fact)
+  @end example
 
-@lisp
-(defun fact (n)
-  (declare (double-float n) (optimize speed))
-  (if (zerop n)
-    1d0
-    (* n (fact (1- n)))))
-(compile 'fact)
-@end lisp
+  This example shows how to use the :condition option:
+  @example
+    (trace fact :condition (= 4d0 (debug:arg 0)))
+    (fact 10d0) ->
+      0: (FACT 4.0d0)
+      0: FACT returned 24.0d0
+    3628800.0d0
+  @end example
+  As we can see, we produced output when the condition was satisfied.
 
-This example shows how to use the @kwd{condition} option:
-@example
-(trace fact :condition (= 4d0 (debug:arg 0)))
-(fact 10d0) ->
-  0: (FACT 4.0d0)
-  0: FACT returned 24.0d0
-3628800.0d0
-@end example
-As we can see, we produced output when the condition was satisfied.
+  Here's another example:
+  @example
+    (untrace)
+    (trace fact :break (= 4d0 (debug:arg 0)))
+    (fact 10d0) ->
+      0: (FACT 5.0d0)
+        1: (FACT 4.0d0)
 
-Here's another example:
-@example
-(untrace)
-(trace fact :break (= 4d0 (debug:arg 0)))
-(fact 10d0) ->
-  0: (FACT 5.0d0)
-    1: (FACT 4.0d0)
 
-Breaking before traced call to FACT:
-   [Condition of type SIMPLE-CONDITION]
+    Breaking before traced call to FACT:
+       [Condition of type SIMPLE-CONDITION]
 
-Restarts:
-0: [CONTINUE] Return from BREAK.
-1: [ABORT ] Return to Top-Level.
+    Restarts:
+      0: [CONTINUE] Return from BREAK.
+      1: [ABORT   ] Return to Top-Level.
 
-Debug (type H for help)
-@end example
-In this example, we see that normal tracing occurs until we the argument
-reaches 4d0, at which point, we break into the debugger.
+    Debug  (type H for help)
+  @end example
+  In this example, we see that normal tracing occurs until we the
+  argument reaches 4d0, at which point, we break into the debugger.
+
 
 @c section{The Single Stepper}
-
-@c \begin{defmac}{}{step}{ \args{\var{form}}}
-  
-@c   Evaluates form with single stepping enabled or if \var{form} is
-@c   \code{T}, enables stepping until explicitly disabled.  Stepping can
+@c 
+@c @defmac step}  @args{@var{form}
+@c   
+@c   Evaluates form with single stepping enabled or if @var{form} is
+@c   @code{T}, enables stepping until explicitly disabled.  Stepping can
 @c   be disabled by quitting to the lisp top level, or by evaluating the
-@c   form \w{\code{(step ())}}.
-  
+@c   form @w{@code{(step ())}}.
+@c   
 @c   While stepping is enabled, every call to eval will prompt the user
 @c   for a single character command.  The prompt is the form which is
-@c   about to be \code{eval}ed.  It is printed with \code{*print-level*}
-@c   and \code{*print-length*} bound to \code{*step-print-level*} and
-@c   \code{*step-print-length*}.  All interaction is done through the
-@c   stream \code{*query-io*}.  Because of this, the stepper can not be
+@c   about to be @code{eval}ed.  It is printed with @code{*print-level*}
+@c   and @code{*print-length*} bound to @code{*step-print-level*} and
+@c   @code{*step-print-length*}.  All interaction is done through the
+@c   stream @code{*query-io*}.  Because of this, the stepper can not be
 @c   used in Hemlock eval mode.  When connected to a slave Lisp, the
 @c   stepper can be used from Hemlock.
-  
+@c   
 @c   The commands are:
-@c   \begin{Lentry}
-  
-@c   \item[\key{n} (next)] Evaluate the expression with stepping still
+@c   @table @code
+@c   
+@c   @item[@key{n} (next)] Evaluate the expression with stepping still
 @c     enabled.
-  
-@c   \item[\key{s} (skip)] Evaluate the expression with stepping
+@c   
+@c   @item[@key{s} (skip)] Evaluate the expression with stepping
 @c     disabled.
-  
-@c   \item[\key{q} (quit)] Evaluate the expression, but disable all
-@c     further stepping inside the current call to \code{step}.
-  
-@c   \item[\key{p} (print)] Print current form.  (does not use
-@c     \code{*step-print-level*} or \code{*step-print-length*}.)
-  
-@c   \item[\key{b} (break)] Enter break loop, and then prompt for the
+@c   
+@c   @item[@key{q} (quit)] Evaluate the expression, but disable all
+@c     further stepping inside the current call to @code{step}.
+@c   
+@c   @item[@key{p} (print)] Print current form.  (does not use
+@c     @code{*step-print-level*} or @code{*step-print-length*}.)
+@c   
+@c   @item[@key{b} (break)] Enter break loop, and then prompt for the
 @c     command again when the break loop returns.
-  
-@c   \item[\key{e} (eval)] Prompt for and evaluate an arbitrary
+@c   
+@c   @item[@key{e} (eval)] Prompt for and evaluate an arbitrary
 @c     expression.  The expression is evaluated with stepping disabled.
-  
-@c   \item[\key{?} (help)] Prints a brief list of the commands.
-  
-@c   \item[\key{r} (return)] Prompt for an arbitrary value to return as
+@c   
+@c   @item[@key{?} (help)] Prints a brief list of the commands.
+@c   
+@c   @item[@key{r} (return)] Prompt for an arbitrary value to return as
 @c     result of the current call to eval.
-  
-@c   \item[\key{g}] Throw to top level.
-@c   \end{Lentry}
-@c \end{defmac}
-
-@c \begin{defvar}{extensions:}{step-print-level}
-@c   \defvarx[extensions:]{step-print-length}
-  
-@c   \code{*print-level*} and \code{*print-length*} are bound to these
-@c   values while printing the current form.  \code{*step-print-level*}
-@c   and \code{*step-print-length*} are initially bound to 4 and 5,
+@c   
+@c   @item[@key{g}] Throw to top level.
+@c   @end table
+@c @end defmac
+@c 
+@c @defvar extensions:step-print-level 
+@c   @defvarx[extensions:]{step-print-length}
+@c   
+@c   @code{*print-level*} and @code{*print-length*} are bound to these
+@c   values while printing the current form.  @code{*step-print-level*}
+@c   and @code{*step-print-length*} are initially bound to 4 and 5,
 @c   respectively.
-@c \end{defvar}
-
-@c \begin{defvar}{extensions:}{max-step-indentation}
-  
+@c @end defvar
+@c 
+@c @defvar extensions:max-step-indentation 
+@c   
 @c   Step indents the prompts to highlight the nesting of the evaluation.
 @c   This variable contains the maximum number of spaces to use for
 @c   indenting.  Initially set to 40.
-@c \end{defvar}
+@c @end defvar
+
 
 @node Specials
 @section Specials
-@anchor{#specials}
 These are the special variables that control the debugger action.
-@defvar debug:*debug-print-level*
-@defvarx debug:*debug-print-length*
 
-@code{*print-level*} and @code{*print-length*} are bound to these values during the execution of some debug
-commands. When evaluating arbitrary expressions in the debugger, the
-normal values of @code{*print-level*} and @code{*print-length*} are in effect. These variables are initially set to
-3 and 5, respectively.
+@defvar debug:debug-print-level 
+  @defvarx[debug:]{debug-print-length}
+  
+  @code{*print-level*} and @code{*print-length*} are bound to these
+  values during the execution of some debug commands.  When evaluating
+  arbitrary expressions in the debugger, the normal values of
+  @code{*print-level*} and @code{*print-length*} are in effect.  These
+  variables are initially set to 3 and 5, respectively.
 @end defvar
-
-@c Local Variables:
-@c mode: texinfo
-@c TeX-master: "cmu-user"
-@c End:

@@ -9,6 +9,10 @@
 Common Lisp
 @end macro
 
+@macro llisp {}
+Common Lisp
+@end macro
+
 @macro hemlock {}
 Hemlock
 @end macro
@@ -29,6 +33,10 @@ Python
 @code{nil}
 @end macro
 
+@macro nil {}
+@code{nil}
+@end macro
+
 @macro true {}
 @code{t}
 @end macro
@@ -39,6 +47,55 @@ Python
 
 @macro cltl {}
 @i{Common Lisp: The Language}
+@end macro
+
+@macro cltltwo {}
+@i{Common Lisp: The Language II}
+@end macro
+
+
+@macro tindexed {arg}
+@code{\arg\}
+@end macro
+
+@macro findexed {arg}
+@code{\arg\}
+@end macro
+
+@macro funref {arg}
+@code{\arg\}
+@end macro
+
+@macro args {arg}
+\arg\
+@end macro
+
+@macro mopt {arg}
+@{\arg\@}
+@end macro
+
+@macro mstar {arg}
+@{\arg\@}*
+@end macro
+
+@macro mplus {arg}
+@{\arg\@}+
+@end macro
+
+@macro mor {}
+|
+@end macro
+
+@macro keys {arg}
+&key \arg\
+@end macro
+
+@macro varref {arg}
+@code{\arg\}
+@end macro
+
+@macro macref {arg}
+@code{\arg\}
 @end macro
 
 @titlepage
@@ -78,4 +135,5 @@ language implementation, programming environment
 @c @include extensions.texi
 @include debugger.texi
 @include compiler.texi
+@include compiler-hint.texi
 @bye

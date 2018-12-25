@@ -53,12 +53,23 @@ Python
 @i{Common Lisp: The Language II}
 @end macro
 
+@macro amprest {}
+&rest
+@end macro
+
+@macro ampoptional {}
+@code{&optional}
+@end macro
 
 @macro tindexed {arg}
 @code{\arg\}
 @end macro
 
 @macro findexed {arg}
+@code{\arg\}
+@end macro
+
+@macro vindexed {arg}
 @code{\arg\}
 @end macro
 
@@ -74,9 +85,9 @@ Python
 @{\arg\@}
 @end macro
 
-@macro mstar {arg}
+@rmacro mstar {arg}
 @{\arg\@}*
-@end macro
+@end rmacro
 
 @macro mplus {arg}
 @{\arg\@}+
@@ -86,6 +97,9 @@ Python
 |
 @end macro
 
+@macro mgroup {arg}
+@{@var{\arg\}@}
+@end macro
 @macro keys {arg}
 &key \arg\
 @end macro

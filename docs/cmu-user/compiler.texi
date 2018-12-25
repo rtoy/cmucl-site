@@ -152,6 +152,9 @@ output file, or @false{} if the file could not be created. The interpretation of
 the second and third values is described above for @code{compile}.
 @end defun
 
+@anchor{compile-verbose}
+@anchor{compile-print}
+@anchor{compile-progress}
 @defvar compile-verbose
 @defvarx compile-print
 @defvarx compile-progress
@@ -205,7 +208,7 @@ declare form, like:
 @item @kwd{optimize-interface}
 Similar to @kwd{optimize}, but specifies the compilation policy for function
 interfaces (argument count and type checking) for the dynamic extent of
-the body. @xref{optimize-interface-declaration}.
+the body. @xref{The Optimize-Interface Declaration}.
 
 @item @kwd{context-declarations}
 This is a @cmucl{} extension that pattern-matches on function names,
@@ -241,12 +244,14 @@ the same compilation unit.) This is because doing special declarations
 out of order just doesn't workalthough early references will be compiled
 as special, bindings will be done lexically.
 
-Undefined warnings are printed with full source context (@pxref{error-messages}), which
+Undefined warnings are printed with full source context
+(@pxref{Interpreting Error Messages}), which
 tremendously simplifies the problem of finding undefined references that
 resulted from macroexpansion. After printing detailed information about
 the undefined uses of each name, @code{with-compilation-unit} also prints summary listings of the
 names of all the undefined functions, types and variables.
 
+@anchor{*undefined-warning-limit*}
 @defvar *undefined-warning-limit*
 
 This variable controls the number of undefined warnings for each
@@ -1149,7 +1154,7 @@ of standard functions can be inhibited using the @code{notinline} declaration.
 The compiler can have multiple alternate implementations of standard
 functions that implement different trade-offs of speed, space and
 safety. This selection is based on the compiler policy,
-@pxref{compiler-policy}.
+@pxref{Compiler Policy}.
 
 @end itemize
 

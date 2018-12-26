@@ -639,7 +639,7 @@ utility functions are provided to make access easier.
 
 @menu
 * Methods for External Formats::  
-* Composing External Formats::  
+* Moethods for Composing External Formats::  
 @end menu
 
 @node Methods for External Formats

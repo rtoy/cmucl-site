@@ -12,6 +12,18 @@ For reasons of space it would be impossible to include a thorough
 introduction to network programming, so we assume some basic knowledge
 of the matter.
 
+@menu
+* Byte Order Converters::       
+* Domain Name Services (DNS)::  
+* Binding to Interfaces::       
+* Accepting Connections::       
+* Connecting::                  
+* Out-of-Band Data::            
+* Unbound Sockets::             
+* Unix Datagrams::              
+* Errors::                      
+@end menu
+
 @node Byte Order Converters
 @section Byte Order Converters
 

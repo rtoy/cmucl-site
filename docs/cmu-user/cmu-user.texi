@@ -183,7 +183,7 @@ language implementation, programming environment
 @include aliens.texi
 @include ipc.texi
 @include internet.texi
-@c @include debug-internals.texi
+@include debug-internals.texi
 @c @include cross-referencing.texi
 @c @include unicode.texi
 

@@ -180,7 +180,7 @@ language implementation, programming environment
 @include compiler-hint.texi
 @include unix.texi
 @include serve-event.texi
-@c @include aliens.texi
+@include aliens.texi
 @c @include ipc.texi
 @c @include internet.texi
 @c @include debug-internals.texi

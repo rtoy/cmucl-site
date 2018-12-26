@@ -14,7 +14,7 @@ To understand the support for Unicode, we refer the reader to the
 @menu
 * Changes::                     
 * External Formats::            
-* Dictionary::                  
+* Dictionary for Unicode Concepts::  
 * Writing External Formats::    
 @end menu
 
@@ -27,7 +27,7 @@ functions have been done.
 
 @menu
 * Design Choices::              
-* Characters::                  
+* Unicode Characters::          
 * Strings::                     
 @end menu
 
@@ -60,7 +60,7 @@ achieved by making strings be UTF-16 strings internally.  Hence, Lisp
 strings are UTF-16 strings, and Lisp characters are UTF-16 code-units.
 
 
-@node Characters
+@node Unicode Characters
 @subsection Characters
 @anchor{sec:i18n:characters}
 
@@ -232,20 +232,20 @@ Table~@ref{table:composing-formats} lists the available composing formats.
 
 @end multitable
 
-@node Dictionary
+@node Dictionary for Unicode Concepts
 @section Dictionary
 
 @menu
-* Variables::                   
-* Characters::                  
-* Strings::                     
+* Variables for Unicode::       
+* Methods for Characters::      
+* Methods for Strings::         
 * Sequences::                   
 * Reader::                      
 * Printer::                     
 * Miscellaneous::               
 @end menu
 
-@node Variables
+@node Variables for Unicode
 @subsection Variables
 
 @defvar extensions:default-external-format
@@ -260,7 +260,7 @@ Table~@ref{table:composing-formats} lists the available composing formats.
    will cause all subsequent input and output to use the new value of
    @var{*default-external-format*}.
 @end defvar
-@node Characters
+@node Methods for Characters
 @subsection Characters
 
 Remember that @cmucl{}'s characters are only 16-bits long but Unicode
@@ -336,7 +336,7 @@ full Unicode codepoint.)
   @var{name}, then @nil{} is returned.  Unicode names are not
   case-sensitive, and spaces and underscores are optional.
 @end defun
-@node Strings
+@node Methods for Strings
 @subsection Strings
 
 Strings in @cmucl{} are UTF-16 strings.  That is, for Unicode code
@@ -636,11 +636,11 @@ utility functions are provided to make access easier.
 @section Writing External Formats
 
 @menu
-* External Formats::            
+* Methods for External Formats::  
 * Composing External Formats::  
 @end menu
 
-@node External Formats
+@node Methods for External Formats
 @subsection External Formats
 Users may write their own external formats.  It is probably easiest to
 look at existing external formats to see how do this.
@@ -740,7 +740,7 @@ external format is defined using the macro
   special copier is needed.
 @end defmac
 
-@node Composing External Formats
+@node Moethods for Composing External Formats
 @subsection Composing External Formats
 
 @defmac stream:define-composing-external-format @args{@var{name} (@keys{@kwd{min} @kwd{max} @kwd{size} @kwd{documentation}}) @var{input} @var{output}}

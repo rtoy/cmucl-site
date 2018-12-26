@@ -18,7 +18,7 @@
 * Compatibility with ANSI @clisp{}::  
 @end menu
 
-@node Introduction
+@node Introduction To Hierarchical Packages
 @subsection Introduction
 
 The @clisp{} package system, designed and standardized several years

@@ -2899,7 +2899,7 @@ is likely to crash, or format your hard disk.
 
 @menu
 * @code{&rest} argument lists::  
-* Closures::                    
+* Dynamic-Extent Closures::     
 * @code{list}::                 
 @end menu
 
@@ -2921,7 +2921,7 @@ rest argument variable @code{dynamic-extent}.  Examples:
     ...))
 @end lisp
 
-@node Closures
+@node Dynamic-Extent Closures
 @subsection Closures
 @c @cpsubindex{dynamic-extent}{closures}
 

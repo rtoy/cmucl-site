@@ -181,7 +181,7 @@ language implementation, programming environment
 @include unix.texi
 @include serve-event.texi
 @include aliens.texi
-@c @include ipc.texi
+@include ipc.texi
 @c @include internet.texi
 @c @include debug-internals.texi
 @c @include cross-referencing.texi

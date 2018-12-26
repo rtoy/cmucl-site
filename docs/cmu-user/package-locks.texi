@@ -11,6 +11,11 @@ from being redefined due to the execution of a @code{defun},
 form.
 
 
+@menu
+* Rationale::                   
+* Disabling package locks::     
+@end menu
+
 @node Rationale
 @subsection Rationale
 

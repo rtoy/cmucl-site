@@ -15,6 +15,18 @@ takes either type, but when it specifically names the argument
 unknown code-location.
 
 
+@menu
+* DI Exceptional Conditions::   
+* Debug-variables::             
+* Frames::                      
+* Debug-functions::             
+* Debug-blocks::                
+* Breakpoints::                 
+* Code-locations::              
+* Debug-sources::               
+* Source Translation Utilities::  
+@end menu
+
 @node DI Exceptional Conditions
 @section DI Exceptional Conditions
 
@@ -32,6 +44,11 @@ These are serious-conditions because the program using the interface
 must handle them before it can correctly continue execution.  These
 debugging conditions are not errors since it is no fault of the
 programmers that the conditions occur.
+
+@menu
+* Debug-conditions::            
+* Debug-errors::                
+@end menu
 
 @node Debug-conditions
 @subsection Debug-conditions

@@ -68,6 +68,10 @@ Alien
 @var{\arg\}
 @end macro
 
+@macro lispchar {arg}
+@code{#@backslashchar{}\arg\}
+@end macro
+
 @macro amprest {}
 &rest
 @end macro
@@ -185,6 +189,6 @@ language implementation, programming environment
 @include internet.texi
 @include debug-internals.texi
 @include cross-referencing.texi
-@c @include unicode.texi
+@include unicode.texi
 
 @bye

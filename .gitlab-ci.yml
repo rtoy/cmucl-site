@@ -7,13 +7,15 @@ pages:
     # Generate html version of the design doc.
     - (cd docs/internals; makeinfo --force --html design.texi)
     # Generate the user manual.  Include info, pdf, and html versions.
-    - (cd docs/cmu-user;  makeinfo --force cmu-user.texi; makeinfo --pdf cmu-user.texi; makeinfo --force --html cmu-user.texi)
+    - (cd docs/cmu-user;  makeinfo --force cmu-user.texi)
+    #- (cd docs/cmu-user; makeinfo --pdf cmu-user.texi)
+    - (cd docs/cmu-user; makeinfo --force --html cmu-user.texi)
     # Copy everything to the appropriate subdirectories
     - mkdir -p public/docs/internals public/docs/cmu-user
     - cp -r docs/internals/design public/docs/internals
     - cp -r docs/cmu-user/*.info public/docs/cmu-user/
     - cp -r docs/cmu-user/cmu-user/* public/docs/cmu-user/html
-    - cp -r docs/cmu-user/cmu-user.pdf public/docs/cmu-user
+    #- cp -r docs/cmu-user/cmu-user.pdf public/docs/cmu-user
   artifacts:
      paths:
        - public

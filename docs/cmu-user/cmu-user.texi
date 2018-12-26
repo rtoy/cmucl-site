@@ -4,7 +4,7 @@
 @fonttextsize 10
 
 @macro cmucl {}
-@sc{CMUCL}
+@sc{cmucl}
 @end macro
 
 @macro clisp {}

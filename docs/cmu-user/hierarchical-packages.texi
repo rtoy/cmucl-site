@@ -13,7 +13,7 @@
 
 
 @menu
-* Introduction::                
+* Introduction To Hierarchical Packages::  
 * Relative Package Names::      
 * Compatibility with ANSI @clisp{}::  
 @end menu
@@ -194,11 +194,11 @@ underlying @clisp{} implementation.
 
 
 @menu
-* Changes to @code{cl:find-package}::  
-* Using Hierarchical Packages without Modifying cl:find-package::  
+* Changes to @code{find-package}::  
+* Using Hierarchical Packages without Modifying find-package::  
 @end menu
 
-@node Changes to @code{cl:find-package}
+@node Changes to @code{find-package}
 @subsubsection Changes to @code{cl:find-package}
 
 Using relative hierarchical package names requires a simple
@@ -223,8 +223,8 @@ proceeds as it does with a string argument.)
 Note that you should not use leading dots in package names when using
 hierarchical packages.
 
-@node Using Hierarchical Packages without Modifying cl:find-package
-@subsubsection Using Hierarchical Packages without Modifying cl:find-package
+@node Using Hierarchical Packages without Modifying find-package
+@subsubsection Using Hierarchical Packages without Modifying @code{cl:find-package}
 
 Even without the modifications to @code{cl:find-package}, authors need
 not avoid using relative package names, but the ability to reuse

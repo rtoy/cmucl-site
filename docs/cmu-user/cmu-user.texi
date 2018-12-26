@@ -1,6 +1,8 @@
 \input texinfo
 @settitle CMUCL User's Manual
 
+@fonttextsize 10
+
 @macro cmucl {}
 @sc{CMUCL}
 @end macro
@@ -190,5 +192,17 @@ language implementation, programming environment
 @include debug-internals.texi
 @include cross-referencing.texi
 @include unicode.texi
+
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+
+@node Variable Index
+@unnumbered Variable Index
+@printindex vr
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
 
 @bye

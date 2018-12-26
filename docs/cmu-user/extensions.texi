@@ -456,7 +456,7 @@ have been eliminated, and the names of the types have been changed.
 @tindexed{string-char}. In this implementation, all characters are
 base characters (there are no extended characters.) Character codes
 range between @code{0} and @code{255}, using the ASCII encoding.
-Table~@ref{tbl:chars} shows characters recognized
+Table~@ref{tbl-chars} shows characters recognized
 by @cmucl{}.
 
 @c @begin{table}[tbhp]
@@ -487,6 +487,7 @@ by @cmucl{}.
 @c @end table
 @c 
 
+@anchor{tbl-chars}
 @multitable {Name} {Code} {Lisp Name} {Alternatives}
 @headitem Name @tab Code @tab Lisp Name @tab Alternatives
 @item nul
@@ -1268,7 +1269,7 @@ specialized arrays.  Thus
   @end itemize
 @end defun
 
-@c @include simple-streams.texi
+@include simple-streams.texi
 
 @node Running Programs from Lisp
 @section Running Programs from Lisp
@@ -3325,7 +3326,7 @@ Also, only certain types of arrays can be allocated.  The static array
 cannot be adjustable and cannot be displaced to.  The array must also
 be a @code{simple-array} of one dimension.  The element type is also
 constrained to be one of the types in
-Table~@ref{tbl:static-array-types}.
+Table~@ref{tbl-static-array-types}.
 
 @c @table[tbhp]
 @c   @center
@@ -3357,6 +3358,7 @@ Table~@ref{tbl:static-array-types}.
 @c   @end center
 @c @end table
 
+@anchor{tbl-static-array-types}
 @multitable {(complex single-float)}
 @item @code{(unsigned-byte 8)}
 @item @code{(unsigned-byte 16)}

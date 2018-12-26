@@ -5,6 +5,17 @@
 @credits{by Robert MacLachlan and William Lott}
 
 
+@menu
+* Introduction to Aliens::      
+* Alien Types::                 
+* Alien Operations::            
+* Alien Variables::             
+* Alien Data Structure Example::  
+* Loading Unix Object Files::   
+* Alien Function Calls::        
+* Step-by-Step Alien Example::  
+@end menu
+
 @node Introduction to Aliens
 @section Introduction to Aliens
 
@@ -69,6 +80,13 @@ has the corresponding Alien type:
   (b (array (* (struct foo)) 100)))
 @end lisp
 
+
+@menu
+* Defining Alien Types::        
+* Alien Types and Lisp Types::  
+* Alien Type Specifiers::       
+* The C-Call Package::          
+@end menu
 
 @node Defining Alien Types
 @subsection Defining Alien Types
@@ -298,6 +316,12 @@ pointer.
 
 This section describes the basic operations on Alien values.
 
+@menu
+* Alien Access Operations::     
+* Alien Coercion Operations::   
+* Alien Dynamic Allocation::    
+@end menu
+
 @node Alien Access Operations
 @subsection Alien Access Operations
 
@@ -412,6 +436,11 @@ See also @funref{with-alien}, which stack-allocates Aliens.
 Both local (stack allocated) and external (C global) Alien variables are
 supported.
 
+
+@menu
+* Local Alien Variables::       
+* External Alien Variables::    
+@end menu
 
 @node Local Alien Variables
 @subsection Local Alien Variables
@@ -623,6 +652,15 @@ that these entry points are restored when the C function returns to Lisp.
 If a C function makes changes without restoring things to the way they were
 when the C function was entered, there is no telling what will happen.
 
+
+@menu
+* The alien-funcall Primitive::  
+* The def-alien-routine Macro::  
+* def-alien-routine Example::   
+* Calling Lisp from C::         
+* Callback Example::            
+* Accessing Lisp Arrays::       
+@end menu
 
 @node The alien-funcall Primitive
 @subsection The alien-funcall Primitive

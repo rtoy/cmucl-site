@@ -736,11 +736,13 @@ function to initialize it, then returns a Lisp vector of all the
   are the same as for @funref{alien-funcall}.  @var{style} should be
   one of the following:
   @table @code
-  @item[@kwd{in}] specifies that the argument is passed by value.
+  @item @kwd{in}
+specifies that the argument is passed by value.
     This is the default.  @kwd{in} arguments have no corresponding
     return value from the Lisp function.
   
-  @item[@kwd{out}] specifies a pass-by-reference output value.  The
+  @item @kwd{out}
+specifies a pass-by-reference output value.  The
     type of the argument must be a pointer to a fixed sized object
     (such as an integer or pointer).  @kwd{out} and @kwd{in-out}
     cannot be used with pointers to arrays, records or functions.  An
@@ -749,11 +751,13 @@ function to initialize it, then returns a Lisp vector of all the
     of this location are returned as one of the values of the Lisp
     function.
   
-  @item[@kwd{copy}] is similar to @kwd{in}, but the argument is copied
+  @item @kwd{copy}
+is similar to @kwd{in}, but the argument is copied
     to a pre-allocated object and a pointer to this object is passed
     to the foreign routine.
   
-  @item[@kwd{in-out}] is a combination of @kwd{copy} and @kwd{out}.
+  @item @kwd{in-out}
+is a combination of @kwd{copy} and @kwd{out}.
     The argument is copied to a pre-allocated object and a pointer to
     this object is passed to the foreign routine.  On return, the
     contents of this location is returned as an additional value.

@@ -201,9 +201,12 @@ stack.
   This function returns three values reflecting the validity of
   @var{debug-variable}'s value at @var{basic-code-location}:
   @table @code
-  @item[@kwd{valid}] The value is known to be available.
-  @item[@kwd{invalid}] The value is known to be unavailable.
-  @item[@kwd{unknown}] The value's availability is unknown.
+  @item @kwd{valid}
+The value is known to be available.
+  @item @kwd{invalid}
+The value is known to be unavailable.
+  @item @kwd{unknown}
+The value's availability is unknown.
   @end table
 @end defun
 
@@ -420,17 +423,22 @@ code-locations in a debug-function.
   This function returns the kind of function @var{debug-function}
   represents.  The value is one of the following:
   @table @code
-  @item[@kwd{optional}] This kind of function is an entry point to an
+  @item @kwd{optional}
+This kind of function is an entry point to an
     ordinary function.  It handles optional defaulting, parsing
     keywords, etc.
-  @item[@kwd{external}] This kind of function is an entry point to an
+  @item @kwd{external}
+This kind of function is an entry point to an
     ordinary function.  It checks argument values and count and calls
     the defined function.
-  @item[@kwd{top-level}] This kind of function executes one or more
+  @item @kwd{top-level}
+This kind of function executes one or more
     random top-level forms from a file.
-  @item[@kwd{cleanup}] This kind of function represents the cleanup
+  @item @kwd{cleanup}
+This kind of function represents the cleanup
     forms in an @code{unwind-protect}.
-  @item[@nil] This kind of function is not one of the above; that is,
+  @item @nil
+This kind of function is not one of the above; that is,
     it is not specially marked in any way.
   @end table
 @end defun
@@ -690,11 +698,14 @@ subform corresponding to the code-location.
   This function returns an indication of the type of source.  The
   following are the possible values:
   @table @code
-  @item[@kwd{file}] from a file (obtained by @code{compile-file} if
+  @item @kwd{file}
+from a file (obtained by @code{compile-file} if
     compiled).
-  @item[@kwd{lisp}] from Lisp (obtained by @code{compile} if
+  @item @kwd{lisp}
+from Lisp (obtained by @code{compile} if
     compiled).
-  @item[@kwd{stream}] from a non-file stream (@cmucl{} supports
+  @item @kwd{stream}
+from a non-file stream (@cmucl{} supports
     @code{compile-from-stream}).
   @end table
 @end defun
@@ -705,9 +716,12 @@ subform corresponding to the code-location.
   This function returns the actual source in some sense represented by
   debug-source, which is related to @code{debug-source-from}:
   @table @code
-  @item[@kwd{file}] the pathname of the file.
-  @item[@kwd{lisp}] a lambda-expression.
-  @item[@kwd{stream}] some descriptive string that's otherwise
+  @item @kwd{file}
+the pathname of the file.
+  @item @kwd{lisp}
+a lambda-expression.
+  @item @kwd{stream}
+some descriptive string that's otherwise
     useless.
 @end table
 @end defun

@@ -159,20 +159,20 @@ These commands move to a new stack frame and print the name of the function
 and the values of its arguments in the style of a Lisp function call:
 @table @code
 
-@item[@code{up}]
+@item @code{up}
 Move up to the next higher frame.  More recent function calls are considered
 to be higher on the stack.
 
-@item[@code{down}]
+@item @code{down}
 Move down to the next lower frame.
 
-@item[@code{top}]
+@item @code{top}
 Move to the highest frame.
 
-@item[@code{bottom}]
+@item @code{bottom}
 Move to the lowest frame.
 
-@item[@code{frame} [@var{n}]]
+@item @code{frame} [@var{n}]
 Move to the frame with the specified number.  Prompts for the number if not
 supplied.
 
@@ -471,7 +471,7 @@ small integer identifier.  The @code{debug:var} function and the
 ambiguous variables:
 @table @code
 
-@item[@code{list-locals} @mopt{@var{prefix}}]
+@item @code{list-locals} @mopt{@var{prefix}}
 This command prints the name and value of all variables in the current
 frame whose name has the specified @var{prefix}.  @var{prefix} may be a
 string or a symbol.  If no @var{prefix} is given, then all available
@@ -597,14 +597,14 @@ One of @cmucl{}'s unique capabilities is source level debugging of compiled
 code.  These commands display the source location for the current frame:
 @table @code
 
-@item[@code{source} @mopt{@var{context}}]
+@item @code{source} @mopt{@var{context}}
 This command displays the file that the current frame's function was defined
 from (if it was defined from a file), and then the source form responsible for
 generating the code that the current frame was executing.  If @var{context} is
 specified, then it is an integer specifying the number of enclosing levels of
 list structure to print.
 
-@item[@code{vsource} @mopt{@var{context}}]
+@item @code{vsource} @mopt{@var{context}}
 This command is identical to @code{source}, except that it uses the
 global values of @code{*print-level*} and @code{*print-length*} instead
 of the debugger printing control variables @code{*debug-print-level*}
@@ -788,11 +788,11 @@ compilation.  These are the levels of debug information that correspond to the
 values of the @code{debug} quality:
 @table @code
 
-@item[@code{0}]
+@item @code{0}
 Only the function name and enough information to allow the stack to
 be parsed.
 
-@item[@code{@w{$>$ 0}}]
+@item @code{@w{$>$ 0}}
 Any level greater than @code{0} gives level @code{0} plus all
 argument variables.  Values will only be accessible if the argument
 variable is never set and
@@ -800,24 +800,25 @@ variable is never set and
 qualities.  It may be useful to specify @code{0.5} to get backtrace argument
 display without argument documentation.
 
-@item[@code{1}] Level @code{1} provides argument documentation
+@item @code{1}
+Level @code{1} provides argument documentation
 (printed arglists) and derived argument/result type information.
 This makes @findexed{describe} more informative, and allows the
 compiler to do compile-time argument count and type checking for any
 calls compiled at run-time.
 
-@item[@code{2}]
+@item @code{2}
 Level @code{1} plus all interned local variables, source location
 information, and lifetime information that tells the debugger when arguments
 are available (even when @code{speed} is @code{3} or the argument is set.)  This is
 the default.
 
-@item[@code{@w{$>$ 2}}]
+@item @code{@w{$>$ 2}}
 Any level greater than @code{2} gives level @code{2} and in addition
 disables tail-call optimization, so that the backtrace will contain
 frames for all invoked functions, even those in tail positions.
 
-@item[@code{3}]
+@item @code{3}
 Level @code{2} plus all uninterned variables.  In addition, lifetime
 analysis is disabled (even when @code{speed} is @code{3}), ensuring
 that all variable values are available at any known location within
@@ -850,19 +851,19 @@ These commands get you out of the debugger.
 
 @table @code
 
-@item[@code{quit}]
+@item @code{quit}
 Throw to top level.
 
-@item[@code{restart} @mopt{@var{n}}]
+@item @code{restart} @mopt{@var{n}}
 Invokes the @var{n}th restart case as displayed by the @code{error}
 command.  If @var{n} is not specified, the available restart cases are
 reported.
 
-@item[@code{go}]
+@item @code{go}
 Calls @code{continue} on the condition given to @code{debug}.  If there is no
 restart case named @var{continue}, then an error is signaled.
 
-@item[@code{abort}]
+@item @code{abort}
 Calls @code{abort} on the condition given to @code{debug}.  This is
 useful for popping debug command loop levels or aborting to top level,
 as the case may be.
@@ -884,28 +885,28 @@ function, but a few show general information.
 
 @table @code
 
-@item[@code{help}, @code{?}]
+@item @code{help}, @code{?}
 Displays a synopsis of debugger commands.
 
-@item[@code{describe}]
+@item @code{describe}
 Calls @code{describe} on the current function, displays number of local
 variables, and indicates whether the function is compiled or interpreted.
 
-@item[@code{print}]
+@item @code{print}
 Displays the current function call as it would be displayed by moving to
 this frame.
 
-@item[@code{vprint} (or @code{pp}) @mopt{@var{verbosity}}]
+@item @code{vprint} (or @code{pp}) @mopt{@var{verbosity}}
 Displays the current function call using @code{*print-level*} and
 @code{*print-length*} instead of @code{*debug-print-level*} and
 @code{*debug-print-length*}.  @var{verbosity} is a small integer
 (default 2) that controls other dimensions of verbosity.
 
-@item[@code{error}]
+@item @code{error}
 Prints the condition given to @code{invoke-debugger} and the active
 proceed cases.
 
-@item[@code{backtrace} @mopt{@var{n}}]
+@item @code{backtrace} @mopt{@var{n}}
 Displays all the frames from the current to the bottom.  Only shows
 @var{n} frames if specified.  The printing is controlled by
 @code{*debug-print-level*} and @code{*debug-print-length*}.
@@ -918,7 +919,7 @@ Displays all the frames from the current to the bottom.  Only shows
 @c @item[(@code{debug:function-name} @mopt{@var{n}])]
 @c Returns the function name from the current or specified frame.
 @c 
-@c @item[(@code{debug:pc} @mopt{@var{frame}})]
+@c @item (@code{debug:pc} @mopt{@var{frame}})
 @c Returns the index of the instruction for the function in the current or
 @c specified frame.  This is useful in conjunction with @code{disassemble}.
 @c The pc returned points to the instruction after the one that was fatal.
@@ -935,7 +936,7 @@ locations (@pxref{unknown-locations}), so these commands are largely
 useless unless the @code{debug} optimize quality is at least @code{2}
 (@pxref{debugger-policy}).  These commands manipulate breakpoints:
 @table @code
-@item[@code{breakpoint} @var{location} @mstar{@var{option} @var{value}}]
+@item @code{breakpoint} @var{location} @mstar{@var{option} @var{value}}
 Set a breakpoint in some function.  @var{location} may be an integer
 code location number (as displayed by @code{list-locations}) or a
 keyword.  The keyword can be used to indicate setting a breakpoint at
@@ -944,7 +945,7 @@ the function start (@kwd{start}, @kwd{s}) or function end
 @kwd{condition}, @kwd{break}, @kwd{print} and @kwd{function}
 options which work similarly to the @code{trace} options.
 
-@item[@code{list-locations} (or @code{ll}) @mopt{@var{function}}]
+@item @code{list-locations} (or @code{ll}) @mopt{@var{function}}
 List all the code locations in the current frame's function, or in
 @var{function} if it is supplied.  The display format is the code
 location number, a colon and then the source form for that location:
@@ -958,14 +959,14 @@ result in two code locations with the same source.  The listed function
 becomes the new default function for breakpoint setting (via the
 @code{breakpoint}) command.
 
-@item[@code{list-breakpoints} (or @code{lb})]
+@item @code{list-breakpoints} (or @code{lb})
 List all currently active breakpoints with their breakpoint number.
 
-@item[@code{delete-breakpoint} (or @code{db}) @mopt{@var{number}}]
+@item @code{delete-breakpoint} (or @code{db}) @mopt{@var{number}}
 Delete a breakpoint specified by its breakpoint number.  If no number is
 specified, delete all breakpoints.
 
-@item[@code{step}]
+@item @code{step}
 Step to the next possible breakpoint location in the current function.
 This always steps over function calls, instead of stepping into them
 @end table
@@ -1097,44 +1098,51 @@ function entry or exit.
   any new options replace the old options.  The following options are
   defined:
   @table @code
-  @item[@kwd{condition} @var{form}, @kwd{condition-after} @var{form},
-    @kwd{condition-all} @var{form}] If @kwd{condition} is specified,
+  @item @kwd{condition} @var{form}, @kwd{condition-after} @var{form},
+    @kwd{condition-all} @var{form}
+If @kwd{condition} is specified,
     then @code{trace} does nothing unless @var{form} evaluates to true
     at the time of the call.  @kwd{condition-after} is similar, but
     suppresses the initial printout, and is tested when the function
     returns.  @kwd{condition-all} tries both before and after.
     
-  @item[@kwd{wherein} @var{names}] If specified, @var{names} is a
+  @item @kwd{wherein} @var{names}
+If specified, @var{names} is a
     function name or list of names.  @code{trace} does nothing unless
     a call to one of those functions encloses the call to this
     function (i.e. it would appear in a backtrace.)  Anonymous
     functions have string names like @code{"DEFUN FOO"}.  Individual
     methods can also be traced.  See section~@ref{sec:method-tracing}.
 
-  @item[@kwd{wherein-only} @var{names}] If specified, this is just
+  @item @kwd{wherein-only} @var{names}
+If specified, this is just
     like @kwd{wherein}, but trace produces output only if the
     immediate caller of the traced function is one of the functions
     listed in @var{names}.
     
-  @item[@kwd{break} @var{form}, @kwd{break-after} @var{form},
-    @kwd{break-all} @var{form}] If specified, and @var{form} evaluates
+  @item @kwd{break} @var{form}, @kwd{break-after} @var{form},
+    @kwd{break-all} @var{form}
+If specified, and @var{form} evaluates
     to true, then the debugger is invoked at the start of the
     function, at the end of the function, or both, according to the
     respective option.
     
-  @item[@kwd{print} @var{form}, @kwd{print-after} @var{form},
-    @kwd{print-all} @var{form}] In addition to the usual printout, the
+  @item @kwd{print} @var{form}, @kwd{print-after} @var{form},
+    @kwd{print-all} @var{form}
+In addition to the usual printout, the
     result of evaluating @var{form} is printed at the start of the
     function, at the end of the function, or both, according to the
     respective option.  Multiple print options cause multiple values
     to be printed.
     
-  @item[@kwd{function} @var{function-form}] This is a not really an
+  @item @kwd{function} @var{function-form}
+This is a not really an
     option, but rather another way of specifying what function to
     trace.  The @var{function-form} is evaluated immediately, and the
     resulting function is traced.
     
-  @item[@kwd{encapsulate @mgroup{:default | t | nil}}] In @cmucl,
+  @item @kwd{encapsulate @mgroup{:default | t | nil}}
+In @cmucl,
     tracing can be done either by temporarily redefining the function
     name (encapsulation), or using breakpoints.  When breakpoints are
     used, the function object itself is destructively modified to
@@ -1247,10 +1255,12 @@ only the most recent one can be undone.
   for the evaluation of @var{body}:
   @table @code
     
-  @item[@code{extensions:argument-list}] A list of the arguments to
+  @item @code{extensions:argument-list}
+A list of the arguments to
     the function.
     
-  @item[@code{extensions:basic-definition}] The unencapsulated
+  @item @code{extensions:basic-definition}
+The unencapsulated
     definition of the function.
   @end table
   The unencapsulated definition may be called with the original
@@ -1342,30 +1352,39 @@ only the most recent one can be undone.
 @c   The commands are:
 @c   @table @code
 @c   
-@c   @item[@key{n} (next)] Evaluate the expression with stepping still
+@c   @item @key{n} (next)
+@c Evaluate the expression with stepping still
 @c     enabled.
 @c   
-@c   @item[@key{s} (skip)] Evaluate the expression with stepping
+@c   @item @key{s} (skip)
+@c Evaluate the expression with stepping
 @c     disabled.
 @c   
-@c   @item[@key{q} (quit)] Evaluate the expression, but disable all
+@c   @item @key{q} (quit)
+@c Evaluate the expression, but disable all
 @c     further stepping inside the current call to @code{step}.
 @c   
-@c   @item[@key{p} (print)] Print current form.  (does not use
+@c   @item @key{p} (print)
+@c Print current form.  (does not use
 @c     @code{*step-print-level*} or @code{*step-print-length*}.)
 @c   
-@c   @item[@key{b} (break)] Enter break loop, and then prompt for the
+@c   @item @key{b} (break)
+@c Enter break loop, and then prompt for the
 @c     command again when the break loop returns.
 @c   
-@c   @item[@key{e} (eval)] Prompt for and evaluate an arbitrary
+@c   @item @key{e} (eval)
+@c Prompt for and evaluate an arbitrary
 @c     expression.  The expression is evaluated with stepping disabled.
 @c   
-@c   @item[@key{?} (help)] Prints a brief list of the commands.
+@c   @item @key{?} (help)
+@c Prints a brief list of the commands.
 @c   
-@c   @item[@key{r} (return)] Prompt for an arbitrary value to return as
+@c   @item @key{r} (return)
+@c Prompt for an arbitrary value to return as
 @c     result of the current call to eval.
 @c   
-@c   @item[@key{g}] Throw to top level.
+@c   @item @key{g}
+@c Throw to top level.
 @c   @end table
 @c @end defmac
 @c 

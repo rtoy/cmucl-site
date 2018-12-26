@@ -2191,17 +2191,20 @@ modification of the program source.
 There are three possible values of the @kwd{block-compile} argument:
 @table @code
   
-@item[@false{}] Do no compile-time resolution of global function
+@item @false{}
+Do no compile-time resolution of global function
   names, not even for self-recursive calls.  This inhibits any
   @code{start-block} declarations appearing in the file, allowing all
   functions to be incrementally redefined.
   
-@item[@true{}] Start compiling in block compilation mode.  This is
+@item @true{}
+Start compiling in block compilation mode.  This is
   mainly useful for block compiling small files that contain no
   @code{start-block} declarations.  See also the @kwd{entry-points}
   argument.
   
-@item[@kwd{specified}] Start compiling in form-at-a-time mode, but
+@item @kwd{specified}
+Start compiling in form-at-a-time mode, but
   exploit any @code{start-block} declarations and compile
   self-recursive calls as local calls.  Normally @kwd{specified} is
   the default for this argument (see @varref{block-compile-default}.)
@@ -2283,38 +2286,49 @@ compiled with @code{safety 2}.
 The full syntax of context specs is:
 @table @code
   
-@item[@kwd{internal}, @kwd{external}] True if the symbol is internal
+@item @kwd{internal}, @kwd{external}
+True if the symbol is internal
   (external) in its home package.
   
-@item[@kwd{uninterned}] True if the symbol has no home package.
+@item @kwd{uninterned}
+True if the symbol has no home package.
   
-@item[@code{@w{(:package @mstar{@var{package-name}})}}] True if the
+@item @code{@w{(:package @mstar{@var{package-name}})}}
+True if the
   symbol's home package is in any of the named packages (false if
   uninterned.)
   
-@item[@kwd{anonymous}] True if the function doesn't have any
+@item @kwd{anonymous}
+True if the function doesn't have any
   interesting name (not @code{defmacro}, @code{defun}, @code{labels}
   or @code{flet}).
   
-@item[@kwd{macro}, @kwd{function}] @kwd{macro} is a global
+@item @kwd{macro}, @kwd{function}
+@kwd{macro} is a global
   (@code{defmacro}) macro.  @kwd{function} is anything else.
   
-@item[@kwd{local}, @kwd{global}] @kwd{local} is a @code{labels} or
+@item @kwd{local}, @kwd{global}
+@kwd{local} is a @code{labels} or
   @code{flet}.  @kwd{global} is anything else.
   
-@item[@code{@w{(:or @mstar{@var{context-spec}})}}] True when any
+@item @code{@w{(:or @mstar{@var{context-spec}})}}
+True when any
   supplied @var{context-spec} is true.
   
-@item[@code{@w{(:and @mstar{@var{context-spec}})}}] True only when all
+@item @code{@w{(:and @mstar{@var{context-spec}})}}
+True only when all
   supplied @var{context-spec}s are true.
   
-@item[@code{@w{(:not @mstar{@var{context-spec}})}}] True when
+@item @code{@w{(:not @mstar{@var{context-spec}})}}
+True when
   @var{context-spec} is false.
   
-@item[@code{@w{(:member @mstar{@var{name}})}}] True when the defined
+@item @code{@w{(:member @mstar{@var{name}})}}
+True when the defined
   name is one of these names (@code{equal} test.)
   
-@item[@code{@w{(:match @mstar{@var{pattern}})}}] True when any of the
+@item @code{@w{(:match @mstar{@var{pattern}})}}
+True when any of the
   patterns is a substring of the name.  The name is wrapped with
   @code{@@$}'s, so ``@code{@@$FOO}'' matches names beginning with
   ``@code{FOO}'', etc.
@@ -2647,12 +2661,15 @@ per-file or per-code-object basis.  The @kwd{byte-compile} argument to
 @funref{compile-file} has these possible values:
 
 @table @code
-@item[@false{}] Don't byte compile anything in this file.
+@item @false{}
+Don't byte compile anything in this file.
   
-@item[@true{}] Byte compile everything in this file and produce a
+@item @true{}
+Byte compile everything in this file and produce a
   processor-independent @file{.bytef} file.
   
-@item[@kwd{maybe}] Produce a normal fasl file, but byte compile any
+@item @kwd{maybe}
+Produce a normal fasl file, but byte compile any
   functions for which the @code{speed} optimization quality is
   @code{0} and the @code{debug} quality is not greater than @code{1}.
 @end table

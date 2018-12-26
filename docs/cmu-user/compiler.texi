@@ -82,66 +82,79 @@ Functions may be compiled using @code{compile}, @code{compile-file}, or
   @var{input-pathname}:
   @table @code
     
-  @item[@var{input-pathname}] If this argument is a list of input
+  @item @var{input-pathname}
+If this argument is a list of input
     files, rather than a single input pathname, then all the source
     files are compiled into a single object file.  In this case, the
     name of the first file is used to determine the default output
     file names.  This is especially useful in combination with
     @var{block-compile}.
     
-  @item[@kwd{output-file}] This argument specifies the name of the
+  @item @kwd{output-file}
+This argument specifies the name of the
     output file.  @true{} gives the default name, @false{} suppresses
     the output file.
     
-  @item[@kwd{error-file}] A listing of all the error output is
+  @item @kwd{error-file}
+A listing of all the error output is
     directed to this file.  If there are no errors, then no error file
     is produced (and any existing error file is deleted.)  @true{}
     gives @w{"@var{name}@code{.err}"} (the default), and @false{}
     suppresses the output file.
     
-  @item[@kwd{error-output}] If @true{} (the default), then error
+  @item @kwd{error-output}
+If @true{} (the default), then error
     output is sent to @code{*error-output*}.  If a stream, then output
     is sent to that stream instead.  If @false, then error output is
     suppressed.  Note that this error output is in addition to (but
     the same as) the output placed in the @var{error-file}.
     
-  @item[@kwd{verbose}] If @true{} (the default), then the compiler
+  @item @kwd{verbose}
+If @true{} (the default), then the compiler
     prints to error output at the start and end of compilation of each
     file.  See @varref{compile-verbose}.
     
-  @item[@kwd{print}] If @true{} (the default), then the compiler
+  @item @kwd{print}
+If @true{} (the default), then the compiler
     prints to error output when each function is compiled.  See
     @varref{compile-print}.
     
-  @item[@kwd{progress}] If @true{} (default @false{}), then the
+  @item @kwd{progress}
+If @true{} (default @false{}), then the
     compiler prints to error output progress information about the
     phases of compilation of each function.  This is a @cmucl{} extension
     that is useful mainly in large block compilations.  See
     @varref{compile-progress}.
     
-  @item[@kwd{trace-file}] If @true{}, several of the intermediate
+  @item @kwd{trace-file}
+If @true{}, several of the intermediate
     representations (including annotated assembly code) are dumped out
     to this file.  @true{} gives @w{"@var{name}@code{.trace}"}.  Trace
     output is off by default.  @xref{trace-files}.
     
-  @item[@kwd{load}] If @true{}, load the resulting output file.
+  @item @kwd{load}
+If @true{}, load the resulting output file.
     
-  @item[@kwd{block-compile}] Controls the compile-time resolution of
+  @item @kwd{block-compile}
+Controls the compile-time resolution of
     function calls.  By default, only self-recursive calls are
     resolved, unless an @code{ext:block-start} declaration appears in
     the source file.  @xref{compile-file-block}.
     
-  @item[@kwd{entry-points}] If non-@nil, then this is a list of the
+  @item @kwd{entry-points}
+If non-@nil, then this is a list of the
     names of all functions in the file that should have global
     definitions installed (because they are referenced in other
     files.)  @xref{compile-file-block}.
     
-  @item[@kwd{byte-compile}] If @true{}, compiling to a compact
+  @item @kwd{byte-compile}
+If @true{}, compiling to a compact
     interpreted byte code is enabled.  Possible values are @true{},
     @false{}, and @kwd{maybe} (the default.)  See
     @varref{byte-compile-default} and @pxref{byte-compile}.
 
-  @item[@kwd{xref}] If non-@nil, enable recording of cross-reference
+  @item @kwd{xref}
+If non-@nil, enable recording of cross-reference
     information.  The default is the value of
     @code{c:*record-xref-info*}.  @xref{xref}.  Note that the
     compiled fasl file will also contain cross-reference information
@@ -192,14 +205,16 @@ provides a standard way to access compiler extensions.
   is an evaluated form.  These keyword options are recognized:
   @table @code
   
-  @item[@kwd{override}] If uses of @code{with-compilation-unit} are
+  @item @kwd{override}
+If uses of @code{with-compilation-unit} are
     dynamically nested, the outermost use will take precedence,
     suppressing printing of undefined warnings by inner uses.
     However, when the @code{override} option is true this shadowing is
     inhibited; an inner use will print summary warnings for the
     compilations within the inner scope.
   
-  @item[@kwd{optimize}] This is a @cmucl{} extension that specifies of the
+  @item @kwd{optimize}
+This is a @cmucl{} extension that specifies of the
     ``global'' compilation policy for the dynamic extent of the body.
     The argument should evaluate to an @code{optimize} declare form,
     like:
@@ -208,12 +223,14 @@ provides a standard way to access compiler extensions.
     @end lisp
     @xref{optimize-declaration}
   
-  @item[@kwd{optimize-interface}] Similar to @kwd{optimize}, but
+  @item @kwd{optimize-interface}
+Similar to @kwd{optimize}, but
     specifies the compilation policy for function interfaces (argument
     count and type checking) for the dynamic extent of the body.
     @xref{The Optimize-Interface Declaration}.
   
-  @item[@kwd{context-declarations}] This is a @cmucl{} extension that
+  @item @kwd{context-declarations}
+This is a @cmucl{} extension that
     pattern-matches on function names, automatically splicing in any
     appropriate declarations at the head of the function definition.
     @xref{context-declarations}.
@@ -324,13 +341,15 @@ In this example we see each of the six possible parts of a compiler error
 message:
 
 @table @code 
-@item[@w{@code{File: /usr/me/stuff.lisp}}] This is the @var{file} that
+@item @w{@code{File: /usr/me/stuff.lisp}}
+This is the @var{file} that
   the compiler read the relevant code from.  The file name is
   displayed because it may not be immediately obvious when there is an
   error during compilation of a large system, especially when
   @code{with-compilation-unit} is used to delay undefined warnings.
   
-@item[@w{@code{In: DEFUN FOO}}] This is the @var{definition} or
+@item @w{@code{In: DEFUN FOO}}
+This is the @var{definition} or
   top-level form responsible for the error.  It is obtained by taking
   the first two elements of the enclosing form whose first element is
   a symbol beginning with ``@code{DEF}''.  If there is no enclosing
@@ -339,14 +358,16 @@ message:
   out in, separated by @code{$=>$}'s.  In this example, the problem
   was in the @code{defun} for @code{foo}.
   
-@item[@w{@code{(ZOQ Y)}}] This is the @emph{original source} form
+@item @w{@code{(ZOQ Y)}}
+This is the @emph{original source} form
   responsible for the error.  Original source means that the form
   directly appeared in the original input to the compiler, i.e. in the
   lambda passed to @code{compile} or the top-level form read from the
   source file.  In this example, the expansion of the @code{zoq} macro
   was responsible for the error.
   
-@item[@w{@code{--$>$ ROQ PLOQ +}} ] This is the @emph{processing path}
+@item @w{@code{--$>$ ROQ PLOQ +}} 
+This is the @emph{processing path}
   that the compiler used to produce the errorful code.  The processing
   path is a representation of the evaluated forms enclosing the actual
   source that the compiler encountered when processing the original
@@ -357,7 +378,8 @@ message:
   calls to @code{roq}, @code{ploq} and @code{+}.  These calls resulted
   from the expansion of the @code{zoq} macro.
   
-@item[@code{==$>$ Y}] This is the @emph{actual source} responsible for
+@item @code{==$>$ Y}
+This is the @emph{actual source} responsible for
   the error.  If the actual source appears in the explanation, then we
   print the next enclosing evaluated form, instead of printing the
   actual source twice.  (This is the form that would otherwise have
@@ -365,7 +387,8 @@ message:
   problem is with the evaluation of the reference to the variable
   @code{y}.
   
-@item[@w{@code{Warning: Result is a SYMBOL, not a NUMBER.}}]  This is
+@item @w{@code{Warning: Result is a SYMBOL, not a NUMBER.}}
+ This is
   the @var{explanation} the problem.  In this example, the problem is
   that @code{y} evaluates to a @code{symbol}, but is in a context
   where a number is required (the argument to @code{+}).
@@ -537,7 +560,8 @@ one level.
 There are three levels of compiler error severity:
 
 @table @code  
-@item[Error] This severity is used when the compiler encounters a
+@item Error
+This severity is used when the compiler encounters a
   problem serious enough to prevent normal processing of a form.
   Instead of compiling the form, the compiler compiles a call to
   @code{error}.  Errors are used mainly for signaling syntax errors.
@@ -545,7 +569,8 @@ There are three levels of compiler error severity:
   it.  The compiler also handles and attempts to proceed from read
   errors.
   
-@item[Warning] Warnings are used when the compiler can prove that
+@item Warning
+Warnings are used when the compiler can prove that
   something bad will happen if a portion of the program is executed,
   but the compiler can proceed by compiling code that signals an error
   at runtime if the problem has not been fixed:
@@ -565,7 +590,8 @@ There are three levels of compiler error severity:
   consequences or that would cause an error to be signaled would
   result at runtime.
   
-@item[Note] Notes are used when there is something that seems a bit
+@item Note
+Notes are used when there is something that seems a bit
   odd, but that might reasonably appear in correct programs.
 @end table
 
@@ -1148,18 +1174,21 @@ These are the optimization qualities:
 @table @code
   
 @cindex speed optimization quality
-@item[@code{speed}] 
+@item @code{speed}
+
   How fast the
   program should is run.  @code{speed 3} enables some optimizations
   that hurt debuggability.
   
 @cindex compilation-speed optimization quality
-@item[@code{compilation-speed}] 
+@item @code{compilation-speed}
+
 How fast the compiler should run.  Note that increasing
   this above @code{safety} weakens type checking.
   
 @cindex space optimization quality
-@item[@code{space}] 
+@item @code{space}
+
   How much space
   the compiled code should take up.  Inline expansion is mostly
   inhibited when @code{space} is greater than @code{speed}.  A value
@@ -1177,7 +1206,8 @@ How fast the compiler should run.  Note that increasing
   @xref{debugger-policy} for more details.
   
 @cindex safety optimization quality
-@item[@code{safety}] 
+@item @code{safety}
+
   How much
   error checking should be done.  If @code{speed}, @code{space} or
   @code{compilation-speed} is more important than @code{safety}, then
@@ -1188,7 +1218,8 @@ How fast the compiler should run.  Note that increasing
   checks.
   
 @cindex inhibit-warnings optimization quality
-@item[@code{extensions:inhibit-warnings}] 
+@item @code{extensions:inhibit-warnings}
+
   This is a @cmucl{} extension that determines how
   little (or how much) diagnostic output should be printed during
   compilation.  This quality is compared to other qualities to

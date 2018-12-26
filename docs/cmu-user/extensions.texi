@@ -165,29 +165,34 @@ enabled for an exception, a error is signalled whenever that exception
 occurs.  These are the possible floating point exceptions:
 @table @code
   
-@item[@kwd{underflow}] This exception occurs when the result of an
+@item @kwd{underflow}
+This exception occurs when the result of an
   operation is too small to be represented as a normalized float in
   its format.  If trapping is enabled, the
   @tindexed{floating-point-underflow} condition is signalled.
   Otherwise, the operation results in a denormalized float or zero.
   
-@item[@kwd{overflow}] This exception occurs when the result of an
+@item @kwd{overflow}
+This exception occurs when the result of an
   operation is too large to be represented as a float in its format.
   If trapping is enabled, the @tindexed{floating-point-overflow}
   exception is signalled.  Otherwise, the operation results in the
   appropriate infinity.
   
-@item[@kwd{inexact}] This exception occurs when the result of a
+@item @kwd{inexact}
+This exception occurs when the result of a
   floating point operation is not exact, i.e. the result was rounded.
   If trapping is enabled, the @code{extensions:floating-point-inexact}
   condition is signalled.  Otherwise, the rounded result is returned.
   
-@item[@kwd{invalid}] This exception occurs when the result of an
+@item @kwd{invalid}
+This exception occurs when the result of an
   operation is ill-defined, such as @code{@w{(/ 0.0 0.0)}}.  If
   trapping is enabled, the @code{extensions:floating-point-invalid}
   condition is signalled.  Otherwise, a quiet NaN is returned.
   
-@item[@kwd{divide-by-zero}] This exception occurs when a float is
+@item @kwd{divide-by-zero}
+This exception occurs when a float is
   divided by zero.  If trapping is enabled, the
   @tindexed{divide-by-zero} condition is signalled.  Otherwise, the
   appropriate infinity is returned.
@@ -200,21 +205,25 @@ occurs.  These are the possible floating point exceptions:
 IEEE floating point specifies four possible rounding modes:
 @table @code
   
-@item[@kwd{nearest}] In this mode, the inexact results are rounded to
+@item @kwd{nearest}
+In this mode, the inexact results are rounded to
   the nearer of the two possible result values.  If the neither
   possibility is nearer, then the even alternative is chosen.  This
   form of rounding is also called ``round to even'', and is the form
   of rounding specified for the @clisp{} @findexed{round} function.
   
-@item[@kwd{positive-infinity}] This mode rounds inexact results to the
+@item @kwd{positive-infinity}
+This mode rounds inexact results to the
   possible value closer to positive infinity.  This is analogous to
   the @clisp{} @findexed{ceiling} function.
   
-@item[@kwd{negative-infinity}] This mode rounds inexact results to the
+@item @kwd{negative-infinity}
+This mode rounds inexact results to the
   possible value closer to negative infinity.  This is analogous to
   the @clisp{} @findexed{floor} function.
   
-@item[@kwd{zero}] This mode rounds inexact results to the possible
+@item @kwd{zero}
+This mode rounds inexact results to the possible
   value closer to zero.  This is analogous to the @clisp{}
   @findexed{truncate} function.
 @end table
@@ -279,20 +288,23 @@ These functions can be used to modify or read the floating point modes:
   modes controlling how floating point arithmetic is done:
   @table @code
   
-  @item[@kwd{traps}] A list of the exception conditions that should
+  @item @kwd{traps}
+A list of the exception conditions that should
     cause traps.  Possible exceptions are @kwd{underflow},
     @kwd{overflow}, @kwd{inexact}, @kwd{invalid} and
     @kwd{divide-by-zero}.  Initially all traps except @kwd{inexact}
     are enabled.  @xref{float-traps}.
     
-  @item[@kwd{rounding-mode}] The rounding mode to use when the result
+  @item @kwd{rounding-mode}
+The rounding mode to use when the result
     is not exact. Possible values are @kwd{nearest},
     @kwd{positive-infinity}, @kwd{negative-infinity} and @kwd{zero}.
     Initially, the rounding mode is @kwd{nearest}. See the warning in
     section @ref{float-rounding-modes} about use of other rounding
     modes.
   
-  @item[@kwd{current-exceptions}, @kwd{accrued-exceptions}] Lists of
+  @item @kwd{current-exceptions}, @kwd{accrued-exceptions}
+Lists of
     exception keywords used to set the exception flags.  The
     @var{current-exceptions} are the exceptions for the previous
     operation, so setting it is not very useful.  The
@@ -300,7 +312,8 @@ These functions can be used to modify or read the floating point modes:
     that occurred since the last time these flags were cleared.
     Specifying @code{()} will clear any accrued exceptions.
   
-  @item[@kwd{fast-mode}] Set the hardware's ``fast mode'' flag, if
+  @item @kwd{fast-mode}
+Set the hardware's ``fast mode'' flag, if
     any.  When set, IEEE conformance or debuggability may be impaired.
     Some machines may not have this feature, in which case the value
     is always @false.  Sparc platforms support a fast mode where
@@ -567,11 +580,16 @@ the hash-table, the object can be collected.
 The possible values for @kwd{weak-p} are listed below.  An entry in
 the table remains if the condition holds
 @table @code
-@item[@kwd{key}] The key is referenced elsewhere
-@item[@kwd{value}] The value is referenced elsewhere
-@item[@kwd{key-and-value}] Both the key and value are referenced elsewhere
-@item[@kwd{key-or-value}] Either the key or value are referenced elsewhere
-@item[T] For backward compatibility, this means the same as @kwd{key}.
+@item @kwd{key}
+The key is referenced elsewhere
+@item @kwd{value}
+The value is referenced elsewhere
+@item @kwd{key-and-value}
+Both the key and value are referenced elsewhere
+@item @kwd{key-or-value}
+Either the key or value are referenced elsewhere
+@item T
+For backward compatibility, this means the same as @kwd{key}.
 @end table
 If the condition does not hold, the object can be removed from the
 hash table.  
@@ -589,16 +607,19 @@ Weak hash tables can only be created if the test is @code{eq} or
 as follows:
 @table @code
   
-@item[@code{SIGINT} ^c] causes Lisp to enter a break loop.
+@item @code{SIGINT} ^c
+causes Lisp to enter a break loop.
   This puts you into the debugger which allows you to look at the
   current state of the computation.  If you proceed from the break
   loop, the computation will proceed from where it was interrupted.
   
-@item[@code{SIGQUIT} ^L] causes Lisp to do a throw to the
+@item @code{SIGQUIT} ^L
+causes Lisp to do a throw to the
   top-level.  This causes the current computation to be aborted, and
   control returned to the top-level read-eval-print loop.
   
-@item[@code{SIGTSTP} (^z)] causes Lisp to suspend execution and
+@item @code{SIGTSTP} (^z)
+causes Lisp to suspend execution and
   return to the Unix shell.  If control is returned to Lisp, the
   computation will proceed from where it was interrupted.
   
@@ -627,71 +648,88 @@ packages which implement parts of the system are not described here.
 Package nicknames are in parenthesis after the full name.
 
 @table @code
-@item[@code{alien}, @code{c-call}] Export the features of the Alien
+@item @code{alien}, @code{c-call}
+Export the features of the Alien
   foreign data structure facility (@pxref{aliens}.)
   
-@item[@code{pcl}] This package contains PCL (Portable CommonLoops),
+@item @code{pcl}
+This package contains PCL (Portable CommonLoops),
   which is a portable implementation of CLOS (the Common Lisp Object
   System.)  This implements most (but not all) of the features in the
   CLOS chapter of @cltltwo{}.
 
-@item[@code{clos-mop (mop)}] This package contains an implementation
+@item @code{clos-mop (mop)}
+This package contains an implementation
   of the CLOS Metaobject Protocol, as per the book @i{The Art of
   the Metaobject Protocol}.
   
-@item[@code{debug}] The @code{debug} package contains the command-line
+@item @code{debug}
+The @code{debug} package contains the command-line
   oriented debugger.  It exports utility various functions and
   switches.
   
-@item[@code{debug-internals}] The @code{debug-internals} package
+@item @code{debug-internals}
+The @code{debug-internals} package
   exports the primitives used to write debuggers.
   @xref{debug-internals}.
   
-@item[@code{extensions (ext)}] The @code{extensions} packages exports
+@item @code{extensions (ext)}
+The @code{extensions} packages exports
   local extensions to @clisp{} that are documented in this manual.
   Examples include the @code{save-lisp} function and time parsing.
   
-@item[@code{hemlock (ed)}] The @code{hemlock} package contains all the
+@item @code{hemlock (ed)}
+The @code{hemlock} package contains all the
   code to implement Hemlock commands.  The @code{hemlock} package
   currently exports no symbols.
   
-@item[@code{hemlock-internals (hi)}] The @code{hemlock-internals}
+@item @code{hemlock-internals (hi)}
+The @code{hemlock-internals}
   package contains code that implements low level primitives and
   exports those symbols used to write Hemlock commands.
   
-@item[@code{keyword}] The @code{keyword} package contains keywords
+@item @code{keyword}
+The @code{keyword} package contains keywords
   (e.g., @kwd{start}).  All symbols in the @code{keyword} package are
   exported and evaluate to themselves (i.e., the value of the symbol
   is the symbol itself).
   
-@item[@code{profile}] The @code{profile} package exports a simple
+@item @code{profile}
+The @code{profile} package exports a simple
   run-time profiling facility (@pxref{profiling}).
   
-@item[@code{common-lisp (cl)}] The @code{common-lisp} package
+@item @code{common-lisp (cl)}
+The @code{common-lisp} package
   exports all the symbols defined by @cltl{} and only those symbols.
   Strictly portable Lisp code will depend only on the symbols exported
   from the @code{common-lisp} package.
   
-@item[@code{unix}] This package exports system call
+@item @code{unix}
+This package exports system call
   interfaces to Unix (@pxref{unix-interface}).
   
-@item[@code{system (sys)}] The @code{system} package contains
+@item @code{system (sys)}
+The @code{system} package contains
   functions and information necessary for system interfacing.  This
   package is used by the @code{lisp} package and exports several
   symbols that are necessary to interface to system code.
   
-@item[@code{xlib}] The @code{xlib} package contains the Common Lisp X
+@item @code{xlib}
+The @code{xlib} package contains the Common Lisp X
   interface (CLX) to the X11 protocol.  This is mostly Lisp code with
   a couple of functions that are defined in C to connect to the
   server.
   
-@item[@code{wire}] The @code{wire} package exports a remote procedure
+@item @code{wire}
+The @code{wire} package exports a remote procedure
   call facility (@pxref{remote}).
 
-@item[@code{stream}] The @code{stream} package exports the public
+@item @code{stream}
+The @code{stream} package exports the public
   interface to the simple-streams implementation (@pxref{simple-streams}).
 
-@item[@code{xref}] The @code{xref} package exports the public
+@item @code{xref}
+The @code{xref} package exports the public
   interface to the cross-referencing utility (@pxref{xref}).
 
 @end table
@@ -864,9 +902,12 @@ to control it.
   @code{ext:*gc-notify-after*} afterwards.
 
   @table @code
-  @item[@code{verbose}] Print GC statistics if non-@code{NIL}.
-  @item[@code{gen}] The number of generations to be collected.
-  @item[@code{full}] If non-@code{NIL}, a full collection of all
+  @item @code{verbose}
+Print GC statistics if non-@code{NIL}.
+  @item @code{gen}
+The number of generations to be collected.
+  @item @code{full}
+If non-@code{NIL}, a full collection of all
     generations is performed.
   @end table
 @end defun
@@ -963,20 +1004,24 @@ finalization is used to close the underlying file descriptor.
 
   @table @code
   
-  @item[@tindexed{hash-table}] @code{describe} prints the number of
+  @item @tindexed{hash-table}
+@code{describe} prints the number of
     entries currently in the hash table and the number of buckets
     currently allocated.
   
-  @item[@tindexed{function}] @code{describe} prints a list of the
+  @item @tindexed{function}
+@code{describe} prints a list of the
     function's name (if any) and its formal parameters.  If the name
     has function documentation, then it will be printed.  If the
     function is compiled, then the file where it is defined will be
     printed as well.
   
-  @item[@tindexed{fixnum}] @code{describe} prints whether the integer
+  @item @tindexed{fixnum}
+@code{describe} prints whether the integer
     is prime or not.
   
-  @item[@tindexed{symbol}] The symbol's value, properties, and
+  @item @tindexed{symbol}
+The symbol's value, properties, and
     documentation are printed.  If the symbol has a function
     definition, then the function is described.
   @end table
@@ -1072,18 +1117,23 @@ descends into the @var{n}'th component of the current object, and
 symbols with these special names are interpreted as commands:
 
 @table @code
-@item[U] Move back to the enclosing object.  As you descend into the
+@item U
+Move back to the enclosing object.  As you descend into the
 components of an object, a stack of all the objects previously seen is
 kept.  This command pops you up one level of this stack.
 
-@item[Q, E] Return the current object from @code{inspect}.
+@item Q, E
+Return the current object from @code{inspect}.
 
-@item[R] Recompute object display, and print again.  Useful if the
+@item R
+Recompute object display, and print again.  Useful if the
 object may have changed.
 
-@item[D] Display again without recomputing.
+@item D
+Display again without recomputing.
 
-@item[H, ?] Show help message.
+@item H, ?
+Show help message.
 @end table
 
 
@@ -1112,16 +1162,20 @@ object may have changed.
   take when both the source and object files exist, but the object
   file is out of date:
   @table @code
-  @item[@kwd{load-object}] The object file is loaded even though the
+  @item @kwd{load-object}
+The object file is loaded even though the
     source file is newer.
     
-  @item[@kwd{load-source}] The source file is loaded instead of the
+  @item @kwd{load-source}
+The source file is loaded instead of the
     older object file.
     
-  @item[@kwd{compile}] The source file is compiled and then the new
+  @item @kwd{compile}
+The source file is compiled and then the new
     object file is loaded.
     
-  @item[@kwd{query}] The user is asked a yes or no question to
+  @item @kwd{query}
+The user is asked a yes or no question to
     determine whether the source or object file is loaded.
   @end table
   This argument defaults to the value of
@@ -1244,17 +1298,20 @@ It is possible to run programs from Lisp by using the following function.
   @code{run-program} accepts the following keyword arguments:
 
   @table @code   
-  @item[@kwd{env}] This is an a-list mapping keywords and
+  @item @kwd{env}
+This is an a-list mapping keywords and
     simple-strings.  The default is @code{ext:*environment-list*}.  If
     @kwd{env} is specified, @code{run-program} uses the value given
     and does not combine the environment passed to Lisp with the one
     specified.
     
-  @item[@kwd{wait}] If non-@nil{} (the default), wait until the child
+  @item @kwd{wait}
+If non-@nil{} (the default), wait until the child
     process terminates.  If @nil, continue running Lisp while the
     child process runs.
     
-  @item[@kwd{pty}] This should be one of @true, @nil, or a stream.  If
+  @item @kwd{pty}
+This should be one of @true, @nil, or a stream.  If
     specified non-@nil, the subprocess executes under a Unix PTY.
     If specified as a stream, the system collects all output to this
     pty and writes it to this stream.  If specified as @true, the
@@ -1262,7 +1319,8 @@ It is possible to run programs from Lisp by using the following function.
     the program's output and to which you can write input for the
     program.  The default is @nil.
     
-  @item[@kwd{input}] This specifies how the program gets its input.
+  @item @kwd{input}
+This specifies how the program gets its input.
     If specified as a string, it is the name of a file that contains
     input for the child process.  @code{run-program} opens the file as
     standard input.  If specified as @nil{} (the default), then
@@ -1282,13 +1340,15 @@ It is possible to run programs from Lisp by using the following function.
     bits of the @code{char-code} of each @code{character} is
     sent to the program.
     
-  @item[@kwd{if-input-does-not-exist}] This specifies what to do if
+  @item @kwd{if-input-does-not-exist}
+This specifies what to do if
     the input file does not exist.  The following values are valid:
     @nil{} (the default) causes @code{run-program} to return @nil{}
     without doing anything; @kwd{create} creates the named file; and
     @kwd{error} signals an error.
     
-  @item[@kwd{output}] This specifies what happens with the program's
+  @item @kwd{output}
+This specifies what happens with the program's
     output.  If specified as a pathname, it is the name of a file that
     contains output the program writes to its standard output.  If
     specified as @nil{} (the default), all output goes to
@@ -1304,14 +1364,16 @@ It is possible to run programs from Lisp by using the following function.
     It is up to the caller to convert this using the appropriate
     external format to create the desired encoded string.
     
-  @item[@kwd{if-output-exists}] This specifies what to do if the
+  @item @kwd{if-output-exists}
+This specifies what to do if the
     output file already exists.  The following values are valid:
     @nil{} causes @code{run-program} to return @nil{} without doing
     anything; @kwd{error} (the default) signals an error;
     @kwd{supersede} overwrites the current file; and @kwd{append}
     appends all output to the file.
     
-  @item[@kwd{error}] This is similar to @kwd{output}, except the file
+  @item @kwd{error}
+This is similar to @kwd{output}, except the file
     becomes the program's standard error.  Additionally, @kwd{error}
     can be @kwd{output} in which case the program's error output is
     routed to the same place specified for @kwd{output}.  If specified
@@ -1319,28 +1381,32 @@ It is possible to run programs from Lisp by using the following function.
     similar to the @code{process-output} slot when specifying the
     @kwd{output} argument.
     
-  @item[@kwd{if-error-exists}] This specifies what to do if the error
+  @item @kwd{if-error-exists}
+This specifies what to do if the error
     output file already exists.  It accepts the same values as
     @kwd{if-output-exists}.
     
-  @item[@kwd{status-hook}] This specifies a function to call whenever
+  @item @kwd{status-hook}
+This specifies a function to call whenever
     the process changes status.  This is especially useful when
     specifying @kwd{wait} as @nil.  The function takes the process as
     a required argument.
 
-  @item[@kwd{external-format}] This specifies the external format to
+  @item @kwd{external-format}
+This specifies the external format to
     use for streams created for @code{run-program}.  This does not
     apply to string streams passed in as @kwd{input} or @kwd{output}
     parameters.
 
-  @item[@kwd{element-type}] If streams are created @code{run-program},
+  @item @kwd{element-type}
+If streams are created @code{run-program},
     use this as the @kwd{element-type} for the stream.  Defaults to
     @code{BASE-CHAR}. 
     
-%   @item[@kwd{before-execve}] This specifies a function to run in the
-%     child process before it becomes the program to run.  This is
-%     useful for actions such as authenticating the child process
-%     without modifying the parent Lisp process.
+@c    @item[@kwd{before-execve}] This specifies a function to run in the
+@c      child process before it becomes the program to run.  This is
+@c      useful for actions such as authenticating the child process
+@c      without modifying the parent Lisp process.
   @end table
 @end defun
 
@@ -1433,13 +1499,16 @@ The following functions interface the process returned by @code{run-program}:
   one of the following:
   @table @code
     
-  @item[@kwd{pid}] This is the default, and it indicates sending the
+  @item @kwd{pid}
+This is the default, and it indicates sending the
     signal to @var{process} only.
     
-  @item[@kwd{process-group}] This indicates sending the signal to
+  @item @kwd{process-group}
+This indicates sending the signal to
     @var{process}'s group.
     
-  @item[@kwd{pty-process-group}] This indicates sending the signal to
+  @item @kwd{pty-process-group}
+This indicates sending the signal to
     the process group currently in the foreground on the Unix PTY
     connected to @var{process}.  This last option is useful if the
     running program is a shell, and you wish to signal the program
@@ -1478,7 +1547,8 @@ size of each saved Lisp image, typically at least 20 megabytes.
   the following meaning:
   @table @code
     
-  @item[@kwd{purify}] If non-@nil{} (the default), the core image is
+  @item @kwd{purify}
+If non-@nil{} (the default), the core image is
     purified before it is saved (see @funref{purify}.)  This reduces
     the amount of work the garbage collector must do when the
     resulting core image is being run.  Also, if more than one Lisp is
@@ -1491,12 +1561,14 @@ size of each saved Lisp image, typically at least 20 megabytes.
       GC performance will be better if they are.  Meaningless if
       @kwd{purify} is @nil.  See @funref{purify}.
 
-  @item[@kwd{init-function}] This is the function that starts running
+  @item @kwd{init-function}
+This is the function that starts running
     when the created core file is resumed.  The default function
     simply invokes the top level read-eval-print loop.  If the
     function returns the lisp will exit.
     
-  @item[@kwd{load-init-file}] If non-NIL, then load an init file;
+  @item @kwd{load-init-file}
+If non-NIL, then load an init file;
     either the one specified on the command line or
     ``@w{@file{init.}@var{fasl-type}}'', or, if
     ``@w{@file{init.}@var{fasl-type}}'' does not exist,
@@ -1504,23 +1576,28 @@ size of each saved Lisp image, typically at least 20 megabytes.
     is found, it is loaded into the resumed core file before the
     read-eval-print loop is entered.
     
-  @item[@kwd{site-init}] If non-NIL, the name of the site init file to
+  @item @kwd{site-init}
+If non-NIL, the name of the site init file to
     quietly load.  The default is @file{library:site-init}.  No error
     is signalled if the file does not exist.
     
-  @item[@kwd{print-herald}] If non-NIL (the default), then print out
+  @item @kwd{print-herald}
+If non-NIL (the default), then print out
     the standard Lisp herald when starting.
     
-  @item[@kwd{process-command-line}] If non-NIL (the default),
+  @item @kwd{process-command-line}
+If non-NIL (the default),
     processes the command line switches and performs the appropriate
     actions.
 
-  @item[@kwd{batch-mode}] If NIL (the default), then the presence of
+  @item @kwd{batch-mode}
+If NIL (the default), then the presence of
     the -batch command-line switch will invoke batch-mode processing
     upon resuming the saved core.  If non-NIL, the produced core will
     always be in batch-mode, regardless of any command-line switches.
 
-  @item[@kwd{executable}] If non-NIL, an executable image is created.
+  @item @kwd{executable}
+If non-NIL, an executable image is created.
     Normally, @cmucl{} consists of the C runtime along with a core
     file image.  When @kwd{executable} is non-NIL, the core file is
     incorporated into the C runtime, so one (large) executable is
@@ -1552,7 +1629,8 @@ since the executable contains the core file within the executable.
   system has been loaded and initialized.
 
   @table @code
-  @item[@kwd{root-structures}] is an optional list of objects which
+  @item @kwd{root-structures}
+is an optional list of objects which
     should be copied first to maximize locality.  This should be a
     list of the main entry points for the resulting core image.  The
     purification process tries to localize symbols, functions, etc.,
@@ -1565,7 +1643,8 @@ since the executable contains the core file within the executable.
     List and vector slots of pure structures are also moved into
     read-only storage.
   
-  @item[@kwd{environment-name}] is gratuitous documentation for the
+  @item @kwd{environment-name}
+is gratuitous documentation for the
     compacted version of the current global environment (as seen in
     @code{c::*info-environment*}.)  If @false{} is supplied, then
     environment compaction is inhibited.
@@ -1708,20 +1787,28 @@ written to the first directory in the list.
 These search-lists are initialized from the Unix environment or when Lisp was
 built:
 @table @code
-@item[@code{default:}] The current directory at startup.
+@item @code{default:}
+The current directory at startup.
 
-@item[@code{home:}] The user's home directory.
+@item @code{home:}
+The user's home directory.
 
-@item[@code{library:}] The @cmucl{} @file{lib/} directory (@code{CMUCLLIB} environment
+@item @code{library:}
+The @cmucl{} @file{lib/} directory (@code{CMUCLLIB} environment
 variable).
 
-@item[@code{path:}] The Unix command path (@code{PATH} environment variable).
-@item[@code{ld-library-path:}] The Unix @code{LD_LIBRARY_PATH}
+@item @code{path:}
+The Unix command path (@code{PATH} environment variable).
+@item @code{ld-library-path:}
+The Unix @code{LD_LIBRARY_PATH}
   environment variable.
-@item[@code{target:}] The root of the tree where @cmucl{} was compiled.
-@item[@code{modules:}] The list of directories where @cmucl{}'s
+@item @code{target:}
+The root of the tree where @cmucl{} was compiled.
+@item @code{modules:}
+The list of directories where @cmucl{}'s
   modules can be found.
-@item[@code{ext-formats:}] The list of directories where @cmucl{} can
+@item @code{ext-formats:}
+The list of directories where @cmucl{} can
   find the implementation of external formats.  
 @end table
 It can be useful to redefine these search-lists, for example, @file{library:}
@@ -1822,18 +1909,22 @@ matches.)  Filesystem operations treat @kwd{wild-inferiors} the same as@
   The arguments (all default to @code{t}) have the following
   functions:
   @table @code
-  @item[@kwd{all}] Include files beginning with dot such as
+  @item @kwd{all}
+Include files beginning with dot such as
     @file{.login}, similar to ``@code{ls -a}''.
     
-  @item[@kwd{check-for-subdirs}] Test whether files are directories,
+  @item @kwd{check-for-subdirs}
+Test whether files are directories,
     similar to ``@code{ls -F}''.
     
-  @item[@kwd{truenamep}] Call @code{truename} on each file, which
+  @item @kwd{truenamep}
+Call @code{truename} on each file, which
     expands out all symbolic links.  Note that this option can easily
     result in pathnames being returned which have a different
     directory from the one in the @var{wildname} argument.
 
-  @item[@kwd{follow-links}] Follow symbolic links when searching for
+  @item @kwd{follow-links}
+Follow symbolic links when searching for
     matching directories.
   @end table
 @end defun
@@ -1912,35 +2003,43 @@ and printing time in various formats are available.
   following meaning:
 
   @table @code
-  @item[@kwd{default-seconds}] specifies the default value for the
+  @item @kwd{default-seconds}
+specifies the default value for the
     seconds value if one is not provided by @var{time-string}.  The
     default value is 0.
     
-  @item[@kwd{default-minutes}] specifies the default value for the
+  @item @kwd{default-minutes}
+specifies the default value for the
     minutes value if one is not provided by @var{time-string}.  The
     default value is 0.
     
-  @item[@kwd{default-hours}] specifies the default value for the hours
+  @item @kwd{default-hours}
+specifies the default value for the hours
     value if one is not provided by @var{time-string}.  The default
     value is 0.
     
-  @item[@kwd{default-day}] specifies the default value for the day
+  @item @kwd{default-day}
+specifies the default value for the day
     value if one is not provided by @var{time-string}.  The default
     value is the current day.
     
-  @item[@kwd{default-month}] specifies the default value for the month
+  @item @kwd{default-month}
+specifies the default value for the month
     value if one is not provided by @var{time-string}.  The default
     value is the current month.
     
-  @item[@kwd{default-year}] specifies the default value for the year
+  @item @kwd{default-year}
+specifies the default value for the year
     value if one is not provided by @var{time-string}.  The default
     value is the current year.
     
-  @item[@kwd{default-zone}] specifies the default value for the time
+  @item @kwd{default-zone}
+specifies the default value for the time
     zone value if one is not provided by @var{time-string}.  The
     default value is the current time zone.
     
-  @item[@kwd{default-weekday}] specifies the default value for the day
+  @item @kwd{default-weekday}
+specifies the default value for the day
     of the week if one is not provided by @var{time-string}.  The
     default value is the current day of the week.
   @end table
@@ -1960,38 +2059,48 @@ and printing time in various formats are available.
    the following meaning:
    @table @code
      
-   @item[@kwd{timezone}] is an integer specifying the hours west of
+   @item @kwd{timezone}
+is an integer specifying the hours west of
      Greenwich.  @kwd{timezone} defaults to the current time zone.
      
-   @item[@kwd{style}] specifies the style to use in formatting the
+   @item @kwd{style}
+specifies the style to use in formatting the
      time.  The legal values are:
      @table @code
   
-     @item[@kwd{short}] specifies to use a numeric date.
+     @item @kwd{short}
+specifies to use a numeric date.
   
-     @item[@kwd{long}] specifies to format months and weekdays as
+     @item @kwd{long}
+specifies to format months and weekdays as
        words instead of numbers.
   
-     @item[@kwd{abbreviated}] is similar to long except the words are
+     @item @kwd{abbreviated}
+is similar to long except the words are
        abbreviated.
   
-     @item[@kwd{government}] is similar to abbreviated, except the
+     @item @kwd{government}
+is similar to abbreviated, except the
        date is of the form ``day month year'' instead of ``month day,
        year''.
      @end table
      
-   @item[@kwd{date-first}] if non-@false{} (default) will place the
+   @item @kwd{date-first}
+if non-@false{} (default) will place the
      date first.  Otherwise, the time is placed first.
   
-   @item[@kwd{print-seconds}] if non-@false{} (default) will format
+   @item @kwd{print-seconds}
+if non-@false{} (default) will format
      the seconds as part of the time.  Otherwise, the seconds will be
      omitted.
   
-   @item[@kwd{print-meridian}] if non-@false{} (default) will format
+   @item @kwd{print-meridian}
+if non-@false{} (default) will format
      ``AM'' or ``PM'' as part of the time.  Otherwise, the ``AM'' or
      ``PM'' will be omitted.
   
-   @item[@kwd{print-timezone}] if non-@false{} (default) will format
+   @item @kwd{print-timezone}
+if non-@false{} (default) will format
      the time zone as part of the time.  Otherwise, the time zone will
      be omitted.
 
@@ -1999,7 +2108,8 @@ and printing time in various formats are available.
      @c if non-@false{} (default) will format the seconds as part of
      @c the time.  Otherwise, the seconds will be omitted.
   
-   @item[@kwd{print-weekday}] if non-@false{} (default) will format
+   @item @kwd{print-weekday}
+if non-@false{} (default) will format
      the weekday as part of date.  Otherwise, the weekday will be
      omitted.
    @end table

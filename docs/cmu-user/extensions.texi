@@ -2901,7 +2901,7 @@ is likely to crash, or format your hard disk.
 @menu
 * @code{&rest} argument lists::  
 * Dynamic-Extent Closures::     
-* @code{list}::                 
+* @code{list} @code{list*} and @code{cons}::  
 @end menu
 
 @node @code{&rest} argument lists

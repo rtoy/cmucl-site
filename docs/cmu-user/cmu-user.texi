@@ -184,7 +184,7 @@ language implementation, programming environment
 @include ipc.texi
 @include internet.texi
 @include debug-internals.texi
-@c @include cross-referencing.texi
+@include cross-referencing.texi
 @c @include unicode.texi
 
 @bye

@@ -11,6 +11,12 @@ of IPC.  There is a simple remote-procedure-call (RPC) package build
 on top of TCP/IP sockets.
 
 
+@menu
+* The REMOTE Package::          
+* The WIRE Package::            
+* Out-Of-Band Data::            
+@end menu
+
 @node The REMOTE Package
 @section The REMOTE Package
 
@@ -23,6 +29,12 @@ return @var{wire} structures.  A wire maintains the current state of
 a connection, and all the RPC forms require a wire to indicate where
 to send requests.
 
+
+@menu
+* Connecting Servers and Clients::  
+* Remote Evaluations::          
+* Remote Objects::              
+@end menu
 
 @node Connecting Servers and Clients
 @subsection Connecting Servers and Clients
@@ -299,6 +311,12 @@ the remote process must read everything sent by these routines.  If
 the remote process leaves any input on the wire, it will later
 mistake the data for an RPC request causing unknown lossage.
 
+
+@menu
+* Untagged Data::               
+* Tagged Data::                 
+* Making Your Own Wires::       
+@end menu
 
 @node Untagged Data
 @subsection Untagged Data

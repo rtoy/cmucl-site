@@ -182,7 +182,7 @@ language implementation, programming environment
 @include serve-event.texi
 @include aliens.texi
 @include ipc.texi
-@c @include internet.texi
+@include internet.texi
 @c @include debug-internals.texi
 @c @include cross-referencing.texi
 @c @include unicode.texi

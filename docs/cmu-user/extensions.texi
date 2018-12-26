@@ -2621,7 +2621,7 @@ implemented.  Please note that this interface is subject to change.
 
 @node Method Tracing and Profiling
 @subsection Method Tracing and Profiling
-@anchor{sec:method-tracing}
+@anchor{sec-method-tracing}
 @cindex tracing
 @c @cpsubindex{tracing}{methods}
 @cindex profiling

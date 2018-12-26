@@ -141,7 +141,7 @@ connections. This task is performed by the functions we document here.
   Waits until a connection arrives on the (internet family) socket
   @var{unconnected}. Returns the file descriptor of the connection.
   These can be conveniently encapsulated using file descriptor
-  streams; see @ref{sec:fds}.
+  streams; see @ref{sec-fds}.
 
 @end defun
 
@@ -150,7 +150,7 @@ connections. This task is performed by the functions we document here.
   Waits until a connection arrives on the (unix family) socket
   @var{unconnected}. Returns the file descriptor of the connection.
   These can be conveniently encapsulated using file descriptor
-  streams; see @ref{sec:fds}.
+  streams; see @ref{sec-fds}.
 
 @end defun
 

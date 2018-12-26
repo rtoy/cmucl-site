@@ -2955,7 +2955,7 @@ Stack-allocation of closures can also automatically take place when
 calling certain known CL functions taking function arguments, for
 example @code{some} or @code{find-if}.
 
-@node @code{list}, @code{list*}, and @code{cons}
+@node @code{list} @code{list*} and @code{cons}
 @subsection @code{list}, @code{list*}, and @code{cons}
 @c @cpsubindex{dynamic-extent}{list, list*, cons}
 

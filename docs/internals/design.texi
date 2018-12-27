@@ -36,6 +36,55 @@ This document is a work in progress: neither the contents nor the
 presentation are completed. Nevertheless, it provides some useful
 background information, in particular regarding the @cmucl{} compiler.
 
+@c This was created by hand.  Don't let the tools do this for you!
+@menu
+* Package and File Structure::
+* System Building::
+* Compiler Overview::
+* The Implicit Continuation Representation::
+* ICR Conversion::
+* Local call analysis::
+* Find components::
+* ICR optimize::
+* Type checking::
+* Constraint propagation::
+* ICR Finalize::
+* Environment analysis::
+* Virtual Machine Representation Introduction::
+* Global TN assignment::
+* Local TN assignment::
+* Control optimization::
+* VMR conversion::
+* Copy propagation::
+* Representation selection::
+* Lifetime analysis::
+* Packing::
+* Code generation::
+* Assembly::
+* Dumping::
+* User Interface of the Compiler::
+* Retargeting the Compiler::
+* Storage bases and classes::
+* Type system parameterization::
+* VOP Definition::
+* Assembler Retargeting::
+* Writing Assembly Code::
+* Required VOPS::
+* Standard Primitives::
+* Customizing VMR Conversion::
+* The Type System::
+* The Info Database::
+* Debugger::
+* Debugger Information::
+* Object Format::
+* Memory Management::
+* Interface to C and Assembler::
+* Low-level debugging::
+* Core File Format::
+* Fasload File Format::
+* Glossary::
+@end menu
+
 @include architecture.texi
 @include compiler.texi
 @include retargeting.texi

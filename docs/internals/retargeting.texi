@@ -276,6 +276,12 @@ SC-Restriction and Preference slots, and links together the Next-Ref chain as
 appropriate.
 
 
+@menu
+* Lifetime model::              
+* VOP Cost model::              
+* Efficiency notes::            
+@end menu
+
 @node Lifetime model
 @section Lifetime model
 
@@ -508,11 +514,23 @@ complications both at the VMR level and also in the VM definition.  This being
 the case, we should flush it.
 
 
+@menu
+* Function Call::               
+* Calls::                       
+@end menu
+
 @node Function Call
 @section Function Call
 
 
 
+@menu
+* Registers and frame format::  
+* Full call::                   
+* Unknown values return::       
+* External Entry Points::       
+@end menu
+
 @node Registers and frame format
 @subsection Registers and frame format
 
@@ -1026,6 +1044,12 @@ as a transform due to being totally evil or it is just as easy to implement as
 a translator because it is so simple.
 
 
+@menu
+* Constant Operands::           
+* Supporting Multiple Hardware Configurations::  
+* Special-case VMR convert methods::  
+@end menu
+
 @node Constant Operands
 @section Constant Operands
 

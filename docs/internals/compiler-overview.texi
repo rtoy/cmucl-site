@@ -258,6 +258,14 @@ function, then we annotate the Combination node with the Function-Info
 structure that contains the compiler information for the function.
 
 
+@menu
+* Tail sets::                   
+* Hairy function representation::  
+* ICR representation of non-local exits::  
+* Block compilation::           
+* Entry points::                
+@end menu
+
 @node Tail sets
 @section Tail sets
 #|

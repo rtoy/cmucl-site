@@ -36,6 +36,10 @@ runtime logic is localized.
 Handling asynchronous errors and deferred asynchronous errors is a bit more
 involved...
 
+@menu
+* Tracing and Breakpoints::     
+@end menu
+
 @node Tracing and Breakpoints
 @section Tracing and Breakpoints
 @anchor{sec-trace-and-breakpoints}
@@ -115,6 +119,10 @@ levels of debug information to be specified.  In the extreme case, we can
 totally omit debug information.
 
 
+@menu
+* The Debug-Info Structure::    
+@end menu
+
 @node The Debug-Info Structure
 @section The Debug-Info Structure
 @cindex debug-info structure
@@ -332,6 +340,12 @@ the error should look the same to the debugger (or at least similar).
 
 
 
+@menu
+* Debugger Interface::          
+* Variable maps::               
+* Stack parsing::               
+@end menu
+
 @node Debugger Interface
 @subsection Debugger Interface
 

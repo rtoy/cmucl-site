@@ -1,5 +1,11 @@
 @node Fasload File Format
 @chapter Fasload File Format
+@menu
+* General::                     
+* Strategy::                    
+* Fasload Language::            
+@end menu
+
 @node General
 @section General
 
@@ -208,9 +214,7 @@ with the first byte of the print name being the first read.
 The name is interned in the specified package,
 and the resulting symbol is both pushed onto the stack and added to the table.
 
-@item 11:@hspace{2em} @t{FOP-SMALL-SYMBOL-IN-BYTE-PACKAGE-SAVE} @hspace{2em} @i{index}(1)
-@hspace{2em} @i{n}(1) @hspace{2em} @i{name}(@i{n}) @hspace{2em}
-@result{} @hspace{2em} stack & table
+@item 11:@hspace{2em} @t{FOP-SMALL-SYMBOL-IN-BYTE-PACKAGE-SAVE} @hspace{2em} @i{index}(1) @hspace{2em} @i{n}(1) @hspace{2em} @i{name}(@i{n}) @hspace{2em} @result{} @hspace{2em} stack & table
 The one-byte @i{index} specifies a package stored in the table.
 The one-byte operand @i{n} specifies the length of the print name
 of a symbol.  The name follows, one character per byte,
@@ -218,8 +222,7 @@ with the first byte of the print name being the first read.
 The name is interned in the specified package,
 and the resulting symbol is both pushed onto the stack and added to the table.
 
-@item 12: @hspace{2em} @t{FOP-UNINTERNED-SYMBOL-SAVE} @hspace{2em} @i{n}(4) @hspace{2em} @i{name}(@i{n})
-@hspace{2em} @result{} @hspace{2em} stack & table
+@item 12: @hspace{2em} @t{FOP-UNINTERNED-SYMBOL-SAVE} @hspace{2em} @i{n}(4) @hspace{2em} @i{name}(@i{n}) @hspace{2em} @result{} @hspace{2em} stack & table
 Like @t{FOP-SYMBOL-SAVE}, except that it creates an uninterned symbol.
 
 @item 13: @hspace{2em} @t{FOP-UNINTERNED-SMALL-SYMBOL-SAVE} @hspace{2em} @i{n}(1) @hspace{2em} @i{name}(@i{n}) @hspace{2em} @result{} @hspace{2em} stack & table

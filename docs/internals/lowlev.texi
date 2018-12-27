@@ -1,6 +1,12 @@
 @node Memory Management
 @chapter Memory Management
 
+@menu
+* Stacks and Globals::          
+* Heap Layout::                 
+* Garbage Collection::          
+@end menu
+
 @node Stacks and Globals
 @section Stacks and Globals
 
@@ -13,6 +19,10 @@
 @node Interface to C and Assembler
 @chapter Interface to C and Assembler
 
+
+@menu
+* Linkage Table::               
+@end menu
 
 @node Linkage Table
 @section Linkage Table

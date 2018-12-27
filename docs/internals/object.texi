@@ -5,6 +5,26 @@
 
 @anchor{sec-tagging}
 
+@menu
+* Tagging::                     
+* GC Comments::                 
+* Structures::                  
+* Fixnums::                     
+* Other-immediates::            
+* Data-Blocks and Header-Word Format::  
+* Data-Blocks and Other-immediates Typing::  
+* Strings::                     
+* Symbols and NIL::             
+* Array Headers::               
+* Bignums::                     
+* Code Data-Blocks::            
+* Closure Format::              
+* Function call::               
+* Memory Layout::               
+* System Pointers::             
+* Weak Pointers::               
+@end menu
+
 @node Tagging
 @section Tagging
 

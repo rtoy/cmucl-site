@@ -359,6 +359,12 @@ At continuation use time, we may in general have to do both a coerce-to-t and a
 type check, allocating two temporary TNs to hold the intermediate results.
 
 
+@menu
+* VMR Control representation::  
+* Stack analysis::              
+* Non-local exit::              
+@end menu
+
 @node VMR Control representation
 @section VMR Control representation
 

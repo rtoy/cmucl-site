@@ -1,6 +1,11 @@
 @node User Interface of the Compiler
 @chapter User Interface of the Compiler
 
+@menu
+* Error Message Utilities::     
+* Source Paths::                
+@end menu
+
 @node Error Message Utilities
 @section Error Message Utilities
 

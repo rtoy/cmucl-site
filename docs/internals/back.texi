@@ -113,6 +113,11 @@ same LTN number and the same lifetime info.
 |#
 
 
+@menu
+* Flow analysis::               
+* Conflict detection::          
+@end menu
+
 @node Flow analysis
 @section Flow analysis
 

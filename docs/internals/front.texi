@@ -2,6 +2,13 @@
 @chapter ICR conversion
 
 
+@menu
+* Canonical forms::             
+* Inline functions::            
+* Compilation policy::          
+* Notes::                       
+@end menu
+
 @node Canonical forms
 @section Canonical forms
 
@@ -26,6 +33,10 @@ the operands are the class of numeric type before we do it.  Also, when EQL
 sees one operand is a FIXNUM, it transforms to EQ, but the generator for EQ
 isn't expecting numbers, so it doesn't use an immediate compare.
 
+
+@menu
+* Array hackery::               
+@end menu
 
 @node Array hackery
 @subsection Array hackery
@@ -442,6 +453,13 @@ flush an argument, we mark the blocks for all uses of the CONT as needing to be
 reoptimized.
 
 
+@menu
+* Goals for ICR optimizations::  
+* Flow graph simplification::   
+* Forward ICR optimizations::   
+* Backward ICR optimizations::  
+@end menu
+
 @node Goals for ICR optimizations
 @section Goals for ICR optimizations
 
@@ -592,6 +610,10 @@ asserted and derived types between the call and the called lambda.
 We use type info from the function continuation to find result types for
 functions that don't have a derive-type method.
 
+
+@menu
+* ICR transformation::          
+@end menu
 
 @node ICR transformation
 @subsection ICR transformation

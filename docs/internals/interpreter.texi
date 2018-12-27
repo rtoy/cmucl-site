@@ -181,6 +181,10 @@ but it would be much easier to use.  [It would be impossible for an evalhook
 stepper to do this.]
 
 
+@menu
+* Use of %PRIMITIVE::           
+@end menu
+
 @node Use of %PRIMITIVE
 @section Use of %PRIMITIVE
 

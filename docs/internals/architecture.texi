@@ -3,6 +3,11 @@
 @node Package and File Structure
 @chapter Package and File Structure
 
+@menu
+* Source Tree Structure::       
+* Package structure::           
+@end menu
+
 @node Source Tree Structure
 @section Source Tree Structure
 
@@ -140,6 +145,12 @@ startup code.
 @b{Note:} @i{the various scripts mentioned below have hard-wired paths in
 them set up for our directory layout here at CMU.  Anyone anywhere else will
 have to edit them before they will work.}
+
+@menu
+* Compiling the C Startup Code::  
+* Compiling the Lisp Code::     
+* Building Core Images::        
+@end menu
 
 @node Compiling the C Startup Code
 @section Compiling the C Startup Code

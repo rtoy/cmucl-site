@@ -459,7 +459,7 @@ have been eliminated, and the names of the types have been changed.
 @tindexed{string-char}. In this implementation, all characters are
 base characters (there are no extended characters.) Character codes
 range between @code{0} and @code{255}, using the ASCII encoding.
-Table~@ref{tbl-chars} shows characters recognized
+@ref{tbl-chars} shows characters recognized
 by @cmucl{}.
 
 @c @begin{table}[tbhp]
@@ -490,7 +490,8 @@ by @cmucl{}.
 @c @end table
 @c 
 
-@anchor{tbl-chars}
+@float Table, tbl-chars
+@caption{Characters recognized by @cmucl{}}
 @multitable {Name} {Code} {Lisp Name} {Alternatives}
 @headitem Name @tab Code @tab Lisp Name @tab Alternatives
 @item nul
@@ -531,7 +532,7 @@ by @cmucl{}.
 @tab #\DELETE
 @tab #\RUBOUT
 @end multitable
-
+@end float
 
 @node Array Initialization
 @subsection Array Initialization
@@ -3329,7 +3330,7 @@ Also, only certain types of arrays can be allocated.  The static array
 cannot be adjustable and cannot be displaced to.  The array must also
 be a @code{simple-array} of one dimension.  The element type is also
 constrained to be one of the types in
-Table~@ref{tbl-static-array-types}.
+@ref{tbl-static-array-types}.
 
 @c @table[tbhp]
 @c   @center
@@ -3361,7 +3362,8 @@ Table~@ref{tbl-static-array-types}.
 @c   @end center
 @c @end table
 
-@anchor{tbl-static-array-types}
+@float Table, tbl-static-array-types
+@caption{Allowed element types for static arrays}
 @multitable {(complex single-float)}
 @item @code{(unsigned-byte 8)}
 @item @code{(unsigned-byte 16)}
@@ -3374,5 +3376,6 @@ Table~@ref{tbl-static-array-types}.
 @item @code{(complex single-float)}
 @item @code{(complex double-float)}
 @end multitable
+@end float
 The arrays are properly handled by GC.  GC will not move the arrays,
 but they will be properly removed up if they become garbage.

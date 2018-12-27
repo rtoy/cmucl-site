@@ -73,7 +73,7 @@ names. A relative package name is one that begins with one or more
 dots. A single dot means the current package, two dots mean the parent
 of the current package, and so on.
 
-Table~@ref{tbl-hierarchical-packages} presents a number of examples,
+@ref{tbl-hierarchical-packages} presents a number of examples,
 assuming that the packages named @verb{|foo|}, @verb{|foo.bar|},
 @verb{|mypack|}, @verb{|mypack.foo|}, @verb{|mypack.foo.bar|},
 @verb{|mypack.foo.baz|}, @verb{|mypack.bar|}, and @verb{|mypack.bar.baz|},
@@ -102,7 +102,8 @@ have all been created.
 @c @label{tbl:hierarchical-packages}
 @c @end table
 
-@anchor{tbl-hierarchical-packages}
+@float Table, tbl-hierarchical-packages
+@caption{Examples of hierarchical packages}
 @multitable {relative name} {current package} {absolute name of referenced package}
 @headitem relative name @tab current package @tab absolute name of referenced package
 @item foo
@@ -136,6 +137,7 @@ have all been created.
 @tab mypack.bar.baz
 @tab mypack
 @end multitable
+@end float
 
 Additional notes:
 

@@ -5,11 +5,11 @@ pages:
     # Generate the website
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
     # Generate html version of the design doc.
-    - (cd docs/internals; makeinfo --force --html design.texi)
+    - (cd docs/internals; makeinfo --html design.texi)
     # Generate the user manual.  Include info, pdf, and html versions.
-    - (cd docs/cmu-user;  makeinfo --force cmu-user.texi)
-    #- (cd docs/cmu-user; makeinfo --pdf cmu-user.texi)
-    - (cd docs/cmu-user; makeinfo --force --html cmu-user.texi)
+    - (cd docs/cmu-user;  makeinfo cmu-user.texi)
+    - (cd docs/cmu-user; makeinfo --pdf cmu-user.texi)
+    - (cd docs/cmu-user; makeinfo - --html cmu-user.texi)
     # Copy everything to the appropriate subdirectories
     - mkdir -p public/docs/internals public/docs/cmu-user public/docs/cmu-user/html
     - cp -r docs/internals/design public/docs/internals

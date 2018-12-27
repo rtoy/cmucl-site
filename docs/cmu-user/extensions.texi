@@ -10,6 +10,8 @@ choices and extensions.
 * Data Types::                  
 * Default Interrupts for Lisp::  
 * Implementation-Specific Packages::  
+* Hierarchical Packages::
+* Package Locks::
 * The Editor::                  
 * Garbage Collection::          
 * Describe::                    
@@ -17,6 +19,7 @@ choices and extensions.
 * Load::                        
 * The Reader::                  
 * Stream Extensions::           
+* Simple Streams::
 * Running Programs from Lisp::  
 * Saving a Core Image::         
 * Pathnames::                   

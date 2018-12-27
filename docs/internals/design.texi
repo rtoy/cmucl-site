@@ -24,7 +24,7 @@
 
 @ifnottex
 @node Top
-@top CMUCL User's Manual
+@top Design of CMU Common Lisp, Package and File Structure
 @end ifnottex
 
 @center @b{Abstract}
@@ -42,13 +42,13 @@ background information, in particular regarding the @cmucl{} compiler.
 * System Building::
 * Compiler Overview::
 * The Implicit Continuation Representation::
-* ICR Conversion::
+* ICR conversion::
 * Local call analysis::
 * Find components::
 * ICR optimize::
 * Type checking::
 * Constraint propagation::
-* ICR Finalize::
+* ICR finalize::
 * Environment analysis::
 * Virtual Machine Representation Introduction::
 * Global TN assignment::
@@ -74,6 +74,7 @@ background information, in particular regarding the @cmucl{} compiler.
 * Customizing VMR Conversion::
 * The Type System::
 * The Info Database::
+* The IR1 Interpreter::
 * Debugger::
 * Debugger Information::
 * Object Format::
@@ -82,7 +83,9 @@ background information, in particular regarding the @cmucl{} compiler.
 * Low-level debugging::
 * Core File Format::
 * Fasload File Format::
+* Appendix::
 * Glossary::
+
 @end menu
 
 @include architecture.texi
@@ -94,3 +97,8 @@ background information, in particular regarding the @cmucl{} compiler.
 @include glossary.texi
 
 @bye
+
+@c Local Variables:
+@c mode: texinfo
+@c TeX-master: t
+@c End:

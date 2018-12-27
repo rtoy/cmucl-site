@@ -258,7 +258,7 @@ following:
 @item a single word pointing to an object (structures, conses, etc.)
 @end itemize
 These are tagged with three low-tag bits as described in the section
-@ref{sec:tagging} This is synonymous with @i{descriptor}.
+@ref{sec-tagging} This is synonymous with @i{descriptor}.
 In other parts of the documentation, may be used more loosely to refer to a
 @i{lisp object}.
 

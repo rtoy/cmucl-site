@@ -38,7 +38,7 @@ involved...
 
 @node Tracing and Breakpoints
 @section Tracing and Breakpoints
-@anchor{sec:trace-and-breakpoints}
+@anchor{sec-trace-and-breakpoints}
 
 Here are a few notes on how tracing of compiled code works.
 

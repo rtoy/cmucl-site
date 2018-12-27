@@ -3,7 +3,7 @@
 
 
 
-@anchor{sec:tagging}
+@anchor{sec-tagging}
 
 @node Tagging
 @section Tagging
@@ -60,9 +60,8 @@ heap, so it does not look at a word of raw bits and interpret it as a pointer
 descriptor.  These data-blocks require headers for GC as well as for operations
 that need to know how to interpret the raw bits.  When GC is scanning, and it
 sees a header-word, then it can determine how to skip that data-block if
-necessary.  Header-Words are tagged as other-immediates.  See 
-``Other-Immediates'', section~@ref{sec:other-immediates} and
-``Data-Blocks and Header-Words'', section~@ref{sec:data-blocks-and-header} for comments on
+necessary.  Header-Words are tagged as other-immediates.  @xref{sec-other-immediates} and
+@ref{sec-data-blocks-and-header} for comments on
 distinguishing header-words from other-immediate data.  This distinction is
 necessary since we scan through data-blocks containing only descriptors just as
 we scan through the heap looking for header-words introducing data-blocks.
@@ -148,7 +147,7 @@ words for arithmetic, but division and multiplication require special shifting.
 
 @node Other-immediates
 @section Other-immediates
-@anchor{sec:other-immediates}
+@anchor{sec-other-immediates}
 
 
 
@@ -174,14 +173,13 @@ The system uses the other-immediate format for characters,
 the @t{symbol-value} unbound trap value, and header-words for data-blocks on
 the heap.  The type codes are laid out to facilitate range checks for common
 subtypes; for example, all numbers will have contiguous type codes which are
-distinct from the contiguous array type codes.  See
-section~@ref{sec:data-blocks-and-o-i}
+distinct from the contiguous array type codes.  @xref{sec-data-blocks-and-o-i}
 for details.
 
 
 @node Data-Blocks and Header-Word Format
 @section Data-Blocks and Header-Word Format
-@anchor{sec:data-blocks-and-header}
+@anchor{sec-data-blocks-and-header}
 
 Pointers to data-blocks have the following format:
 @verbatim
@@ -233,7 +231,7 @@ this to determine if rehashing (for EQ hash tables) is needed.
 @node Data-Blocks and Other-immediates Typing
 @section Data-Blocks and Other-immediates Typing
 
-@anchor{sec:data-blocks-and-o-i}
+@anchor{sec-data-blocks-and-o-i}
 These are the other-immediate types.  We specify them including all low eight
 bits, including the other-immediate tag, so we can think of the type bits as
 one type -- not an other-immediate major type and a subtype.  Also, fetching a
@@ -312,8 +310,7 @@ libraries that save reimplementation of higher level operating system
 functionality (such as pathname resolution or current directory computation),
 saving on copying strings for C should make C call out more efficient.
 
-The length word in a string header, see ``Data-Blocks and Header-Word
-Format'', section~@ref{sec:data-blocks-and-header}, counts only the characters truly in the Common Lisp string.
+The length word in a string header, @xref{sec-data-blocks-and-header}, counts only the characters truly in the Common Lisp string.
 Allocation and GC will have to know to handle the extra C-null byte, and GC
 already has to deal with rounding up various objects to dual-word alignment.
 
@@ -407,7 +404,7 @@ The array-header data-block has the following format:
 
 @end verbatim
 The array type in the header-word is one of the eight-bit patterns from 
-``Data-Blocks and Other-immediates Typing'', section~@ref{sec:data-blocks-and-header}, indicating that this is a complex
+``Data-Blocks and Other-immediates Typing'', @ref{sec-data-blocks-and-header}, indicating that this is a complex
 string, complex vector, complex bit-vector, or a multi-dimensional array.  The
 data portion of the other-immediate word is the length of the array header
 data-block.  Due to its format, its length is always six greater than the
@@ -430,8 +427,8 @@ interpretations and types:
    @item Data Vector:
       This is a pointer descriptor referencing the actual data of the array.
       This a data-block whose first word is a header-word with an array type as
-      described in ``Data-Blocks and Header-Word Format'', section~@ref{sec:data-blocks-and-header} and
-      ``Data-Blocks and Other-immediates Typing'', section~@ref{sec:data-blocks-and-o-i}
+      described in ``Data-Blocks and Header-Word Format'', @ref{sec-data-blocks-and-header} and
+      ``Data-Blocks and Other-immediates Typing'', @ref{sec-data-blocks-and-o-i}
    @item Displacement:
       This is a fixnum added to the computed row-major index for any array.
       This is typically zero.
@@ -770,7 +767,7 @@ by GC or whatever.
 
 @node Weak Pointers
 @section Weak Pointers
-@anchor{sec:weak-pointers}
+@anchor{sec-weak-pointers}
 
 A weak-pointer data-block has the following format:
 @verbatim

@@ -32,36 +32,38 @@ are generally repeated until nothing new is discovered.  The source files which
 primarily contain each phase are listed after ``Files: ''.
 @table @b
 
-@item[ICR conversion]
+@item ICR conversion
 Convert the source into ICR, doing macroexpansion and simple source-to-source
 transformation.  All names are resolved at this time, so we don't have to worry
 about name conflicts later on.  Files: @t{ir1tran, srctran, typetran}
 
-@item[Local call analysis] Find calls to local functions and convert them to
+@item Local call analysis
+Find calls to local functions and convert them to
 local calls to the correct entry point, doing keyword parsing, etc.  Recognize
 once-called functions as lets.  Create @i{external entry points} for
 entry-point functions.  Files: @t{locall}
 
-@item[Find components]
+@item Find components
 Find flow graph components and compute depth-first ordering.  Separate
 top-level code from run-time code, and determine which components are top-level
 components.  Files: @t{dfo}
 
-@item[ICR optimize] A grab-bag of all the non-flow ICR optimizations.  Fold
+@item ICR optimize
+A grab-bag of all the non-flow ICR optimizations.  Fold
 constant functions, propagate types and eliminate code that computes unused
 values.  Special-case calls to some known global functions by replacing them
 with a computed function.  Merge blocks and eliminate IF-IFs.  Substitute let
 variables.  Files: @t{ir1opt, ir1tran, typetran, seqtran, vm/vm-tran}
 
-@item[Type constraint propagation]
+@item Type constraint propagation
 Use global flow analysis to propagate information about lexical variable
 types.   Eliminate unnecessary type checks and tests.  Files: @t{constraint}
 
-@item[Type check generation]
+@item Type check generation
 Emit explicit ICR code for any necessary type checks that are too complex to be
 easily generated on the fly by the back end.  Files: @t{checkgen}
 
-@item[Event driven operations]
+@item Event driven operations
 Various parts of ICR are incrementally recomputed, either eagerly on
 modification of the ICR, or lazily, when the relevant information is needed.
 @itemize
@@ -74,71 +76,72 @@ checks need to be done.
 @end itemize
 Files: @t{ir1util}, @t{ir1opt}
 
-@item[ICR finalize]
+@item ICR finalize
 This phase is run after all components have been compiled.  It scans the
 global variable references, looking for references to undefined variables
 and incompatible function redefinitions.  Files: @t{ir1final}, @t{main}.
 
-@item[Environment analysis]
+@item Environment analysis
 Determine which distinct environments need to be allocated, and what
 context needed to be closed over by each environment.  We detect non-local
 exits and set closure variables.  We also emit cleanup code as funny
 function calls.  This is the last pure ICR pass.  Files: @t{envanal}
 
-@item[Global TN allocation (GTN)]
+@item Global TN allocation (GTN)
 Iterate over all defined functions, determining calling conventions
 and assigning TNs to local variables.  Files: @t{gtn}
 
-@item[Local TN allocation (LTN)]
+@item Local TN allocation (LTN)
 Use type and policy information to determine which VMR translation to use
 for known functions, and then create TNs for expression evaluation
 temporaries.  We also accumulate some random information needed by VMR
 conversion.  Files: @t{ltn}
 
-@item[Control analysis]
+@item Control analysis
 Linearize the flow graph in a way that minimizes the number of branches.  The
 block-level structure of the flow graph is basically frozen at this point.
 Files: @t{control}
 
-@item[Stack analysis]
+@item Stack analysis
 Maintain stack discipline for unknown-values continuation in the presence
 of local exits.  Files: @t{stack}
 
-@item[Entry analysis]
+@item Entry analysis
 Collect some back-end information for each externally callable function.
 
-@item[VMR conversion] Convert ICR into VMR by translating nodes into VOPs.
+@item VMR conversion Convert ICR into VMR by translating nodes into VOPs.
 Emit type checks.  Files: @t{ir2tran, vmdef}
 
-@item[Copy propagation] Use flow analysis to eliminate unnecessary copying of
+@item Copy propagation Use flow analysis to eliminate unnecessary copying of
 TN values.  Files: @t{copyprop}
 
-@item[Representation selection]
+@item Representation selection
 Look at all references to each TN to determine which representation has the
 lowest cost.  Emit appropriate move and coerce VOPS for that representation.
 
-@item[Lifetime analysis]
+@item Lifetime analysis
 Do flow analysis to find the set of TNs whose lifetimes 
 overlap with the lifetimes of each TN being packed.  Annotate call VOPs with
 the TNs that need to be saved.  Files: @t{life}
 
-@item[Pack]
+@item Pack
 Find a legal register allocation, attempting to minimize unnecessary moves.
 Files: @t{pack}
 
-@item[Code generation]
+@item Code generation
 Call the VOP generators to emit assembly code.  Files: @t{codegen}
 
-@item[Pipeline reorganization] On some machines, move memory references
+@item Pipeline reorganization On some machines, move memory references
 backward in the code so that they can overlap with computation.  On machines
 with delayed branch instructions, locate instructions that can be moved into
 delay slots.  Files: @t{assem-opt}
 
-@item[Assembly]
+@item Assembly
 Resolve branches and convert into object code and fixup information.
 Files: @t{assembler}
 
-@item[Dumping] Convert the compiled code into an object file or in-core
+@item Dumping
+Convert the compiled code into an object file or in-core
 function.  Files: @t{debug-dump}, @t{dump}, @t{vm/core}
 
 @end table
@@ -163,29 +166,36 @@ determining which node receives a given value.
 
 In ICR, computation is represented by Nodes.  These are the node types:
 @table @b
-@item[if]  Represents all conditionals.
+@item if
+Represents all conditionals.
 
-@item[set] Represents a @t{setq}.
+@item set
+Represents a @t{setq}.
 
-@item[ref] Represents a constant or variable reference.
+@item ref
+Represents a constant or variable reference.
 
-@item[combination] Represents a normal function call.
+@item combination
+Represents a normal function call.
 
-@item[MV-combination] Represents a @t{multiple-value-call}.  This is used to
+@item MV-combination
+Represents a @t{multiple-value-call}.  This is used to
 implement all multiple value receiving forms except for @t{multiple-value-prog1}, which is implicit.
 
-@item[bind]
+@item bind
 This represents the allocation and initialization of the variables in
 a lambda.
 
-@item[return]
+@item return
 This collects the return value from a lambda and represents the
 control transfer on return.
 
-@item[entry] Marks the start of a dynamic extent that can have non-local exits
+@item entry
+Marks the start of a dynamic extent that can have non-local exits
 to it.  Dynamic state can be saved at this point for restoration on re-entry.
 
-@item[exit] Marks a potentially non-local exit.  This node is interposed
+@item exit
+Marks a potentially non-local exit.  This node is interposed
 between the non-local uses of a continuation and the @t{dest} so that code to
 do a non-local exit can be inserted if necessary.
 @end table

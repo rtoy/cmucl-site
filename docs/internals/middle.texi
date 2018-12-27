@@ -205,16 +205,16 @@ LTN-Annotate function in the function-info, but most functions are handled by a
 table-driven mechanism.  There are four different translation policies that a
 template may have:
 @table @b
-@item[Safe]
+@item Safe
         The safest implementation; must do argument type checking.
 
-@item[Small]
+@item Small
         The (unsafe) smallest implementation.
 
-@item[Fast]
+@item Fast
         The (unsafe) fastest implementation.
 
-@item[Fast-Safe]
+@item Fast-Safe
         An implementation optimized for speed, but which does any necessary
         checks exclusive of argument type checking.  Examples are array bounds
         checks and fixnum overflow checks.
@@ -227,14 +227,18 @@ safe, then we do a full call.
 
 We use four different coding strategies, depending on the policy:
 @table @b
-@item[Safe:]  safety $>$ space $>$ speed, or
+@item Safe:
+ safety $>$ space $>$ speed, or
 we want to use the fast-safe template, but there isn't one.
 
-@item[Small:] space $>$ (max speed safety)
+@item Small:
+space $>$ (max speed safety)
 
-@item[Fast:] speed $>$ (max space safety)
+@item Fast:
+speed $>$ (max space safety)
 
-@item[Fast-Safe (and type check):] safety $>$ speed $>$ space, or we want to use
+@item Fast-Safe (and type check):
+safety $>$ speed $>$ space, or we want to use
 the safe template, but there isn't one.
 @end table
 

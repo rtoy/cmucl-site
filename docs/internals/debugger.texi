@@ -403,7 +403,7 @@ There are about five things that the debugger might want to know about a
 variable:
 @itemize
 
-@item[Name]
+@item Name
 	Although a lexical variable's name is ``really'' a symbol (package and
 	all), in practice it doesn't seem worthwhile to require all the symbols
 	for local variable names to be retained.  There is much less VM and GC
@@ -411,7 +411,7 @@ variable:
 	to be able to access gensyms in the debugger, even though they are
 	theoretically ineffable).
 
-@item[ID]
+@item ID
 	Which variable with the specified name is this?  It is possible to have
 	multiple variables with the same name in a given function.  The ID is
 	something that makes Name unique, probably a small integer.  When
@@ -420,16 +420,16 @@ variable:
 	since in many cases lifetime information can be used to disambiguate,
 	making qualification unnecessary.
 
-@item[SC]
+@item SC
 	When unboxed representations are in use, we must have type information
 	to properly read and write a location.  We only need to know the
 	SC for this, which would be amenable to a space-saving
 	numeric encoding.
 
-@item[Location]
+@item Location
 	Simple: the offset in SC.  [Actually, we need the save location too.]
 
-@item[Lifetime]
+@item Lifetime
 	In what parts of the program does this variable hold a meaningful
 	value?  It seems prohibitive to record precise lifetime information,
 	both in space and compiler effort, so we will have to settle for some

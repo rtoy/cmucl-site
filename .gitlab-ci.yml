@@ -4,15 +4,20 @@ pages:
     - mkdir public
     # Generate the website
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
-    # Generate html version of the design doc.
+    # Generate the design doc.
+    - (cd docs/internals; makeinfo --info design.texi)
+    - (cd docs/internals; makeinfo --pdf design.texi)
     - (cd docs/internals; makeinfo --html design.texi)
     # Generate the user manual.  Include info, pdf, and html versions.
-    - (cd docs/cmu-user;  makeinfo cmu-user.texi)
+    - (cd docs/cmu-user; makeinfo --info cmu-user.texi)
     - (cd docs/cmu-user; makeinfo --pdf cmu-user.texi)
     - (cd docs/cmu-user; makeinfo - --html cmu-user.texi)
     # Copy everything to the appropriate subdirectories
-    - mkdir -p public/docs/internals public/docs/cmu-user public/docs/cmu-user/html
-    - cp -r docs/internals/design public/docs/internals
+    - mkdir -p public/docs/internals public/docs/internals/html
+    - cp -r docs/internals/design/design.info* public/docs/internals/
+    - cp -r docs/internals/design/design/* public/docs/internals/html
+    - cp -r docs/internals/design/design.pdf public/docs/internals/
+    - mkdir -p public/docs/cmu-user public/docs/cmu-user/html
     - cp -r docs/cmu-user/cmu-user.info* public/docs/cmu-user/
     - cp -r docs/cmu-user/cmu-user/* public/docs/cmu-user/html
     - cp -r docs/cmu-user/cmu-user.pdf public/docs/cmu-user

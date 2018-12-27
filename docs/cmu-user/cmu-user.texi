@@ -179,6 +179,26 @@ language implementation, programming environment
 @top CMUCL User's Manual
 @end ifnottex
 
+@menu
+* Introduction::
+* Design Choices and Extensions::
+* The Debugger::
+* The Compiler::
+* Advanced Compiler Use and Efficiency Hints::
+* UNIX Interface::
+* Event Dispatching with SERVE-EVENT
+* Alien Objects::
+* Interprocess Communication under LISP::
+* Networking Support::
+* Debugger Programmer's Interface::
+* Cross-Referencing Facility::
+* Internationalization::
+* Function Index::
+* Variable Index::
+* Concept Index::
+
+@end menu
+
 @include introduction.texi
 @include extensions.texi
 @include debugger.texi

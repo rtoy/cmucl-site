@@ -24,7 +24,7 @@
 
 @ifnottex
 @node Top
-@top Design of CMU Common Lisp, Package and File Structure
+@top Design of CMU Common Lisp
 @end ifnottex
 
 @center @b{Abstract}

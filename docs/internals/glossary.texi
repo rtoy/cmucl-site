@@ -5,7 +5,7 @@
 @c should entries have page references as well?
 
 @table @b
-@item[assert (a type)]
+@item assert (a type)
 In Python, all type checking is done via a general type assertion
 mechanism.  Explicit declarations and implicit assertions (e.g. the arg to
 + is a number) are recorded in the front-end (implicit continuation)
@@ -21,38 +21,44 @@ the assertion will always be satisfied.
 @end itemize
 See also @i{restrict}.
 
-@item[back end] The back end is the part of the compiler that operates on the
+@item back end
+The back end is the part of the compiler that operates on the
 @i{virtual machine} intermediate representation.  Also included are the
 compiler phases involved in the conversion from the @i{front end}
 representation (or @i{ICR}).
 
-@item[bind node] This is a node type the that marks the start of a @i{lambda}
+@item bind node
+This is a node type the that marks the start of a @i{lambda}
 body in @i{ICR}.  This serves as a placeholder for environment manipulation
 code.
 
-@item[IR1] The first intermediate representation, also known as @i{ICR}, or
+@item IR1
+The first intermediate representation, also known as @i{ICR}, or
 the Implicit Continuation Represenation.
 
-@item[IR2] The second intermediate representation, also known as @i{VMR}, or
+@item IR2
+The second intermediate representation, also known as @i{VMR}, or
 the Virtual Machine Representation.
 
-@item[basic block] A basic block (or simply ``block'') has the pretty much the
+@item basic block
+A basic block (or simply ``block'') has the pretty much the
 usual meaning of representing a straight-line sequence of code.  However, the
 code sequence ultimately generated for a block might contain internal branches
 that were hidden inside the implementation of a particular operation.  The type
 of a block is actually @t{cblock}.  The @t{block-info} slot holds an 
 @t{VMR-block} containing backend information.
 
-@item[block compilation] Block compilation is a term commonly used to describe
+@item block compilation
+Block compilation is a term commonly used to describe
 the compile-time resolution of function names.  This enables many
 optimizations.
 
-@item[call graph]
+@item call graph
 Each node in the call graph is a function (represented by a @i{flow graph}.)
 The arcs in the call graph represent a possible call from one function to
 another.  See also @i{tail set}.
 
-@item[cleanup]
+@item cleanup
 A cleanup is the part of the implicit continuation representation that
 retains information scoping relationships.  For indefinite extent bindings
 (variables and functions), we can abandon scoping information after ICR
@@ -63,84 +69,91 @@ structures form a hierarchy that represents the static nesting of dynamic
 binding structures.  When the compiler does a control transfer, it can use
 the cleanup information to determine what cleanup code needs to be emitted.
 
-@item[closure variable]
+@item closure variable
 A closure variable is any lexical variable that has references outside of
 its @i{home environment}.  See also @i{indirect value cell}.
 
-@item[closed continuation] A closed continuation represents a @t{tagbody} tag
+@item closed continuation
+A closed continuation represents a @t{tagbody} tag
 or @t{block} name that is closed over.  These two cases are mostly
 indistinguishable in @i{ICR}.
 
-@item[home] Home is a term used to describe various back-pointers.  A lambda
+@item home
+Home is a term used to describe various back-pointers.  A lambda
 variable's ``home'' is the lambda that the variable belongs to.  A lambda's ``home
 environment'' is the environment in which that lambda's variables are allocated.
 
-@item[indirect value cell]
+@item indirect value cell
 Any closure variable that has assignments (@t{setq}s) will be allocated in an
 indirect value cell.  This is necessary to ensure that all references to
 the variable will see assigned values, since the compiler normally freely
 copies values when creating a closure.
 
-@item[set variable] Any variable that is assigned to is called a ``set
+@item set variable
+Any variable that is assigned to is called a ``set
 variable''.  Several optimizations must special-case set variables, and set
 closure variables must have an @i{indirect value cell}.
 
-@item[code generator] The code generator for a @i{VOP} is a potentially
+@item code generator
+The code generator for a @i{VOP} is a potentially
 arbitrary list code fragment which is responsible for emitting assembly code to
 implement that VOP.
 
-@item[constant pool] The part of a compiled code object that holds pointers to
+@item constant pool
+The part of a compiled code object that holds pointers to
 non-immediate constants.
 
-@item[constant TN]
+@item constant TN
 A constant TN is the @i{VMR} of a compile-time constant value.  A
 constant may be immediate, or may be allocated in the @i{constant pool}.
 
-@item[constant leaf]
+@item constant leaf
 A constant @i{leaf} is the @i{ICR} of a compile-time constant value.
 
-@item[combination]
+@item combination
 A combination @i{node} is the @i{ICR} of any fixed-argument function
 call (not @t{apply} or @t{multiple-value-call}.)  
 
-@item[top-level component]
+@item top-level component
 A top-level component is any component whose only entry points are top-level
 lambdas.
 
-@item[top-level lambda]
+@item top-level lambda
 A top-level lambda represents the execution of the outermost form on which
 the compiler was invoked.  In the case of @t{compile-file}, this is often a
 truly top-level form in the source file, but the compiler can recursively
 descend into some forms (@t{eval-when}, etc.) breaking them into separate
 compilations.
 
-@item[component] A component is basically a sequence of blocks.  Each component
+@item component
+A component is basically a sequence of blocks.  Each component
 is compiled into a separate code object.  With @i{block compilation}
 or 
 @i{local functions}, a component will contain the code for more than one function.
 This is called a component because it represents a connected portion of the
 call graph.  Normally the blocks are in depth-first order (@i{DFO}).
 
-@item[component, initial] During ICR conversion, blocks are temporarily
+@item component, initial
+During ICR conversion, blocks are temporarily
 assigned to initial components.  The ``flow graph canonicalization'' phase
 determines the true component structure.
 
-@item[component, head and tail]
+@item component, head and tail
 The head and tail of a component are dummy blocks that mark the start and
 end of the @i{DFO} sequence.  The component head and tail double as the root
 and finish node of the component's flow graph.
 
-@item[local function (call)]
+@item local function (call)
 A local function call is a call to a function known at compile time to be
 in the same @i{component}.  Local call allows compile time resolution of the
 target address and calling conventions.  See @i{block compilation}.
 
-@item[conflict (of TNs, set)]
+@item conflict (of TNs, set)
 Register allocation terminology.  Two TNs conflict if they could ever be
 live simultaneously.  The conflict set of a TN is all TNs that it conflicts
 with.
 
-@item[continuation]
+@item continuation
 The ICR data structure which represents both:
 @itemize
 @item The receiving of a value (or multiple values), and
@@ -152,75 +165,93 @@ continuation's BLOCK (hence the name.)  The ICR continuation is very similar to
 a CPS continuation in its use, but its representation doesn't much resemble (is
 not interchangeable with) a lambda.
 
-@item[cont] A slot in the @i{node} holding the @i{continuation} which
+@item cont
+A slot in the @i{node} holding the @i{continuation} which
 receives the node's value(s).  Unless the node ends a @i{block}, this also
 implicitly indicates which node should be evaluated next.
 
-@item[cost] Approximations of the run-time costs of operations are widely used
+@item cost
+Approximations of the run-time costs of operations are widely used
 in the back end.  By convention, the unit is generally machine cycles, but the
 values are only used for comparison between alternatives.  For example, the
 VOP cost is used to determine the preferred order in which to try possible
 implementations.
     
-@item[CSP, CFP] See @i{control stack pointer} and @i{control frame pointer}.
+@item CSP, CFP
+See @i{control stack pointer} and @i{control frame pointer}.
 
-@item[Control stack] The main call stack, which holds function stack frames.
+@item Control stack
+The main call stack, which holds function stack frames.
 All words on the control stack are tagged @i{descriptors}.  In all ports done
 so far, the control stack grows from low memory to high memory.  The most
 recent call frames are considered to be ``on top'' of earlier call frames.
 
-@item[Control stack pointer] The allocation pointer for the @i{control stack}.  Generally this points to the first free word at the top of the stack.
+@item Control stack pointer
+The allocation pointer for the @i{control stack}.  Generally this points to the first free word at the top of the stack.
 
-@item[Control frame pointer] The pointer to the base of the @i{control stack}
+@item Control frame pointer
+The pointer to the base of the @i{control stack}
 frame for a particular function invocation.  The CFP for the running function
 must be in a register.
 
-@item[Number stack] The auxiliary stack used to hold any @i{non-descriptor}
+@item Number stack
+The auxiliary stack used to hold any @i{non-descriptor}
 (untagged) objects.  This is generally the same as the C call stack, and thus
 typically grows down.
 
-@item[Number stack pointer] The allocation pointer for the @i{number stack}.
+@item Number stack pointer
+The allocation pointer for the @i{number stack}.
 This is typically the C stack pointer, and is thus kept in a register.
 
-@item[NSP, NFP] See @i{number stack pointer}, @i{number frame pointer}.
+@item NSP, NFP
+See @i{number stack pointer}, @i{number frame pointer}.
 
-@item[Number frame pointer] The pointer to the base of the @i{number stack}
+@item Number frame pointer
+The pointer to the base of the @i{number stack}
 frame for a particular function invocation.  Functions that don't use the
 number stack won't have an NFP, but if an NFP is allocated, it is always
 allocated in a particular register.  If there is no variable-size data on the
 number stack, then the NFP will generally be identical to the NSP.
 
-@item[Lisp return address] The name of the @i{descriptor} encoding the
+@item Lisp return address
+The name of the @i{descriptor} encoding the
 ``return pc'' for a function call.
 
-@item[LRA] See @i{lisp return address}.  Also, the name of the register where
+@item LRA
+See @i{lisp return address}.  Also, the name of the register where
 the LRA is passed.
 
 
-@item[Code pointer] A pointer to the header of a code object.  The code pointer
+@item Code pointer
+A pointer to the header of a code object.  The code pointer
 for the currently running function is stored in the @t{code} register.
 
-@item[Interior pointer] A pointer into the inside of some heap-allocated
+@item Interior pointer
+A pointer into the inside of some heap-allocated
 object.  Interior pointers confuse the garbage collector, so their use is
 highly constrained.  Typically there is a single register dedicated to holding
 interior pointers.
 
-@item[dest]
+@item dest
 A slot in the @i{continuation} which points the the node that receives this
 value.  Null if this value is not received by anyone.
 
-@item[DFN, DFO] See @i{Depth First Number}, @i{Depth First Order}.
+@item DFN, DFO
+See @i{Depth First Number}, @i{Depth First Order}.
 
-@item[Depth first number] Blocks are numbered according to their appearance in
+@item Depth first number
+Blocks are numbered according to their appearance in
 the depth-first ordering (the @t{block-number} slot.)  The numbering actually
 increases from the component tail, so earlier blocks have larger numbers.
 
-@item[Depth first order] This is a linearization of the flow graph, obtained by
+@item Depth first order
+This is a linearization of the flow graph, obtained by
 a depth-first walk.  Iterative flow analysis algorithms work better when blocks
 are processed in DFO (or reverse DFO.)
 
 
-@item[Object] In low-level design discussions, an object is one of the
+@item Object
+In low-level design discussions, an object is one of the
 following:
 @itemize
 @item a single word containing immediate data (characters, fixnums, etc)
@@ -231,33 +262,33 @@ These are tagged with three low-tag bits as described in the section
 In other parts of the documentation, may be used more loosely to refer to a
 @i{lisp object}.
 
-@item[Lisp object]
+@item Lisp object
 A Lisp object is a high-level object discussed as a data type in the Common
 Lisp definition.
 
-@item[Data-block]
+@item Data-block
 A data-block is a dual-word aligned block of memory that either manifests a
 Lisp object (vectors, code, symbols, etc.) or helps manage a Lisp object on
 the heap (array header, function header, etc.).
 
-@item[Descriptor]
+@item Descriptor
 A descriptor is a tagged, single-word object.  It either contains immediate
 data or a pointer to data.  This is synonymous with @i{object}.  Storage
 locations that must contain descriptors are referred to as descriptor
 locations.
 
-@item[Pointer descriptor]
+@item Pointer descriptor
 A descriptor that points to a @i{data block} in memory (i.e. not an immediate
 object.)
 
-@item[Immediate descriptor]
+@item Immediate descriptor
 A descriptor that encodes the object value in the descriptor itself; used for
 characters, fixnums, etc.
 
-@item[Word]
+@item Word
 A word is a 32-bit quantity.
 
-@item[Non-descriptor]
+@item Non-descriptor
 Any chunk of bits that isn't a valid tagged descriptor.  For example, a
 double-float on the number stack.  Storage locations that are not scanned by
 the garbage collector (and thus cannot contain @i{pointer descriptors}) are
@@ -265,27 +296,32 @@ called non-descriptor locations.  @i{Immediate descriptors} can be stored in
 non-descriptor locations.
 
 
-@item[Entry point] An entry point is a function that may be subject to
+@item Entry point
+An entry point is a function that may be subject to
 ``unpredictable'' control transfers.  All entry points are linked to the root
 of the flow graph (the component head.)  The only functions that aren't entry
 points are @i{let} functions.  When complex lambda-list syntax is used,
 multiple entry points may be created for a single lisp-level function.
 See @i{external entry point}.
 
-@item[External entry point] A function that serves as a ``trampoline'' to
+@item External entry point
+A function that serves as a ``trampoline'' to
 intercept function calls coming in from outside of the component.  The XEP does
 argument syntax and type checking, and may also translate the arguments and
 return values for a locally specialized calling calling convention.
 
-@item[XEP] An @i{external entry point}.
+@item XEP
+An @i{external entry point}.
 
-@item[lexical environment] A lexical environment is a structure that is used
+@item lexical environment
+A lexical environment is a structure that is used
 during VMR conversion to represent all lexically scoped bindings (variables,
 functions, declarations, etc.)  Each @t{node} is annotated with its lexical
 environment, primarily for use by the debugger and other user interfaces.  This
 structure is also the environment object passed to @t{macroexpand}.
 
-@item[environment] The environment is part of the ICR, created during
+@item environment
+The environment is part of the ICR, created during
 environment analysis.  Environment analysis apportions code to disjoint
 environments, with all code in the same environment sharing the same stack
 frame.  Each environment has a ``@i{real}'' function that allocates it, and
@@ -295,23 +331,26 @@ same/different environment(s)''.  This means that the code will definitely be
 in the same environment (because it is in the same real function), or that is
 might not be in the same environment, because it is not in the same function.
 
-@item[fixup]  Some sort of back-patching annotation.  The main sort encountered
+@item fixup
+ Some sort of back-patching annotation.  The main sort encountered
 are load-time @i{assembler fixups}, which are a linkage annotation mechanism.
 
-@item[flow graph] A flow graph is a directed graph of basic blocks, where each
+@item flow graph
+A flow graph is a directed graph of basic blocks, where each
 arc represents a possible control transfer.  The flow graph is the basic data
 structure used to represent code, and provides direct support for data flow
 analysis.  See component and ICR.
 
-@item[foldable] An attribute of @i{known functions}.  A function is foldable
+@item foldable
+An attribute of @i{known functions}.  A function is foldable
 if calls may be constant folded whenever the arguments are compile-time
 constant.  Generally this means that it is a pure function with no side
 effects.
 
 
-@item[FSC]
-@item[full call]
-@item[function attribute]
+@item FSC
+@item full call
+@item function attribute
 function
         ``real'' (allocates environment)
         meaning function-entry
@@ -406,6 +445,6 @@ value passing
 VAR
 VM
 VOP
-@item[XEP]
+@item XEP
 
 @end table

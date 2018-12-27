@@ -62,55 +62,55 @@ does not provide for programs to detect these situations other than
 calling a routine that detects them and signals a condition.
 
 
-@defvr Condition debug-condition 
+@deftp Condition debug-condition 
 
 This condition inherits from serious-condition, and all debug-conditions
 inherit from this.  These must be handled, but they are not programmer errors.
-@end defvr
+@end deftp
 
 
-@defvr Condition no-debug-info 
+@deftp Condition no-debug-info 
 
 This condition indicates there is absolutely no debugging information
 available.
-@end defvr
+@end deftp
 
 
-@defvr Condition no-debug-function-returns 
+@deftp Condition no-debug-function-returns 
 
 This condition indicates the system cannot return values from a frame since
 its debug-function lacks debug information details about returning values.
-@end defvr
+@end deftp
 
 
-@defvr Condition no-debug-blocks 
+@deftp Condition no-debug-blocks 
 This condition indicates that a function was not compiled with debug-block
 information, but this information is necessary necessary for some requested
 operation.
-@end defvr
+@end deftp
 
-@defvr Condition no-debug-variables 
+@deftp Condition no-debug-variables 
 Similar to @code{no-debug-blocks}, except that variable information was
 requested.
-@end defvr
+@end deftp
 
-@defvr Condition lambda-list-unavailable 
+@deftp Condition lambda-list-unavailable 
 Similar to @code{no-debug-blocks}, except that lambda list information was
 requested.
-@end defvr
+@end deftp
 
-@defvr Condition invalid-value 
+@deftp Condition invalid-value 
 
 This condition indicates a debug-variable has @kwd{invalid} or @kwd{unknown}
 value in a particular frame.
-@end defvr
+@end deftp
 
 
-@defvr Condition ambiguous-variable-name 
+@deftp Condition ambiguous-variable-name 
 
 This condition indicates a user supplied debug-variable name identifies more
 than one valid variable in a particular frame.
-@end defvr
+@end deftp
 
 
 @node Debug-errors
@@ -121,37 +121,37 @@ programmers' interface.  You could have avoided an occurrence of one of these
 by using some routine to check the use of the routine generating the error.
 
 
-@defvr Condition debug-error 
+@deftp Condition debug-error 
 This condition inherits from error, and all user programming errors inherit
 from this condition.
-@end defvr
+@end deftp
 
 
-@defvr Condition unhandled-condition 
+@deftp Condition unhandled-condition 
 This error results from a signalled @code{debug-condition} occurring
 without anyone handling it.
-@end defvr
+@end deftp
 
 
-@defvr Condition unknown-code-location 
+@deftp Condition unknown-code-location 
 This error indicates the invalid use of an unknown-code-location.
-@end defvr
+@end deftp
 
 
-@defvr Condition unknown-debug-variable 
+@deftp Condition unknown-debug-variable 
 
 This error indicates an attempt to use a debug-variable in conjunction with an
 inappropriate debug-function; for example, checking the variable's validity
 using a code-location in the wrong debug-function will signal this error.
-@end defvr
+@end deftp
 
 
-@defvr Condition frame-function-mismatch 
+@deftp Condition frame-function-mismatch 
 
 This error indicates you called a function returned by
 @code{preprocess-for-eval}
 on a frame other than the one for which the function had been prepared.
-@end defvr
+@end deftp
 
 
 @node Debug-variables

@@ -146,7 +146,7 @@ Some Alien type names are @clisp{} symbols, but the names are
 still exported from the @code{alien} package, so it is legal to say
 @code{alien:single-float}.  These are the basic Alien type specifiers: 
 
-@defvr {Alien type} * @args{@var{type}}
+@deftp {Alien type} * @args{@var{type}}
   
   A pointer to an object of the specified @var{type}.  If @var{type}
   is @true, then it means a pointer to anything, similar to
@@ -156,9 +156,9 @@ still exported from the @code{alien} package, so it is legal to say
   (zerop (sap-int (alien-sap @var{ptr})))
 @end lisp
 @xref{system-area-pointers}
-@end defvr
+@end deftp
 
-@defvr {Alien type} array @var{type} @mstar{@var{dimension}}
+@deftp {Alien type} array @var{type} @mstar{@var{dimension}}
 
   An array of the specified @var{dimensions}, holding elements of type
   @var{type}.  Note that @code{(* int)} and @code{(array int)} are
@@ -173,9 +173,9 @@ still exported from the @code{alien} package, so it is legal to say
   first dimension.  Fixed-size arrays can be allocated as array
   elements, structure slots or @code{with-alien} variables.  Dynamic
   arrays can only be allocated using @funref{make-alien}.
-@end defvr
+@end deftp
 
-@defvr {Alien type} struct @var{name} @mstar{(@var{field} @var{type} @mopt{@var{bits}})}
+@deftp {Alien type} struct @var{name} @mstar{(@var{field} @var{type} @mopt{@var{bits}})}
   
   A structure type with the specified @var{name} and @var{fields}.
   Fields are allocated at the same positions used by the
@@ -189,17 +189,17 @@ still exported from the @code{alien} package, so it is legal to say
   @var{fields} are specified, then the fields are taken from the
   current (local or global) Alien structure type definition of
   @var{name}.
-@end defvr
+@end deftp
 
-@defvr {Alien type} union @var{name} @mstar{(@var{field} @var{type} @mopt{@var{bits}})}
+@deftp {Alien type} union @var{name} @mstar{(@var{field} @var{type} @mopt{@var{bits}})}
   
   Similar to @code{struct}, but defines a union type.  All fields are
   allocated at the same offset, and the size of the union is the size
   of the largest field.  The programmer must determine which field is
   active from context.
-@end defvr
+@end deftp
 
-@defvr {Alien type} enum @var{name} @mstar{@var{spec}}
+@deftp {Alien type} enum @var{name} @mstar{@var{spec}}
   
   An enumeration type that maps between integer values and keywords.
   If @var{name} is @false, then the type is anonymous.  Each
@@ -207,38 +207,38 @@ still exported from the @code{alien} package, so it is legal to say
     @var{value})}.  If @var{integer} is not supplied, then it defaults
   to one greater than the value for the preceding spec (or to zero if
   it is the first spec.)
-@end defvr
+@end deftp
 
-@defvr {Alien type} signed @mopt{@var{bits}}
+@deftp {Alien type} signed @mopt{@var{bits}}
   A signed integer with the specified number of bits precision.  The
   upper limit on integer precision is determined by the machine's word
   size.  If no size is specified, the maximum size will be used.
-@end defvr
+@end deftp
 
-@defvr {Alien type} integer @mopt{@var{bits}}
+@deftp {Alien type} integer @mopt{@var{bits}}
   Identical to @code{signed}---the distinction between @code{signed}
   and @code{integer} is purely stylistic.
-@end defvr
+@end deftp
 
-@defvr {Alien type} unsigned @mopt{@var{bits}}
+@deftp {Alien type} unsigned @mopt{@var{bits}}
   Like @code{signed}, but specifies an unsigned integer.
-@end defvr
+@end deftp
 
-@defvr {Alien type} boolean @mopt{@var{bits}}
+@deftp {Alien type} boolean @mopt{@var{bits}}
   Similar to an enumeration type that maps @code{0} to @false{} and
   all other values to @true.  @var{bits} determines the amount of
   storage allocated to hold the truth value.
-@end defvr
+@end deftp
 
-@defvr {Alien type} single-float
+@deftp {Alien type} single-float
   A floating-point number in IEEE single format.
-@end defvr
+@end deftp
 
-@defvr {Alien type} double-float
+@deftp {Alien type} double-float
   A floating-point number in IEEE double format.
-@end defvr
+@end deftp
 
-@defvr {Alien type} function @var{result-type} @mstar{@var{arg-type}}
+@deftp {Alien type} function @var{result-type} @mstar{@var{arg-type}}
   @anchor{alien-function-types}
   A Alien function that takes arguments of the specified
   @var{arg-types} and returns a result of type @var{result-type}.
@@ -246,12 +246,12 @@ still exported from the @code{alien} package, so it is legal to say
   specified is in the argument to @code{alien-funcall} (see section
   @funref{alien-funcall}.)  In all other contexts, functions are
   represented by function pointer types: @code{(* (function ...))}.
-@end defvr
+@end deftp
 
-@defvr {Alien type} system-area-pointer
+@deftp {Alien type} system-area-pointer
   A pointer which is represented in Lisp as a
   @code{system-area-pointer} object (@pxref{system-area-pointers}.)
-@end defvr
+@end deftp
 
 
 @node The C-Call Package
@@ -263,13 +263,13 @@ of the same name: @code{char}, @code{short}, @code{int}, @code{long},
 @code{unsigned-long}, @code{float}, @code{double}.  @code{c-call} also
 exports these types:
 
-@defvr {Alien type} void
+@deftp {Alien type} void
   This type is used in function types to declare that no useful value
   is returned.  Evaluation of an @code{alien-funcall} form will return
   zero values.
-@end defvr
+@end deftp
 
-@defvr {Alien type} c-string
+@deftp {Alien type} c-string
   This type is similar to @code{(* char)}, but is interpreted as a
   null-terminated string, and is automatically converted into a Lisp
   string when accessed.  If the pointer is C @code{NULL} (or 0), then
@@ -307,7 +307,7 @@ exports these types:
 
 Storing Lisp @false{} writes C @code{NULL} to the @code{c-string}
 pointer.
-@end defvr
+@end deftp
 
 
 

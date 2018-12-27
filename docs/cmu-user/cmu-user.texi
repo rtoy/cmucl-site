@@ -177,7 +177,6 @@ language implementation, programming environment
 @ifnottex
 @node Top
 @top CMUCL User's Manual
-@end ifnottex
 
 @menu
 * Introduction::
@@ -195,9 +194,12 @@ language implementation, programming environment
 * Internationalization::
 * Function Index::
 * Variable Index::
+* Type Index::
 * Concept Index::
 
 @end menu
+
+@end ifnottex
 
 @include introduction.texi
 @include extensions.texi
@@ -220,6 +222,10 @@ language implementation, programming environment
 @node Variable Index
 @unnumbered Variable Index
 @printindex vr
+
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 
 @node Concept Index
 @unnumbered Concept Index

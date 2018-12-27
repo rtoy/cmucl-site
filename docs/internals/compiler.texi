@@ -1,0 +1,7 @@
+@part Compiler Organization
+
+@include compiler-overview.texi
+@include front.texi
+@include middle.texi
+@include back.texi
+@include interface.texi

@@ -22,6 +22,14 @@ consists of an association list of a handler to call when input shows up on a
 particular file descriptor.
 
 
+@menu
+* Object Sets::                 
+* The SERVE-EVENT Function::    
+* Using SERVE-EVENT with Unix File Descriptors::  
+* Using SERVE-EVENT with the CLX Interface to X::  
+* A SERVE-EVENT Example::       
+@end menu
+
 @node Object Sets
 @section Object Sets
 @anchor{object-sets}
@@ -213,6 +221,11 @@ The first two routines are useful regardless of whether you use
 
 
 
+@menu
+* Without Object Sets::         
+* With Object Sets::            
+@end menu
+
 @node Without Object Sets
 @subsection Without Object Sets
 
@@ -335,6 +348,11 @@ To use object sets in this way:
 This section contains two examples using @code{system:serve-event}.  The first
 one does not use object sets, and the second, slightly more complicated one
 does.
+
+@menu
+* Without Object Sets Example::  
+* With Object Sets Example::    
+@end menu
 
 @node Without Object Sets Example
 @subsection Without Object Sets Example

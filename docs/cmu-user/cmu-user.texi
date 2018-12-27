@@ -186,7 +186,7 @@ language implementation, programming environment
 * The Compiler::
 * Advanced Compiler Use and Efficiency Hints::
 * UNIX Interface::
-* Event Dispatching with SERVE-EVENT
+* Event Dispatching with SERVE-EVENT::
 * Alien Objects::
 * Interprocess Communication under LISP::
 * Networking Support::

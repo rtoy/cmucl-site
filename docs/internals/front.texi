@@ -895,7 +895,7 @@ optimizations.
 
 
 @node ICR finalize
-@chapter ICR finalize % -*- Dictionary: design -*-
+@chapter ICR finalize
 
 This pass looks for interesting things in the ICR so that we can forget about
 them.  Used and not defined things are flamed about.

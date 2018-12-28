@@ -170,8 +170,8 @@ source file), and so is identified by the XREF facility by a string.
   on. This function will always return @nil{} if the file slot of an
   xref-context is @nil{}.
 
-% While walking the top-level form, count one in depth-first order for
-% each subform that is a cons.
+@c While walking the top-level form, count one in depth-first order for
+@c each subform that is a cons.
 @end defun
 
 

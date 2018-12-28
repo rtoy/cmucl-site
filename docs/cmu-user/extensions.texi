@@ -822,7 +822,7 @@ automatic garbage collection is in effect:
 
 The following variables control the behavior of the garbage collector:
 
-@defvar extensions:bytes-consed-between-gcs
+@defvar extensions:*bytes-consed-between-gcs*
   
   @cmucl{} automatically GC's whenever the amount of memory
   allocated to dynamic objects exceeds the value of an internal
@@ -832,7 +832,7 @@ The following variables control the behavior of the garbage collector:
   value is 2000000.
 @end defvar
 
-@defvar extensions:gc-verbose
+@defvar extensions:*gc-verbose*
   
   This variable controls whether @code{ext:gc} invokes the functions
   in @code{ext:*gc-notify-before*} and
@@ -841,7 +841,7 @@ The following variables control the behavior of the garbage collector:
   @code{T}.
 @end defvar
 
-@defvar extensions:gc-notify-before
+@defvar extensions:*gc-notify-before*
   
   This variable's value is a function that should notify the user that
   the system is about to GC.  It takes one argument, the amount of
@@ -853,7 +853,7 @@ The following variables control the behavior of the garbage collector:
 @end verbatim
 @end defvar
 
-@defvar extensions:gc-notify-after
+@defvar extensions:*gc-notify-after*
   
   This variable's value is a function that should notify the user when
   a GC finishes.  The function must take three arguments, the amount
@@ -873,7 +873,7 @@ threshold printed by the default @code{ext:*gc-notify-after*}
 function.  The system periodically checks whether this threshold has
 been exceeded, and only then does a garbage collection.
 
-@defvar extensions:gc-inhibit-hook
+@defvar extensions:*gc-inhibit-hook*
   
   This variable's value is either a function of one argument or @nil.
   When the system has triggered an automatic GC, if this variable is a
@@ -886,8 +886,8 @@ been exceeded, and only then does a garbage collection.
   @code{ext:gc-on}.  The default value of this variable is @nil.
 @end defvar
 
-@defvar extensions:before-gc-hooks
-@defvarx extensions:after-gc-hooks
+@defvar extensions:*before-gc-hooks*
+@defvarx extensions:*after-gc-hooks*
   
   These variables' values are lists of functions to call before or
   after any GC occurs.  The system provides these purely for
@@ -1037,19 +1037,19 @@ The symbol's value, properties, and
 
 A number of switches can be used to control @code{describe}'s behavior.
 
-@defvar extensions:describe-level
+@defvar extensions:*describe-level*
 
   The maximum level of recursive description allowed.  Initially two.
 @end defvar
 
-@defvar extensions:describe-indentation
+@defvar extensions:*describe-indentation*
 
 The number of spaces to indent for each level of recursive
 description, initially three.
 @end defvar
 
-@defvar extensions:describe-print-level
-@defvarx extensions:describe-print-length
+@defvar extensions:*describe-print-level*
+@defvarx extensions:*describe-print-length*
   
   The values of @code{*print-level*} and @code{*print-length*} during
   description.  Initially two and five.
@@ -1096,7 +1096,7 @@ options.  See the @code{interface} and @code{toolkit} packages.
   This function creates a control panel for the Lisp process.
 @end defun
 
-@defvar interface:interface-style
+@defvar interface:*interface-style*
   
   When the graphical interface is loaded, this variable controls
   whether it is used by @code{inspect} and the error system.  If the
@@ -1194,8 +1194,8 @@ The user is asked a yes or no question to
   shouldn't ever need to use this argument.
 @end defun
 
-@defvar extensions:load-source-types
-@defvarx extensions:load-object-types
+@defvar extensions:*load-source-types*
+@defvarx extensions:*load-object-types*
   
   These variables are lists of possible @code{pathname-type} values
   for source and object files to be passed to @code{load}.  These
@@ -1205,7 +1205,7 @@ The user is asked a yes or no question to
   object files.
 @end defvar
 
-@defvar extensions:load-if-source-newer
+@defvar extensions:*load-if-source-newer*
   
   This variable determines the default value of the
   @var{if-source-newer} argument to @code{load}.  Its initial value is
@@ -1244,7 +1244,7 @@ specialized arrays.  Thus
 
 @node Reader Parameters
 @subsection Reader Parameters
-@defvar extensions: ignore-extra-close-parentheses
+@defvar extensions:*ignore-extra-close-parentheses*
   
   If this variable is @true{} (the default), then the reader merely
   prints a warning when an extra close parenthesis is detected
@@ -2299,7 +2299,7 @@ In method @code{bar}, and with a suitable safety setting, a type error
 will occur if @code{value} is not a @code{fixnum}.  In method
 @code{baz}, a @code{fixnum} comparison can be used by the compiler.
   
-@defvar pcl::use-slot-types-p
+@defvar pcl::*use-slot-types-p*
   Slot type checking can be turned off by setting this variable to
   @false, which can be useful for compiling code containing incorrect
   slot type declarations.
@@ -2439,7 +2439,7 @@ The effect of the @code{inline} optimization combined with the
 fast as structure slot access, which is an order of magnitude faster
 than normal CLOS slot access.
 
-@defvar pcl::optimize-inline-slot-access-p
+@defvar pcl::*optimize-inline-slot-access-p*
   This variable controls if inline slot access optimizations are
   performed.  It is true by default.
 @end defvar
@@ -2563,7 +2563,7 @@ provided for forcing such an update of effective methods.
   cached effective methods are flushed.
 @end defun
 
-@defvar pcl::inline-methods-in-emfs
+@defvar pcl::*inline-methods-in-emfs*
   If true, the default, perform method inlining as described above.
   If false, don't.
 @end defvar
@@ -2688,7 +2688,7 @@ Method profiling is done analogously to @code{trace}:
 @subsection Misc
 @c @cpsubindex{methods}{interpreted}
 
-@defvar pcl::compile-interpreted-methods-p
+@defvar pcl::*compile-interpreted-methods-p*
   This variable controls compilation of interpreted method functions,
   e.g. for methods defined interactively at the REPL.  Default is
   true, that is, method functions are compiled.
@@ -2881,7 +2881,7 @@ You can tell @cmucl{} to trust or not trust @code{dynamic-extent}
 declarations by setting the variable
 @var{*trust-dynamic-extent-declarations*}.
 
-@defvar ext:trust-dynamic-extent-declarations
+@defvar ext:*trust-dynamic-extent-declarations*
   If the value of @var{*trust-dynamic-extent-declarations*} is 
   @code{NIL}, @code{dynamic-extent} declarations are effectively
   ignored.
@@ -3044,7 +3044,7 @@ By default the functions @code{module-provide-cmucl-defmodule} and
 @code{module-provide- cmucl-library} are on this list of functions, in
 that order.
 
-@defvar ext:module-provider-functions
+@defvar ext:*module-provider-functions*
   This is a list of functions taking a single argument.
   @code{require} calls each function in turn with the stringified
   module name.  The first function to return non-@var{NIL} indicates
@@ -3180,7 +3180,7 @@ recording of strings, call @code{intl:translation-enable}.
   as the copyright message.
 @end defun
 
-@defvar intl:locale-directories
+@defvar intl:*locale-directories*
   This is a list of directory pathnames where the translations can be found.
 @end defvar  
 

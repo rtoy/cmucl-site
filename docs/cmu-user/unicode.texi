@@ -254,7 +254,7 @@ output as a single linefeed character.
 @node Variables for Unicode
 @subsection Variables
 
-@defvar extensions:default-external-format
+@defvar extensions:*default-external-format*
    This is the default external format to use for all newly opened
    files.  It is also the default format to use for
    @var{*standard-input*}, @var{*standard-output*}, and

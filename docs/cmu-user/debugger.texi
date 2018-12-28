@@ -1194,20 +1194,20 @@ In @cmucl,
   are untraced.
 @end defmac
 
-@defvar extensions:traced-function-list 
+@defvar extensions:*traced-function-list*
   
   A list of function names maintained and used by @code{trace},
   @code{untrace}, and @code{untrace-all}.  This list should contain
   the names of all functions currently being traced.
 @end defvar
 
-@defvar extensions:max-trace-indentation 
+@defvar extensions:*max-trace-indentation*
   
   The maximum number of spaces which should be used to indent trace
   printout.  This variable is initially set to 40.
 @end defvar
 
-@defvar debug:trace-encapsulate-package-names 
+@defvar debug:*trace-encapsulate-package-names*
   
   A list of package names.  Functions from these packages are traced
   using encapsulation instead of function-end breakpoints.  This list
@@ -1409,8 +1409,8 @@ The unencapsulated
 @section Specials
 These are the special variables that control the debugger action.
 
-@defvar debug:debug-print-level 
-  @defvarx[debug:]{debug-print-length}
+@defvar debug:*debug-print-level*
+@defvarx debug:*debug-print-length*
   
   @code{*print-level*} and @code{*print-length*} are bound to these
   values during the execution of some debug commands.  When evaluating

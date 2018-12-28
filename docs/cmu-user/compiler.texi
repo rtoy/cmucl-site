@@ -274,7 +274,7 @@ After printing detailed information about the undefined uses of each
 name, @code{with-compilation-unit} also prints summary listings of the
 names of all the undefined functions, types and variables.
 
-@defvar undefined-warning-limit
+@defvar *undefined-warning-limit*
   
   This variable controls the number of undefined warnings for each
   distinct name that are printed with full source context when the
@@ -695,7 +695,7 @@ There is some control over the verbosity of error messages.  See also
 @varref{undefined-warning-limit}, @code{*efficiency-note-limit*} and
 @varref{efficiency-note-cost-threshold}.
 
-@defvar enclosing-source-cutoff 
+@defvar *enclosing-source-cutoff*
   
   This variable specifies the number of enclosing actual source forms
   that are printed in full, rather than in the abbreviated processing

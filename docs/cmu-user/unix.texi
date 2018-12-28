@@ -35,10 +35,10 @@ passes a data structure containing the parsed information to Lisp.
 This information is then extracted from that data structure and put
 into a set of Lisp data structures.
 
-@defvar extensions:command-line-strings
-@defvarx extensions:command-line-utility-name
-@defvarx extensions:command-line-words
-@defvarx extensions:command-line-switches
+@defvar extensions:*command-line-strings*
+@defvarx extensions:*command-line-utility-name*
+@defvarx extensions:*command-line-words*
+@defvarx extensions:*command-line-switches*
   
   The value of @code{*command-line-words*} is a list of strings that
   make up the command line, one word per string.  The first word on
@@ -102,20 +102,20 @@ structures.
 @node Useful Variables
 @section Useful Variables
 
-@defvar system:stdin
-@defvarx system:stdout
-@defvarx system:stderr
+@defvar system:*stdin*
+@defvarx system:*stdout*
+@defvarx system:*stderr*
   
   Streams connected to the standard input, output and error file
   descriptors.
 @end defvar
 
-@defvar system:tty
+@defvar system:*tty*
   
   A stream connected to @file{/dev/tty}.
 @end defvar
 
-@defvar extensions:environment-list
+@defvar extensions:*environment-list*
   The environment variables inherited by the current process, as a
   keyword-indexed alist. For example, to access the DISPLAY
   environment variable, you could use

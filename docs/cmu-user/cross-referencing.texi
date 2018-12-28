@@ -45,7 +45,7 @@ for instance declared using @code{defvar} or @code{defparameter} or
 @node Populating the cross-reference database
 @section Populating the cross-reference database
 
-@defvar c:record-xref-info
+@defvar c:*record-xref-info*
    When non-NIL, code that is compiled (either using
    @code{compile-file}, or by calling @code{compile} from the
    listener), will be analyzed for cross-references. Defaults to

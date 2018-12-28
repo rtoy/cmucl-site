@@ -123,9 +123,9 @@ are documented.
   Creates a socket and binds it to the file name given by @var{path},
   prepared to receive connections of kind @var{kind} (which defaults
   to @kwd{stream}), queuing up to @var{backlog} of them.
-%  If
-%  @kwd{reuse-address} @var{T} is used, then the file given by
-%  @var{path} is unlinked first.
+@c If
+@c @kwd{reuse-address} @var{T} is used, then the file given by
+@c @var{path} is unlinked first.
 
 @end defun
 

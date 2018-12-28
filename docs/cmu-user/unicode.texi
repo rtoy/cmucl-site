@@ -657,7 +657,7 @@ An external format basically needs two functions:
 external format is defined using the macro
 @code{stream::define-external-format}.
 
-% tricky
+@c tricky
 @defmac stream:define-external-format @args{@var{name} (@keys{@kwd{base} @kwd{min} @kwd{max} @kwd{size} @kwd{documentation}}) (@amprest{} @var{slots}) @ampoptional{} @var{octets-to-code} @var{code-to-octets} @var{flush-state} @var{copy-state}}
 
 

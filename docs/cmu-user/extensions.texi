@@ -492,7 +492,7 @@ by @cmucl{}.
 
 @float Table, tbl-chars
 @caption{Characters recognized by @cmucl{}}
-@multitable {Name} {Code} {Lisp Name} {Alternatives}
+@multitable @columnfractions .1 .1 .2 .5
 @headitem Name @tab Code @tab Lisp Name @tab Alternatives
 @item nul
 @tab 0

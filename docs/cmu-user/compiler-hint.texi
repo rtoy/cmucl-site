@@ -374,7 +374,7 @@ different (but equivalent) type.  This is the mechanism that @python{}
 uses for detecting type equivalence.  For example, in @python{}'s
 canonical representation, these types are equivalent:
 @example
-(or list (member :end)) @math{\equiv} (or cons (member nil :end))
+(or list (member :end)) @equiv{} (or cons (member nil :end))
 @end example
 This has two implications for the user:
 @itemize

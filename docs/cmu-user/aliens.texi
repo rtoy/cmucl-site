@@ -535,7 +535,7 @@ struct foo @{
     struct foo *b[100];
 @};
 
- @math{\equiv}
+@equiv{}
 
 (def-alien-type nil
   (struct foo
@@ -549,7 +549,7 @@ With this definition, the following C expression can be translated in this way:
 struct foo f;
 f.b[7].a
 
- @math{\equiv}
+@equiv{} 
 
 (with-alien ((f (struct foo)))
   (slot (deref (slot f 'b) 7) 'a)

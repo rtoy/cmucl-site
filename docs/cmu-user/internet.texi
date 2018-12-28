@@ -32,28 +32,28 @@ network byte order (big-endian).
 
 @defun extensions:htonl @args{@var{integer}}
   
-  Converts a $32$ bit integer from host byte order to network byte
+  Converts a @code{32} bit integer from host byte order to network byte
   order.
 
 @end defun
 
 @defun extensions:htons @args{@var{integer}}
   
-  Converts a $16$ bit integer from host byte order to network byte
+  Converts a @code{16} bit integer from host byte order to network byte
   order.
 
 @end defun
 
 @defun extensions:ntohs @args{@var{integer}}
   
-  Converts a $32$ bit integer from network byte order to host
+  Converts a @code{32} bit integer from network byte order to host
   byte order.
 
 @end defun
 
 @defun extensions:ntohl @args{@var{integer}}
   
-  Converts a $32$ bit integer from network byte order to host byte
+  Converts a @code{32} bit integer from network byte order to host byte
   order.
 
 @end defun
@@ -66,7 +66,7 @@ DNS lookups. The function
 
 @defun extensions:lookup-host-entry @args{@var{host}}
  
-  returns a structure of type @var{host-entry} (explained below) for
+  returns a structure of type @var{host-entry} (@pxref{host-entry-struct}) for
   the given @var{host}.  If @var{host} is an integer, it will be
   assumed to be the IP address in host (byte-)order. If it is a string,
   it can contain either the host name or the IP address in dotted
@@ -80,9 +80,8 @@ DNS lookups. The function
 
 @end defun
 
-@page
-
-@defvr {structure} host-entry @args{@var{name} @var{aliases} @var{addr-type} @var{addr-list}}
+@anchor{host-entry-struct}
+@deftp {structure} host-entry @args{@var{name} @var{aliases} @var{addr-type} @var{addr-list}}
   
   This structure holds all information available at request time on a
   given host. The entries are self-explanatory. Aliases is a list of
@@ -91,9 +90,9 @@ DNS lookups. The function
   @var{addr-type} contains the number of the address family, as
   specified in @t{socket.h}, to which the addresses belong. Since
   only addresses of the IPv4 family are currently supported, this slot
-  always has the value $2$.
+  always has the value @code{2}.
 
-@end defvr
+@end deftp
 
 @defun extensions:ip-string @args{@var{addr}}
   

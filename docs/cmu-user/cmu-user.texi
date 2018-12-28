@@ -181,7 +181,7 @@ Robert A. MacLachlan, dated July 1992.
 
 @ifnottex
 @node Top
-@top CMUCL User's Manual
+@top
 
 @menu
 * Introduction::

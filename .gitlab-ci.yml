@@ -14,9 +14,9 @@ pages:
     - (cd docs/cmu-user; makeinfo - --html cmu-user.texi)
     # Copy everything to the appropriate subdirectories
     - mkdir -p public/docs/internals public/docs/internals/html
-    - cp -r docs/internals/design/design.info* public/docs/internals/
-    - cp -r docs/internals/design/design/* public/docs/internals/html
-    - cp -r docs/internals/design/design.pdf public/docs/internals/
+    - cp -r docs/internals/design.info* public/docs/internals/
+    - cp -r docs/internals/design/* public/docs/internals/html
+    - cp -r docs/internals/design.pdf public/docs/internals/
     - mkdir -p public/docs/cmu-user public/docs/cmu-user/html
     - cp -r docs/cmu-user/cmu-user.info* public/docs/cmu-user/
     - cp -r docs/cmu-user/cmu-user/* public/docs/cmu-user/html

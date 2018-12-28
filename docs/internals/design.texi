@@ -25,16 +25,6 @@
 @ifnottex
 @node Top
 @top Design of CMU Common Lisp
-@end ifnottex
-
-@center @b{Abstract}
-
-This report documents internal details of the CMU Common Lisp
-compiler and run-time system.  CMU Common Lisp is a public domain
-implementation of Common Lisp that runs on various Unix workstations.
-This document is a work in progress: neither the contents nor the
-presentation are completed. Nevertheless, it provides some useful
-background information, in particular regarding the @cmucl{} compiler.
 
 @c This was created by hand.  Don't let the tools do this for you!
 @menu
@@ -87,6 +77,17 @@ background information, in particular regarding the @cmucl{} compiler.
 * Glossary::
 
 @end menu
+
+@end ifnottex
+
+@center @b{Abstract}
+
+This report documents internal details of the CMU Common Lisp
+compiler and run-time system.  CMU Common Lisp is a public domain
+implementation of Common Lisp that runs on various Unix workstations.
+This document is a work in progress: neither the contents nor the
+presentation are completed. Nevertheless, it provides some useful
+background information, in particular regarding the @cmucl{} compiler.
 
 @include architecture.texi
 @include compiler.texi

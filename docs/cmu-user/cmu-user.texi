@@ -168,6 +168,11 @@ System, and an Emacs-like editor.
 @end iftex
 @b{Keywords}: lisp, Common Lisp, manual, compiler, programming
 language implementation, programming environment
+@iftex
+@vskip 5cm
+@end iftex
+This manual is based on CMU Technical Report CMU-CS-92-161, edited by
+Robert A. MacLachlan, dated July 1992.
 @end quotation
 
 @end titlepage

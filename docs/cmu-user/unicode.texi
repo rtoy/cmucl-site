@@ -112,7 +112,7 @@ changing the @file{aliases} file.
 
 For all of these formats, if an illegal sequence is encountered, no
 error or warning is signaled.  Instead, the offending sequence is
-silently replaced with the Unicode REPLACEMENT CHARACTER (U$+$FFFD).
+silently replaced with the Unicode REPLACEMENT CHARACTER (U+FFFD).
 
 @float Table, tbl-external-formats
 @caption{External formats}
@@ -542,7 +542,7 @@ utility functions are provided to make access easier.
   with either the previous or following code unit (when possible) to
   compute the codepoint.  The first return value is the codepoint
   itself.  The second return value is @nil{} if the position is not a
-  surrogate pair.  Otherwise, $+1$ or $-1$ is returned if the position
+  surrogate pair.  Otherwise, @code{+1} or @code{-1} is returned if the position
   is the high (leading) or low (trailing) surrogate value, respectively.
 
   This is useful for iterating through a string in codepoint sequence.

@@ -2330,7 +2330,7 @@ True when the defined
 @item @code{@w{(:match @mstar{@var{pattern}})}}
 True when any of the
   patterns is a substring of the name.  The name is wrapped with
-  @code{@@$}'s, so ``@code{@@$FOO}'' matches names beginning with
+  @code{$}'s, so ``@code{$FOO}'' matches names beginning with
   ``@code{FOO}'', etc.
 @end table
 
@@ -2347,7 +2347,7 @@ Here is a more complex example of @code{with-compilation-unit} options:
 '(((:or :external (:and (:match "@@%") (:match "SET")))
    (declare (optimize-interface (safety 2))))
   ((:or (:and :external :macro)
-        (:match "@@$PARSE-"))
+        (:match "$PARSE-"))
    (declare (optimize (safety 2)))))
 @end example
 The @code{optimize} and @code{extensions:optimize-interface}
@@ -3387,13 +3387,13 @@ For example, suppose we have the function
 @end example
 The derived result of the function is @code{(OR SINGLE-FLOAT
 (COMPLEX SINGLE-FLOAT))} because the declared values for
-@code{x} includes both $-0.0$ and $0.0$ and @code{(log -0.0)} is
+@code{x} includes both @code{-0.0} and @code{0.0} and @code{(log -0.0)} is
 actually a complex number.  Because of this, the generic complex log
 routine is used.
 
-If the declaration for @code{x} were @code{(single-float (0f0))} so $+0.0$
+If the declaration for @code{x} were @code{(single-float (0f0))} so @code{+0.0}
 is not included or @code{(or (single-float (0f0)) (member 0f0))} so
-  $+0.0$ is include but not $-0.0$, the derived type would be
+  @code{+0.0} is include but not @code{-0.0}, the derived type would be
   @code{single-float} for both cases.  By declaring @code{x} this way,
   the log can be implemented using a fast real-valued log routine
   instead of the generic log routine.

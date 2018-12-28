@@ -36,6 +36,7 @@ initialized yet or has already been deallocated, or
 Can display the precise source location corresponding to a code
 location in the debugged program.
 @end itemize
+@noindent
 These features allow the debugging of compiled code to be made almost
 indistinguishable from interpreted code debugging.
 
@@ -213,19 +214,19 @@ be the default.  So this call:
 @lisp
 (subseq "foo" 1)
 @end lisp
-
+@noindent
 would look like this:
 
 @example
 (SUBSEQ "foo" 1 3)
 @end example
-
+@noindent
 And this call:
 
 @lisp
 (string-upcase "test case")
 @end lisp
-
+@noindent
 would look like this:
 
 @example
@@ -244,7 +245,7 @@ the call, so:
 @lisp
 (format t "~A is a ~A." "This" 'test)
 @end lisp
-
+@noindent
 would look like this:
 
 @example
@@ -686,9 +687,11 @@ error.
 If the source file can be found, but has been modified since the time it was
 compiled, the debugger prints this warning:
 @example
+@group
 ; File has been modified since compilation:
 ;   @var{filename}
 ; Using form offset instead of character position.
+@end group
 @end example
 where @var{filename} is the name of the source file.  It then proceeds using a
 robust but not foolproof heuristic for locating the source.  This heuristic
@@ -792,7 +795,7 @@ values of the @code{debug} quality:
 Only the function name and enough information to allow the stack to
 be parsed.
 
-@item @code{@w{$>$ 0}}
+@item @code{@w{> 0}}
 Any level greater than @code{0} gives level @code{0} plus all
 argument variables.  Values will only be accessible if the argument
 variable is never set and
@@ -813,7 +816,7 @@ information, and lifetime information that tells the debugger when arguments
 are available (even when @code{speed} is @code{3} or the argument is set.)  This is
 the default.
 
-@item @code{@w{$>$ 2}}
+@item @code{@w{> 2}}
 Any level greater than @code{2} gives level @code{2} and in addition
 disables tail-call optimization, so that the backtrace will contain
 frames for all invoked functions, even those in tail positions.

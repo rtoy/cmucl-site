@@ -355,7 +355,7 @@ This is the @var{definition} or
   a symbol beginning with ``@code{DEF}''.  If there is no enclosing
   @w{@var{def}mumble}, then the outermost form is used.  If there are
   multiple @w{@var{def}mumbles}, then they are all printed from the
-  out in, separated by @code{$=>$}'s.  In this example, the problem
+  out in, separated by @code{=>}'s.  In this example, the problem
   was in the @code{defun} for @code{foo}.
   
 @item @w{@code{(ZOQ Y)}}
@@ -366,7 +366,7 @@ This is the @emph{original source} form
   source file.  In this example, the expansion of the @code{zoq} macro
   was responsible for the error.
   
-@item @w{@code{--$>$ ROQ PLOQ +}} 
+@item @w{@code{--> ROQ PLOQ +}} 
 This is the @emph{processing path}
   that the compiler used to produce the errorful code.  The processing
   path is a representation of the evaluated forms enclosing the actual
@@ -378,7 +378,7 @@ This is the @emph{processing path}
   calls to @code{roq}, @code{ploq} and @code{+}.  These calls resulted
   from the expansion of the @code{zoq} macro.
   
-@item @code{==$>$ Y}
+@item @code{==> Y}
 This is the @emph{actual source} responsible for
   the error.  If the actual source appears in the explanation, then we
   print the next enclosing evaluated form, instead of printing the
@@ -402,10 +402,10 @@ Note that each part of the error message is distinctively marked:
   
 @item The original source is an indented form with no prefix.
   
-@item Each line of the processing path is prefixed with @code{--$>$}.
+@item Each line of the processing path is prefixed with @code{-->}.
   
 @item The actual source form is indented like the original source, but
-  is marked by a preceding @code{==$>$} line.  This is like the
+  is marked by a preceding @code{==>} line.  This is like the
   ``macroexpands to'' notation used in @cltl.
   
 @item The explanation is prefixed with the error severity

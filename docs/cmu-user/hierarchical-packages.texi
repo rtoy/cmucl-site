@@ -116,6 +116,7 @@ have all been created.
 @end multitable
 @end float
 
+@noindent
 Additional notes:
 
 @enumerate

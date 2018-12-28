@@ -568,6 +568,7 @@ Either the key or value are referenced elsewhere
 @item T
 For backward compatibility, this means the same as @kwd{key}.
 @end table
+@noindent
 If the condition does not hold, the object can be removed from the
 hash table.  
 
@@ -932,7 +933,7 @@ weak pointers, then it breaks the weak pointers and deallocates the
 object.
 
 @defun extensions:make-weak-pointer @args{@var{object}}
-  @defunx[extensions:]{weak-pointer-value}{@args{@var{weak-pointer}}}
+@defunx extensions:weak-pointer-value @args{@var{weak-pointer}}
   
   @code{make-weak-pointer} returns a weak pointer to an object.
   @code{weak-pointer-value} follows a weak pointer, returning the two
@@ -1437,8 +1438,8 @@ The following functions interface the process returned by @code{run-program}:
 @end defun
 
 @defun extensions:process-input @args{@var{process}}
-  @defunx[extensions:]{process-output}{@args{@var{process}}}
-  @defunx[extensions:]{process-error}{@args{@var{process}}}
+@defunx extensions:process-output @args{@var{process}}
+@defunx extensions:process-error @args{@var{process}}
   
   If the corresponding stream was created, these functions return the
   input, output or error fd-stream.  @nil{} is returned if there
@@ -1658,6 +1659,7 @@ empty-string as its type.  The type defaults to @code{nil} and the version
 defaults to @kwd{newest}.
 
 @example
+@group
 (defun parse (x)
   (values (pathname-name x) (pathname-type x) (pathname-version x)))
 
@@ -1669,6 +1671,7 @@ defaults to @kwd{newest}.
 (parse "foo.") @result{} "foo", "", NIL
 (parse "foo.bar.~1~") @result{} "foo", "bar", 1
 (parse "foo.bar.baz") @result{} "foo.bar", "baz", NIL
+@end group
 @end example
 
 The directory of pathnames beginning with a slash (or a search-list,
@@ -1814,7 +1817,7 @@ operation.
 @end defun
 
 @defun extensions:search-list-defined-p @var{name}
-  @defunx[extensions:]{clear-search-list}{@var{name}}
+@defunx extensions:clear-search-list @var{name}
   
   @code{search-list-defined-p} returns @true{} if @var{name} is a
   defined search list name, @false{} otherwise.
@@ -1840,6 +1843,7 @@ The search list @code{code:} can be defined as follows:
 @example
 (setf (ext:search-list "code:") '("/usr/lisp/code/"))
 @end example
+@noindent
 It is now possible to use @code{code:} as an abbreviation for the directory
 @file{/usr/lisp/code/} in all file operations.  For example, you can now specify
 @code{code:eval.lisp} to refer to the file @file{/usr/lisp/code/eval.lisp}.
@@ -1849,11 +1853,13 @@ as follows:
 @example
 (ext:search-list @var{name})
 @end example
+@noindent
 Where @var{name} is the name of a search list as described above.  For example,
 calling @code{ext:search-list} on @code{code:} as follows:
 @example
 (ext:search-list "code:")
 @end example
+@noindent
 returns the list @code{("/usr/lisp/code/")}.
 
 
@@ -3306,7 +3312,7 @@ constrained to be one of the types in
 
 @float Table, tbl-static-array-types
 @caption{Allowed element types for static arrays}
-@multitable {(complex single-float)}
+@multitable @columnfractions .4
 @item @code{(unsigned-byte 8)}
 @item @code{(unsigned-byte 16)}
 @item @code{(unsigned-byte 32)}

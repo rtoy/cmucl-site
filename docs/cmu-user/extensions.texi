@@ -462,34 +462,6 @@ range between @code{0} and @code{255}, using the ASCII encoding.
 @ref{tbl-chars} shows characters recognized
 by @cmucl{}.
 
-@c @begin{table}[tbhp]
-@c   @begin{center}
-@c     @begin{tabular}{|c|c|l|l|l|l|}
-@c       @hline
-@c       @multicolumn{2}{|c|}{ASCII} & @multicolumn{1}{|c}{Lisp} &
-@c       @multicolumn{3}{|c|}{} @@
-@c       @cline{1-2}
-@c       Name & Code & @multicolumn{1}{|c|}{Name} & @multicolumn{3}{|c|}{@raisebox{1.5ex}{Alternatives}}@@
-@c       @hline
-@c       @hline
-@c       @code{nul} & 0 & @code{@#@back{NULL}} & @code{@#@back{NUL}} & &@@
-@c       @code{bel} & 7 & @code{@#@back{BELL}} & & &@@
-@c       @code{bs} &  8 & @code{@#@back{BACKSPACE}} & @code{@#@back{BS}} & &@@
-@c       @code{tab} & 9 & @code{@#@back{TAB}} & & &@@
-@c       @code{lf} & 10 & @code{@#@back{NEWLINE}} & @code{@#@back{NL}} & @code{@#@back{LINEFEED}} & @code{@#@back{LF}}@@
-@c       @code{ff} & 11 & @code{@#@back{VT}} & @code{@#@back{PAGE}} & @code{@#@back{FORM}} &@@
-@c       @code{cr} & 13 & @code{@#@back{RETURN}} & @code{@#@back{CR}} & &@@
-@c       @code{esc} & 27 & @code{@#@back{ESCAPE}} & @code{@#@back{ESC}} & @code{@#@back{ALTMODE}} & @code{@#@back{ALT}}@@
-@c       @code{sp} & 32 & @code{@#@back{SPACE}} & @code{@#@back{SP}} & &@@
-@c       @code{del} & 127 & @code{@#@back{DELETE}} & @code{@#@back{RUBOUT}} & &@@
-@c       @hline
-@c     @end tabular
-@c     @caption{Characters recognized by @cmucl}
-@c     @anchor{tbl:chars}
-@c   @end center
-@c @end table
-@c 
-
 @float Table, tbl-chars
 @caption{Characters recognized by @cmucl{}}
 @multitable @columnfractions .1 .1 .2 .5
@@ -554,7 +526,7 @@ arbitrary equality (equivalence) predicate.
 @defun extensions:define-hash-table-test @args{@var{hash-table-test-name} @var{test-function} @var{hash-function}}
       
       The @var{hash-table-test-name} must be a symbol.
-      % I just assumed the above. [2002/10/10:rpg]
+      @c I just assumed the above. [2002/10/10:rpg]
       The @var{test-function} takes two objects and returns true
       iff they are the same.  The @var{hash-function} takes one object and
       returns two values: the (positive fixnum) hash value and true if
@@ -3331,36 +3303,6 @@ cannot be adjustable and cannot be displaced to.  The array must also
 be a @code{simple-array} of one dimension.  The element type is also
 constrained to be one of the types in
 @ref{tbl-static-array-types}.
-
-@c @table[tbhp]
-@c   @center
-@c     @tabular}{|c|
-@c       @hline
-@c       @code{(unsigned-byte 8)} @@
-@c       @hline
-@c       @code{(unsigned-byte 16)} @@
-@c       @hline
-@c       @code{(unsigned-byte 32)} @@
-@c       @hline
-@c       @code{(signed-byte 8)} @@
-@c       @hline
-@c       @code{(signed-byte 16)} @@
-@c       @hline
-@c       @code{(signed-byte 32)} @@
-@c       @hline
-@c       @code{single-float} @@
-@c       @hline
-@c       @code{double-float} @@
-@c       @hline
-@c       @code{(complex single-float)} @@
-@c       @hline
-@c       @code{(complex double-float)} @@
-@c       @hline
-@c     @end tabular
-@c     @caption{Allowed element types for static arrays}
-@c     @anchor{tbl:static-array-types}
-@c   @end center
-@c @end table
 
 @float Table, tbl-static-array-types
 @caption{Allowed element types for static arrays}

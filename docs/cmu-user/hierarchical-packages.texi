@@ -79,29 +79,6 @@ assuming that the packages named @verb{|foo|}, @verb{|foo.bar|},
 @verb{|mypack.foo.baz|}, @verb{|mypack.bar|}, and @verb{|mypack.bar.baz|},
 have all been created.
 
-@c @table[h]
-@c @center
-@c @tabular}{|l|l|l|
-@c @hline
-@c relative name   &  current package & absolute name of referenced package @@
-@c @hline
-@c foo &               any  &                      foo @@
-@c foo.bar &           any &                       foo.bar @@
-@c .foo &              mypack &                    mypack.foo @@
-@c  .foo.bar &         mypack &                    mypack.foo.bar @@
-@c  ..foo &            mypack.bar &                mypack.foo @@
-@c  ..foo.baz &        mypack.bar &                mypack.foo.baz @@
-@c  ...foo &           mypack.bar.baz &            mypack.foo @@
-@c  . &                mypack.bar.baz &            mypack.bar.baz @@
-@c  .. &               mypack.bar.baz &            mypack.bar @@
-@c  ... &              mypack.bar.baz &            mypack @@
-@c @hline
-@c @end tabular
-@c @end center
-@c @caption{Examples of hierarchical packages}
-@c @label{tbl:hierarchical-packages}
-@c @end table
-
 @float Table, tbl-hierarchical-packages
 @caption{Examples of hierarchical packages}
 @multitable {relative name} {current package} {absolute name of referenced package}

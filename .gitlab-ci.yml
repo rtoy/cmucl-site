@@ -2,7 +2,9 @@ pages:
   stage: deploy
   script:
     - mkdir public
-    # Generate the website
+    # Generate the website.  Touch build-el.force to force building.
+    # I think we should always build everything even if only one file changed.
+    - touch /tmp/build-el-force
     - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
     # Generate the design doc.
     - (cd docs/internals; makeinfo --info design.texi)

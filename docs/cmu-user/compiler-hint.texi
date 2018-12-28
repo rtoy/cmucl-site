@@ -3141,10 +3141,10 @@ would be at a loss if there was no declaration at all
 useful in this regard, since they can often be strengthened to a good
 integer type.
 
-% Arithmetic with @code{complex} numbers is inefficient in comparison to
-% float and integer arithmetic.  Complex numbers are always represented
-% with a pointer descriptor (causing consing overhead), and complex
-% arithmetic is always closed coded using the general generic arithmetic
+@c Arithmetic with @code{complex} numbers is inefficient in comparison to
+@c float and integer arithmetic.  Complex numbers are always represented
+@c with a pointer descriptor (causing consing overhead), and complex
+@c arithmetic is always closed coded using the general generic arithmetic
 As noted above, @cmucl{} has support for @code{(complex single-float)}
 and @code{(complex double-float)}.  These can be unboxed and, thus,
 are quite efficient.  However, arithmetic with complex types such as:
@@ -3351,7 +3351,7 @@ error due to round-off errors.  This round-off error could
 accumulate to cause the compiler to erroneously deduce the result
 type and cause code to be removed as being
 unreachable.@footnote{This, however, has not actually happened, but
-  it is a possibility.}%
+  it is a possibility.}
 Thus, the declarations should only be precise enough for the
 compiler to deduce that a real-valued argument to a function would
 produce a real-valued result.  The efficiency notes

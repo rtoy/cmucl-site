@@ -803,20 +803,20 @@ and two return values (@var{a} and @var{i}).
 @node Calling Lisp from C
 @subsection Calling Lisp from C
 
-% Calling Lisp functions from C is sometimes possible, but is rather hackish.
-% See @code{funcall0} ... @code{funcall3} in the @file{lisp/arch.h}.  The
-% arguments must be valid @cmucl{} object descriptors (e.g.  fixnums must be
-% left-shifted by 2.)  See @file{compiler/generic/objdef.lisp} or the derived
-% file @file{lisp/internals.h} for details of the object representation.
-% @file{lisp/internals.h} is mechanically generated, and is not part of the
-% source distribution.  It is distributed in the @file{docs/} directory of the
-% binary distribution.
+@c Calling Lisp functions from C is sometimes possible, but is rather hackish.
+@c See @code{funcall0} ... @code{funcall3} in the @file{lisp/arch.h}.  The
+@c arguments must be valid @cmucl{} object descriptors (e.g.  fixnums must be
+@c left-shifted by 2.)  See @file{compiler/generic/objdef.lisp} or the derived
+@c file @file{lisp/internals.h} for details of the object representation.
+@c @file{lisp/internals.h} is mechanically generated, and is not part of the
+@c source distribution.  It is distributed in the @file{docs/} directory of the
+@c binary distribution.
 
-% Note that the garbage collector moves objects, and won't be able to fix up any
-% references in C variables, so either turn GC off or don't keep Lisp pointers
-% in C data unless they are to statically allocated objects.  You can use
-% @funref{purify} to place live data structures in static space so that they
-% won't move during GC.
+@c Note that the garbage collector moves objects, and won't be able to fix up any
+@c references in C variables, so either turn GC off or don't keep Lisp pointers
+@c in C data unless they are to statically allocated objects.  You can use
+@c @funref{purify} to place live data structures in static space so that they
+@c won't move during GC.
 
 @cmucl{} supports calling Lisp from C via the @funref{def-callback}
 macro:

@@ -267,7 +267,7 @@ in C, an arbitrary number of client-data items can be registered with
 the callback.  Callback functions should be defined as:
 
 @lisp
-(defun callback-handler (widget call-data @&rest client-data) ... )
+(defun callback-handler (widget call-data &rest client-data) ... )
 @end lisp
 
 The passed widget is that in which the callback has occurred, and the
@@ -281,7 +281,7 @@ following slot (aside from the standard ones): click-count.
 To access the X event which generated the callback, use the following:
 
 @lisp
-(defun handler (widget call-data @&rest client-data)
+(defun handler (widget call-data &rest client-data)
   (with-callback-event (event call-data)
     ;; Use event structure here
   ))

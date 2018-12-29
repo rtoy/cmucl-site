@@ -1,0 +1,594 @@
+\input texinfo
+@settitle General Design Notes on the Motif Toolkit Interface
+
+@c LaTeX formatting by Marco Antoniotti based on internals.doc.
+
+@titlepage
+@title General Design Notes on the Motif Toolkit Interface
+@subtitle November 29, 2000
+
+@iftex
+@vskip 5cm
+@end iftex
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top
+
+@menu
+* Data Transport::              
+* Greeting Protocol::           
+* Request Protocol::            
+* Object Representations::      
+* Information in widget structure::  
+* Callback handlers::           
+* Structure of the Server::     
+* Structure of the Client::     
+* Adding New Requests to the System::  
+* Summary of differences with CLM::  
+* Function Index::              
+* Variable Index::              
+@end menu
+
+@end ifnottex
+
+@node Data Transport
+@chapter Data Transport
+
+@menu
+* Packet format::               
+@end menu
+
+@node Packet format
+@section Packet format
+
+@itemize
+@item Header:
+
+@multitable @columnfractions .2 .5
+@item	32 bits
+@tab serial number
+@item	16 bits
+@tab sequence position
+@item	16 bits
+@tab sequence length  
+@item	32 bits
+@tab packet length (including header)
+@end multitable
+
+@item Data:
+	(packet_length - 12) bytes of information
+@end itemize
+
+@itemize
+@item	Packets have a fixed maximum size (4k).
+
+@item	Packets a grouped together to form random length messages.  The
+	sequence length refers to how many packets comprise the
+	message, and each packet is tagged with its position in that sequence.
+
+@item	All packets in the same message have the same serial number.
+@item	Messages are built up as their constituent packets arrive.  It should
+	be possible to interleave the packets of different messages
+	and still have the individual messages be constructed
+	properly.
+@item	It is tacitly assumed that packets arrive in their proper
+	sequence order. 
+@item	A packet with a sequence position/length field denoting [0 of 0] is a
+	cancellation packet.  The message having that serial number should be
+	discarded.
+@end itemize
+
+@menu
+* Data format::                 
+@end menu
+
+@node Data format
+@subsection Data format
+
+Each data entry in a message is represented as:@@[2mm]
+
+@multitable @columnfractions .2 .5
+@item 8 bits
+@tab type tag
+@item 24 bits
+@tab immediate data
+@item rest
+@tab other data (if necessary)
+
+@end multitable
+
+
+@node Greeting Protocol
+@chapter Greeting Protocol
+
+When a Lisp process first establishes a connection to the server, it
+sends a 16 bit quantity which represents "1" to it.  The server using this
+to decide whether to byte swap words when sending them to Lisp.  The
+general policy is that all data is presented to the Lisp process in the
+order that Lisp uses.
+
+Following the byte swapping information, the Lisp process sends an
+initial message which contains:
+@itemize
+@item A string giving the target X display name
+@item A string for the application name
+@item A string for the application class
+@end itemize
+
+@node Request Protocol
+@chapter Request Protocol
+
+@section Request format
+
+@multitable @columnfractions .2 .5
+@item 16 bits
+@tab request opcode
+@item 8 bits
+@tab request flags (0=nothing, 1=require confirm)
+@item 8 bits
+@tab& argument count (unused)
+@end multitable
+
+At the moment, the request flags field is used only to indicate whether
+the Lisp client desires a confirmation message when the request is finished
+processing.  If the request returns any values, this counts as the
+confirmation.  Otherwise, an empty confirmation message will be sent.
+
+@section Server reply format
+
+@multitable @columnfractions .2 .5
+@item 32 bits
+@tab response tag
+@item rest
+@tab return data (if any)
+@end multitable
+
+@noindent
+The response tag can have the following values:@@[2mm]
+
+@c @tabular{|l|l|}
+@c @hline
+@c @textsc{Tag} & @textsc{Meaning}@@@hline@hline
+@c 	@t{CONFIRM_REPLY}  & confirmation (for synchronization)@@@hline
+@c 	@t{VALUES_REPLY}   & return values from a request@@@hline
+@c 	@t{CALLBACK_REPLY} & a widget callback has been invoked@@@hline
+@c 	@t{EVENT_REPLY}    & an X event handler has been invoked@@@hline
+@c 	@t{ERROR@_REPLY}    & an error has occurred@@@hline
+@c 	@t{WARNING@_REPLY}  & a non-fatal problem has occurred@@@hline
+@c 	@t{PROTOCOL@_REPLY} & a protocol callback has been invoked@@@hline
+@c @end tabular
+
+@multitable @columnfractions .3 .6
+@headitem Tag @tab Meaning
+@item @t{CONFIRM_REPLY}
+@tab confirmation (for synchronization)
+@item @t{VALUES_REPLY}
+@tab return values from a request
+@item @t{CALLBACK_REPLY}
+@tab a widget callback has been invoked
+@item @t{EVENT_REPLY}
+@tab an X event handler has been invoked
+@item @t{ERROR_REPLY}
+@tab an error has occurred
+@item @t{WARNING_REPLY}
+@tab a non-fatal problem has occurred
+@item @t{PROTOCOL_REPLY}
+@tab a protocol callback has been invoked
+@end multitable
+
+
+@node Object Representations
+@chapter Object Representations
+
+@menu
+* Data format in message::      
+@end menu
+
+@node Data format in message
+@section Data format in message
+
+
+@c @tabular{|l|rl|p{.6@textwidth}|}
+@c @hline
+@c Accelerators	& 32 & bit & integer ID@@
+@c Atom		& 32 & bit & Atom ID@@
+@c Boolean		& 24 & bit & immediate data@@
+@c Color		& 24 & bit & immediate data (Red value) followed by
+@c 			     2 16 bit words for Green and Blue@@
+@c Colormap	& 32 & bit & Colormap XID@@
+@c Compound Strings	& 32 & bit & address@@
+@c Cursor		& 32 & bit & Cursor XID@@
+@c Enumeration	& 24 & bit & immediate integer@@
+@c Font		& 32 & bit & Font XID@@
+@c Font List	& 32 & bit & integer ID@@
+@c Function	& 24 & bit & immediate token@@
+@c Int		& 32 & bit & integer@@
+@c List		& 24 & bit & immediate data (length) followed by each element
+@c 			     recorded in order@@
+@c Pixmap		& 32 & bit & Pixmap XID@@
+@c Short		& 24 & bit & immediate integer@@
+@c (1) Strings	& 24 & bit & immediate data (length of string
+@c                              including @verb+'@0'+)
+@c 			     followed by string data padded to end on
+@c 			     a word boundary @dots{}@emph{or}@dots{}@@
+@c (2) Strings	& 24 & bit & immediate token (for common strings)@@
+@c Translations	& 32 & bit & integer ID@@
+@c Widgets		& 32 & bit & integer ID@@
+@c Window		& 32 & bit & Window XID@@@hline
+@c @end tabular
+
+@multitable @columnfractions .2 .15 .6
+@item Accelerators
+@tab 32 bit
+@tab integer ID
+@item Atom
+@tab 32 bit
+@tab Atom ID
+@item Boolean
+@tab 24 bit
+@tab immediate data
+@item Color
+@tab 24 bit
+@tab immediate data (Red value) followed by 2 16 bit words for Green and Blue@@
+@item Colormap
+@tab 32 bit
+@tab Colormap XID
+@item Compound Strings
+@tab 32 bit
+@tab address
+@item Cursor
+@tab 32bit
+@tab Cursor XID
+@item Enumeration
+@tab 24 bit
+@tab immediate integer
+@item Font
+@tab 32 bit
+@tab Font XID
+@item Font List
+@tab 32 bit
+@tab integer ID
+@item Function
+@tab 24 bit
+@tab immediate token
+@item Int
+@tab 32 bit
+@tab integer
+@item List
+@tab 24 bit
+@tab immediate data (length) followed by each element recorded in order
+@item Pixmap
+@tab 32 bit
+@tab Pixmap XID
+@item Short
+@tab 24 bit
+@tab immediate integer
+@item (1) Strings
+@tab 24 bit
+@tab immediate data (length of string including @verb{+'\0'+}) followed by string data padded to end on a word boundary @dots{}@emph{or}@dots{}
+@item (2) Strings
+@tab 24 bit
+@tab immediate token (for common strings)
+@item Translations
+@tab 32 bit
+@tab integer ID
+@item Widgets
+@tab 32 bit
+@tab integer ID
+@item Window
+@tab 32 bit
+@tab Window XID
+
+@end multitable
+@c @vspace{2mm}
+
+For objects such as translations, widgets, accelerators, font lists,
+and compound strings, the 32 bit ID is just the address of the object in
+the C server process.  They are represented in Lisp by structures which
+encapsulate their ID's and provide them with Lisp data types (other than
+simply INTEGER).
+
+@node Information in widget structure
+@chapter Information in widget structure
+
+@itemize
+@item integer ID for identifying the widget to the C server
+@item widget class keyword (e.g. @t{:FORM},
+      @t{:PUSH-BUTTON-GADGET}, @t{:UNKNOWN})
+@item parent widget
+@item list of (known) children
+@item @t{USER-DATA} slot for programmer use
+@item list of active callback lists
+@item list of active protocol lists
+@item list of active event handlers
+@end itemize
+The last three are for internal use in cleaning up Lisp state on
+widget destruction
+
+
+@node Callback handlers
+@chapter Callback handlers
+
+A callback handler is defined as:
+
+@lisp
+(defun handler (widget call-data &rest client-data) ....)
+@end lisp
+
+@noindent
+The @t{WIDGET} argument is the widget for which the callback is
+being invoked.@@
+The @t{CLIENT-DATA} @t{&rest} argument allows the
+programmer to pass an 
+arbitrary number of Lisp objects to the callback
+procedure@footnote{@b{Note:} this deviates from CLM and Motif in C.}.@@
+The @t{CALL-DATA} argument provides the information passed by Motif
+regarding the reason for the callback and any other relevant
+information.@@
+The @t{XEvent} which generated the event may be accessed by:
+
+@lisp
+(with-callback-event (event call-data)
+   ....)
+@end lisp
+
+@noindent
+Action procedures are used in translation tables as:
+
+@example
+<Key> q: Lisp(SOME-PACKAGE:MY-FUNCTION)
+@end example
+
+@noindent
+Action procedures may access their event information by:
+
+@lisp
+(with-action-event (event call-data)
+   ....)
+
+@end lisp
+
+@noindent
+Where callback data is passed in structures, @t{XEvent}s are represented
+as aliens.  This is because @t{XEvent}s are rather large.  This saves the
+consing of large structures for each event processed.
+
+Actions to be taken after the callback handler terminates the server's
+callback loop can be registered by:
+
+@lisp
+(with-callback-deferred-actions <forms>)
+@end lisp
+
+
+@node Structure of the Server
+@chapter Structure of the Server
+
+
+When the server process is started, it establishes standard sockets
+for clients to connect to it and waits for incoming connections.  When
+a client connects to the server, the server will fork a new process
+(unless @t{-nofork} was specified on the command line) to deal
+with incoming requests from the client.  The result of this is that
+each logical application has its own dedicated request server.  This
+prevents event handling in one application from blocking event
+dispatching in another.
+
+Each request server is essentially an event loop.  It waits for an
+event to occur, and dispatches that event to the appropriate handlers.
+If the event represents input available on the client connection, it
+reads the message off the stream and executes the corresponding
+request.  If the event is an X event or a Motif callback, relevant
+information about that event is packed into a message and sent to the
+Lisp client.  After sending the event notification, the server will
+enter a callback event loop to allow processing of requests from the
+client's callback procedure.  However, during the callback event loop,
+only input events from the client will be processed; all other events
+will be deferred until the callback is terminated.
+
+The server supports a standard means for reading and writing data
+objects into messages for communication with the Lisp client.  For
+every available type of data which may be transported there are reader
+and writer functions.  For instance, @t{WIDGET} is a valid type
+for argument data.  Two functions are defined in the server:
+@t{message_read_widget()} and
+@t{message_write_widget()}. To allow for a more generalized
+interface to argument passing, the server defines the functions
+@t{toolkit_write_value()} and @t{toolkit_read_value()}.
+These functions are passed data and a type identifier; it is their job
+to look up the correct reader/writer function.  Clearly, if the type
+of an argument is known at compile time then it is best to use the
+specific reader/writer functions.  However, if such type information
+is not known at compile time, as is the case with arbitrary resource
+lists, the higher level @t{toolkit_xxx_value()} functions are
+the only available options.
+
+
+@node Structure of the Client
+@chapter Structure of the Client
+
+@dots{}
+
+
+
+
+
+@node Adding New Requests to the System
+@chapter Adding New Requests to the System
+
+In order to add a new function to the toolkit interface, this new
+function must be declared in both C and Lisp.
+
+Lisp provides a convenient macro interface for writing the necessary RPC
+stub.  The form of this definition is:
+
+@lisp
+(def-toolkit-request <C name> <Lisp name> <:confirm|:no-confirm>
+  "Documentation string"
+  (<arguments>)
+  (<return-values>)
+  <optional forms>)
+@end lisp
+
+Entries in the argument list should be of the form @t{(<name>
+<type>)}.  The return value list is simply a list of types of the
+return value(s).  Any forms supplied at the end will be executed in a
+context where the arguments are bound to the given names and the
+return value is bound to @t{RESULT} (if there was only one) or
+@t{FIRST}, @t{SECOND}, @dots{}, @t{FOURTH} (for up to 4
+return values).  At the moment, the interface does not support any
+more than 4 return values.  You must also specify a value for the
+confirmation option (@t{:CONFIRM} or @t{:NO-CONFIRM}).  If
+you expect return values, you must specify @t{:CONFIRM} in order
+to receive them.  Otherwise, you may specify @t{:NO-CONFIRM}.
+Use of @t{:NO-CONFIRM} allows for increased efficiency since the
+client will issue a request but not wait for any response.  All
+function prototypes should be placed in the prototypes.lisp file.  A
+few examples of request prototypes:
+
+@lisp
+
+(def-toolkit-request "XtSetSensitive" set-sensitive :no-confirm
+  "Sets the event sensitivity of the given widget."
+  ;;
+  ;; Takes two arguments:  widget and sensitivep
+  ((widget widget) (sensitivep (member t nil)))
+  ;;
+  ;; No return values expected
+  ())
+
+(def-toolkit-request "XtIsManaged" is-managed :confirm
+  "Returns a value indicating whether the specified widget is managed."
+  ;;
+  ;; Takes one argument: widget
+  ((widget widget))
+  ;;
+  ;; Expects one return value (which is a boolean)
+  ((member t nil)))
+
+(def-toolkit-request "XmSelectionBoxGetChild" selection-box-get-child
+                     :confirm
+  "Accesses a child component of a SelectionBox widget."
+  ;;
+  ;; Takes two arguments: w and child
+  ((w widget) (child keyword))
+  ;;
+  ;; Expects a return value which is a widget
+  (widget)
+  ;;
+  ;; Now we execute some code to maintain the state of the world.
+  ;; Given that this widget may be one we don't know about, we must
+  ;; register it as the child of one we do know about.
+  (widget-add-child w result)
+  (setf (widget-type result) :unknown))
+@end lisp
+
+After adding a request prototype in Lisp, you must add the actual code
+to process the request to the C server code.  The general form of the
+request function should be:
+
+@example
+int R<name>(message_t message)
+{
+  int arg;
+  ...
+  toolkit_read_value(message,&arg,XtRInt);
+  ...
+}
+@end example
+
+Where @t{<name>} is the C name given in the request prototype
+above.  You must also add an entry for this function in the
+functions.h file.  An example of a standard request function is:
+
+@example
+
+int RXtCreateWidget(message_t message)
+{
+  String name;
+  WidgetClass class;
+  Widget w,parent;
+  ResourceList resources;
+
+  toolkit_read_value(message,&name,XtRString);
+  toolkit_read_value(message,&class,XtRWidgetClass);
+  toolkit_read_value(message,&parent,XtRWidget);
+
+  resources.class = class;
+  resources.parent = parent;
+  toolkit_read_value(message,&resources,ExtRResourceList);
+
+  w = XtCreateWidget(name,class,parent,
+		     resources.args,resources.length);
+  reply_with_widget(message,w);
+}
+@end example
+
+Certain standard functions for returning arguments are provided in the file
+@t{requests.c}; @t{reply_with_widget()} is an example of these.
+
+
+@node Summary of differences with CLM
+@chapter Summary of differences with CLM
+
+X objects (e.g. windows, fonts, pixmaps) are represented as CLX objects
+rather than the home-brewed representations of CLM.  As a consequence,
+this requires that CLX be present in the core.  If this were to cause
+unacceptable core bloat, a skeletal CLX could be built which only
+supported the required functionality.
+
+Stricter naming conventions are used, in particular for enumerated
+types.  A value named @t{XmFOO_BAR} in C will be called
+@t{:foo-bar} in Lisp, consistently.  Abbreviations such as
+@t{:form} (for @t{:attach-form}) are not allowed since they
+are often ambiguous.  Where CLM abbreviates callback names
+(e.g. @t{XmNactivateCallback} becomes @t{:activate}), we do
+not (e.g.  @t{:activate-callback}).
+
+Some differently named functions which can be resolved without undo
+hassle.
+
+Passing of information to callbacks and event handlers.  In CLM,
+callback handlers are defined as:
+
+@lisp
+(defun handler (widget client-data &rest call-data) .... )
+@end lisp
+
+The @t{CLIENT-DATA} argument is some arbitrary data which was
+stashed with the callback when it was registered by the application.
+The call-data represents the call-data information provided by Motif
+to the callback handler.  Each data item of the callback information
+is passed as a separate argument.  In our world, callback handlers are
+defined as:
+
+@lisp
+(defun handler (widget call-data &rest client-data) .... )
+@end lisp
+
+The call-data is packaged into a structure and passed as a single
+argument and the user is allowed to register any number of items to be
+passed to the callback as client-data.  Being able to pass several
+items of client-data is more convenient for the programmer and the
+packaging of the call-data information is more appealing than
+splitting it apart into separate arguments.  Also, CLM only transports
+a limited subset of the available callback information.  We transport
+all information.  Event handlers differ in the same way.  The
+client-data is the @t{&rest} arg and the event info is packaged
+as a single object.  Accessing the generating event in a callback
+handler is done in the following manner:
+
+@lisp
+(defun handler (widget call-data &rest client-data)
+  (with-callback-event (event call-data)
+    ;; Access slots of event such as:
+    ;;  (event-window event) or
+    ;;  (button-event-x event)
+  ))
+@end lisp
+
+@bye

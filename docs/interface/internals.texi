@@ -29,8 +29,6 @@
 * Structure of the Client::     
 * Adding New Requests to the System::  
 * Summary of differences with CLM::  
-* Function Index::              
-* Variable Index::              
 @end menu
 
 @end ifnottex
@@ -493,12 +491,12 @@ request function should be:
 
 @example
 int R<name>(message_t message)
-{
+@{
   int arg;
   ...
   toolkit_read_value(message,&arg,XtRInt);
   ...
-}
+@}
 @end example
 
 Where @t{<name>} is the C name given in the request prototype
@@ -508,7 +506,7 @@ functions.h file.  An example of a standard request function is:
 @example
 
 int RXtCreateWidget(message_t message)
-{
+@{
   String name;
   WidgetClass class;
   Widget w,parent;
@@ -525,7 +523,7 @@ int RXtCreateWidget(message_t message)
   w = XtCreateWidget(name,class,parent,
 		     resources.args,resources.length);
   reply_with_widget(message,w);
-}
+@}
 @end example
 
 Certain standard functions for returning arguments are provided in the file

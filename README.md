@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.common-lisp.net/cmucl/cmucl-site/badges/master/pipeline.svg)](https://gitlab.common-lisp.net/cmucl/cmucl-site/commits/master)
+
 This repository holds the CMUCL web site at
 [common-lisp.net/project/cmucl](http://common-lisp.net/project/cmucl),
 which is also mirrored at [www.cmucl.org](http://www.cmucl.org) and at

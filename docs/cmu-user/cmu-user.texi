@@ -177,11 +177,15 @@ Robert A. MacLachlan, dated July 1992.
 
 @end titlepage
 
+@ifnottex
+@shortcontents
+@end ifnottex
 @contents
 
 @ifnottex
 @node Top
 @top
+
 
 @menu
 * Introduction::

@@ -59,9 +59,8 @@ User's Manual}, and the @i{Hemlock Command Implementor's Manual}.
 @cmucl{} is developed and maintained by a group of volunteers who
 collaborate over the internet. Sources and binary releases for the
 various supported platforms can be obtained from
-@uref{http://www.cons.org/cmucl/}. 
-These pages
-describe how to download by FTP or CVS.
+@uref{http://www.cmucl.org} or @uref{https://gitlab.common-lisp.net/cmucl/cmucl}
+These pages describe how to download by HTML.
 
 A number of mailing lists are available for users and developers;
 please see the web site for more information. 

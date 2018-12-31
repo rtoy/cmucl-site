@@ -146,22 +146,38 @@ Alien
 @code{\arg\}
 @end macro
 
-@titlepage
-@title CMUCL User's Manual
-@subtitle December 2018
-@subtitle 21d
-@author Robert A. MacLachlan, @i{Editor}
+@macro manualdate {}
+December 2018
+@end macro
 
-@iftex
-@vskip 10pt
-@end iftex
-@quotation
+@macro manualvers {}
+21d
+@end macro
+
+@macro manualauthor {}
+Robert A. MacLachlan, @i{Editor}
+@end macro
+
+@macro shortdescription {}
 @cmucl{} is a free, high-performance implementation of the Common Lisp
 programming language, which runs on most major Unix platforms. It
 mainly conforms to the ANSI Common Lisp Standard. @cmucl{} features a
 sophisticated native-code compiler, a foreign function interface, a
 graphical source-level debugger, an interface to the X11 Window
 System, and an Emacs-like editor.
+@end macro
+
+@titlepage
+@title CMUCL User's Manual
+@subtitle @manualdate{}
+@subtitle @manualvers{}
+@author @manualauthor{}
+
+@iftex
+@vskip 10pt
+@end iftex
+@quotation
+@shortdescription{}
 
 @iftex
 @vskip 5pt
@@ -186,24 +202,18 @@ Robert A. MacLachlan, dated July 1992.
 @node Top
 @top
 
-@ifnottex
-@b{CMUCL User's Manual} version October 2017, 21c
+@b{CMUCL User's Manual} version @manualdate{}, @manualvers{}.
 
-Robert A. Maclachlan, @i{Editor}
+@noindent
+@manualauthor{}
 
-@cmucl{} is a free, high-performance implementation of the Common Lisp
-programming language, which runs on most major Unix platforms. It
-mainly conforms to the ANSI Common Lisp Standard. @cmucl{} features a
-sophisticated native-code compiler, a foreign function interface, a
-graphical source-level debugger, an interface to the X11 Window
-System, and an Emacs-like editor.
+@shortdescription{}
 
 @b{Keywords}: lisp, Common Lisp, manual, compiler, programming
 language implementation, programming environment
 
 This manual is based on CMU Technical Report CMU-CS-92-161, edited by
 Robert A. MacLachlan, dated July 1992.
-@end ifnottex
 
 @menu
 * Introduction::

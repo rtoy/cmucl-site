@@ -6,6 +6,11 @@ implementation, and some essential parts of the programming environment
 are left undefined.  This chapter discusses the most important design
 choices and extensions.
 
+@c Be careful when automatically updating nodes.  Because we include
+@c some files, the included sections aren't known. So add
+@c "Hierarchical Packages" and "Package Locks" before "The Editor",
+@c and "Simple Streams" after "Stream Extensions".  Creating the info
+@c files will warn about this issue.
 @menu
 * Data Types::                  
 * Default Interrupts for Lisp::  
@@ -2110,12 +2115,19 @@ specified.
 
 @menu
 * MT-19937 Generator::          
+* xoroshiro128+ Generator::     
 @end menu
 
 @node MT-19937 Generator
 @subsection MT-19937 Generator
 @c @cpsubindex{random number generation}{MT-19937 generator}
 @cindex random number generation, MT-19937 generator
+@quotation Note
+This generator is deprecated in favor of the @code{xoroshiro128+}
+generator (@pxref{xoroshiro128+ Generator}) which is faster and uses
+less memory.
+@end quotation
+
 On all platforms, the random number is @code{MT-19937} generator as indicated by
 @kwd{rand-mt19937} being in @code{*features*}.  This is a Lisp
 implementation of the MT-19937 generator of Makoto Matsumoto and
@@ -2131,6 +2143,32 @@ reading 627 words from @code{/dev/urandom}, when available.  If
 @code{/dev/urandom} is not available, the universal time is used to
 initialize @code{*random-state*}.  The initialization is done as given
 in Matsumoto's paper.
+
+@node xoroshiro128+ Generator
+@subsection xoroshiro128+ Generator
+@cindex random number generation, xoroshiro128+
+On supported platforms, the random number generator is
+@code{xoroshiro128+} generator, as indicated by @kwd{random-xoroshiro}
+being in @code{*features*}.  This is a Lisp implementation of the
+xoroshiro128+ generator by David Blackman and Sebastiano Vigna.  See
+@uref{http://xoroshiro.di.unimi.it} for further details.
+
+This generator replaces the @code{MT-19937} generator (@pxref{MT-19937
+Generator}) because it is faster and uses much less memory for the
+generator (4 32-bit words).  However, the period is shorter.
+
+When @cmucl{} starts up, @code{*random-state*} is initialized by
+reading 4 32-bit words from @code{/dev/urandom}, when available.  If
+@code{/dev/urandom} is not available, the universal time is used to
+initialize @code{*random-state*}.  The initialization is done is using
+@uref{http://xoshiro.di.unimi.it/splitmix64.c,splitmix64} with
+@code{get-universal-time}.
+
+@defun kernel:random-state-jump @ampoptional{} (@var{rng-state} @var{*random-state*})
+  Jump the @var{rng-state}.  This is equivalent to @math{2^{64}} calls to the
+  @code{xoroshiro128+} generator.  It can be used to generate @math{2^{64}}
+  non-overlapping subsequences for parallel computations.
+@end defun
 
 @node Lisp Threads
 @section Lisp Threads

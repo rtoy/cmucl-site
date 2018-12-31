@@ -148,8 +148,8 @@ Alien
 
 @titlepage
 @title CMUCL User's Manual
-@subtitle October 2017
-@subtitle 21c
+@subtitle December 2018
+@subtitle 21d
 @author Robert A. MacLachlan, @i{Editor}
 
 @iftex

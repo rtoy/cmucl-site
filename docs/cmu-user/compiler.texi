@@ -190,6 +190,7 @@ If non-@nil, enable recording of cross-reference
 @node Compilation Units
 @section Compilation Units
 @c @cpsubindex{compilation}{units}
+@cindex compilation, units
 
 @cmucl{} supports the @code{with-compilation-unit} macro added to the
 language by the X3J13 ``with-compilation-unit'' compiler cleanup
@@ -293,6 +294,7 @@ names of all the undefined functions, types and variables.
 @section Interpreting Error Messages
 @anchor{error-messages}
 @c @cpsubindex{error messages}{compiler}
+@cindex error messages, compiler
 @cindex compiler error messages
 
 One of @python{}'s unique features is the level of source location
@@ -606,6 +608,7 @@ errors aren't really signaled using the condition system.
 @node Errors During Macroexpansion
 @subsection Errors During Macroexpansion
 @c @cpsubindex{macroexpansion}{errors during}
+@cindex macroexpansion, errors during
 
 The compiler handles errors that happen during macroexpansion, turning
 them into compiler errors.  If you want to debug the error (to debug a
@@ -634,6 +637,7 @@ DO step variable is not a symbol: (ATOM CURRENT)
 @node Read Errors
 @subsection Read Errors
 @c @cpsubindex{read errors}{compiler}
+@cindex read errors, compiler
 
 The compiler also handles errors while reading the source.  For example:
 
@@ -689,7 +693,9 @@ delimiter.
 @node Error Message Parameterization
 @subsection Error Message Parameterization
 @c @cpsubindex{error messages}{verbosity}
+@cindex error messages, verbosity
 @c @cpsubindex{verbosity}{of error messages}
+@cindex verbosity, of error messages
 
 There is some control over the verbosity of error messages.  See also
 @varref{undefined-warning-limit}, @code{*efficiency-note-limit*} and
@@ -730,6 +736,7 @@ There is some control over the verbosity of error messages.  See also
 @node Types in Python
 @section Types in Python
 @c @cpsubindex{types}{in python}
+@cindex types, in python
 
 A big difference between @python{} and all other @llisp{} compilers
 is the approach to type checking and amount of knowledge about types:
@@ -757,6 +764,7 @@ See also sections @ref{advanced-type-stuff} and @ref{type-inference}.
 @subsection Compile Time Type Errors
 @cindex compile time type errors
 @c @cpsubindex{type checking}{at compile time}
+@cindex type checking, at compile time
 
 If the compiler can prove at compile time that some portion of the
 program cannot be executed without a type error, then it will give a
@@ -832,6 +840,7 @@ warnings.
 @anchor{precise-type-checks}
 @cindex precise type checking
 @c @cpsubindex{type checking}{precise}
+@cindex type checking, precise
 
 With the default compilation policy, all type
 assertions@footnote{There are a few circumstances where a type
@@ -899,6 +908,7 @@ run-time type error checking: @pxref{optimize-declaration}.
 @anchor{weakened-type-checks}
 @cindex weakened type checking
 @c @cpsubindex{type checking}{weakened}
+@cindex type checking, weakened
 
 When the value for the @code{speed} optimization quality is greater
 than @code{safety}, and @code{safety} is not @code{0}, then type
@@ -977,7 +987,9 @@ Type-error in MYFUN:
 @node Getting Existing Programs to Run
 @section Getting Existing Programs to Run
 @c @cpsubindex{existing programs}{to run}
+@cindex existing programs, to run
 @c @cpsubindex{types}{portability}
+@cindex types, portability
 @cindex compatibility with other Lisps
 
 Since @python{} does much more comprehensive type checking than other
@@ -1124,6 +1136,7 @@ code initially.
 @section Compiler Policy
 @anchor{compiler-policy}
 @c @cpsubindex{policy}{compiler}
+@cindex policy, compiler
 @cindex compiler policy
 
 The policy is what tells the compiler @var{how} to compile a program.
@@ -1142,7 +1155,8 @@ aspects of compilation.
 @subsection The Optimize Declaration
 @anchor{optimize-declaration}
 @cindex optimize declaration
-@c @cpsubindex{declarations}{@code{optimize}}
+@c @cpsubindex{declarations}{@code{optimize}
+@cindex declarations, @code{optimize}
 
 The @code{optimize} declaration recognizes six different
 @var{qualities}.  The qualities are conceptually independent aspects
@@ -1238,7 +1252,8 @@ How fast the compiler should run.  Note that increasing
 @subsection The Optimize-Interface Declaration
 @anchor{optimize-interface-declaration}
 @cindex optimize-interface declaration
-@c @cpsubindex{declarations}{@code{optimize-interface}}
+@c @cpsubindex{declarations}{@code{optimize-interface}
+@cindex declarations, @code{optimize-interface}
 
 The @code{extensions:optimize-interface} declaration is identical in
 syntax to the @code{optimize} declaration, but it specifies the policy

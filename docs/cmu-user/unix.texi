@@ -193,7 +193,9 @@ manuals and perform the translation from barbarous tongues.
 @section Type Translations
 @cindex aliens
 @c @cpsubindex{types}{alien}
+@cindex types, alien
 @c @cpsubindex{types}{foreign language}
+@cindex types, foreign language
 
 Lisp data types have very different representations from those used by
 conventional languages such as C.  Since the system interfaces are
@@ -227,7 +229,9 @@ be used.
 
 @cindex pointers
 @c @cpsubindex{malloc}{C function}
+@cindex malloc, C function
 @c @cpsubindex{free}{C function}
+@cindex free, C function
 Note that in some cases an address is represented by a Lisp integer, and in
 other cases it is represented by a real pointer.  Pointers are usually used
 when an object in the current address space is being referred to.  The MACH

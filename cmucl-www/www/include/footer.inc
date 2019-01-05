@@ -3,7 +3,7 @@
 <img border=0 src="http://validator.w3.org/images/vh40.gif"
      align="right" alt="" height=31 width=88>
 <!-- Google translate -->		
-<div id="google_translate_element"></div><script>
+<div id="google_translate_element"></div><script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en'

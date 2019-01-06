@@ -2146,7 +2146,7 @@ in Matsumoto's paper.
 
 @node xoroshiro128+ Generator
 @subsection xoroshiro128+ Generator
-@cindex random number generation, xoroshiro128+
+@cpsubindex{random number generation, xoroshiro128+}
 On supported platforms, the random number generator is
 @code{xoroshiro128+} generator, as indicated by @kwd{random-xoroshiro}
 being in @code{*features*}.  This is a Lisp implementation of the

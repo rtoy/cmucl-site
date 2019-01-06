@@ -109,7 +109,6 @@ that commands refer to.  The current frame also provides the lexical
 environment for evaluation of non-command forms.
 
 @cpsubindex{evaluation, debugger}
-@c @cindex evaluation, debugger
 The debugger evaluates forms in the lexical
 environment of the functions being debugged.  The debugger can only
 access variables.  You can't @code{go} or @code{return-from} into a
@@ -124,7 +123,6 @@ information on debugger variable access.
 @section Stack Frames
 @cindex stack frames
 @cpsubindex{frames, stack}
-@c @cindex frames, stack
 
 A stack frame is the run-time representation of a call to a function;
 the frame stores the state that a function needs to remember what it is
@@ -275,9 +273,7 @@ Printing of argument values is controlled by @code{*debug-print-level*} and
 @node Function Names
 @subsection Function Names
 @cpsubindex{function, names}
-@c @cindex function, names
 @cpsubindex{names, function}
-@c @cindex names, function
 
 If a function is defined by @code{defun}, @code{labels}, or @code{flet}, then the
 debugger will print the actual function name after the open parenthesis, like:
@@ -303,15 +299,10 @@ form if there is no @w{@code{def}@var{mumble}}.
 @subsection Funny Frames
 @cindex external entry points
 @cpsubindex{entry points, external}
-@c @cindex entry points, external
 @cpsubindex{block compilation, debugger implications}
-@c @cindex block compilation, debugger implications
 @cpsubindex{external, stack frame kind}
-@c @cindex external, stack frame kind
 @cpsubindex{optional, stack frame kind}
-@c @cindex optional, stack frame kind
 @cpsubindex{cleanup, stack frame kind}
-@c @cindex cleanup, stack frame kind
 
 Sometimes the evaluator introduces new functions that are used to implement a
 user function, but are not directly specified in the source.  The main place
@@ -367,7 +358,6 @@ sections @ref{debugger-policy} and @ref{open-coding}.
 @anchor{debug-tail-recursion}
 @cindex tail recursion
 @cpsubindex{recursion, tail}
-@c @cindex recursion, tail
 
 Both the compiler and the interpreter are ``properly tail recursive.''  If a
 function call is in a tail-recursive position, the stack frame will be
@@ -414,10 +404,8 @@ For a more thorough discussion of tail recursion, @pxref{tail-recursion}.
 @anchor{unknown-locations}
 @cindex unknown code locations
 @cpsubindex{locations, unknown}
-@c @cindex locations, unknown
 @cindex interrupts
 @cpsubindex{errors, run-time}
-@c @cindex errors, run-time
 
 The debugger operates using special debugging information attached to
 the compiled code.  This debug information tells the debugger what it
@@ -463,7 +451,6 @@ frame or two and reach an interpreted frame which can be debugged.
 @section Variable Access
 @anchor{debug-vars}
 @cpsubindex{variables, debugger access}
-@c @cindex variables, debugger access
 @cindex debug variables
 
 There are three ways to access the current frame's local variables in the
@@ -587,7 +574,6 @@ available, and even then, values are only available at known locations.
 @node Note On Lexical Variable Access
 @subsection Note On Lexical Variable Access
 @cpsubindex{evaluation, debugger}
-@c @cindex evaluation, debugger
  
 When the debugger command loop establishes variable bindings for available
 variables, these variable bindings have lexical scope and dynamic
@@ -607,7 +593,6 @@ bad things happening.
 @section Source Location Printing
 @anchor{source-locations}
 @cpsubindex{source location printing, debugger}
-@c @cindex source location printing, debugger
 
 One of @cmucl{}'s unique capabilities is source level debugging of compiled
 code.  These commands display the source location for the current frame:
@@ -754,10 +739,8 @@ Unknown location: using block start.
 
 and then proceed to print the source location for the start of the
 @emph{basic block} enclosing the code location.
-@cpsubindex{block, basic}
-@c @cindex block, basic 
-@cpsubindex{block, start location}
-@c @cindex block, start location 
+@cpsubindex{block, basic} 
+@cpsubindex{block, start location} 
 It's a bit complicated to explain exactly what a basic block is, but
 here are some properties of the block start location:
 
@@ -790,7 +773,6 @@ program on you.)
 @section Compiler Policy Control
 @anchor{debugger-policy}
 @cpsubindex{policy, debugger}
-@c @cindex policy, debugger
 @cindex debug optimization quality
 @cindex optimize declaration
 
@@ -1075,7 +1057,6 @@ Source: (* N (! (1- N)))
 @section Function Tracing
 @cindex tracing
 @cpsubindex{function, tracing}
-@c @cindex function, tracing
 
 The tracer causes selected functions to print their arguments and
 their results whenever they are called.  Options allow conditional
@@ -1196,15 +1177,11 @@ In @cmucl,
   in such cases we recommend using @code{(trace @var{foo} :encapsulate
     t)}
   
-  @cpsubindex{tracing, errors}
-@c @cindex tracing, errors
-  @cpsubindex{breakpoints, errors}
-@c @cindex breakpoints, errors
-  @cpsubindex{errors, breakpoints}
-@c @cindex errors, breakpoints
-  @cindex function-end breakpoints
-  @cpsubindex{breakpoints, function-end}
-@c @cindex breakpoints, function-end
+@cpsubindex{tracing, errors}
+@cpsubindex{breakpoints, errors}
+@cpsubindex{errors, breakpoints}
+@cindex function-end breakpoints
+@cpsubindex{breakpoints, function-end}
   
   @kwd{condition}, @kwd{break} and @kwd{print} forms are evaluated in
   the lexical environment of the called function; @code{debug:var} and

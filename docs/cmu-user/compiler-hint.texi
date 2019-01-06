@@ -283,7 +283,6 @@ During tuning, you should:
 @section More About Types in Python
 @anchor{advanced-type-stuff}
 @cpsubindex{types, in python}
-@c @cindex types, in python
 
 This section goes into more detail describing what types and declarations are
 recognized by @python.  The area where @python{} differs most radically from
@@ -367,7 +366,6 @@ section @ref{array-types} for array types.
 @node Canonicalization
 @subsection Canonicalization
 @cpsubindex{types, equivalence}
-@c @cindex types, equivalence
 @cindex canonicalization of types
 @cindex equivalence of types
 
@@ -460,9 +458,7 @@ can be expressed as @code{@w{(or integer cons)}}.
 @anchor{empty-type}
 @cindex NIL type
 @cpsubindex{empty type, the}
-@c @cindex empty type, the
 @cpsubindex{errors, result type of}
-@c @cindex errors, result type of
 
 The type @false{} is also called the empty type, since no object is of
 type @false{}.  The union of no types, @code{(or)}, is also empty.
@@ -482,9 +478,7 @@ return, then (in safe compilation policies) a ``@code{NIL Function
 @subsection Function Types
 @anchor{function-types}
 @cpsubindex{function, types}
-@c @cindex function, types
 @cpsubindex{types, function}
-@c @cindex types, function
 
 @findexed{function} types are understood in the restrictive sense, specifying:
 @itemize
@@ -613,7 +607,6 @@ warning in non-CMU implementations can be suppressed with the standard
 @cindex structure types
 @cindex defstruct types
 @cpsubindex{types, structure}
-@c @cindex types, structure
 
 Because of precise type checking, structure types are much better
 supported by @python{} than by conventional compilers:
@@ -689,7 +682,6 @@ run-time.
 @node Type Restrictions
 @subsection Type Restrictions
 @cpsubindex{types, restrictions on}
-@c @cindex types, restrictions on
 
 Avoid use of the @code{and}, @code{not} and @code{satisfies} types in
 declarations, since type inference has problems with them.  When these
@@ -865,7 +857,6 @@ down are:
 @node Local Function Type Inference
 @subsection Local Function Type Inference
 @cpsubindex{local call, type inference}
-@c @cindex local call, type inference
 
 The types of arguments to local functions are inferred in the same was
 as any other local variable; the type is the union of the argument
@@ -898,7 +889,6 @@ mechanisms for ensuring proper tail recursion mentioned in section
 @subsection Global Function Type Inference
 @anchor{function-type-inference}
 @cpsubindex{function, type inference}
-@c @cindex function, type inference
 
 As described in section @ref{function-types}, a global function type
 (@tindexed{ftype}) declaration places implicit type assertions on the
@@ -955,7 +945,6 @@ deriving function types.
 @cindex operation specific type inference
 @cindex arithmetic type inference
 @cpsubindex{numeric, type inference}
-@c @cindex numeric, type inference
 
 Many of the standard @clisp{} functions have special type inference
 procedures that determine the result type as a function of the
@@ -976,7 +965,6 @@ array element type.  Here are some other examples of type inferences:
 @cindex dynamic type inference
 @cindex conditional type inference
 @cpsubindex{type inference, dynamic}
-@c @cindex type inference, dynamic
 
 @python{} uses flow analysis to infer types in dynamically typed
 programs.  For example:
@@ -1083,9 +1071,7 @@ only done after the list-specific @code{car} operation.
 @subsection Type Check Optimization
 @anchor{type-check-optimization}
 @cpsubindex{type checking, optimization}
-@c @cindex type checking, optimization
 @cpsubindex{optimization, type check}
-@c @cindex optimization, type check
 
 @python{} backs up its support for precise type checking by minimizing
 the cost of run-time type checking.  This is done both through type
@@ -1200,7 +1186,6 @@ optimization.
 
 @cindex let optimization
 @cpsubindex{optimization, let}
-@c @cindex optimization, let
 
 The primary optimization of let variables is to delete them when they
 are unnecessary.  Whenever the value of a let variable is a constant,
@@ -1292,7 +1277,6 @@ style of iteration that is totally assignment free.
 @subsection Constant Folding
 @cindex constant folding
 @cpsubindex{folding, constant}
-@c @cindex folding, constant
 
 Constant folding is an optimization that replaces a call of constant
 arguments with the constant result of that call.  Constant folding is
@@ -1358,7 +1342,6 @@ becomes:
 @subsection Control Optimization
 @cindex control optimization
 @cpsubindex{optimization, control}
-@c @cindex optimization, control
 
 The most important optimization of control is recognizing when an
 @findexed{if} test is known at compile time, then deleting the
@@ -1568,7 +1551,6 @@ printed.
 @subsection Multiple Values Optimization
 @cindex multiple value optimization
 @cpsubindex{optimization, multiple value}
-@c @cindex optimization, multiple value
 
 Within a function, @python{} implements uses of multiple values
 particularly efficiently.  Multiple values can be kept in arbitrary
@@ -1597,7 +1579,6 @@ provides efficient support for multiple function return values.
 @subsection Source to Source Transformation
 @cindex source-to-source transformation
 @cpsubindex{transformation, source-to-source}
-@c @cindex transformation, source-to-source
 
 The compiler implements a number of operation-specific optimizations as
 source-to-source transformations.  You will often see unfamiliar code in error
@@ -1831,9 +1812,7 @@ the @code{debug} optimization quality is greater than @code{2}
 @anchor{local-call}
 @cindex local call
 @cpsubindex{call, local}
-@c @cindex call, local
 @cpsubindex{function call, local}
-@c @cindex function call, local
 
 @python{} supports two kinds of function call: full call and local call.
 Full call is the standard calling convention; its late binding and
@@ -1871,7 +1850,6 @@ advantages to the user:
 @node Self-Recursive Calls
 @subsection Self-Recursive Calls
 @cpsubindex{recursion, self}
-@c @cindex recursion, self
 
 Local call is used when a function defined by @code{defun} calls itself.  For
 example:
@@ -1983,7 +1961,6 @@ don't have to.
 @anchor{local-tail-recursion}
 @cindex tail recursion
 @cpsubindex{recursion, tail}
-@c @cindex recursion, tail
 
 Tail-recursive local calls are particularly efficient, since they are
 in effect an assignment plus a control transfer.  Scheme programmers
@@ -2042,9 +2019,7 @@ such as:
 @subsection Return Values
 @anchor{local-call-return}
 @cpsubindex{return values, local call}
-@c @cindex return values, local call
 @cpsubindex{local call, return values}
-@c @cindex local call, return values
 
 One of the more subtle costs of full call comes from allowing
 arbitrary numbers of return values.  This overhead can be avoided in
@@ -2086,7 +2061,6 @@ and the representation of numeric types.
 @anchor{block-compilation}
 @cindex block compilation
 @cpsubindex{compilation, block}
-@c @cindex compilation, block
 
 Block compilation allows calls to global functions defined by
 @findexed{defun} to be compiled as local calls.  The function call
@@ -2174,7 +2148,6 @@ converted.
 @node Block Compilation Declarations
 @subsection Block Compilation Declarations
 @cpsubindex{declarations, block compilation}
-@c @cindex declarations, block compilation
 @cindex start-block declaration
 @cindex end-block declaration
 
@@ -2210,7 +2183,6 @@ is worth block compiling.
 @subsection Compiler Arguments
 @anchor{compile-file-block}
 @cpsubindex{compile-file, block compilation arguments}
-@c @cindex compile-file, block compilation arguments
 
 The @kwd{block-compile} and @kwd{entry-points} arguments to
 @code{extensions:compile-from-stream} and @funref{compile-file} provide overall
@@ -2285,7 +2257,6 @@ extend block compilation across file boundaries.
 @anchor{context-declarations}
 @cindex context sensitive declarations
 @cpsubindex{declarations, context-sensitive}
-@c @cindex declarations, context-sensitive
 
 @cmucl{} has a context-sensitive declaration mechanism which is useful
 because it allows flexible control of the compilation policy in large
@@ -2415,13 +2386,9 @@ conventions used in coding.
 @anchor{inline-expansion}
 @cindex inline expansion
 @cpsubindex{expansion, inline}
-@c @cindex expansion, inline
 @cpsubindex{call, inline}
-@c @cindex call, inline
 @cpsubindex{function call, inline}
-@c @cindex function call, inline
 @cpsubindex{optimization, function call}
-@c @cindex optimization, function call
 
 @python{} can expand almost any function inline, including functions
 with keyword arguments.  The only restrictions are that keyword
@@ -2729,9 +2696,7 @@ Produce a normal fasl file, but byte compile any
 @anchor{object-representation}
 @cindex object representation
 @cpsubindex{representation, object}
-@c @cindex representation, object
 @cpsubindex{efficiency, of objects}
-@c @cindex efficiency, of objects
 
 A somewhat subtle aspect of writing efficient @clisp{} programs is
 choosing the correct data structures so that the underlying objects
@@ -2756,7 +2721,6 @@ depending on how the program operates on them.
 @node Think Before You Use a List
 @subsection Think Before You Use a List
 @cpsubindex{lists, efficiency of}
-@c @cindex lists, efficiency of
 
 Although Lisp's creator seemed to think that it was for LISt
 Processing, the astute observer may have noticed that the chapter on
@@ -2767,8 +2731,7 @@ for many purposes.
 
 @node Structure Representation
 @subsection Structure Representation
-@cpsubindex{structure types, efficiency of}
-@c @cindex structure types, efficiency of 
+@cpsubindex{structure types, efficiency of} 
 One of the best ways of
 building complex data structures is to define appropriate structure
 types using @findexed{defstruct}.  In @python, access of structure
@@ -2805,7 +2768,6 @@ efficiently open-coded.
 @subsection Arrays
 @anchor{array-types}
 @cpsubindex{arrays, efficiency of}
-@c @cindex arrays, efficiency of
 
 Arrays are often the most efficient representation for collections of objects
 because:
@@ -2847,7 +2809,6 @@ can detect inefficient array accesses by enabling efficiency notes,
 @node Vectors
 @subsection Vectors
 @cpsubindex{vectors, efficiency of}
-@c @cindex vectors, efficiency of
 
 Vectors (one dimensional arrays) are particularly useful, since in
 addition to their obvious array-like applications, they are also well
@@ -2868,7 +2829,6 @@ should probably be using a vector.
 @node Bit-Vectors
 @subsection Bit-Vectors
 @cpsubindex{bit-vectors, efficiency of}
-@c @cindex bit-vectors, efficiency of
 
 Another thing that lists have been used for is set manipulation.  In
 applications where there is a known, reasonably small universe of
@@ -2884,7 +2844,6 @@ since they operate on a word at a time.
 @node Hashtables
 @subsection Hashtables
 @cpsubindex{hash-tables, efficiency of}
-@c @cindex hash-tables, efficiency of
 
 Hashtables are an efficient and general mechanism for maintaining associations
 such as the association between an object and its name.  Although hashtables
@@ -2934,9 +2893,7 @@ in @cmucl.
 @section Numbers
 @anchor{numeric-types}
 @cpsubindex{numeric, types}
-@c @cindex numeric, types
 @cpsubindex{types, numeric}
-@c @cindex types, numeric
 
 Numbers are interesting because numbers are one of the few @clisp{} data types
 that have direct support in conventional hardware.  If a number can be
@@ -2986,12 +2943,9 @@ representations in the presence of garbage collection.
 @node Descriptors
 @subsection Descriptors
 @cpsubindex{descriptors, object}
-@c @cindex descriptors, object
 @cindex object representation
 @cpsubindex{representation, object}
-@c @cindex representation, object
 @cpsubindex{consing, overhead of}
-@c @cindex consing, overhead of
 
 @clisp{}'s dynamic typing requires that it be possible to represent
 any value with a fixed length object, known as a @var{descriptor}.
@@ -3082,11 +3036,8 @@ non-descriptor arguments and return values in local call
 @subsection Variables
 @anchor{ND-variables}
 @cpsubindex{variables, non-descriptor}
-@c @cindex variables, non-descriptor
 @cpsubindex{type declarations, variable}
-@c @cindex type declarations, variable
 @cpsubindex{efficiency, of numeric variables}
-@c @cindex efficiency, of numeric variables
 
 In order to use a non-descriptor representation for a variable or
 expression intermediate value, the compiler must be able to prove that
@@ -3137,9 +3088,7 @@ representation selection (@pxref{representation-eff-note}.)
 @anchor{generic-arithmetic}
 @cindex generic arithmetic
 @cpsubindex{arithmetic, generic}
-@c @cindex arithmetic, generic
 @cpsubindex{numeric, operation efficiency}
-@c @cindex numeric, operation efficiency
 
 In @clisp, arithmetic operations are @var{generic}.@footnote{As Steele
   notes in CLTL II, this is a generic conception of generic, and is
@@ -3465,9 +3414,7 @@ Press, 1987}.
 @anchor{specialized-array-types}
 @cindex specialized array types
 @cpsubindex{array types, specialized}
-@c @cindex array types, specialized
 @cpsubindex{types, specialized array}
-@c @cindex types, specialized array
 
 @clisp{} supports specialized array element types through the
 @kwd{element-type} argument to @code{make-array}.  When an array has a
@@ -3532,7 +3479,6 @@ inefficient array accesses by enabling efficiency notes,
 @subsection Specialized Structure Slots
 @anchor{raw-slots}
 @cpsubindex{structure types, numeric slots}
-@c @cindex structure types, numeric slots
 @cindex specialized structure slots
 
 Structure slots declared by the @kwd{type} @code{defstruct} slot option
@@ -3555,9 +3501,7 @@ that intensively use these types.
 @subsection Interactions With Local Call
 @anchor{number-local-call}
 @cpsubindex{local call, numeric operands}
-@c @cindex local call, numeric operands
 @cpsubindex{call, numeric operands}
-@c @cindex call, numeric operands
 @cindex numbers in local call
 
 Local call has many advantages (@pxref{local-call}); one relevant to
@@ -3604,7 +3548,6 @@ character-valued variables as @code{base-character}.
 @section General Efficiency Hints
 @anchor{general-efficiency}
 @cpsubindex{efficiency, general hints}
-@c @cindex efficiency, general hints
 
 This section is a summary of various implementation costs and ways to get
 around them.  These hints are relatively unrelated to the use of the @python{}
@@ -3623,7 +3566,6 @@ each section, there are references to related in-depth discussion.
 @node Compile Your Code
 @subsection Compile Your Code
 @cpsubindex{compilation, why to}
-@c @cindex compilation, why to
 
 At this point, the advantages of compiling code relative to running it
 interpreted probably need not be emphasized too much, but remember that
@@ -3650,7 +3592,6 @@ faster make interpreted code run slower.
 @cindex garbage collection
 @cindex memory allocation
 @cpsubindex{efficiency, of memory use}
-@c @cindex efficiency, of memory use
 
 
 Consing is another name for allocation of storage, as done by the
@@ -3695,9 +3636,7 @@ in @python.
 @node Complex Argument Syntax
 @subsection Complex Argument Syntax
 @cpsubindex{argument syntax, efficiency}
-@c @cindex argument syntax, efficiency
 @cpsubindex{efficiency, of argument syntax}
-@c @cindex efficiency, of argument syntax
 @cindex keyword argument efficiency
 @cindex rest argument efficiency
 
@@ -3748,7 +3687,6 @@ keyword or rest arguments, so that no run-time overhead is involved.
 @node Mapping and Iteration
 @subsection Mapping and Iteration
 @cpsubindex{mapping, efficiency of}
-@c @cindex mapping, efficiency of
 
 One of the traditional @clisp{} programming styles is a highly applicative one,
 involving the use of mapping functions and many lists to store intermediate
@@ -3792,11 +3730,9 @@ iteration.
 @cindex trace files
 @cindex assembly listing
 @cpsubindex{listing files, trace}
-@c @cindex listing files, trace
 @cindex Virtual Machine (VM, or IR2) representation
 @cindex implicit continuation representation (IR1)
 @cpsubindex{continuations, implicit representation}
-@c @cindex continuations, implicit representation
 
 In order to write efficient code, you need to know the relative costs
 of different operations.  The main reason why writing efficient
@@ -3857,7 +3793,6 @@ into its own file and then generate the trace file from this small file.
 @anchor{efficiency-notes}
 @cindex efficiency notes
 @cpsubindex{notes, efficiency}
-@c @cindex notes, efficiency
 @cindex tuning
 
 Efficiency notes are messages that warn the user that the compiler has
@@ -3918,7 +3853,6 @@ efficiently.  This can be fixed by changing the definition of
 @node Type Uncertainty
 @subsection Type Uncertainty
 @cpsubindex{types, uncertainty}
-@c @cindex types, uncertainty
 @cindex uncertainty of types
 
 The main cause of inefficiency is the compiler's lack of adequate
@@ -3950,11 +3884,8 @@ even though a vector access is more efficient than indexing a list.
 @node Efficiency Notes and Type Checking
 @subsection Efficiency Notes and Type Checking
 @cpsubindex{type checking, efficiency of}
-@c @cindex type checking, efficiency of
 @cpsubindex{efficiency, of type checking}
-@c @cindex efficiency, of type checking
 @cpsubindex{optimization, type check}
-@c @cindex optimization, type check
 
 It is important that the @code{eff-note} example above used
 @w{@code{(safety 0)}}.  When type checking is enabled, you may get apparently
@@ -4000,12 +3931,10 @@ always @var{are} @w{@code{(unsigned-byte 18)}} integers.
 @anchor{representation-eff-note}
 @cindex representation efficiency notes
 @cpsubindex{efficiency notes, for representation}
-@c @cindex efficiency notes, for representation
 @cindex object representation efficiency notes
 @cindex stack numbers
 @cindex non-descriptor representations
 @cpsubindex{descriptor representations, forcing of}
-@c @cindex descriptor representations, forcing of
 
 When operating on values that have non-descriptor representations
 (@pxref{non-descriptor}), there can be a substantial time and consing
@@ -4119,9 +4048,7 @@ destination, in which case the source context is the only clue.
 @node Verbosity Control
 @subsection Verbosity Control
 @cpsubindex{verbosity, of efficiency notes}
-@c @cindex verbosity, of efficiency notes
 @cpsubindex{efficiency notes, verbosity}
-@c @cindex efficiency notes, verbosity
 
 These variables control the verbosity of efficiency notes:
 
@@ -4343,9 +4270,7 @@ The value of internal-time-units-per-second is 100.
 @node A Note on Timing
 @subsection A Note on Timing
 @cpsubindex{CPU time, interpretation of}
-@c @cindex CPU time, interpretation of
 @cpsubindex{run time, interpretation of}
-@c @cindex run time, interpretation of
 @cindex interpretation of run time
 
 There are two general kinds of timing information provided by the

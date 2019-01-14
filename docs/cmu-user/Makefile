@@ -34,7 +34,7 @@ SED ?= sed
 #
 cmu-user.pdf : ${SRCS}
 	pdftex cmu-user.texi
-	$(SED) -i bak -E 's/^(.*)\{([^!]+)!([^}]+)\}[ ]*$$/\1{\2}{\3}/' cmu-user.cp
+	$(SED) --in-place=bak -E 's/^(.*)\{([^!]+)!([^}]+)\}[ ]*$$/\1{\2}{\3}/' cmu-user.cp
 	texindex cmu-user.cp
 	pdftex cmu-user.texi
 	pdftex cmu-user.texi

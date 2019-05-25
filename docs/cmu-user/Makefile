@@ -21,23 +21,12 @@ TAR ?= tar
 
 # We're assuming this is GNU sed
 SED ?= sed
+TEXINDEX ?= texindex
 
-# Need to create the pdf file this way so we can generate the index
-# with entries for sub topics.
-#
-# The sed command basically converts an index entry like
-#
-#   \entry{foo!bar}{lineno}{foo!bar}
-#
-# to
-#   \entry{foo!bar}{lineno}{foo}{bar}
-#
 cmu-user.pdf : ${SRCS}
-	pdftex cmu-user.texi
-	$(SED) --in-place=bak -E 's/^(.*)\{([^!]+)!([^}]+)\}[ ]*$$/\1{\2}{\3}/' cmu-user.cp
-	./texindex cmu-user.??
-	pdftex cmu-user.texi
-	pdftex cmu-user.texi
+	$(MAKEINFO) --pdf cmu-user.texi
+	$(TEXINDEX) cmu-user.??
+	$(MAKEINFO) --pdf cmu-user.texi
 
 cmu-user.info : ${SRCS}
 	$(MAKEINFO) --info cmu-user.texi

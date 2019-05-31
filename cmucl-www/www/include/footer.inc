@@ -1,6 +1,6 @@
 <hr noshade>
 		
-<img border=0 src="http://validator.w3.org/images/vh40.gif"
+<img border=0 src="https://validator.w3.org/images/vh40.gif"
      align="right" alt="" height=31 width=88>
 <!-- Google translate -->		
 <div id="google_translate_element"></div><script type="text/javascript">
@@ -16,9 +16,9 @@ function googleTranslateElementInit() {
 Last modified @@DATE@@ by &lt;webmaster@cmucl.cons.org&gt; <br>
 Copyright &copy; 1999-2018 CMUCL Project <br>
 Validate
-<a href="http://validator.w3.org/checklink?uri=@@URL@@">links</a>,
-<a href="http://validator.w3.org/check?uri=@@URL@@">HTML</a>,
-<a href="http://jigsaw.w3.org/css-validator/validator?uri=@@BASE@@cmucl.css">stylesheet</a>.
+<a href="https://validator.w3.org/checklink?uri=@@URL@@">links</a>,
+<a href="https://validator.w3.org/check?uri=@@URL@@">HTML</a>,
+<a href="https://jigsaw.w3.org/css-validator/validator?uri=@@BASE@@cmucl.css">stylesheet</a>.
 </font>
 
 <br>

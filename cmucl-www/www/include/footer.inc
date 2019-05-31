@@ -1,7 +1,10 @@
 <hr noshade>
 		
-<img border=0 src="https://validator.w3.org/images/vh40.gif"
-     align="right" alt="" height=31 width=88>
+<p>
+  <a href="http://validator.w3.org/check?uri=referer">
+  <img src="http://www.w3.org/Icons/valid-html40" alt="Valid HTML 4.0 Transitional" height="31" width="88">
+  </a>
+</p>
 <!-- Google translate -->		
 <div id="google_translate_element"></div><script type="text/javascript">
 function googleTranslateElementInit() {

@@ -18,28 +18,31 @@
 <h3>Networking </h3>
 
 <ul>
-<li> <a href = "http://araneida.telent.net/">Araneida</a> is a small
+<li> <a href = "https://www.cliki.net/araneida">Araneida</a> is a small
      <strong>extensible web server</strong> written in Common Lisp with
      CMUCL extensions, under a BSD-sans-advertising licence. It hooks into
      the CMUCL event loop rather than using multithreading, and is designed
      to run behind a caching proxy such as <a href =
-     "http://httpd.apache.org/docs/mod/mod_proxy.html">Apache's
+     "http://httpd.apache.org/docs/current/mod/mod_proxy.html">Apache's
      mod_proxy</a>. </li>
 
 <li> <a href =
-     "http://www.ai.mit.edu/projects/iiip/doc/cl-http/home-page.html">
+     "http://www.ai.mit.edu/projects/iiip/doc/cl-http/cl-http.html">
      CL-HTTPD</a> is an advanced web server implemented in Common Lisp.
+<!--
      There is a <a href =
      "ftp://cvs2.cons.org/pub/lisp/cmucl/ports/cl-http/"> CMUCL
-     port</a>. The licence is unfortunately very restrictive. </li>
+     port</a>. The licence is unfortunately very restrictive. 
+-->
+</li>
 
 <li> <a href = "http://clorb.sourceforge.net/">CLORB</a> is a <a href =
-     "http://www.corba.org/">CORBA</a> ORB for Common Lisp. It is still
+     "https://www.corba.org/">CORBA</a> ORB for Common Lisp. It is still
      under development, but the client-side functionality works with CMUCL
      (server-side is currently limited to single-threaded polling). </li>
 
-<li> The <a href = "http://ww.telent.net/cliki/">CLiki</a> is a <a href =
-     "http://www.usemod.com/cgi-bin/mb.pl?MeatballWiki"> wiki-like</a>
+<li> The <a href = "https://www.cliki.net">CLiki</a> is a <a href =
+     "http://meatballwiki.org/wiki/MeatballWiki"> wiki-like</a>
      system allowing collaborative web authoring, developed in CL. </li>
 </ul>
 
@@ -66,13 +69,13 @@
      "ftp://ftp.csl.sri.com/pub/users/gilham/garnet/">version distributed
      by Fred Gilham</a> incorporates a few patches for 8bit displays and
      various bugfixes. <a href =
-     "http://www.cs.mdx.ac.uk/staffpages/rvb/software/plot-2d/">Plot-2d</a> is a
+     "http://www.eis.mdx.ac.uk/staffpages/rvb/software/plot-2d/">Plot-2d</a> is a
      plotting gadget for Garnet, that makes it easy to visualize
      two-dimensional data. </li>
 
 <li> <strong>CLM</strong> is a Motif&reg; subsystem for CMUCL. It can
      be compiled with the freely available <a href =
-     "http://www.lesstif.org/">LessTif</a> implementation. CLM is used in
+     "https://www.lesstif.org/">LessTif</a> implementation. CLM is used in
      the graphical interface to the CMUCL debugger and inspector. </li>
 
 <!--
@@ -83,28 +86,28 @@
 -->
 
 <li> There are two CMUCL bindings to the <a href =
-     "http://www.gtk.org/">GTk+ widget set</a>. <a href =
-     "http://sourceforge.net/projects/clg">Espen Johnsen's clg</a> binds
+     "https://www.gtk.org/">GTk+ widget set</a>. <a href =
+     "https://sourceforge.net/projects/clg">Espen Johnsen's clg</a> binds
      directly to the GTk event loop via the CMUCL FFI (GNU LGPL). <a href =
-     "http://www.uni-karlsruhe.de/~unk6/export/cl-gtk-1999-01-19.tar.gz">
+     "https://www.cliki.net/cl-gtk">
      Gilbert Baumann's (older) binding</a> uses a client-server model to avoid
      problems with mixing two event loops.  </li>
 
-<li> <a href = "http://sourceforge.net/projects/glos/">GLOS</a> is an
+<li> <a href = "https://sourceforge.net/projects/glos/">GLOS</a> is an
      OpenGL subset developed in Common Lisp. It features Gourad shading,
      Phong lighting, Zbuffer/clipping, near and far. </li>
      
 <li> <a href =
-     "ftp://ftp.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/lisp/gui/clue/0.html">
+     "http://www-cgi.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/lisp/gui/clue/">
      CLUE</a> (Common Lisp User-Interface Environment) is an extension of
      CLX which provides a simple, object-based toolkit (similar to Xt),
      using CLOS. It provides simple object-oriented classes and stream I/O
-     facilites. There is a <a href =
+     facilites. <!-- There is a <a href =
      "ftp://cvs2.cons.org/pub/lisp/cmucl/ports/clue.pw/">
-     CMUCL port</a>. CLIO is a set of widgets built on top of CLUE, and
+     CMUCL port</a>. --> CLIO is a set of widgets built on top of CLUE, and
      Pictures is a CLOS-based interface to CLIO. </li>
 
-<li> <a href = "http://www.geocities.com/pgplot_cl/">PGPLOT-CL</A> is an 
+<li> <a href = "http://www.geocities.ws/pgplot_cl/">PGPLOT-CL</A> is an 
      CMUCL interface to the PGPLOT 2-d scientific plotting library. </li>
 
 <li> The <a href =
@@ -135,7 +138,7 @@
      package for Common Lisp. It consists of CLOS bindings to the BLAS and
      LAPACK linear algebra packages. </li>
 
-<li> <a href = "http://www.ma.utexas.edu/maxima.html">Maxima</a> is a
+<li> <a href = "http://maxima.sourceforge.net/">Maxima</a> is a
      computer algebra system implemented in Common Lisp. It is a derivative
      of the Macsyma system, which is released under the GNU GPL. Maxima is
      primarily intended to be used with the GCL Common Lisp implementation,
@@ -153,6 +156,7 @@
 
 <ul>
 
+<!--
 <li> <a href = "http://alpha.onshored.com/lisp-software/">UncommonSQL</a> is
      a CommonSQL-like binding to the <a href =
      "http://www.PostgreSQL.org/">PostgreSQL</a>, <a href =
@@ -160,6 +164,7 @@
      functional SQL syntax and an object-to-relational mapping based on
      CLOS. CommonSQL is based on <a href =
      "http://www.pmsf.de/resources/lisp/MaiSQL.html">MaiSQL</a>. </li>
+-->
 
 <li> <a href = "http://www.cl-xml.org/">CL-XML</a> implements data stream
      parsing and serialization for the XML, XML Query and XPath standards.
@@ -175,21 +180,25 @@
      presents an Infoset compatible programming interface. CL-XML runs with
      CVS versions of CMUCL as of around 2003-08. 
 
-<li> A port of the <strong>XML parser</strong> from <a href = "http://www.franz.com/">Franz
+<!--
+<li> A port of the <strong>XML parser</strong> from <a href = "https://www.franz.com/">Franz
      Inc</a> is available from <a href =
      "ftp://cvs2.cons.org/pub/lisp/cmucl/ports/xmlutils/">ports/xmlutils</a>.
      The port does not support Unicode, since CMUCL has no support for
      extended character sets. </li>
+-->
 
 <li> <a href =
-     "http://www-ccrma.stanford.edu/software/clm/">Common Lisp
+     "https://ccrma.stanford.edu/software/clm/">Common Lisp
       Music</a> is a music synthesis and signal processing package in the
       Music V family. </li>
 
+<!--
 <li> <a href = "http://www.marclisp.bewoner.antwerpen.be/intro.html">
      LispDebug</a> is a source-level debugger, profiler and stepper which
      works with CMUCL (which operates by instrumenting the source code,
      rather than using the native CMUCL debugger/profiler). </li>
+-->
 
 <li> <a href = "http://clocc.sourceforge.net/">CLOCC</a> includes
      <tt>mk-defsystem</tt>, an implementation of the Common Lisp
@@ -201,17 +210,17 @@
      It is influenced by the Java Expert System Shell. </li>
 
 <li> <a href =
-     "ftp://cvs2.cons.org/pub/lisp/cmucl/src/contrib/ops/">OPS5</a> is
+     "https://gitlab.common-lisp.net/cmucl/cmucl/tree/master/src/contrib/ops">OPS5</a> is
      a programming language for production systems (using goal-based
      techniques from artificial intelligence). In the public domain. </li>
 
 <li> <a href =
-     "ftp://cvs2.cons.org/pub/lisp/cmucl/src/contrib/games/feebs/">feebs</a>
+     "https://gitlab.common-lisp.net/cmucl/cmucl/tree/master/src/contrib/games/feebs">feebs</a>
      is a simulation game somewhat similar to <i>CoreWars</i>. Players
      supply programs which control their creature as they move around the
      maze trying to zap one another. </li>
      
-<li> <a href = "http://www.cnrs-gif.fr/iaf/iaf9/surf-hippo.html">
+<li> <a href ="http://surf-hippo.neurophysics.eu/Surf-Hippo.README.html">
      Surf-Hippo</a> is a simulation package which allows interactive
      graphical exploration of models of biological neurons and networks.
      Surf-Hippo runs in CMUCL with Garnet. </li>

@@ -17,7 +17,7 @@ function googleTranslateElementInit() {
 <br>		
 <font size="-1" face="Helvetica, Arial">
 Last modified @@DATE@@ by &lt;webmaster@cmucl.cons.org&gt; <br>
-Copyright &copy; 1999-2018 CMUCL Project <br>
+Copyright &copy; 1999-2019 CMUCL Project <br>
 Validate
 <a href="https://validator.w3.org/checklink?uri=@@URL@@">links</a>,
 <a href="https://validator.w3.org/check?uri=@@URL@@">HTML</a>,

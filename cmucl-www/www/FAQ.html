@@ -34,7 +34,7 @@
 <p> <b>A</b>: This happens when you have used <tt class="function-name">SETQ</tt> on an
 undeclared variable at the top level. The default behaviour of CMUCL in
 this situation is to <a href =
-"http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/dec_special.html">
+"http://www.lispworks.com/documentation/HyperSpec/Body/d_specia.htm">
 declare the variable special</a> (transforming it from a lexically bound
 variable to a dynamically bound variable). In effect, when you do
 
@@ -101,8 +101,8 @@ allows you to control this behaviour. </p>
     pushed farther in the direction of trading compile efficiency for
     runtime efficiency.  We achieved this to such a degree that the
     original <a
-    href="http://en.wikipedia.org/wiki/Spice_Lisp">Spice</a> machine,
-    the <a href="http://en.wikipedia.org/wiki/PERQ ">Perq</a>,
+    href="https://en.wikipedia.org/wiki/Spice_Lisp">Spice</a> machine,
+    the <a href="https://en.wikipedia.org/wiki/PERQ ">Perq</a>,
     couldn't usefully run Python, though we tried it.  It ran
     first on the IBM RT PC.  This was cross-compiled using the
     previous Spice Lisp compiler (CLC, Common Lisp Compiler), which
@@ -148,7 +148,7 @@ allows you to control this behaviour. </p>
     isn't difficult to make a choice yourself. </p>
 
 <p> A longer answer is that compared with the various commercial Common
-    Lisp implementations (see <a href = "http://www.lisp.org/">lisp.org</a>
+    Lisp implementations (see <a href = "https://www.lisp.org/">lisp.org</a>
     for a list), CMUCL is free: you can use it for zero upfront cost, and
     it has a very liberal license that imposes few restrictions on its use
     and redistribution. You also have access to the source code if you wish
@@ -159,7 +159,7 @@ allows you to control this behaviour. </p>
     in the commercial implementations (portability to Microsoft Windows
     platforms, graphical browsers, GUI widgets, add-on libraries ...). </p>
 
-<p> Compared with <a href = "http://clisp.cons.org/">CLISP</a>, CMUCL runs
+<p> Compared with <a href = "https://clisp.cons.org/">CLISP</a>, CMUCL runs
     on fewer platforms and has significantly higher memory usage. CLISP has
     better internationalization support, in particular support for UNICODE.
     Since CMUCL compiles to native code, it is an order of magnitude faster
@@ -172,7 +172,7 @@ allows you to control this behaviour. </p>
     foreign function interface than CLISP, and supports multiprocessing on
     x86 platforms. </p>
 
-<p> Compared with <a href = "http://sbcl.sf.net/">SBCL</a> (a fork from the
+<p> Compared with <a href = "https://sbcl.sf.net/">SBCL</a> (a fork from the
     CMUCL implementation), CMUCL a different set of features (it includes a
     Motif interface, but does not have SBCL's native threads on Linux/x86
     platforms, nor Unicode support). CMUCL has a faster compiler, but
@@ -188,7 +188,7 @@ allows you to control this behaviour. </p>
 <li> <b>Q</b>: What user interface do you use with CMUCL?
 
 <p> <b>A</b>: Many people like to use <a href =
-    "http://common-lisp.net/project/slime/">SLIME</a> in Emacs. </p>
+    "https://common-lisp.net/project/slime/">SLIME</a> in Emacs. </p>
 
 <hr>
 
@@ -232,7 +232,7 @@ allows you to control this behaviour. </p>
 <p> You no longer have any references to the array, so were expecting it to
     be garbage collected. However, according to <tt>(ROOM)</tt> it
     wasn't. The reason is that the <a href =
-    "http://www.lisp.org/HyperSpec/Body/sec_25-1-1.html">read-eval-print-loop</a>
+    "http://www.lispworks.com/documentation/HyperSpec/Body/25_aa.htm">read-eval-print-loop</a>
     maintains variables called <tt>*</tt>, <tt>**</tt> and
     <tt>***</tt>, that reference the values of the last three forms
     evaluated, and the array is still accessible from these. Try evaluating
@@ -294,7 +294,7 @@ allows you to control this behaviour. </p>
 <li> <b>Q</b>: Where can I hang out with CMUCL folks on IRC?
 
 <p> <b>A</b>: Try the <tt>#lisp</tt> channel on the <a href =
-    "http://freenode.net/">freenode network</a>. A number of CMUCL
+    "https://freenode.net/">freenode network</a>. A number of CMUCL
     users and developers (as well as SBCL creatures) can occasionally be
     found wasting time there. </p>
 <hr>

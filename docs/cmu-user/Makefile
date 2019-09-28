@@ -23,22 +23,25 @@ TAR ?= tar
 SED ?= sed
 TEXINDEX ?= texindex
 
+# Where to find our texinfo.tex file
+TEXIN = TEXINPUTS=..:$$TEXINPUTS
+
 cmu-user.pdf : ${SRCS}
-	$(MAKEINFO) --pdf cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --pdf cmu-user.texi
 	$(TEXINDEX) cmu-user.??
-	$(MAKEINFO) --pdf cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --pdf cmu-user.texi
 
 cmu-user.info : ${SRCS}
-	$(MAKEINFO) --info cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --info cmu-user.texi
 
 cmu-user-info.tar.bz2 : cmu-user.info
 	$(TAR) cjf cmu-user-info.tar.bz2 cmu-user.info*
 
 cmu-user.html : ${SRCS}
-	$(MAKEINFO) --no-split --html cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --no-split --html cmu-user.texi
 
 cmu-user/index.html : cmu-user ${SRCS}
-	$(MAKEINFO) --html cmu-user.texi
+	$(TEXIN) $(MAKEINFO) --html cmu-user.texi
 
 cmu-user-html.tar.bz2 : cmu-user/index.html
 	$(TAR) cjf cmu-user-html.tar.bz2 cmu-user

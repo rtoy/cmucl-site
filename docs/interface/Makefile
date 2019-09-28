@@ -1,17 +1,20 @@
+# Where to find our texinfo.tex file
+TEXIN = TEXINPUTS=..:$$TEXINPUTS
+
 %.pdf : %.texi
-	$(MAKEINFO) --pdf $^
+	$(TEXIN) $(MAKEINFO) --pdf $^
 
 %.info : %.texi
-	$(MAKEINFO) --info $^
+	$(TEXIN) $(MAKEINFO) --info $^
 
 %.html : %.texi
-	$(MAKEINFO) --no-split --html $^
+	$(TEXIN) $(MAKEINFO) --no-split --html $^
 
 toolkit/index.html : toolkit toolkit.texi
-	$(MAKEINFO) --html $^
+	$(TEXIN) $(MAKEINFO) --html $^
 
 internals/index.html : internals internals.texi
-	$(MAKEINFO) --html $^
+	$(TEXIN) $(MAKEINFO) --html $^
 
 toolkit :
 	mkdir toolkit

@@ -16,17 +16,20 @@ SRCS = architecture.texi \
 	retargeting.texi \
 	run-time.texi
 
+# Where to find our texinfo.tex file
+TEXIN = TEXINPUTS=..:$$TEXINPUTS
+
 design.pdf : $(SRCS)
-	$(MAKEINFO) --pdf design.texi
+	$(TEXIN) $(MAKEINFO) --pdf design.texi
 
 design.info : $(SRCS)
-	$(MAKEINFO) --info design.texi
+	$(TEXIN) $(MAKEINFO) --info design.texi
 
 design.html : $(SRCS)
-	$(MAKEINFO) --no-split --html design.texi
+	$(TEXIN) $(MAKEINFO) --no-split --html design.texi
 
 design/index.html : design $(SRCS)
-	$(MAKEINFO) --html design.texi
+	$(TEXIN) $(MAKEINFO) --html design.texi
 
 design :
 	mkdir design

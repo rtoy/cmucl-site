@@ -1,39 +1,103 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: Adding customized commandline switches</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: Adding customized commandline switches
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Adding customized commandline switches)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> Certain implementations such as <a href =
-"http://clisp.cons.org/">CLISP</a> have a <tt>-c</tt> commandline switch
-that allows you to invoke the file compiler from the shell. CMUCL's
-commandline switches are user-extensible, so you can emulate this behaviour
-with code such as the following, in your <tt>site-init.lisp</tt> or
-<tt>~/.cmucl-init</tt> initialization files.
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<pre class=code>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Adding customized commandline
+          switches
+        </div>
+        <p>
+          Certain implementations such as <a href=
+          "http://clisp.cons.org/">CLISP</a> have a <code>-c</code> commandline
+          switch that allows you to invoke the file compiler from the shell.
+          CMUCL's commandline switches are user-extensible, so you can emulate
+          this behaviour with code such as the following, in your
+          <code>site-init.lisp</code> or <code>~/.cmucl-init</code>
+          initialization files.
+        </p>
+        <pre class="code">
 (macrolet ((with-batch-processing (&amp;body body)
              `(handler-case (prog1 t ,@body)
                 (serious-condition (condition)
-                  (format *error-output* &quot;Error in batch processing:~%~A~%&quot;
-		          condition)
+                  (format *error-output* "Error in batch processing:~%~A~%"
+                          condition)
                   (finish-output *error-output*)
                   (throw 'lisp::%end-of-the-world 1))
                 (:no-error (value)
                   (declare (ignore value))
                   (throw 'lisp::%end-of-the-world 0)))))
 
-(ext:defswitch &quot;compile&quot;
+(ext:defswitch "compile"
    #'(lambda (switch)
         (with-batch-processing
            (mapc #'compile-file (ext:cmd-switch-words switch)))))
 
-(ext:defswitch &quot;compile-and-load&quot;
+(ext:defswitch "compile-and-load"
    #'(lambda (switch)
         (with-batch-processing
            (mapc #'(lambda (file) (compile-file file :load t))
@@ -41,42 +105,50 @@ with code such as the following, in your <tt>site-init.lisp</tt> or
 
 ) ; macrolet
 </pre>
-
-<p> Now you can use the following to compile (and load) from the command line:
-
-<pre>
+        <p>
+          Now you can use the following to compile (and load) from the command
+          line:
+        </p>
+        <pre>
    lisp -compile-and-load demo.lisp demo2.lisp
 </pre>
-
-<p> If errors are encountered during processing, CMUCL is aborted, with a
-return value of 1, otherwise it returns 0 (i.e. success). This can be
-combined with the <tt>-quiet</tt> flag (put it at the start of the
-commandline) if wanted. </p>
-
-<p> An alternative to this form of interaction with the file compiler is to
-load the files and compile them from a stream, so you don't have any FASL
-files hanging around on disk (thus avoiding problems with binary
-compatibility between different CMUCL releases), yet still benefit from
-compiled performance. You can do this with code such as:
-
-<pre class=code>
+        <p>
+          If errors are encountered during processing, CMUCL is aborted, with a
+          return value of 1, otherwise it returns 0 (i.e. success). This can be
+          combined with the <code>-quiet</code> flag (put it at the start of
+          the commandline) if wanted.
+        </p>
+        <p>
+          An alternative to this form of interaction with the file compiler is
+          to load the files and compile them from a stream, so you don't have
+          any FASL files hanging around on disk (thus avoiding problems with
+          binary compatibility between different CMUCL releases), yet still
+          benefit from compiled performance. You can do this with code such as:
+        </p>
+        <pre class="code">
 (defun process-switch-demon (switch)
   (let ((files (copy-list (ext:cmd-switch-words switch))))
     (push #'(lambda ()
               (dolist (file files)
                 (format *terminal-io*
-                        &quot;~&amp;;;; Processing compiled code from ~A.~%&quot; file)
+                        "~&amp;;;; Processing compiled code from ~A.~%" file)
                 (with-open-file (s file)
                   (ext:compile-from-stream s))))
           *run-actions*)))
 
 (ext:defswitch "process" #'process-switch-demon)
 </pre>
-
-<p class=credits> Adapted from article
-<tt>87g06vubxi.fsf@orion.bln.pmsf.de</tt> posted to <tt>comp.lang.lisp</tt>
-by Pierre Mai, on 2001-11-30. </p>
-
-@@FOOTER@@
-</body>
-</html>    
+        <p class="credits">
+          Adapted from article <code>87g06vubxi.fsf@orion.bln.pmsf.de</code>
+          posted to <code>comp.lang.lisp</code> by Pierre Mai, on 2001-11-30.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:26:58 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
+</html>

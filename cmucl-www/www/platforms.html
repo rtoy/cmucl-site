@@ -1,166 +1,273 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: Supported platforms</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.6.0">
+    <title>
+      CMUCL: Supported platforms
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(what does it run on?)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> The current release of CMUCL should work on the following combinations
-    of operating system and architecture:
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<dl>
-<dt> Linux/x86 </dt>
-
-<dd> The 19f release should work on any i586 or better processor.  If
-     the processor supports SSE2, CMUCL will automatically detect that
-     and use SSE2.  Otherwise the legacy x87 support will be used.
-
-     <p>The 19e release binaries should work on any i586 or better processor.
-     The binaries are compiled against version 2.2 of the GNU C Library
-     (glibc2.2), but also work with glibc2.3. The runtime support for the
-     CMUCL Motif interface is dynamically linked, so you will need the
-     Motif or Lesstif libraries (preferably version 2) installed on your
-     system to use it. The binaries should run with any Linux kernel after
-     2.0 (but beware early kernels in the 2.4 series, which had poor
-     virtual memory characteristics).
-
-     <p> There are problems running CMUCL on certain kernels that are built
-     with address-space randomization techniques, such as certain Fedora
-     kernels. If you run into problems, please use a vanilla kernel.
-
-     <p> There are known problems running CMUCL on 2.4 kernels using certain
-     configurations of the HIGHMEM support (this option allows larger
-     process address spaces, and certain distributions ship kernels with
-     these patches enabled). The <tt>CONFIG_64GB</tt> and
-     <tt>CONFIG_1GB</tt> options work fine.
-
-     <p> CMUCL is known not to run under libsafe, whose system call
-     interposition mechanism interferes with the foreign function
-     interface. CMUCL does not run on kernels with &quot;hardening&quot;
-     patches such as grsecurity, since their all-the-world-is-C
-     assumptions are too strong.
-</dd>
-
-<dt> Darwin/x86 </dt>
-<dd> <p>The 20a release binaries were built on MacOSX 10.5 (Leopard) and
-     probably require 10.5 or later.</p>
-
-     <p>The 19f release binaries should work on any processor supported by
-     MacOS X (x86). They require 10.4 (Tiger) or later.</p>
-</dd>
-
-<dt> FreeBSD/i386 and amd64 </dt>
-
-<dd> The 19e release binaries have been built on the i386
-     architecture, on which they will, of course, work; they will also
-     work, with proper i386 compatibility library installed, on the
-     amd64 architecture.  New binaries can't be at this point built on
-     the amd64 architecture, though -- i386 binaries should be used
-     there.
-
-     <p> Notice that the architecture in question is the OS
-     architecture ("target"), not the processor's one -- FreeBSD/i386
-     running on an amd64 processor is good for all CMUCL purposes,
-     including building new binaries.
-
-     <p> An appropriately chosen distibution
-     (e.g. `cmucl-19e-x86-freebsd7.0.*', for FreeBSD 7.0) should work
-     on FreeBSD 6.3, 7.0 and 8.0.  Using a "later" FreeBSD
-     distribution on an "earlier" FreeBSD release
-     (e.g. `cmucl-19e-x86-freebsd7.0.*' on FreeBSD 6.3) is either not
-     possible or not tested.  Using an "earlier" FreeBSD distribution
-     on a "later" FreeBSD release should be possible with appropriate
-     compatibility libraries installed but has not be tested and is
-     advised against --- use the binaries built on the OS release they
-     are going to run on.
-
-     <p> Legacy FreeBSD releases (earlier than 6.3) have not been
-     tested as runtime platforms and will be not supported, although
-     the 6.3 distribution may run on them.
-
-     <p> FreeBSD 6 will be not supported after CMUCL release 19e.
-</dd>
-
-<dt> Solaris/SPARC </dt>
-<dd> <p>The 19f binaries should work with Solaris 8 or later (also known
-     as Solaris 2.8). They require an UltraSPARC processor. If you
-     have an ancient SPARC machine, you can get the non-v9 version of
-     the 18e release. If you have an UltraSPARC the command
-     <tt>uname&nbsp;-m</tt> will say <tt>sun4u</tt>, if you have an
-     older machine such as a SparcStation it will probably say
-     <tt>sun4m</tt>. </p>
-     
-     <p>
-     Note that starting with the 2010-02 snapshot, Solaris 8 builds
-     are being dropped in favor of Solaris 10 builds.  The Solaris 10
-     builds will not run on Solaris 8, but Solaris 8 builds will run
-     just fine on Solaris 10.  However, Solaris 8 builds may be
-     available. </p>
-</dd>
-
-<dt> NetBSD/x86 </dt>
-<dd> The 19c release binaries should work on any i586 or better processor.
-     The 19c binaries should work with NetBSD releases xx and yy. </dd>
-
-</dl>
-
-<p> The following platforms are not supported by the current CMUCL release,
-    but were supported by previous releases:
-
-<dl>
-<dt> Darwin/ppc </dt>
-<dd> The 19f release binaries work with MacOS X version 10.4.  For
-older versions of MacOS X, use the 19c binaries.  No developer has
-access to a ppc running MacOS X anymore.
-</dd>
-
-<dt> OpenBSD/x86 </dt>
-<dd> There are currently no 19c binaries for OpenBSD (it seems that address
-     space randomization techniques introduced with recent versions of
-     OpenBSD interfere with CMUCL's memory management). The 18e release
-     binaries should work on any i486 or better processor. The 18e binaries
-     were build on OpenBSD 3.1. </dd>
-
-<dt> Alpha/Linux </dt>
-<dd> There are no 19c binaries for Alpha. The 18e binaries are known to
-     work on ev56 and ev6 machines, running Linux 2.4.x. </dd>
-
-<dt> IRIX/MIPS </dt>
-<dd> There are no 19c binaries for IRIX. The 18e release binaries are known
-     to work with Irix 6.2, and should work on any later version. They use
-     the o32 ABI. </dd>
-
-<dt> HPUX/HPPA </dt>
-<dd> this port has not been maintained for quite a while, so
-     you'll have to go back to the 18a release to find binaries for this
-     platform. </dd>
-</dl>
-
-
-<p> The <a href = "http://sbcl.sf.net/">SBCL implementation</a> (a fork
-    from CMUCL) runs on some platforms that CMUCL doesn't currently
-    support, such as Linux/SPARC, Linux/PowerPC, Linux/Alpha -- check their
-    web site for current status. </p>
-
-
-<h3>Platform-specific build options</h3>
-
-<p> The builds for x86, sparc, and ppc platforms include a
-generational conservative garbage collector (this can be tested for
-through the presence of the <tt>:gencgc</tt> feature). The other
-architectures use a stop-and-copy garbage collector. </p>
-
-<p> The x86 builds also include basic multiprocessing support (this can be
-tested for through the presence of the <tt>:mp</tt> feature). The
-implementation is based on stack groups, ie user-level threads, and not on
-kernel threads. The interface is very similar to the <a href =
-"http://www.mikemac.com/mike/clim/clim-sys.html">CLIM-SYS
-specification</a>. </p>
-
-@@FOOTER@@
-</body>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Platforms</strong>: what does it run on?
+        </div>
+        <p>
+          The current release of CMUCL should work on the following
+          combinations of operating system and architecture:
+        </p>
+        <dl>
+          <dt>
+            Linux/x86
+          </dt>
+          <dd>
+            The 19f release should work on any i586 or better processor. If the
+            processor supports SSE2, CMUCL will automatically detect that and
+            use SSE2. Otherwise the legacy x87 support will be used.
+            <p>
+              The 19e release binaries should work on any i586 or better
+              processor. The binaries are compiled against version 2.2 of the
+              GNU C Library (glibc2.2), but also work with glibc2.3. The
+              runtime support for the CMUCL Motif interface is dynamically
+              linked, so you will need the Motif or Lesstif libraries
+              (preferably version 2) installed on your system to use it. The
+              binaries should run with any Linux kernel after 2.0 (but beware
+              early kernels in the 2.4 series, which had poor virtual memory
+              characteristics).
+            </p>
+            <p>
+              There are problems running CMUCL on certain kernels that are
+              built with address-space randomization techniques, such as
+              certain Fedora kernels. If you run into problems, please use a
+              vanilla kernel.
+            </p>
+            <p>
+              There are known problems running CMUCL on 2.4 kernels using
+              certain configurations of the HIGHMEM support (this option allows
+              larger process address spaces, and certain distributions ship
+              kernels with these patches enabled). The <code>CONFIG_64GB</code>
+              and <code>CONFIG_1GB</code> options work fine.
+            </p>
+            <p>
+              CMUCL is known not to run under libsafe, whose system call
+              interposition mechanism interferes with the foreign function
+              interface. CMUCL does not run on kernels with "hardening" patches
+              such as grsecurity, since their all-the-world-is-C assumptions
+              are too strong.
+            </p>
+          </dd>
+          <dt>
+            Darwin/x86
+          </dt>
+          <dd>
+            <p>
+              The 20a release binaries were built on MacOSX 10.5 (Leopard) and
+              probably require 10.5 or later.
+            </p>
+            <p>
+              The 19f release binaries should work on any processor supported
+              by MacOS X (x86). They require 10.4 (Tiger) or later.
+            </p>
+          </dd>
+          <dt>
+            FreeBSD/i386 and amd64
+          </dt>
+          <dd>
+            The 19e release binaries have been built on the i386 architecture,
+            on which they will, of course, work; they will also work, with
+            proper i386 compatibility library installed, on the amd64
+            architecture. New binaries can't be at this point built on the
+            amd64 architecture, though -- i386 binaries should be used there.
+            <p>
+              Notice that the architecture in question is the OS architecture
+              ("target"), not the processor's one -- FreeBSD/i386 running on an
+              amd64 processor is good for all CMUCL purposes, including
+              building new binaries.
+            </p>
+            <p>
+              An appropriately chosen distibution (e.g.
+              `cmucl-19e-x86-freebsd7.0.*', for FreeBSD 7.0) should work on
+              FreeBSD 6.3, 7.0 and 8.0. Using a "later" FreeBSD distribution on
+              an "earlier" FreeBSD release (e.g. `cmucl-19e-x86-freebsd7.0.*'
+              on FreeBSD 6.3) is either not possible or not tested. Using an
+              "earlier" FreeBSD distribution on a "later" FreeBSD release
+              should be possible with appropriate compatibility libraries
+              installed but has not be tested and is advised against --- use
+              the binaries built on the OS release they are going to run on.
+            </p>
+            <p>
+              Legacy FreeBSD releases (earlier than 6.3) have not been tested
+              as runtime platforms and will be not supported, although the 6.3
+              distribution may run on them.
+            </p>
+            <p>
+              FreeBSD 6 will be not supported after CMUCL release 19e.
+            </p>
+          </dd>
+          <dt>
+            Solaris/SPARC
+          </dt>
+          <dd>
+            <p>
+              The 19f binaries should work with Solaris 8 or later (also known
+              as Solaris 2.8). They require an UltraSPARC processor. If you
+              have an ancient SPARC machine, you can get the non-v9 version of
+              the 18e release. If you have an UltraSPARC the command
+              <code>uname&nbsp;-m</code> will say <code>sun4u</code>, if you
+              have an older machine such as a SparcStation it will probably say
+              <code>sun4m</code>.
+            </p>
+            <p>
+              Note that starting with the 2010-02 snapshot, Solaris 8 builds
+              are being dropped in favor of Solaris 10 builds. The Solaris 10
+              builds will not run on Solaris 8, but Solaris 8 builds will run
+              just fine on Solaris 10. However, Solaris 8 builds may be
+              available.
+            </p>
+          </dd>
+          <dt>
+            NetBSD/x86
+          </dt>
+          <dd>
+            The 19c release binaries should work on any i586 or better
+            processor. The 19c binaries should work with NetBSD releases xx and
+            yy.
+          </dd>
+        </dl>
+        <p>
+          The following platforms are not supported by the current CMUCL
+          release, but were supported by previous releases:
+        </p>
+        <dl>
+          <dt>
+            Darwin/ppc
+          </dt>
+          <dd>
+            The 19f release binaries work with MacOS X version 10.4. For older
+            versions of MacOS X, use the 19c binaries. No developer has access
+            to a ppc running MacOS X anymore.
+          </dd>
+          <dt>
+            OpenBSD/x86
+          </dt>
+          <dd>
+            There are currently no 19c binaries for OpenBSD (it seems that
+            address space randomization techniques introduced with recent
+            versions of OpenBSD interfere with CMUCL's memory management). The
+            18e release binaries should work on any i486 or better processor.
+            The 18e binaries were build on OpenBSD 3.1.
+          </dd>
+          <dt>
+            Alpha/Linux
+          </dt>
+          <dd>
+            There are no 19c binaries for Alpha. The 18e binaries are known to
+            work on ev56 and ev6 machines, running Linux 2.4.x.
+          </dd>
+          <dt>
+            IRIX/MIPS
+          </dt>
+          <dd>
+            There are no 19c binaries for IRIX. The 18e release binaries are
+            known to work with Irix 6.2, and should work on any later version.
+            They use the o32 ABI.
+          </dd>
+          <dt>
+            HPUX/HPPA
+          </dt>
+          <dd>
+            this port has not been maintained for quite a while, so you'll have
+            to go back to the 18a release to find binaries for this platform.
+          </dd>
+        </dl>
+        <p>
+          The <a href="http://sbcl.sf.net/">SBCL implementation</a> (a fork
+          from CMUCL) runs on some platforms that CMUCL doesn't currently
+          support, such as Linux/SPARC, Linux/PowerPC, Linux/Alpha -- check
+          their web site for current status.
+        </p>
+        <h3>
+          Platform-specific build options
+        </h3>
+        <p>
+          The builds for x86, sparc, and ppc platforms include a generational
+          conservative garbage collector (this can be tested for through the
+          presence of the <code>:gencgc</code> feature). The other
+          architectures use a stop-and-copy garbage collector.
+        </p>
+        <p>
+          The x86 builds also include basic multiprocessing support (this can
+          be tested for through the presence of the <code>:mp</code> feature).
+          The implementation is based on stack groups, ie user-level threads,
+          and not on kernel threads. The interface is very similar to the
+          <a href="http://www.mikemac.com/mike/clim/clim-sys.html">CLIM-SYS
+          specification</a>.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Sun Nov 24 22:31:58 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

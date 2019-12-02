@@ -32,6 +32,11 @@ h3 {
    white-space:pre;
 }
 
+code {
+   background: #faf0e6;
+   border:solid #faf0e6 1px;
+}
+
 .code {
    background: #faf0e6;
    border:solid #faf0e6 1px;
@@ -82,4 +87,54 @@ A:visited
 A:hover
 {
     text-decoration: underline
+}
+
+/* The following are for layout of the header, footer, navbar, and
+main content */
+.container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 5px;
+}
+/* Header is for the CMUCL logo image and top separator bar. We don't 
+want any scrollbars here. */
+header
+{
+  grid-column: 1 / span 2;
+  overflow: hidden;
+}
+/* Style for the header iframe. */
+.header-frame {
+  height: 85px;
+  width: 100%;
+  border: none;
+}
+/* The style for the title line of each page */
+.heading-line { 
+  background-color: #99cc99;
+  font-size: x-large;
+  font-family: Helvetica
+}
+/* Footer contins the icons, copyright, validator links, etc.  We don't
+want any scrollbars here. */
+footer {
+  grid-column: 1 / span 2;
+  overflow: hidden;
+}
+/* Style for the footer iframe. */
+.footer-frame {
+  width: 100%;
+  height: 200px;
+  border: none;
+}  
+/* The navigation bar. */
+aside {
+  background-color: #dadada;
+  padding-top: 5px;
+  text-align: center;
+}
+.navbar {
+  height: 100%;
+  width: 8em;
+  border: none;
 }

@@ -1,28 +1,92 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: Using the disassembler</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: Using the disassembler
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Reading disassembly output)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> The Common Lisp function <tt class="function-name">DISASSEMBLE</tt> produces an
-    implementation-specific description of the internal representation of a
-    function. Its output is very useful when you want to improve the
-    performance of your code, since it gives you an idea of what the
-    machine will do. </p>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-
-<h3>Disassembly of byte-compiled code</h3>
-
-<p> For example, if you use CMUCL's byte-code compiler, the <tt
-    class="function-name">DISASSEMBLE</tt> function will show you the
-    bytecodes generated for your function: </p>
-
-<pre class="code">
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Reading disassembly output
+        </div>
+        <p>
+          The Common Lisp function <code class=
+          "function-name">DISASSEMBLE</code> produces an
+          implementation-specific description of the internal representation of
+          a function. Its output is very useful when you want to improve the
+          performance of your code, since it gives you an idea of what the
+          machine will do.
+        </p>
+        <h3>
+          Disassembly of byte-compiled code
+        </h3>
+        <p>
+          For example, if you use CMUCL's byte-code compiler, the <code class=
+          "function-name">DISASSEMBLE</code> function will show you the
+          bytecodes generated for your function:
+        </p>
+        <pre class="code">
   CL-USER&gt; (defun foo (x y)
               (logand (logior x y) (logxor x y)))
   CL-USER&gt; (let ((c::*byte-compile* t)) (compile 'foo))
@@ -45,48 +109,50 @@
   14: 00    push-local 0
   15: 00    push-local 0
 </pre>
-
-<p> This is fairly easy to interpret, once you know that the byte-code
-    interpreter is a stack machine. The references of the internal
-    TWO-ARG-AND and TWO-ARG-IOR functions are pushed onto the stack, the
-    arguments Y then X are pushed onto the stack, the TWO-ARG-IOR call is
-    executed (leaving the result on the stack), the reference of the
-    function TWO-ARG-XOR is pushed onto the stack, the arguments are pushed
-    again, the TWO-ARG-XOR is executed, and finally the TWO-ARG-AND is
-    executed in a tail-call.
-
-<!-- FIXME what are the push-local about ?
+        <p>
+          This is fairly easy to interpret, once you know that the byte-code
+          interpreter is a stack machine. The references of the internal
+          TWO-ARG-AND and TWO-ARG-IOR functions are pushed onto the stack, the
+          arguments Y then X are pushed onto the stack, the TWO-ARG-IOR call is
+          executed (leaving the result on the stack), the reference of the
+          function TWO-ARG-XOR is pushed onto the stack, the arguments are
+          pushed again, the TWO-ARG-XOR is executed, and finally the
+          TWO-ARG-AND is executed in a tail-call. 
+          <!-- FIXME what are the push-local about ?
 
      seems that push-local is like push-arg, but negative
 -->
-
-
-<h3>Disassembly of native-compiled code</h3>
-
-<p> You are more likely to be interested in disassembling functions that
-    have been compiled to native code. Understanding disassembly of native
-    code is easier if you understand what certain common sequences of
-    instructions are doing. </p>
-
-<p> The following function illustrates CMUCL's ability to use unboxed
-    arithmetic on values of type <tt>(unsigned-byte 32)</tt> and
-    <tt>(signed-byte 32)</tt>. It can also do similar things with floating
-    point values. This significantly improves performance by reducing
-    consing, and by allowing the compiler to emit instructions that operate
-    directly on machine word sized values. </p>
-
-<p> This optimization is easiest to implement inside a single function. It
-    is more difficult to apply when making a function call, since it is
-    necessary to ensure that the called function is expecting to receive
-    unboxed arguments, rather than the normal calling convention. CMUCL is
-    able to perform this type of optimization across function call
-    boundaries when functions are declared to be inline, with locally
-    defined functions (using <tt class="function-name">FLET</tt> or <tt
-    class="function-name">LABELS</tt>), and when block compilation is used.
-    See the <i>CMUCL User's Manual</i> for more information on this. </p>
-
-
-<pre class="code">
+        </p>
+        <h3>
+          Disassembly of native-compiled code
+        </h3>
+        <p>
+          You are more likely to be interested in disassembling functions that
+          have been compiled to native code. Understanding disassembly of
+          native code is easier if you understand what certain common sequences
+          of instructions are doing.
+        </p>
+        <p>
+          The following function illustrates CMUCL's ability to use unboxed
+          arithmetic on values of type <code>(unsigned-byte 32)</code> and
+          <code>(signed-byte 32)</code>. It can also do similar things with
+          floating point values. This significantly improves performance by
+          reducing consing, and by allowing the compiler to emit instructions
+          that operate directly on machine word sized values.
+        </p>
+        <p>
+          This optimization is easiest to implement inside a single function.
+          It is more difficult to apply when making a function call, since it
+          is necessary to ensure that the called function is expecting to
+          receive unboxed arguments, rather than the normal calling convention.
+          CMUCL is able to perform this type of optimization across function
+          call boundaries when functions are declared to be inline, with
+          locally defined functions (using <code class=
+          "function-name">FLET</code> or <code class=
+          "function-name">LABELS</code>), and when block compilation is used.
+          See the <i>CMUCL User's Manual</i> for more information on this.
+        </p>
+        <pre class="code">
   (defun foo (x y)
     (declare (optimize (speed 3) (space 0) (safety 0) (debug 0))
              (type (unsigned-byte 32) x y))
@@ -99,28 +165,26 @@
     #'(LAMBDA (X Y)
         (DECLARE (OPTIMIZE # # # #) (TYPE # X Y))
         (BLOCK FOO (LOGAND # #)))
-  Note: Doing unsigned word to integer coercion (cost 20) to &quot;&lt;return value&gt;&quot;.
+  Note: Doing unsigned word to integer coercion (cost 20) to "&lt;return value&gt;".
   Compilation unit finished.
     1 note
 </pre>
-
-
-<p> The x86 dissassembly of the function follows below. The first line is
-    the entry point of the function, at address 0x481E0770. This is
-    followed by a standard function prologue, which checks the number of
-    arguments and their types, and unboxes them (the SAR operations at
-    labels L0 and L2). Starting at label L3 are the logical operations (OR,
-    XOR, AND), which operate directly on the 32 bit values. Since we must
-    box/tag the return value for functions that follow the normal calling
-    convention, we test whether any of the upper 3 bits of the result are
-    set (the <tt>TEST ECX, 3758096384</tt> operation, where the magic
-    number is just #xE0000000). If that's true, we create a boxed bignum
-    representation (sequence at label L5). Otherwise we can just tag the
-    result as a fixnum with a two-bit 0 tag (and a leading 0 sign bit, of
-    course), using <tt>LEA EDX, [ECX*4]</tt>. </p>
-
-
-<pre class="code">
+        <p>
+          The x86 dissassembly of the function follows below. The first line is
+          the entry point of the function, at address 0x481E0770. This is
+          followed by a standard function prologue, which checks the number of
+          arguments and their types, and unboxes them (the SAR operations at
+          labels L0 and L2). Starting at label L3 are the logical operations
+          (OR, XOR, AND), which operate directly on the 32 bit values. Since we
+          must box/tag the return value for functions that follow the normal
+          calling convention, we test whether any of the upper 3 bits of the
+          result are set (the <code>TEST ECX, 3758096384</code> operation,
+          where the magic number is just #xE0000000). If that's true, we create
+          a boxed bignum representation (sequence at label L5). Otherwise we
+          can just tag the result as a fixnum with a two-bit 0 tag (and a
+          leading 0 sign bit, of course), using <code>LEA EDX, [ECX*4]</code>.
+        </p>
+        <pre class="code">
 481E0770:       .ENTRY FOO()                 ; FUNCTION
      788:       POP   DWORD PTR [EBP-8]
      78B:       LEA   ESP, [EBP-32]
@@ -175,37 +239,48 @@
      82A:       BREAK 9                      ; Pending interrupt trap
      82C: L9:   JMP   L4
 </pre>
-
-<p> FIXME: Explain the fact that the compiler can generate fast calls to
-    the no-arg-parsing entry point, that bypass the checking of the number
-    of arguments and their types, assuming that code has been compiled with
-    low safety.
-
-<p> The code at label L4 is the normal function epilogue. FIXME explain.
-
-<p> The code at label L5 checks first whether the most-significant bit is
-    set. If it is, we have to alloc two words for the bignum, since a full
-    32 bits, plust the now required sign bit will not fit inside a single
-    machine word. If we only have 31 bits worth of integer, we can fit it
-    and the leading sign bit inside a single machine word. Since we also
-    need a word for the header, we thus allocate either 2 or 4 words of
-    storage, (the heap is 8 byte aligned). </p>
-
-<p> The code at labels L7 to L8 is ... FIXME.
-
-<p> While this example doesn't show it, CMUCL can handle unboxed values on
-    the stack, so even when intermediate or argument values spill from
-    registers to the stack, they can remain unboxed. On x86 platforms, this
-    is handled using a conversative garbage collector. On other platforms,
-    this is done by using separate unboxed stacks, on platforms that
-    segregate unboxed and boxed values in stacks and the register file. </p>
-
-
-<p class=credits>
-    <strong>Acknowledgment</strong>: This description is based on a USENET
-    article <tt>&lt;m2fzxapiug.fsf@ibook.bln.pmsf.net&gt;</tt> on
-    comp.lang.lisp, dated 2002-08-20, by Pierre Mai. </p>
-
-@@FOOTER@@
-</body>
+        <p>
+          FIXME: Explain the fact that the compiler can generate fast calls to
+          the no-arg-parsing entry point, that bypass the checking of the
+          number of arguments and their types, assuming that code has been
+          compiled with low safety.
+        </p>
+        <p>
+          The code at label L4 is the normal function epilogue. FIXME explain.
+        </p>
+        <p>
+          The code at label L5 checks first whether the most-significant bit is
+          set. If it is, we have to alloc two words for the bignum, since a
+          full 32 bits, plust the now required sign bit will not fit inside a
+          single machine word. If we only have 31 bits worth of integer, we can
+          fit it and the leading sign bit inside a single machine word. Since
+          we also need a word for the header, we thus allocate either 2 or 4
+          words of storage, (the heap is 8 byte aligned).
+        </p>
+        <p>
+          The code at labels L7 to L8 is ... FIXME.
+        </p>
+        <p>
+          While this example doesn't show it, CMUCL can handle unboxed values
+          on the stack, so even when intermediate or argument values spill from
+          registers to the stack, they can remain unboxed. On x86 platforms,
+          this is handled using a conversative garbage collector. On other
+          platforms, this is done by using separate unboxed stacks, on
+          platforms that segregate unboxed and boxed values in stacks and the
+          register file.
+        </p>
+        <p class="credits">
+          <strong>Acknowledgment</strong>: This description is based on a
+          USENET article <code>&lt;m2fzxapiug.fsf@ibook.bln.pmsf.net&gt;</code>
+          on comp.lang.lisp, dated 2002-08-20, by Pierre Mai.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:21:06 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

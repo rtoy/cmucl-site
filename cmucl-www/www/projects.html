@@ -1,87 +1,153 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL projects</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.6.0">
+    <title>
+      CMUCL projects
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(improvements to CMUCL)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> Here is a (partial) list of projects which are either underway, or
-    would be useful to CMUCL users. Please join the cmucl-imp <a href =
-    "support.html">mailing list</a> if you are interested in
-    contributing to one of these projects. </p>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<ul>
-<li> Searching for, and resolving, any remaining divergences from the ANSI
-     Common Lisp specification (many of which have been fixed during the
-     year 2002). The ansi-test suite in <a href =
-     "http://clocc.sf.net/">CLOCC</a>, and the test suite included with the
-     GCL source code, are useful for this. </li>
-
-<li> Peter Van Eynde is working on changing CMUCL's memory management
-     so that it can allocate memory lazily, thus overcoming the
-     overcommiting problem on recent linux kernels. </li>
-
-<li> cross-compile from an ANSI Common Lisp: Bill Newman has developed a
-     derivative of CMUCL called <a href =
-     "http://sbcl.sourceforge.net/">Steel Bank Common Lisp</a> which is
-     able to cross-compile itself from an arbitrary Common Lisp
-     implementation (currently the only way to port CMUCL to a new hardware
-     architecture is to cross-compile it from a CMUCL running on a
-     currently supported architecture, which is a delicate process). Some
-     of the cleanups made to SBCL could advantageously be back-ported to
-     CMUCL. </li>
-
-<li> reviving the HPPA port. </li>
-
-<li> <strong>win32 port</strong>: a few people investigated the possibility
-     of using the POSIX emulation layer provided by the cygwin32 tools
-     to port CMUCL to win32. Given the problems with memory
-     management facilities provided by this library, as well as
-     licencing issues, a native port would be more useful. The primary
-     issues to resolve are memory management and signal handling. </li>
-
-<li> add 64-bit support. CMUCL currently only works with 32 bit addresses,
-     even on platforms like UltraSPARC, which could support 64-bit
-     applications. Raymond Toy is thinking about how to approach this
-     problem. </li>
-
-<li> add a peephole optimizer to the CMUCL assembler, to remove useless
-     bits of the instruction stream. </li>
-
-<li> Porting multiprocessing to other
-     platforms than x86. This requires knowledge of assembly and of the
-     internals of CMUCL. </li>
-
-<li> Write a soft-real-time garbage collector for CMUCL, for applications
-     such as games where bounded response time is very important. </li>
-
-<li> improving Garnet: the Garnet user-interface toolkit is no longer
-     maintained by the CMU Interfaces group which developed it. There are
-     always bugfixes to integrate in the code and improvements to add. Fred
-     Gilham is looking after this. </li>
-
-<li> Allow PCL to emit LAP bytecode, instead of calling the compiler at
-     runtime. This would allow small CLOS-enabled CMUCL images to be built.
-     (Currently, it is possible to build quite small &quot;runtime&quot;
-     images without the compiler, but these cannot be built with CLOS
-     support, because PCL requires the compiler to be present at runtime.)
-     </li>
-
-<li> The <a href="http://mcclim.cliki.net/">McCLIM project</a> aims to
-     produce a free version of the CLIM user-interface specification. It
-     would make a good subtrate for sophisticated interactors, browsers and
-     code navigation tools. </li>
-
-<li> A port to the <a href = "http://www.cs.utah.edu/flux/oskit/">
-     Flux OSKit</a>, to produce CMUCL-OS. </li>
-
-</ul>
-
-
-@@FOOTER@@
-</body>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Projects</strong>: improvements to CMUCL
+        </div>
+        <p>
+          Here is a (partial) list of projects which are either underway, or
+          would be useful to CMUCL users. Please join the cmucl-imp <a href=
+          "support.html">mailing list</a> if you are interested in contributing
+          to one of these projects.
+        </p>
+        <ul>
+          <li>Searching for, and resolving, any remaining divergences from the
+          ANSI Common Lisp specification (many of which have been fixed during
+          the year 2002). The ansi-test suite in <a href=
+          "http://clocc.sf.net/">CLOCC</a>, and the test suite included with
+          the GCL source code, are useful for this.
+          </li>
+          <li>Peter Van Eynde is working on changing CMUCL's memory management
+          so that it can allocate memory lazily, thus overcoming the
+          overcommiting problem on recent linux kernels.
+          </li>
+          <li>cross-compile from an ANSI Common Lisp: Bill Newman has developed
+          a derivative of CMUCL called <a href="http://sbcl.sourceforge.net/">
+            Steel Bank Common Lisp</a> which is able to cross-compile itself
+            from an arbitrary Common Lisp implementation (currently the only
+            way to port CMUCL to a new hardware architecture is to
+            cross-compile it from a CMUCL running on a currently supported
+            architecture, which is a delicate process). Some of the cleanups
+            made to SBCL could advantageously be back-ported to CMUCL.
+          </li>
+          <li>reviving the HPPA port.
+          </li>
+          <li>
+            <strong>win32 port</strong>: a few people investigated the
+            possibility of using the POSIX emulation layer provided by the
+            cygwin32 tools to port CMUCL to win32. Given the problems with
+            memory management facilities provided by this library, as well as
+            licencing issues, a native port would be more useful. The primary
+            issues to resolve are memory management and signal handling.
+          </li>
+          <li>add 64-bit support. CMUCL currently only works with 32 bit
+          addresses, even on platforms like UltraSPARC, which could support
+          64-bit applications. Raymond Toy is thinking about how to approach
+          this problem.
+          </li>
+          <li>add a peephole optimizer to the CMUCL assembler, to remove
+          useless bits of the instruction stream.
+          </li>
+          <li>Porting multiprocessing to other platforms than x86. This
+          requires knowledge of assembly and of the internals of CMUCL.
+          </li>
+          <li>Write a soft-real-time garbage collector for CMUCL, for
+          applications such as games where bounded response time is very
+          important.
+          </li>
+          <li>improving Garnet: the Garnet user-interface toolkit is no longer
+          maintained by the CMU Interfaces group which developed it. There are
+          always bugfixes to integrate in the code and improvements to add.
+          Fred Gilham is looking after this.
+          </li>
+          <li>Allow PCL to emit LAP bytecode, instead of calling the compiler
+          at runtime. This would allow small CLOS-enabled CMUCL images to be
+          built. (Currently, it is possible to build quite small "runtime"
+          images without the compiler, but these cannot be built with CLOS
+          support, because PCL requires the compiler to be present at runtime.)
+          </li>
+          <li>The <a href="http://mcclim.cliki.net/">McCLIM project</a> aims to
+          produce a free version of the CLIM user-interface specification. It
+          would make a good subtrate for sophisticated interactors, browsers
+          and code navigation tools.
+          </li>
+          <li>A port to the <a href="http://www.cs.utah.edu/flux/oskit/">Flux
+          OSKit</a>, to produce CMUCL-OS.
+          </li>
+        </ul>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Sun Nov 24 22:32:08 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

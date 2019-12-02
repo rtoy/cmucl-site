@@ -1,110 +1,233 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: news from 2004</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.6.0">
+    <title>
+      CMUCL: news from 2004
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING()
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p>
-<dl>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<dt>2004-10-18</dt>
-<dd> <strong>cmucl-19a-patch-002 is available</strong>, to fix the
-bug in unbound-slot (:name was not accepted as a keyword argument). This
-patch breaks backward compatibility, since the :slot argument is no longer
-accepted. The patch is present in the <tt>release/19a/patches</tt>
-directory, or via ASDF-INSTALL from <a href =
-"http://common-lisp.net/webftp/pub/project/cmucl/release/19a/patches/cmucl-19a-patch-002.tar.gz">common-lisp.net</a>. 
-
-<dt>2004-10-01</dt>
-<dd> The <strong>October snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD, x86/Linux and MacOS X. The include more
-pretty-printer and <tt type="function-name">FORMAT</tt> fixes, an improved
-disassembler, pathname fixes, and a new float-accuracy compilation policy,
-so that <tt type=variable>DOUBLE-FLOAT-EPSILON</tt> is correct on x86
-platforms.
-
-<dt>2004-09-01</dt>
-<dd> The <strong>September snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD, x86/Linux and MacOS X. They include many ANSI
-compliance fixes to <tt type="function-name">FORMAT</tt> and to the pretty-printer.
-
-<dt>2004-07-31</dt>
-<dd> CMUCL 19a has been released. The release notes and binaries for the
-supported platforms are available from the <tt>release/19a</tt> directory
-of the download sites.
-
-<dt>2004-07-05</dt>
-<dd> The pre3 binaries for the 19a release are available in the release/19a
-directory of the download sites. Please <a href =
-"http://groups.google.com/groups?selm=wzieknq8r4s.fsf%40melbourne.laas.fr&output=gplain">
-help test these pre-release binaries</a>. The 19a release is scheduled for
-the end of July. 
-
-<dt>2004-06-03</dt>
-<dd> Anoncvs access has been restored. The 19a pre-release testing phase
-will start soon. 
-
-<dt>2004-06-01</dt>
-<dd> Anoncvs access to projects on common-lisp.net has been disabled,
-following the recently discovered vulnerabilities in the CVS code base. 
-
-<dt>2004-05-05</dt>
-<dd> The <strong>May snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD and x86/Linux.
-
-<dt>2004-05-04</dt>
-<dd> Support for an separate stack for delivering signals (via the
-<tt>sigaltstack()</tt> system call) has been committed. This makes it
-possible to trap overflows of the C stack and print a diagnostic message
-before aborting. 
-
-<dt>2004-04-22</dt>
-<dd> The behaviour of <tt class="function-name">EXT:LOAD-FOREIGN</tt> when
-called with a single shared library has been changed to call <tt
-class="function-name">SYS::LOAD-OBJECT-FILE</tt> directly, without invoking
-the linker as previously. 
-
-<dt>2004-04-06</dt>
-<dd> Improved support for <strong>source-location recording</strong> has been
-contributed by Helmut Eller. This improves the support for
-a FIND-DEFINITION like facility in editors for classes, generic functions
-and methods.
-
-<dt>2004-04-04</dt>
-<dd> Support for <strong>efficient modular arithmetic</strong> on x86 and
-SPARC platforms has been ported from SBCL by Raymond Toy. This allows the
-compiler to generate better code for certain operations on 32-bit
-quantities.
-
-<dt>2004-04-02</dt>
-<dd> The <strong>April snapshot binaries</strong> have been uploaded, for
-sparcv9/Solaris, x86/FreeBSD and x86/Linux.
-
-<dt>2004-03-20</dt>
-<dd> The CMUCL CVS repository is back online at <a href =
-"http://common-lisp.net/project/cmucl/">common-lisp.net</a>. Thanks to the
-site admins for providing this service! This will lead to changes to
-CVS access and to the primary download host.
-
-<dt>2004-01</dt>
-<dd> The CMUCL CVS server suffered a disk crash, and the project repository
-has been offline for a while. Apologies for the interruption. 
-
-</dl>
-
-<p> Also see older news:
-
-<ul>
-<li> <a href = "2003.html">news items from 2003</a>
-<li> <a href = "2002.html">news items from 2002</a>
-<li> <a href = "2001.html">news items from 2001</a>
-</ul>
-
-@@FOOTER@@
-</body>
-</html> 
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>News</strong>: 2004
+        </div>
+        <dl>
+          <dt>
+            2004-10-18
+          </dt>
+          <dd>
+            <strong>cmucl-19a-patch-002 is available</strong>, to fix the bug
+            in unbound-slot (:name was not accepted as a keyword argument).
+            This patch breaks backward compatibility, since the :slot argument
+            is no longer accepted. The patch is present in the
+            <code>release/19a/patches</code> directory, or via ASDF-INSTALL
+            from <a href=
+            "http://common-lisp.net/webftp/pub/project/cmucl/release/19a/patches/cmucl-19a-patch-002.tar.gz">
+            common-lisp.net</a>.
+          </dd>
+          <dt>
+            2004-10-01
+          </dt>
+          <dd>
+            The <strong>October snapshot binaries</strong> have been uploaded,
+            for sparcv9/Solaris, x86/FreeBSD, x86/Linux and MacOS X. The
+            include more pretty-printer and <code type=
+            "function-name">FORMAT</code> fixes, an improved disassembler,
+            pathname fixes, and a new float-accuracy compilation policy, so
+            that <code type="variable">DOUBLE-FLOAT-EPSILON</code> is correct
+            on x86 platforms.
+          </dd>
+          <dt>
+            2004-09-01
+          </dt>
+          <dd>
+            The <strong>September snapshot binaries</strong> have been
+            uploaded, for sparcv9/Solaris, x86/FreeBSD, x86/Linux and MacOS X.
+            They include many ANSI compliance fixes to <code type=
+            "function-name">FORMAT</code> and to the pretty-printer.
+          </dd>
+          <dt>
+            2004-07-31
+          </dt>
+          <dd>
+            CMUCL 19a has been released. The release notes and binaries for the
+            supported platforms are available from the <code>release/19a</code>
+            directory of the download sites.
+          </dd>
+          <dt>
+            2004-07-05
+          </dt>
+          <dd>
+            The pre3 binaries for the 19a release are available in the
+            release/19a directory of the download sites. Please <a href=
+            "http://groups.google.com/groups?selm=wzieknq8r4s.fsf%40melbourne.laas.fr&amp;output=gplain">
+            help test these pre-release binaries</a>. The 19a release is
+            scheduled for the end of July.
+          </dd>
+          <dt>
+            2004-06-03
+          </dt>
+          <dd>
+            Anoncvs access has been restored. The 19a pre-release testing phase
+            will start soon.
+          </dd>
+          <dt>
+            2004-06-01
+          </dt>
+          <dd>
+            Anoncvs access to projects on common-lisp.net has been disabled,
+            following the recently discovered vulnerabilities in the CVS code
+            base.
+          </dd>
+          <dt>
+            2004-05-05
+          </dt>
+          <dd>
+            The <strong>May snapshot binaries</strong> have been uploaded, for
+            sparcv9/Solaris, x86/FreeBSD and x86/Linux.
+          </dd>
+          <dt>
+            2004-05-04
+          </dt>
+          <dd>
+            Support for an separate stack for delivering signals (via the
+            <code>sigaltstack()</code> system call) has been committed. This
+            makes it possible to trap overflows of the C stack and print a
+            diagnostic message before aborting.
+          </dd>
+          <dt>
+            2004-04-22
+          </dt>
+          <dd>
+            The behaviour of <code class=
+            "function-name">EXT:LOAD-FOREIGN</code> when called with a single
+            shared library has been changed to call <code class=
+            "function-name">SYS::LOAD-OBJECT-FILE</code> directly, without
+            invoking the linker as previously.
+          </dd>
+          <dt>
+            2004-04-06
+          </dt>
+          <dd>
+            Improved support for <strong>source-location recording</strong> has
+            been contributed by Helmut Eller. This improves the support for a
+            FIND-DEFINITION like facility in editors for classes, generic
+            functions and methods.
+          </dd>
+          <dt>
+            2004-04-04
+          </dt>
+          <dd>
+            Support for <strong>efficient modular arithmetic</strong> on x86
+            and SPARC platforms has been ported from SBCL by Raymond Toy. This
+            allows the compiler to generate better code for certain operations
+            on 32-bit quantities.
+          </dd>
+          <dt>
+            2004-04-02
+          </dt>
+          <dd>
+            The <strong>April snapshot binaries</strong> have been uploaded,
+            for sparcv9/Solaris, x86/FreeBSD and x86/Linux.
+          </dd>
+          <dt>
+            2004-03-20
+          </dt>
+          <dd>
+            The CMUCL CVS repository is back online at <a href=
+            "http://common-lisp.net/project/cmucl/">common-lisp.net</a>. Thanks
+            to the site admins for providing this service! This will lead to
+            changes to CVS access and to the primary download host.
+          </dd>
+          <dt>
+            2004-01
+          </dt>
+          <dd>
+            The CMUCL CVS server suffered a disk crash, and the project
+            repository has been offline for a while. Apologies for the
+            interruption.
+          </dd>
+        </dl>
+        <p>
+          Also see older news:
+        </p>
+        <ul>
+          <li>
+            <a href="2003.html">news items from 2003</a>
+          </li>
+          <li>
+            <a href="2002.html">news items from 2002</a>
+          </li>
+          <li>
+            <a href="2001.html">news items from 2001</a>
+          </li>
+        </ul>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Sun Nov 24 22:15:54 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,63 +1,136 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>The Hemlock editor</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.6.0">
+    <title>
+      The Hemlock editor
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(an extensible Emacs-like editor)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<p> <i>Hemlock</i> is an extensible Emacs-like text editor embedded in
-    CMUCL. It follows the tradition of the Lisp Machine editor ZWEI and the
-    ITS/TOPS-20 implementation of Emacs. Hemlock is able to display to a
-    terminal, or use CLX for X11. </p>
-
-<p> Available documentation:
-
-<ul>
-<li> the <a href = "../downloads/doc/hemlock-user.ps.gz">Hemlock User Manual</a> <i>(176kB
-gzipped A4 Postscript)</i>, or in <a href =
-"../downloads/doc/hemlock-user-letter.ps.gz">gzipped letter Postscript</a>. </li>
-
-<li> the <a href = "../downloads/doc/hemlock-cim.ps.gz">command implementor's
-manual</a>, containing information for people who wish to extend Hemlock
-<i>(120kB gzipped Postscript)</i>.
-</ul>
-
-<p> The Scribe sources for these documents are distributed with the CMUCL
-    source code, in the <tt>src/docs/hem</tt> directory. </p>
-
-
-<h3> Experimenting with Hemlock </h3>
-
-<p> To start experimenting with Hemlock, load the CLX and Hemlock
-    subsystems, then type <tt>(ed)</tt>. This should open an X11 window for
-    the editor (actually two windows; the smaller window contains the
-    minibuffer).
-
-<pre class=example>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Hemlock</strong>: an extensible Emacs-like editor
+        </div>
+        <p>
+          <i>Hemlock</i> is an extensible Emacs-like text editor embedded in
+          CMUCL. It follows the tradition of the Lisp Machine editor ZWEI and
+          the ITS/TOPS-20 implementation of Emacs. Hemlock is able to display
+          to a terminal, or use CLX for X11.
+        </p>
+        <p>
+          Available documentation:
+        </p>
+        <ul>
+          <li>the <a href="../downloads/doc/hemlock-user.ps.gz">Hemlock User
+          Manual</a> <i>(176kB gzipped A4 Postscript)</i>, or in <a href=
+          "../downloads/doc/hemlock-user-letter.ps.gz">gzipped letter
+          Postscript</a>.
+          </li>
+          <li>the <a href="../downloads/doc/hemlock-cim.ps.gz">command
+          implementor's manual</a>, containing information for people who wish
+          to extend Hemlock <i>(120kB gzipped Postscript)</i>.
+          </li>
+        </ul>
+        <p>
+          The Scribe sources for these documents are distributed with the CMUCL
+          source code, in the <code>src/docs/hem</code> directory.
+        </p>
+        <h3>
+          Experimenting with Hemlock
+        </h3>
+        <p>
+          To start experimenting with Hemlock, load the CLX and Hemlock
+          subsystems, then type <code>(ed)</code>. This should open an X11
+          window for the editor (actually two windows; the smaller window
+          contains the minibuffer).
+        </p>
+        <pre class="example">
    * (require :clx)
    * (require :hemlock)
    * (ed)
 </pre>
-
-<p> The keybindings in the editor are similar to those in GNU Emacs: for
-    instance <tt>M-x</tt> enters the minibuffer, and <tt>C-x C-f</tt> opens
-    a file for editing (enter the filename in the minibuffer). Completion
-    in the minibuffer works with #\Space, not with #\Tab. Command names are
-    of the form <tt>Find File</tt> rather than <tt>find-file</tt>. Dired
-    mode is available with <tt>M-x Dired</tt>. To quit Hemlock and return
-    to the listener, type <tt>C-x C-z</tt>. </p>
-
-<p> Note that the tty code in Hemlock requires termcap (on Debian systems,
-    you can install the <tt>termcap-compat</tt> package). For further notes
-    on using Hemlock, see <a href =
-    "http://www.cliki.net/CloserLookAtHemlock">CLiki:CloserLookAtHemlock</a>.
-
-
-@@FOOTER@@
-</body>
+        <p>
+          The keybindings in the editor are similar to those in GNU Emacs: for
+          instance <code>M-x</code> enters the minibuffer, and <code>C-x
+          C-f</code> opens a file for editing (enter the filename in the
+          minibuffer). Completion in the minibuffer works with #\Space, not
+          with #\Tab. Command names are of the form <code>Find File</code>
+          rather than <code>find-file</code>. Dired mode is available with
+          <code>M-x Dired</code>. To quit Hemlock and return to the listener,
+          type <code>C-x C-z</code>.
+        </p>
+        <p>
+          Note that the tty code in Hemlock requires termcap (on Debian
+          systems, you can install the <code>termcap-compat</code> package).
+          For further notes on using Hemlock, see <a href=
+          "http://www.cliki.net/CloserLookAtHemlock">CLiki:CloserLookAtHemlock</a>.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Sat Nov 23 21:41:03 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

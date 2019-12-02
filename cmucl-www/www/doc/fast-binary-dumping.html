@@ -132,29 +132,41 @@
           file format can change occasionally, which will mean that an old FASL
           file will no longer be readable by the new CMUCL. The fastest way to
           dump binary data to disk (and retrieving it) under cmucl is through
-          the following code, posted some time ago by Pierre Mai on cmucl-help.
-          It uses the compiler's fasl (fast loading) facility: (defvar
-          *internal-value-passer*) (defun bindump (object filename) (let ((file
-          (c::open-fasl-file (pathname filename) nil t))) (unwind-protect (let
-          ((c::*coalesce-constants* nil) (c::*dump-only-valid-structures* nil)
-          (c::*cold-load-dump* t)) (c::dump-fop 'lisp::fop-normal-load file)
-          (c::dump-object `(setq *internal-value-passer* (quote ,object)) file)
-          (c::dump-fop 'lisp::fop-eval-for-effect file)) (c::close-fasl-file
-          file nil))) t) (defun binload (filename) (let
-          ((*internal-value-passer* nil)) (load filename :verbose nil :print
-          nil) *internal-value-passer*)) The object argument to bindump can be
-          pretty much anything. I've tried with structs, lists of vectors and
-          symbols etc. it just works.
-          http://www.mail-archive.com/cmucl-help@cons.org/msg00547.html
+          the following code, posted some time ago by <a href=
+          "http://www.mail-archive.com/cmucl-help@cons.org/msg00547.html">Pierre
+          Mai on cmucl-help</a>. It uses the compiler's fasl (fast loading)
+          facility:
+        </p>
+        <pre class="code">
+(defvar *internal-value-passer*)
+(defun bindump (object filename)
+  (let ((file (c::open-fasl-file (pathname filename) nil t)))
+    (unwind-protect
+        (let ((c::*coalesce-constants* nil)
+              (c::*dump-only-valid-structures* nil)
+              (c::*cold-load-dump* t))
+          (c::dump-fop 'lisp::fop-normal-load file)
+          (c::dump-object `(setq *internal-value-passer* ',object) file)
+          (c::dump-fop 'lisp::fop-eval-for-effect file))
+      (c::close-fasl-file file nil)))
+  t)
+(defun binload (filename)
+  (let ((*internal-value-passer* nil))
+    (load filename :verbose nil :print nil)
+    *internal-value-passer*)))
+</pre>
+        <p>
+          The object argument to bindump can be pretty much anything. I've
+          tried with structs, lists of vectors and symbols etc. it just works.
         </p>
         <p class="credits">
-          by Pierre Mai and Eric Marsden.
+          By Pierre Mai and Eric Marsden.
         </p>
       </main>
       <footer>
         <iframe class="footer-frame"
                 src="../include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Mon Nov 25 11:26:25 PST 2019
+Last modified: Sun Dec  1 16:33:37 PST 2019
 <!-- hhmts end -->
       </footer>
     </div>

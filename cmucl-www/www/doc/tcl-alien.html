@@ -1,23 +1,87 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: Alien access to a tcl interpreter</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: Alien access to a tcl interpreter
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Alien access to a tcl interpreter)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> This page provides an example of using the CMUCL foreign function
-interface to call a Tcl interpreter. </p>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<p> This is a naive way of calling out to Tcl; it wouldn't be much more
-complicated to bind to a persistent interpreter to avoid instance creation
-overhead on each call to <tt class="function-name">EVAL-IN-TCL</tt>. </p>
-
-<pre class="code">
-;;; Evaluate (alien:load-foreign &quot;/usr/lib/libtcl8.0.so&quot;) before
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Alien access to a tcl interpreter
+        </div>
+        <p>
+          This page provides an example of using the CMUCL foreign function
+          interface to call a Tcl interpreter.
+        </p>
+        <p>
+          This is a naive way of calling out to Tcl; it wouldn't be much more
+          complicated to bind to a persistent interpreter to avoid instance
+          creation overhead on each call to <code class=
+          "function-name">EVAL-IN-TCL</code>.
+        </p>
+        <pre class="code">
+;;; Evaluate (alien:load-foreign "/usr/lib/libtcl8.0.so") before
 ;;; compiling or loading this file.
 
 (in-package :CL-USER)
@@ -25,47 +89,54 @@ overhead on each call to <tt class="function-name">EVAL-IN-TCL</tt>. </p>
 (alien:def-alien-type tcl-interp (* t))
 
 (declaim (inline tcl-createinterp))
-(alien:def-alien-routine &quot;Tcl_CreateInterp&quot; tcl-interp)
+(alien:def-alien-routine "Tcl_CreateInterp" tcl-interp)
 
 (declaim (inline tcl-eval))
-(alien:def-alien-routine &quot;Tcl_Eval&quot; c-call:int
+(alien:def-alien-routine "Tcl_Eval" c-call:int
   (interp tcl-interp :in)
   (string c-call:c-string :in))
 
 (declaim (inline tcl-getstringresult))
-(alien:def-alien-routine &quot;Tcl_GetStringResult&quot; c-call:c-string
+(alien:def-alien-routine "Tcl_GetStringResult" c-call:c-string
   (interp tcl-interp :in))
 
 (declaim (inline tcl-deleteinterp))
-(alien:def-alien-routine &quot;Tcl_DeleteInterp&quot; c-call:void
+(alien:def-alien-routine "Tcl_DeleteInterp" c-call:void
   (interp tcl-interp :in))
 
 (defun eval-in-tcl (string)
   (let ((inter (tcl-createinterp)))
     (unwind-protect
-	 (let* ((result-code (tcl-eval inter string))
-		(result-string (tcl-getstringresult inter)))
-	   (values result-code (copy-seq result-string)))
+         (let* ((result-code (tcl-eval inter string))
+                (result-string (tcl-getstringresult inter)))
+           (values result-code (copy-seq result-string)))
       (tcl-deleteinterp inter))))
 </pre>
-
-<p> Once you have loaded the code, you can evaluate expressions in Tcl from
-CMUCL as follows:
-
-<pre class=code>
-USER> (eval-in-tcl &quot;puts [expr 2 + 3]&quot;)
+        <p>
+          Once you have loaded the code, you can evaluate expressions in Tcl
+          from CMUCL as follows:
+        </p>
+        <pre class="code">
+USER&gt; (eval-in-tcl "puts [expr 2 + 3]")
 5
 
 0
-&quot;&quot;
+""
 
 </pre>
-
-<p class=credits> This description is adapted from an article
-<tt>&lt;87ya8j77df.fsf@orion.dent.isdn.cs.tu-berlin.de&gt;</tt> posted to
-the USENET group comp.lang.lisp on 2000-02-18 by Pierre Mai. </p>
-
-
-@@FOOTER@@
-</body>
-</html>    
+        <p class="credits">
+          This description is adapted from an article
+          <code>&lt;87ya8j77df.fsf@orion.dent.isdn.cs.tu-berlin.de&gt;</code>
+          posted to the USENET group comp.lang.lisp on 2000-02-18 by Pierre
+          Mai.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:48:18 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
+</html>

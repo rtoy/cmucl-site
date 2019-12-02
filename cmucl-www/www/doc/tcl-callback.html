@@ -1,96 +1,160 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>Callbacks from tcl to CMUCL</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      Callbacks from tcl to CMUCL
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Callbacks from Tcl to CMUCL)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> This page describes how to use the CMUCL FFI to allow callbacks from
-foreign code into Lisp. This implementation only works when using the
-generational garbage collector (you should have <tt class=code>:gencgc</tt>
-in your <tt class=variable>*features*</tt> list; this is the case on all
-x86 platforms). It is also possible to make it work with the
-non-generational garbage collector; ask the cmucl-help mailing list. There
-is some glue code in Lisp to save into cl-tcl.lisp, some C glue code to
-save into tcl-callback.c, and some demo code at the end. </p>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<p> The following code should be saved into a file <tt>cl-tcl.lisp</tt>:
-</p>
-
-<pre class="code">
-;;; Evaluate (alien:load-foreign &quot;/usr/lib/libtcl8.0.so&quot;) and
-;;; (alien:load-foreign &quot;tcl-demo.o&quot;) before compiling or loading
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Callbacks from Tcl to CMUCL
+        </div>
+        <p>
+          This page describes how to use the CMUCL FFI to allow callbacks from
+          foreign code into Lisp. This implementation only works when using the
+          generational garbage collector (you should have <code class=
+          "code">:gencgc</code> in your <code class=
+          "variable">*features*</code> list; this is the case on all x86
+          platforms). It is also possible to make it work with the
+          non-generational garbage collector; ask the cmucl-help mailing list.
+          There is some glue code in Lisp to save into cl-tcl.lisp, some C glue
+          code to save into tcl-callback.c, and some demo code at the end.
+        </p>
+        <p>
+          The following code should be saved into a file
+          <code>cl-tcl.lisp</code>:
+        </p>
+        <pre class="code">
+;;; Evaluate (alien:load-foreign "/usr/lib/libtcl8.0.so") and
+;;; (alien:load-foreign "tcl-demo.o") before compiling or loading
 ;;; this file.  You will also likely need a version of CMUCL where
 ;;; the /usr/bin/lisp binary has been produced with the flags
 ;;; -Xlinker --export-dynamic added to OS_LINK_FLAGS in Config.linux*
 ;;; Note that the Debian binaries usually don't include these flags.
 
-(cl:defpackage &quot;CL-TCL&quot;
-    (:use &quot;CL&quot; &quot;ALIEN&quot; &quot;C-CALL&quot; &quot;SYSTEM&quot;)
+(cl:defpackage "CL-TCL"
+    (:use "CL" "ALIEN" "C-CALL" "SYSTEM")
   (:export
-   &quot;+TCL-OK+&quot; &quot;+TCL-ERROR+&quot; &quot;+TCL-RETURN+&quot; &quot;+TCL-BREAK+&quot; &quot;+TCL-CONTINUE+&quot;
-   &quot;TCL-INTERPRETER&quot;
-   &quot;CREATE-TCL-INTERPRETER&quot; &quot;DESTROY-TCL-INTERPRETER&quot;
-   &quot;REGISTER-TCL-COMMAND&quot; &quot;UNREGISTER-TCL-COMMAND&quot;
-   &quot;WITH-TCL-INTERPRETER&quot; &quot;EVAL-TCL-EXPR&quot;))
+   "+TCL-OK+" "+TCL-ERROR+" "+TCL-RETURN+" "+TCL-BREAK+" "+TCL-CONTINUE+"
+   "TCL-INTERPRETER"
+   "CREATE-TCL-INTERPRETER" "DESTROY-TCL-INTERPRETER"
+   "REGISTER-TCL-COMMAND" "UNREGISTER-TCL-COMMAND"
+   "WITH-TCL-INTERPRETER" "EVAL-TCL-EXPR"))
 
 (in-package :CL-TCL)
 
 ;;;; User and Implementation-level constants
 
 (defconstant +TCL-OK+ 0
-  &quot;TCL return code:  Command completed normally; the interpreter's
-result contains the command's result.&quot;)
+  "TCL return code:  Command completed normally; the interpreter's
+result contains the command's result.")
 
 (defconstant +TCL-ERROR+ 1
-  &quot;TCL return code:  The command couldn't be completed successfully;
-the interpreter's result describes what went wrong.&quot;)
+  "TCL return code:  The command couldn't be completed successfully;
+the interpreter's result describes what went wrong.")
 
 (defconstant +TCL-RETURN+ 2
-  &quot;TCL return code:  The command requests that the current procedure
-return; the interpreter's result contains the procedure's return value.&quot;)
+  "TCL return code:  The command requests that the current procedure
+return; the interpreter's result contains the procedure's return value.")
 
 (defconstant +TCL-BREAK+ 3
-  &quot;TCL return code:  The command requests that the innermost loop
-be exited; the interpreter's result is meaningless.&quot;)
+  "TCL return code:  The command requests that the innermost loop
+be exited; the interpreter's result is meaningless.")
 
 (defconstant +TCL-CONTINUE+ 4
-  &quot;TCL return code:  Go on to the next iteration of the current loop;
-the interpreter's result is meaningless.&quot;)
+  "TCL return code:  Go on to the next iteration of the current loop;
+the interpreter's result is meaningless.")
 
 ;;;; FFI bindings to the Tcl Library and the C-side of the callback stuff
 
 (declaim (inline tcl-createinterp))
-(def-alien-routine &quot;Tcl_CreateInterp&quot; system-area-pointer)
+(def-alien-routine "Tcl_CreateInterp" system-area-pointer)
 
 (declaim (inline tcl-eval))
-(def-alien-routine &quot;Tcl_Eval&quot; int
+(def-alien-routine "Tcl_Eval" int
   (interp system-area-pointer :in)
   (string c-string :in))
 
 (declaim (inline tcl-getstringresult))
-(def-alien-routine &quot;Tcl_GetStringResult&quot; c-string
+(def-alien-routine "Tcl_GetStringResult" c-string
   (interp system-area-pointer :in))
 
 (declaim (inline tcl-deleteinterp))
-(def-alien-routine &quot;Tcl_DeleteInterp&quot; void
+(def-alien-routine "Tcl_DeleteInterp" void
   (interp system-area-pointer :in))
 
 (declaim (inline set-lisp-callback-handler))
-(def-alien-routine &quot;Set_Lisp_Callback_Handler&quot; void
+(def-alien-routine "Set_Lisp_Callback_Handler" void
   (handler unsigned-long :in))
 
 (declaim (inline register-tcl-lisp-command))
-(def-alien-routine &quot;Register_Tcl_Lisp_Command&quot; void
+(def-alien-routine "Register_Tcl_Lisp_Command" void
   (interp system-area-pointer :in)
   (name c-string :in))
 
 (declaim (inline unregister-tcl-lisp-command))
-(def-alien-routine &quot;Unregister_Tcl_Lisp_Command&quot; void
+(def-alien-routine "Unregister_Tcl_Lisp_Command" void
   (interp system-area-pointer :in)
   (name c-string :in))
 
@@ -104,34 +168,34 @@ the interpreter's result is meaningless.&quot;)
 (defun print-tcl-interpreter (inter stream depth)
   (declare (ignore depth))
   (print-unreadable-object (inter stream :type t :identity t)
-    (format stream &quot;~:[(INVALID)~;(valid@~8,'0X)~]&quot;
-	    (tcl-interpreter-valid-p inter)
-	    (sap-int (tcl-interpreter-sap inter)))))
+    (format stream "~:[(INVALID)~;(valid@~8,'0X)~]"
+            (tcl-interpreter-valid-p inter)
+            (sap-int (tcl-interpreter-sap inter)))))
 
 (defvar *tcl-interpreter-list* nil
-  &quot;List of valid TCL interpreters.&quot;)
+  "List of valid TCL interpreters.")
 
 (defun create-tcl-interpreter ()
-  &quot;Create a TCL interpreter object that can be passed to the other
-functions of CL-TCL.&quot;
+  "Create a TCL interpreter object that can be passed to the other
+functions of CL-TCL."
   (let ((result (make-tcl-interpreter :sap (tcl-createinterp))))
     (push result *tcl-interpreter-list*)
     result))
 
 (defun destroy-tcl-interpreter (inter)
-  &quot;Destroy the TCL interpreter object `inter'.&quot;
+  "Destroy the TCL interpreter object `inter'."
   (assert (and (tcl-interpreter-valid-p inter)
-	       (member inter *tcl-interpreter-list*)))
+               (member inter *tcl-interpreter-list*)))
   (setf *tcl-interpreter-list*
-	(delete (tcl-interpreter-sap inter) *tcl-interpreter-list*
-		:key #'tcl-interpreter-sap :test #'sap=))
+        (delete (tcl-interpreter-sap inter) *tcl-interpreter-list*
+                :key #'tcl-interpreter-sap :test #'sap=))
   (tcl-deleteinterp (tcl-interpreter-sap inter))
   (setf (tcl-interpreter-valid-p inter) nil
-	(tcl-interpreter-sap inter) (int-sap 0))
+        (tcl-interpreter-sap inter) (int-sap 0))
   inter)
 
 (defun register-tcl-command (inter name handler)
-  &quot;Registers the lisp function `handler' as the handler for the
+  "Registers the lisp function `handler' as the handler for the
 command named by the string `name' in the TCL-Interpreter `inter'.
 Any previously existing handlers will be superseded.  When the
 corresponding command is invoked in the TCL interpreter, the handler
@@ -139,14 +203,14 @@ will be called with the TCL-Interpreter object, the command name and
 all the arguments to the TCL command.  The handler must return two
 values: The return code (one of +TCL-OK+, +TCL-ERROR+, +TCL-RETURN+,
 +TCL-BREAK+ or +TCL-CONTINUE+) and the result or error indicator
-string.&quot;
+string."
   (assert (tcl-interpreter-valid-p inter))
   (setf (gethash name (tcl-interpreter-commands inter)) handler)
   (register-tcl-lisp-command (tcl-interpreter-sap inter) name))
 
 (defun unregister-tcl-command (inter name)
-  &quot;Unregisters the previously registered command named `name' in the
-TCL-Interpreter `inter'.  Returns the old handler function.&quot;
+  "Unregisters the previously registered command named `name' in the
+TCL-Interpreter `inter'.  Returns the old handler function."
   (assert (tcl-interpreter-valid-p inter))
   (let ((handler (gethash name (tcl-interpreter-commands inter) nil)))
     (assert handler)
@@ -155,25 +219,25 @@ TCL-Interpreter `inter'.  Returns the old handler function.&quot;
     handler))
 
 (defmacro with-tcl-interpreter (inter (&amp;rest commands) &amp;body body)
-  &quot;Evaluate the body in an environment were `inter' is bound to a
+  "Evaluate the body in an environment were `inter' is bound to a
 Tcl interpreter instance and for each (name tcl-proc) in `commands'
-a Tcl command for name is defined, which invokes tcl-proc.&quot;
+a Tcl command for name is defined, which invokes tcl-proc."
   `(let ((,inter (create-tcl-interpreter)))
      (unwind-protect
-	  (progn
-	    ,@(loop for (name handler) in commands
-		    collect
-		    `(register-tcl-command ,inter ,name ,handler))
-	    ,@body)
+          (progn
+            ,@(loop for (name handler) in commands
+                    collect
+                    `(register-tcl-command ,inter ,name ,handler))
+            ,@body)
        (destroy-tcl-interpreter ,inter))))
 
 (defun eval-tcl-expr (inter expr)
-  &quot;Evaluate the expression (string) `expr' in the Tcl-Interpreter
+  "Evaluate the expression (string) `expr' in the Tcl-Interpreter
 `inter' and return as multiple values the return code and result
-string.&quot;
+string."
   (assert (tcl-interpreter-valid-p inter))
   (let* ((result-code (tcl-eval (tcl-interpreter-sap inter) expr))
-	 (result-string (tcl-getstringresult (tcl-interpreter-sap inter))))
+         (result-string (tcl-getstringresult (tcl-interpreter-sap inter))))
     (values result-code result-string)))
 
 ;;;; Lisp-side of the callback stuff.
@@ -181,15 +245,15 @@ string.&quot;
 (defun %lisp-callback-handler (inter-sap args)
   (handler-case
       (let ((inter (find inter-sap *tcl-interpreter-list*
-			 :key #'tcl-interpreter-sap :test #'sap=)))
-	(assert (and inter (tcl-interpreter-valid-p inter)))
-	(let ((handler (gethash (car args)
-				(tcl-interpreter-commands inter) nil)))
-	  (assert handler)
-	  (multiple-value-bind (code result)
-	      (apply handler inter args)
-	    (cons code result))))
-    (error (c) (cons +TCL-ERROR+ (format nil &quot;Lisp error: ~A&quot; c)))))
+                         :key #'tcl-interpreter-sap :test #'sap=)))
+        (assert (and inter (tcl-interpreter-valid-p inter)))
+        (let ((handler (gethash (car args)
+                                (tcl-interpreter-commands inter) nil)))
+          (assert handler)
+          (multiple-value-bind (code result)
+              (apply handler inter args)
+            (cons code result))))
+    (error (c) (cons +TCL-ERROR+ (format nil "Lisp error: ~A" c)))))
 
 (defun %update-lisp-callback-handler ()
   (set-lisp-callback-handler
@@ -197,23 +261,22 @@ string.&quot;
 
 (defvar *lisp-callback-scavhook*
   (ext:make-scavenger-hook :value #'%lisp-callback-handler
-			   :function #'%update-lisp-callback-handler))
+                           :function #'%update-lisp-callback-handler))
 
 (%update-lisp-callback-handler)
 </pre>
-
-
-<p> The following C code should be saved into a file
-<tt>tcl-callback.c</tt>.
-
-<pre class="code">
+        <p>
+          The following C code should be saved into a file
+          <code>tcl-callback.c</code>.
+        </p>
+        <pre class="code">
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
 #include &lt;tcl.h&gt;
-#include &quot;lisp.h&quot;
-#include &quot;internals.h&quot;
-#include &quot;alloc.h&quot;
-#include &quot;arch.h&quot;
+#include "lisp.h"
+#include "internals.h"
+#include "alloc.h"
+#include "arch.h"
 
 lispobj lisp_callback_handler;
 
@@ -230,7 +293,7 @@ static lispobj alloc_str_list(char *list[])
     while (*list != NULL) {
       ptr = (struct cons *)PTR(newcons);
       newcons = alloc_cons(alloc_string(*list++), NIL);
-      ptr->cdr = newcons;
+      ptr-&gt;cdr = newcons;
     }
   }
 
@@ -245,16 +308,16 @@ int LispTclProc(ClientData data,Tcl_Interp *interp,int argc,char** argv)
   int returnvalue;
 
   lisp_result=funcall2(lisp_callback_handler,alloc_sap(interp),
-		       alloc_str_list(argv));
+                       alloc_str_list(argv));
 
-  returnvalue=fixnum_value(CONS(lisp_result)->car);
-  vec=(struct vector*)PTR(CONS(lisp_result)->cdr);
+  returnvalue=fixnum_value(CONS(lisp_result)-&gt;car);
+  vec=(struct vector*)PTR(CONS(lisp_result)-&gt;cdr);
 
-  result=ckalloc((vec->length)+1);
-  strcpy(result,(char*)vec->data);
+  result=ckalloc((vec-&gt;length)+1);
+  strcpy(result,(char*)vec-&gt;data);
 
-  interp->result=result;
-  interp->freeProc=TCL_DYNAMIC;
+  interp-&gt;result=result;
+  interp-&gt;freeProc=TCL_DYNAMIC;
 
   return returnvalue;
 }
@@ -274,54 +337,59 @@ void Unregister_Tcl_Lisp_Command(Tcl_Interp* interp,char* name)
   Tcl_DeleteCommand(interp,name);
 }
 </pre>
-
-
-<p> Here is some code you can use to load the demo into CMUCL:
-</p>
-
-<pre class="code">
-(alien:load-foreign &quot;/usr/lib/libtcl8.0.so&quot;)
-(alien:load-foreign (make-pathname :name &quot;tcl-callback&quot; :type &quot;o&quot; :version nil
-				   :defaults *load-truename*))
-(load (compile-file (make-pathname :name &quot;cl-tcl&quot; :type &quot;cl&quot; :version nil
-				   :defaults *load-truename*)))
+        <p>
+          Here is some code you can use to load the demo into CMUCL:
+        </p>
+        <pre class="code">
+(alien:load-foreign "/usr/lib/libtcl8.0.so")
+(alien:load-foreign (make-pathname :name "tcl-callback" :type "o" :version nil
+                                   :defaults *load-truename*))
+(load (compile-file (make-pathname :name "cl-tcl" :type "cl" :version nil
+                                   :defaults *load-truename*)))
 </pre>
-
-
-<p> And finally, here is some sample code demonstrating the use of a tcl
-function which calls back into Lisp:
-
-<pre class="code">
-(cl:defpackage &quot;CL-TCL-DEMO&quot;
-    (:use &quot;CL&quot; &quot;CL-TCL&quot;)
-  (:export &quot;TCL-DEMO&quot;))
+        <p>
+          And finally, here is some sample code demonstrating the use of a tcl
+          function which calls back into Lisp:
+        </p>
+        <pre class="code">
+(cl:defpackage "CL-TCL-DEMO"
+    (:use "CL" "CL-TCL")
+  (:export "TCL-DEMO"))
 
 (in-package :CL-TCL-DEMO)
 
 (defun tcl-incr (inter cmd first &amp;optional second)
   (declare (ignore inter cmd))
   (values 0
-	  (format nil &quot;~D&quot;
-		  (+ (parse-integer first)
-		     (if second (parse-integer second) 1)))))
+          (format nil "~D"
+                  (+ (parse-integer first)
+                     (if second (parse-integer second) 1)))))
 
 (defun tcl-demo (n)
-  (with-tcl-interpreter inter ((&quot;lincr&quot; #'tcl-incr))
+  (with-tcl-interpreter inter (("lincr" #'tcl-incr))
     (multiple-value-bind (code result)
-	(eval-tcl-expr inter
-		       (format nil &quot;set result \&quot;(\&quot;
-for {set i 1} {$i &lt;= ~D} {set i [lincr $i 2]} {append result $i \&quot; \&quot;}
-append result \&quot;)\&quot;
-return $result&quot; n))
+        (eval-tcl-expr inter
+                       (format nil "set result \"(\"
+for {set i 1} {$i &lt;= ~D} {set i [lincr $i 2]} {append result $i \" \"}
+append result \")\"
+return $result" n))
       (case code
-	((#.+TCL-OK+ #.+TCL-RETURN+) (read-from-string result))
-	(t (values code result))))))
+        ((#.+TCL-OK+ #.+TCL-RETURN+) (read-from-string result))
+        (t (values code result))))))
 </pre>
-
-<p class=credits> This description is adapted from the article
-<tt>&lt;87k8jzthta.fsf@orion.dent.isdn.cs.tu-berlin.de&gt;</tt> posted to
-the USENET group comp.lang.lisp on 2000-02-21 by Pierre Mai. </p>
-
-@@FOOTER@@
-</body>
+        <p class="credits">
+          This description is adapted from the article
+          <code>&lt;87k8jzthta.fsf@orion.dent.isdn.cs.tu-berlin.de&gt;</code>
+          posted to the USENET group comp.lang.lisp on 2000-02-21 by Pierre
+          Mai.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 11:24:10 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

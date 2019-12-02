@@ -1,28 +1,91 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: Analyzing memory usage</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: Analyzing memory usage
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Analyzing memory usage)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> CMUCL includes a number of tools that allow a user to determine how
-    many objects of a given type have been allocated in a given image, and
-    why certain objects are not being reclaimed by the garbage collector.
-    These functions are called <tt
-    class="function-name">VM::LIST-ALLOCATED-OBJECTS</tt> and <tt
-    class="function-name">VM::LIST-REFERENCING-OBJECTS</tt>. Each takes a
-    first SPACE argument indicating whether to scan dynamic space, static
-    space or read-only space. </p>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<p> The example below shows how to obtain a list all objects of type
-    double-float in read-only space, and a list of all strings of length 42
-    in read-only space:
-
-<pre class=code>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Analyzing memory usage
+        </div>
+        <p>
+          CMUCL includes a number of tools that allow a user to determine how
+          many objects of a given type have been allocated in a given image,
+          and why certain objects are not being reclaimed by the garbage
+          collector. These functions are called <code class=
+          "function-name">VM::LIST-ALLOCATED-OBJECTS</code> and <code class=
+          "function-name">VM::LIST-REFERENCING-OBJECTS</code>. Each takes a
+          first SPACE argument indicating whether to scan dynamic space, static
+          space or read-only space.
+        </p>
+        <p>
+          The example below shows how to obtain a list all objects of type
+          double-float in read-only space, and a list of all strings of length
+          42 in read-only space:
+        </p>
+        <pre class="code">
 USER&gt; (vm::list-allocated-objects :read-only :type vm::double-float-type)
 (0.0d0 1.8446744073709553d+19 -1.8446744073709553d+19 -3.141592653589793d0
  1.5707963267948966d0 -1.5707963267948966d0 3.141592653589793d0 -1.0d0 1.0d0
@@ -45,46 +108,54 @@ USER&gt; (vm::list-allocated-objects :read-only :type vm::double-float-type)
  5.368709110000001d+8 -5.36870912d+8)
 USER&gt; (vm::list-allocated-objects :read-only :type vm::simple-string-type
                                   :test (lambda (obj) (= 42 (length obj))))
-(&quot;DEFMETHOD WRAPPER-FETCHER (STANDARD-CLASS)&quot;
- &quot;(.pv-cell. .next-method-call. specializer)&quot;
- &quot;DEFUN GET-COMPLEX-INITIALIZATION-FUNCTIONS&quot;
- &quot;DEFMETHOD DOCUMENTATION (FUNCTION (EQL #))&quot;
+("DEFMETHOD WRAPPER-FETCHER (STANDARD-CLASS)"
+ "(.pv-cell. .next-method-call. specializer)"
+ "DEFUN GET-COMPLEX-INITIALIZATION-FUNCTIONS"
+ "DEFMETHOD DOCUMENTATION (FUNCTION (EQL #))"
  [...]
- &quot;Veritas aeterna, can't declare ~S special.&quot;
- &quot;Can't declare ~S special, it is a keyword.&quot;
- &quot;Trying to declare ~S special, which is ~A.&quot;
- &quot;COMPILED-DEBUG-FUNCTION-COMPILER-DEBUG-FUN&quot;
- &quot;Too large to be represented as a ~S:~%  ~S&quot;
- &quot;~D is too big; ~S only has ~D dimension~:P&quot;)
+ "Veritas aeterna, can't declare ~S special."
+ "Can't declare ~S special, it is a keyword."
+ "Trying to declare ~S special, which is ~A."
+ "COMPILED-DEBUG-FUNCTION-COMPILER-DEBUG-FUN"
+ "Too large to be represented as a ~S:~%  ~S"
+ "~D is too big; ~S only has ~D dimension~:P")
 </pre>
- 
-<p> and the example below shows how to find all references to a given object
-    in a given space:
-
-<pre class=code>
+        <p>
+          and the example below shows how to find all references to a given
+          object in a given space:
+        </p>
+        <pre class="code">
 USER&gt; (vm::list-referencing-objects :static *print-case*)
 (common-lisp::*previous-case* *print-case* #&lt;(simple-vector 4096) {28018817}&gt;
  :downcase #&lt;(simple-vector 2729) {28002767}&gt;)
 USER&gt; (vm::list-referencing-objects :static #\Nul)
-((#\Null 8 sparc:simple-string-type) (&quot;Nul&quot; . #\Null) (&quot;^@&quot; . #\Null)
- (&quot;Null&quot; . #\Null))
+((#\Null 8 sparc:simple-string-type) ("Nul" . #\Null) ("^@" . #\Null)
+ ("Null" . #\Null))
 </pre>
-
-<p> These functions can produce lots of output; you probably don't want to
-    have <tt class=variable>*PRINT-ARRAY*</tt> set. More information on the
-    breakdown of types of objets allocated and the space that they occupy
-    is available by calling <tt>(ROOM T)</tt>. </p>
-
-<p> If you have more specific needs, CMUCL includes a function <tt
-    class="function-name">VM::MAP-ALLOCATED-OBJECTS</tt> that allows you to
-    walk the heap; it calls a user-provided function on each allocated
-    object, with arguments of the object, its size and its type. Examples
-    of usage are available in the CMUCL source code, in the file
-    <tt>src/code/room.lisp</tt>. </p>
-
-
-<p class=credits> by Eric Marsden
-
-@@FOOTER@@
-</body>
+        <p>
+          These functions can produce lots of output; you probably don't want
+          to have <code class="variable">*PRINT-ARRAY*</code> set. More
+          information on the breakdown of types of objets allocated and the
+          space that they occupy is available by calling <code>(ROOM T)</code>.
+        </p>
+        <p>
+          If you have more specific needs, CMUCL includes a function
+          <code class="function-name">VM::MAP-ALLOCATED-OBJECTS</code> that
+          allows you to walk the heap; it calls a user-provided function on
+          each allocated object, with arguments of the object, its size and its
+          type. Examples of usage are available in the CMUCL source code, in
+          the file <code>src/code/room.lisp</code>.
+        </p>
+        <p class="credits">
+          by Eric Marsden
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:35:44 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

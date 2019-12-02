@@ -1,110 +1,162 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: fast dumping and loading of data</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: fast dumping and loading of data
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Fast dumping and loading of data)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> Handling persistence / marshaling and unmarshaling / pickling
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-There are several ways of saving and restoring state in CMUCL:
-
-<ol>
-<li> Ensure that your data structures know how to print themselves readably, by defining
-     print-functions for your structures, and by specializing the <tt
-     class="function-name">PRINT-OBJECT</tt> generic function for your classes. You can
-     then use the Common Lisp printer to save objects in ASCII form, and the Common Lisp
-     reader to load them. This technique is likely to be very slow on large amounts of
-     data, since the printer and reader are not very efficient. It will be particularly
-     slow when serializing integers and floats, since the conversion from binary to ASCII
-     format and back is very inefficient. However, this is the only technique that saves
-     your data in a portable format.
-
-<li> Ensure that all your objects are externalizable by specializing the generic function
-     <tt class="function-name">MAKE-LOAD-FORM</tt> for your classes and structures. You
-     can then use <tt class="function-name">COMPILE-FILE</tt> to create a FASL file for
-     your data. <a href = "http://www.lisp.org/HyperSpec/Body/sec_3-2-4-4.html">Section
-     3.2.4.4 of CLtS</a> specifies the constraints on portable externalization using
-     MAKE-LOAD-FORM. 
-
-<li> Save a lisp image, using the CMUCL function <tt
-     class="function-name">EXT:SAVE-LISP</tt>. You can restart this image
-     later, using the <tt>-core</tt> commandline option to CMUCL. This
-     method is easy to implement and fast, but doesn't allow you to be
-     selective about what you save; you serialize the entire lisp world.
-
-<li> Use the following CMUCL-specific binary loading and dumping code,
-     which is similar to the preceding technique, but doesn't require you
-     to define MAKE-LOAD-FORM for everything.
-
-
-
-
-<!-- how about arrays and so on? -->
-
-</ol>
-
-
-<h2>Portability of dumps</h2>
-
-<p> There is a compromise between efficiency and portability of your dumps:
-    the most efficient techniques are those that save data in a form that
-    is closest to the in-memory representation used by CMUCL, but this
-    in-memory representation changes as CMUCL evolves. The only technique
-    that creates a portable dump (that you can read in another Common Lisp
-    implementation on a different platform) is the first: saving to ASCII.
-    All the other techniques save data in binary format, and so will not be
-    portable to another hardware platform (consider for example
-    big-endian/little-endian issues). The least portable technique is
-    saving an image; since CMUCL images are tightly bound to their runtime,
-    you won't be able to use a saved image with a future release of CMUCL.
-
-<p> The two other techniques are a little less tied to the exact CMUCL
-    version number, but you shouldn't count on them producing data that is
-    portable from one release to another. This is because the FASL file
-    format can change occasionally, which will mean that an old FASL file
-    will no longer be readable by the new CMUCL. 
-
-
-    
-The fastest way to dump binary data to disk (and retrieving it) under
-cmucl is through the following code, posted some time ago by Pierre
-Mai on cmucl-help.
-
-It uses the compiler's fasl (fast loading) facility:
-
-(defvar *internal-value-passer*)
-
-(defun bindump (object filename)
-  (let ((file (c::open-fasl-file (pathname filename) nil t)))
-    (unwind-protect
-        (let ((c::*coalesce-constants* nil)
-              (c::*dump-only-valid-structures* nil)
-              (c::*cold-load-dump* t))
-          (c::dump-fop 'lisp::fop-normal-load file)
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Fast dumping and loading of data
+        </div>
+        <p>
+          Handling persistence / marshaling and unmarshaling / pickling There
+          are several ways of saving and restoring state in CMUCL:
+        </p>
+        <ol>
+          <li>Ensure that your data structures know how to print themselves
+          readably, by defining print-functions for your structures, and by
+          specializing the <code class="function-name">PRINT-OBJECT</code>
+          generic function for your classes. You can then use the Common Lisp
+          printer to save objects in ASCII form, and the Common Lisp reader to
+          load them. This technique is likely to be very slow on large amounts
+          of data, since the printer and reader are not very efficient. It will
+          be particularly slow when serializing integers and floats, since the
+          conversion from binary to ASCII format and back is very inefficient.
+          However, this is the only technique that saves your data in a
+          portable format.
+          </li>
+          <li>Ensure that all your objects are externalizable by specializing
+          the generic function <code class=
+          "function-name">MAKE-LOAD-FORM</code> for your classes and
+          structures. You can then use <code class=
+          "function-name">COMPILE-FILE</code> to create a FASL file for your
+          data. <a href="http://www.lisp.org/HyperSpec/Body/sec_3-2-4-4.html">
+            Section 3.2.4.4 of CLtS</a> specifies the constraints on portable
+            externalization using MAKE-LOAD-FORM.
+          </li>
+          <li>Save a lisp image, using the CMUCL function <code class=
+          "function-name">EXT:SAVE-LISP</code>. You can restart this image
+          later, using the <code>-core</code> commandline option to CMUCL. This
+          method is easy to implement and fast, but doesn't allow you to be
+          selective about what you save; you serialize the entire lisp world.
+          </li>
+          <li>Use the following CMUCL-specific binary loading and dumping code,
+          which is similar to the preceding technique, but doesn't require you
+          to define MAKE-LOAD-FORM for everything. 
+          <!-- how about arrays and so on? -->
+          </li>
+        </ol>
+        <h2>
+          Portability of dumps
+        </h2>
+        <p>
+          There is a compromise between efficiency and portability of your
+          dumps: the most efficient techniques are those that save data in a
+          form that is closest to the in-memory representation used by CMUCL,
+          but this in-memory representation changes as CMUCL evolves. The only
+          technique that creates a portable dump (that you can read in another
+          Common Lisp implementation on a different platform) is the first:
+          saving to ASCII. All the other techniques save data in binary format,
+          and so will not be portable to another hardware platform (consider
+          for example big-endian/little-endian issues). The least portable
+          technique is saving an image; since CMUCL images are tightly bound to
+          their runtime, you won't be able to use a saved image with a future
+          release of CMUCL.
+        </p>
+        <p>
+          The two other techniques are a little less tied to the exact CMUCL
+          version number, but you shouldn't count on them producing data that
+          is portable from one release to another. This is because the FASL
+          file format can change occasionally, which will mean that an old FASL
+          file will no longer be readable by the new CMUCL. The fastest way to
+          dump binary data to disk (and retrieving it) under cmucl is through
+          the following code, posted some time ago by Pierre Mai on cmucl-help.
+          It uses the compiler's fasl (fast loading) facility: (defvar
+          *internal-value-passer*) (defun bindump (object filename) (let ((file
+          (c::open-fasl-file (pathname filename) nil t))) (unwind-protect (let
+          ((c::*coalesce-constants* nil) (c::*dump-only-valid-structures* nil)
+          (c::*cold-load-dump* t)) (c::dump-fop 'lisp::fop-normal-load file)
           (c::dump-object `(setq *internal-value-passer* (quote ,object)) file)
-          (c::dump-fop 'lisp::fop-eval-for-effect file))
-      (c::close-fasl-file file nil)))
-  t)
-
-(defun binload (filename)
-  (let ((*internal-value-passer* nil))
-    (load filename :verbose nil :print nil)
-    *internal-value-passer*))
-
-The object argument to bindump can be pretty much anything. I've tried
-with structs, lists of vectors and symbols etc. it just works.
-
-
-http://www.mail-archive.com/cmucl-help@cons.org/msg00547.html
-
-<p class=credits> by Pierre Mai and Eric Marsden.
-
-
-@@FOOTER@@
-</body>
+          (c::dump-fop 'lisp::fop-eval-for-effect file)) (c::close-fasl-file
+          file nil))) t) (defun binload (filename) (let
+          ((*internal-value-passer* nil)) (load filename :verbose nil :print
+          nil) *internal-value-passer*)) The object argument to bindump can be
+          pretty much anything. I've tried with structs, lists of vectors and
+          symbols etc. it just works.
+          http://www.mail-archive.com/cmucl-help@cons.org/msg00547.html
+        </p>
+        <p class="credits">
+          by Pierre Mai and Eric Marsden.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 11:26:25 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

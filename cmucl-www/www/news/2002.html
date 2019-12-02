@@ -1,171 +1,336 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: news from 2002</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.6.0">
+    <title>
+      CMUCL: news from 2002
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(what happened in 2002)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p>
-<dl>
-<dt>2002-12-24</dt>
-<dd> A new version of GerdsPCL has been uploaded to the experimental
-directory of the download mirrors. This version includes an optimization
-that can make class slot access as efficient as for structures!
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<dt>2002-12-15</dt>
-<dd> Documentation: a new document giving <a href =
-"../doc/pcl-mop-hints.html">hints on using the PCL MOP</a> has been put
- online. 
-
-<dt>2002-12-19</dt>
-<dd> Binaries for x86-linux, x86-freebsd and sparcv9-solaris from current
-source have been uploaded to the binaries directory of the download sites.
-
-<dt>2002-12-16</dt>
-<dd> A new GerdsPCL tarball is available in the experimental directory of
-the download sites. This release can only be used with a recent CMUCL built
-from sources after 2002-12-13. 
-
-<dt>2002-11-18</dt>
-<dd> Binaries featuring the &quot;gerdspcl&quot; version of PCL have been
-uploaded to the experimental directory of the download sites. There are
-binaries for sparcv9-solaris and x86-linux. The gerdspcl branch contains a
-number of bugfixes and speed enhancements that have not yet been integrated
-into the CMUCL version of PCL, but that likely will be included in a future
-release. 
-
-<dt>2002-11-18</dt>
-<dd> There has been work on reviving the Linux/Alpha port of CMUCL;
-experimental binaries should be available in a few days. 
-
-<dt>2002-11-13</dt>
-<dd> An updated version of the <i>CMUCL User's Manual</i> has been uploaded
-to the documentation section, in HTML, PDF and Postscript formats. 
-
-<dt>2002-11-09</dt>
-<dd> A tarball containing the revamped source to PCL (the CLOS
-implementation in CMUCL) is available in the experimental directory of the
-download sites. This contains all the changes that have been made by Gerd
-Moellman. Please test that the optimizations and code deletions do not
-break your code. 
-
-<dt>2002-11-01</dt>
-<dd> The profiler now reports precise measurements of allocation on x86
-platforms using the generation garbage collector (previously, the reported
-information was imprecise). Non-gencgc platforms already had precise
-allocation measurement, and are not affected by the change. A new function
-<tt>WITH-SPACEREPORT</tt> allows breaking up profiling reports into
-sections. A CMUCL binary with this change for x86-Linux is available in the
-experimental directory of the download sites.
-
-<dt>2002-10-26</dt>
-<dd> Some Solaris-sparcv9 binaries with the linkage table changes have been
-uploaded to the binaries directory of the download sites.
-
-<dt>2002-10-24</dt>
-<dd> The linkage-table feature has been ported to SPARC by Raymond Toy.
-This means that it works on all currently supported platforms.
-
-<dt>2002-10-02</dt>
-<dd> A Karatsuba multiplier implementation has been added for bignums,
-which should speed up multiplications for bignums with more than 512 bits.
-
-<dt>2002-09-13</dt>
-<dd> Binaries for x86-linux, x86-freebsd and sparcv9-solaris from current
-source have been uploaded to the binaries directory of the download sites.
-The x86 builds have the recent foreign-linkage changes enabled, and the
-sparcv9 builds have the recent 64-bit integer support enabled.
-
-<dt>2002-09-04</dt>
-<dd> Initial support for 64-bit integers on sparc-v8plus architectures
-(basically UltraSPARC machines) has been added by Raymond Toy. This allows
-the use of unboxed arithmetic on much larger fixnums, which can make
-certain algorithms much more efficient.
-
-<dt>2002-08-27</dt>
-<dd> On FreeBSD and Linux on x86 architectures, there has been a change to
-the way that foreign symbol addresses (function and data references) are
-resolved. An extra level of indirection, via a linkage table, has been
-added to the resolution process. This means that it is possible to dump
-images that contain references to symbols in shared libraries, and that
-image files are no longer dependent on the addresses of symbols in the lisp
-runtime. This work is due to Tim Moore.
-
-<dt>2002-08-25</dt>
-<dd> There have been a large number of bugfixes, ANSI compliance fixes,
-unused code deletion and cleanup of the PCL code in CMUCL, thanks to Gerd
-Moellmann. See the cmucl-imp mailing list for details of all the
-improvements that have been made.
-
-<dt>2002-08-23</dt>
-<dd> The format of APROPOS output is more verbose, showing more information
-on whether each symbol names a special variable, a constant, a symbol
-macro, and alien variable, a macro, a special operator, a function, etc.
-
-<dt>2002-08-20</dt>
-<dd> The nasty bug in inappropriate code deletion when using FLET or LABELS
-has been fixed, thanks to Alexey Dejneka.
-
-<dt>2002-08-07</dt>
-<dd> Binaries for NetBSD 1.5.2 on x86 have been uploaded to the
-experimental directory of the download site. They have known problems with
-floating point traps.
-
-<dt>2002-07-25</dt>
-<dd> Binaries from current source have been uploaded for the following
-platforms: sparcv9-solaris, x86-linux, x86-freebsd. Both normal and small
-images have been generated.
-
-<dt>2002-05-21</dt>
-<dd> Some reduced-footprint binaries have been uploaded to the experimental
-directory on the download site and mirrors. These include a lisp runtime
-built without debugging symbols, a runtime image (no compiler, no CLOS) and
-a small development image.
-
-<dt>2002-04-25</dt>
-<dd> Updated extra tarballs for 18d on x86/linux. If you use Hemlock on
-this platform you should reinstall the extra tarball; the previous ones
-were broken.
-
-<dt>2002-04-11</dt>
-<dd> CMUCL version 18d released. See the <a href =
-"release-18d.txt">release notes</a> for details of all the crunchy new
-features and bugfixes. 
-
-<dt>2002-03-29</dt>
-<dd> Preparation for 18d release in around a week. Added documentation for
-the hierarchical packages feature.
-
-<dt>2002-03-13</dt>
-<dd> Fix for dynamic loading in FreeBSD 4.0 and later. This involves
-moving the static space up, so a cross-compile is required to bootstrap
-these changes.
-
-<dt>2002-02-06</dt>
-<dd> Allow users to disable tail-call optimization by setting a debug
-optimization quality higher than 2. 
-
-<dt>2002-01-27</dt>
-<dd> Changes to the compile-time behaviour of <tt>DEFCONSTANT</tt>, to fix
-its behaviour when it is not at the toplevel.
-
-<dt>2002-01-13</dt>
-<dd> Add the ability to select rounding precision for x86 floating point
-operations. 
-
-<dt>2002-01-23</dt>
-<dd> Anoncvs access is available again.
-
-<dt>2002-01-22</dt>
-<dd> Experimental NetBSD/x86 binaries are available in the
-<tt>experimental</tt> directory of the <a href =
-"../download.html">download sites</a>.  
-</dl>
-
-@@FOOTER@@
-</body>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>News</strong>: what happened in 2002
+        </div>
+        <dl>
+          <dt>
+            2002-12-24
+          </dt>
+          <dd>
+            A new version of GerdsPCL has been uploaded to the experimental
+            directory of the download mirrors. This version includes an
+            optimization that can make class slot access as efficient as for
+            structures!
+          </dd>
+          <dt>
+            2002-12-15
+          </dt>
+          <dd>
+            Documentation: a new document giving <a href=
+            "../doc/pcl-mop-hints.html">hints on using the PCL MOP</a> has been
+            put online.
+          </dd>
+          <dt>
+            2002-12-19
+          </dt>
+          <dd>
+            Binaries for x86-linux, x86-freebsd and sparcv9-solaris from
+            current source have been uploaded to the binaries directory of the
+            download sites.
+          </dd>
+          <dt>
+            2002-12-16
+          </dt>
+          <dd>
+            A new GerdsPCL tarball is available in the experimental directory
+            of the download sites. This release can only be used with a recent
+            CMUCL built from sources after 2002-12-13.
+          </dd>
+          <dt>
+            2002-11-18
+          </dt>
+          <dd>
+            Binaries featuring the "gerdspcl" version of PCL have been uploaded
+            to the experimental directory of the download sites. There are
+            binaries for sparcv9-solaris and x86-linux. The gerdspcl branch
+            contains a number of bugfixes and speed enhancements that have not
+            yet been integrated into the CMUCL version of PCL, but that likely
+            will be included in a future release.
+          </dd>
+          <dt>
+            2002-11-18
+          </dt>
+          <dd>
+            There has been work on reviving the Linux/Alpha port of CMUCL;
+            experimental binaries should be available in a few days.
+          </dd>
+          <dt>
+            2002-11-13
+          </dt>
+          <dd>
+            An updated version of the <i>CMUCL User's Manual</i> has been
+            uploaded to the documentation section, in HTML, PDF and Postscript
+            formats.
+          </dd>
+          <dt>
+            2002-11-09
+          </dt>
+          <dd>
+            A tarball containing the revamped source to PCL (the CLOS
+            implementation in CMUCL) is available in the experimental directory
+            of the download sites. This contains all the changes that have been
+            made by Gerd Moellman. Please test that the optimizations and code
+            deletions do not break your code.
+          </dd>
+          <dt>
+            2002-11-01
+          </dt>
+          <dd>
+            The profiler now reports precise measurements of allocation on x86
+            platforms using the generation garbage collector (previously, the
+            reported information was imprecise). Non-gencgc platforms already
+            had precise allocation measurement, and are not affected by the
+            change. A new function <code>WITH-SPACEREPORT</code> allows
+            breaking up profiling reports into sections. A CMUCL binary with
+            this change for x86-Linux is available in the experimental
+            directory of the download sites.
+          </dd>
+          <dt>
+            2002-10-26
+          </dt>
+          <dd>
+            Some Solaris-sparcv9 binaries with the linkage table changes have
+            been uploaded to the binaries directory of the download sites.
+          </dd>
+          <dt>
+            2002-10-24
+          </dt>
+          <dd>
+            The linkage-table feature has been ported to SPARC by Raymond Toy.
+            This means that it works on all currently supported platforms.
+          </dd>
+          <dt>
+            2002-10-02
+          </dt>
+          <dd>
+            A Karatsuba multiplier implementation has been added for bignums,
+            which should speed up multiplications for bignums with more than
+            512 bits.
+          </dd>
+          <dt>
+            2002-09-13
+          </dt>
+          <dd>
+            Binaries for x86-linux, x86-freebsd and sparcv9-solaris from
+            current source have been uploaded to the binaries directory of the
+            download sites. The x86 builds have the recent foreign-linkage
+            changes enabled, and the sparcv9 builds have the recent 64-bit
+            integer support enabled.
+          </dd>
+          <dt>
+            2002-09-04
+          </dt>
+          <dd>
+            Initial support for 64-bit integers on sparc-v8plus architectures
+            (basically UltraSPARC machines) has been added by Raymond Toy. This
+            allows the use of unboxed arithmetic on much larger fixnums, which
+            can make certain algorithms much more efficient.
+          </dd>
+          <dt>
+            2002-08-27
+          </dt>
+          <dd>
+            On FreeBSD and Linux on x86 architectures, there has been a change
+            to the way that foreign symbol addresses (function and data
+            references) are resolved. An extra level of indirection, via a
+            linkage table, has been added to the resolution process. This means
+            that it is possible to dump images that contain references to
+            symbols in shared libraries, and that image files are no longer
+            dependent on the addresses of symbols in the lisp runtime. This
+            work is due to Tim Moore.
+          </dd>
+          <dt>
+            2002-08-25
+          </dt>
+          <dd>
+            There have been a large number of bugfixes, ANSI compliance fixes,
+            unused code deletion and cleanup of the PCL code in CMUCL, thanks
+            to Gerd Moellmann. See the cmucl-imp mailing list for details of
+            all the improvements that have been made.
+          </dd>
+          <dt>
+            2002-08-23
+          </dt>
+          <dd>
+            The format of APROPOS output is more verbose, showing more
+            information on whether each symbol names a special variable, a
+            constant, a symbol macro, and alien variable, a macro, a special
+            operator, a function, etc.
+          </dd>
+          <dt>
+            2002-08-20
+          </dt>
+          <dd>
+            The nasty bug in inappropriate code deletion when using FLET or
+            LABELS has been fixed, thanks to Alexey Dejneka.
+          </dd>
+          <dt>
+            2002-08-07
+          </dt>
+          <dd>
+            Binaries for NetBSD 1.5.2 on x86 have been uploaded to the
+            experimental directory of the download site. They have known
+            problems with floating point traps.
+          </dd>
+          <dt>
+            2002-07-25
+          </dt>
+          <dd>
+            Binaries from current source have been uploaded for the following
+            platforms: sparcv9-solaris, x86-linux, x86-freebsd. Both normal and
+            small images have been generated.
+          </dd>
+          <dt>
+            2002-05-21
+          </dt>
+          <dd>
+            Some reduced-footprint binaries have been uploaded to the
+            experimental directory on the download site and mirrors. These
+            include a lisp runtime built without debugging symbols, a runtime
+            image (no compiler, no CLOS) and a small development image.
+          </dd>
+          <dt>
+            2002-04-25
+          </dt>
+          <dd>
+            Updated extra tarballs for 18d on x86/linux. If you use Hemlock on
+            this platform you should reinstall the extra tarball; the previous
+            ones were broken.
+          </dd>
+          <dt>
+            2002-04-11
+          </dt>
+          <dd>
+            CMUCL version 18d released. See the <a href=
+            "release-18d.txt">release notes</a> for details of all the crunchy
+            new features and bugfixes.
+          </dd>
+          <dt>
+            2002-03-29
+          </dt>
+          <dd>
+            Preparation for 18d release in around a week. Added documentation
+            for the hierarchical packages feature.
+          </dd>
+          <dt>
+            2002-03-13
+          </dt>
+          <dd>
+            Fix for dynamic loading in FreeBSD 4.0 and later. This involves
+            moving the static space up, so a cross-compile is required to
+            bootstrap these changes.
+          </dd>
+          <dt>
+            2002-02-06
+          </dt>
+          <dd>
+            Allow users to disable tail-call optimization by setting a debug
+            optimization quality higher than 2.
+          </dd>
+          <dt>
+            2002-01-27
+          </dt>
+          <dd>
+            Changes to the compile-time behaviour of <code>DEFCONSTANT</code>,
+            to fix its behaviour when it is not at the toplevel.
+          </dd>
+          <dt>
+            2002-01-13
+          </dt>
+          <dd>
+            Add the ability to select rounding precision for x86 floating point
+            operations.
+          </dd>
+          <dt>
+            2002-01-23
+          </dt>
+          <dd>
+            Anoncvs access is available again.
+          </dd>
+          <dt>
+            2002-01-22
+          </dt>
+          <dd>
+            Experimental NetBSD/x86 binaries are available in the
+            <code>experimental</code> directory of the <a href=
+            "../download.html">download sites</a>.
+          </dd>
+        </dl>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Sun Nov 24 22:23:58 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

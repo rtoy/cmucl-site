@@ -1,22 +1,84 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL as a Lisp server</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL as a Lisp server
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Serve Lisp requests)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> The multiprocessing capabilities in the x86 versions of CMUCL allow it
-    to operate as a lisp server. This can be useful in a situation where
-    you wish to execute a number of small scripts, where the overhead of
-    launching a separate CMUCL instance would be penalizing. For a real
-    application you would have to take security considerations into
-    account. </p>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<pre class=code>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Serve Lisp requests
+        </div>
+        <p>
+          The multiprocessing capabilities in the x86 versions of CMUCL allow
+          it to operate as a lisp server. This can be useful in a situation
+          where you wish to execute a number of small scripts, where the
+          overhead of launching a separate CMUCL instance would be penalizing.
+          For a real application you would have to take security considerations
+          into account.
+        </p>
+        <pre class="code">
 (in-package :user)
 
 (format t "THIS A A HUDGE SECURITY RISC. CHANGE THE PASSWORD!!!~%~%")
@@ -49,16 +111,23 @@ Loaded subsystems:
 Connection closed by foreign host.
 |#
 </pre>
-
-<p> Craig Brozefsky has developed a prototype application called <a href =
-    "http://sanpietro.red-bean.com/~craig/qcmu/">qcmu</a> which generalizes
-    this technique. It allows users to obtain either a REPL or to execute a
-    script on a CMUCL server. qcmu uses a client-server protocol which
-    incorporates authentication mechanisms. </p>
-
-    
-<p class=credits> by Peter Van Eynde
-
-@@FOOTER@@
-</body>
+        <p>
+          Craig Brozefsky has developed a prototype application called <a href=
+          "http://sanpietro.red-bean.com/~craig/qcmu/">qcmu</a> which
+          generalizes this technique. It allows users to obtain either a REPL
+          or to execute a script on a CMUCL server. qcmu uses a client-server
+          protocol which incorporates authentication mechanisms.
+        </p>
+        <p class="credits">
+          by Peter Van Eynde
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:23:14 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

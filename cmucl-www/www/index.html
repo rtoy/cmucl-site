@@ -1,139 +1,245 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL Home Page</title>
-@@METAS@@
-<meta name="keywords" content="CMUCL, Common Lisp, CLOS">
-<meta name="description" content="CMUCL is a high-performance, free
-Common Lisp implementation.">
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.6.0">
+    <title>
+      CMUCL Home Page
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support">
+    <meta name="keywords"
+          content="CMUCL, Common Lisp, CLOS">
+    <meta name="description"
+          content=
+          "CMUCL is a high-performance, free Common Lisp implementation.">
+    <script type="text/javascript">
 
-<body bgColor="#FFFFFF" text="#000000">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-@@HEADING(a high-performance, free Common Lisp implementation)
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<p> CMUCL is a free implementation of the Common Lisp programming language
-    which runs on most major Unix platforms. It mainly conforms to the ANSI
-    Common Lisp standard. Here is a summary of its main features: </p>
-
-<ul>
-<li> Support for static arrays that are never moved by GC but are
-properly removed when no longer referenced. </li>
-
-<li> Unicode support, including many of the most common external
-formats such as UTF-8 and support for handling Unix, DOS, and Mac
-end-of-line schemes. </li>
-
-<li> native double-double floats including complex double-double
-floats and specialized arrays for double-double floats and and complex
-double-double floats that give approximately 106 bits (32 digits) of
-precision. </li>
-
-<li> a <strong>sophisticated native-code compiler</strong> which is capable
-     of powerful type inferences, and generates code competitive in speed
-     with C compilers. </li>
-
-<li> generational garbage collection and <strong>multiprocessing
-     capability</strong> on the x86 ports. </li>
-
-<li> a foreign function interface which allows interfacing with C code and
-     system libraries, including shared libraries on most platforms, and
-     direct access to Unix system calls. </li>
-
-<li> support for interprocess communication and remote procedure
-     calls. </li>
-
-<li> an implementation of CLOS, the Common Lisp Object System, which
-     includes multimethods and a metaobject protocol. </li>
-
-<li> a graphical source-level debugger using a Motif interface, and a
-     code profiler. </li>
-
-<li> an interface to the X11 Window System (CLX), and a sophisticated
-     graphical widget library (Garnet). </li>
-
-<li> programmer-extensible input and output streams. </li>
-
-<li> an Emacs-like editor implemented in Common Lisp. </li>
-
-<li> <strong>freely redistributable</strong>: free, with full source code
-     (most of which is in the public domain) and no strings attached (and
-     no warranty). Like the GNU/Linux and *BSD operating systems, CMUCL is
-     maintained and improved by a team of volunteers collaborating over the
-     Internet. </li>
-
-</ul>
-
-<h2>Latest News</h2>
-
-For the most up-to-date info and news, see 
-<a href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL Gitlab Wiki</a>. For older
-news see <a href="news/index.html">News</a>.  The old <a
-href="https://trac.common-lisp.net/cmucl">Trac wiki</a> is still available but is deprecated in favor
-of the Gitlab wiki.
-
-<dl>
-<dt><strong>CMUCL 21d released</strong></dt> <dd><a
-href="downloads/release/21d/">CMUCL 21d</a> has been released,
-For information on the changes between 21d and 21c, we refer the reader to the <a
-href="https://gitlab.common-lisp.net/cmucl/cmucl/blob/master/src/general-info/release-21d.md">21d release notes</a>.
-
-<dt><strong>CMUCL 21c released</strong></dt> <dd><a
-href="downloads/release/21c/">CMUCL 21c</a> has been released,
-For information on the changes between 21c and 21b, we refer the reader to the <a
-href="https://gitlab.common-lisp.net/cmucl/cmucl/blob/master/src/general-info/release-21c.md">21c release notes</a>.
-
-<dt><strong>CMUCL 21b released</strong></dt> <dd><a
-href="downloads/release/21b/">CMUCL 21b</a> has been released,
-For information on the changes between 21b and 21a, we refer the reader to the <a
-href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/Release21b">21b release notes</a>.
-
-<dt><strong>CMUCL 21a released</strong></dt> <dd><a
-href="downloads/release/21a/">CMUCL 21a</a> has been released,
-For information on the changes between 21a and 20f, we refer the reader to the <a
-href="https://gitlab.common-lisp.net/cmucl/cmucl/wikis/Release21a">21a release notes</a>.
-
-Because of the release, there will not be a 2014-10 snapshot. . 
-</dd>
-      
-<dt><strong>CMUCL 20f released</strong></dt>
-<dd><a href="downloads/release/20f/">CMUCL 20f</a> has been released, For information on the changes between
-20f and 20e, we refer the reader to the <a href="https://trac.common-lisp.net/cmucl/wiki/Release20f">20f release notes</a>.
-
-Because of the release, there will not be a 2014-10 snapshot. . 
-</dd>
-<dt><strong>CMUCL moves to Gitlab from Trac</strong></dt>
-<dd><a href="https://common-lisp.net">common-lisp.net</a> announced that <a
-href="https://gitlab.org">Gitlab</a> would replace the current <a href="https://trac.edgewall.org">Trac</a>
-system.  The pages from Trac are slowing being migrated to CMUCL's gitlab page.
-</dd>      
-<dt><strong>CMUCL 20e released</strong></dt>
-<dd><a href="downloads/release/20e/">CMUCL 20e</a> has been released, For information on the changes between
-20e and 20d, we refer the reader to the <a href="https://trac.common-lisp.net/cmucl/wiki/Release20e">20e release notes</a>.
-
-Because of the release, there will not be a 2013-10 snapshot. . 
-</dd>
-</dl>
-
-<h2>What is Common Lisp?</h2>
-
-<p> Common Lisp is well suited to large programming projects and
-    <em>explorative programming</em>. The language has a dynamic
-    semantics which distinguishes it from languages such as C and Ada.
-    It features automatic memory management, an interactive incremental
-    development environment, a module system, a large number of
-    powerful data structures, a large standard library of useful
-    functions, a sophisticated object system supporting multiple
-    inheritance and generic functions, an exception system,
-    user-defined types and a macro system which allows programmers to
-    extend the language. </p>
-
-<blockquote>
-Pascal is for building pyramids -- imposing, breathtaking
-structures built by armies pushing heavy blocks into place. Lisp
-is for building organisms ... <br> <i>Alan Perlis</i>
-</blockquote>
-
-@@FOOTER@@
-</body>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Home</strong>: a high-performance, free Common Lisp
+          implementation
+        </div>
+        <p>
+          CMUCL is a free implementation of the Common Lisp programming
+          language which runs on most major Unix platforms. It mainly conforms
+          to the ANSI Common Lisp standard. Here is a summary of its main
+          features:
+        </p>
+        <ul>
+          <li>Support for static arrays that are never moved by GC but are
+          properly removed when no longer referenced.
+          </li>
+          <li>Unicode support, including many of the most common external
+          formats such as UTF-8 and support for handling Unix, DOS, and Mac
+          end-of-line schemes.
+          </li>
+          <li>native double-double floats including complex double-double
+          floats and specialized arrays for double-double floats and and
+          complex double-double floats that give approximately 106 bits (32
+          digits) of precision.
+          </li>
+          <li>a <strong>sophisticated native-code compiler</strong> which is
+          capable of powerful type inferences, and generates code competitive
+          in speed with C compilers.
+          </li>
+          <li>generational garbage collection and <strong>multiprocessing
+          capability</strong> on the x86 ports.
+          </li>
+          <li>a foreign function interface which allows interfacing with C code
+          and system libraries, including shared libraries on most platforms,
+          and direct access to Unix system calls.
+          </li>
+          <li>support for interprocess communication and remote procedure
+          calls.
+          </li>
+          <li>an implementation of CLOS, the Common Lisp Object System, which
+          includes multimethods and a metaobject protocol.
+          </li>
+          <li>a graphical source-level debugger using a Motif interface, and a
+          code profiler.
+          </li>
+          <li>an interface to the X11 Window System (CLX), and a sophisticated
+          graphical widget library (Garnet).
+          </li>
+          <li>programmer-extensible input and output streams.
+          </li>
+          <li>an Emacs-like editor implemented in Common Lisp.
+          </li>
+          <li>
+            <strong>freely redistributable</strong>: free, with full source
+            code (most of which is in the public domain) and no strings
+            attached (and no warranty). Like the GNU/Linux and *BSD operating
+            systems, CMUCL is maintained and improved by a team of volunteers
+            collaborating over the Internet.
+          </li>
+        </ul>
+        <h2>
+          Latest News
+        </h2>
+        <p>
+          For the most up-to-date info and news, see <a href=
+          "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/home">CMUCL Gitlab
+          Wiki</a>. For older news see <a href="news/index.html">News</a>. The
+          old <a href="https://trac.common-lisp.net/cmucl">Trac wiki</a> is
+          still available but is deprecated in favor of the Gitlab wiki.
+        </p>
+        <dl>
+          <dt>
+            <strong>CMUCL 21d released</strong>
+          </dt>
+          <dd>
+            <a href="downloads/release/21d/">CMUCL 21d</a> has been released,
+            For information on the changes between 21d and 21c, we refer the
+            reader to the <a href=
+            "https://gitlab.common-lisp.net/cmucl/cmucl/blob/master/src/general-info/release-21d.md">
+            21d release notes</a>.
+          </dd>
+          <dt>
+            <strong>CMUCL 21c released</strong>
+          </dt>
+          <dd>
+            <a href="downloads/release/21c/">CMUCL 21c</a> has been released,
+            For information on the changes between 21c and 21b, we refer the
+            reader to the <a href=
+            "https://gitlab.common-lisp.net/cmucl/cmucl/blob/master/src/general-info/release-21c.md">
+            21c release notes</a>.
+          </dd>
+          <dt>
+            <strong>CMUCL 21b released</strong>
+          </dt>
+          <dd>
+            <a href="downloads/release/21b/">CMUCL 21b</a> has been released,
+            For information on the changes between 21b and 21a, we refer the
+            reader to the <a href=
+            "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/Release21b">21b
+            release notes</a>.
+          </dd>
+          <dt>
+            <strong>CMUCL 21a released</strong>
+          </dt>
+          <dd>
+            <a href="downloads/release/21a/">CMUCL 21a</a> has been released,
+            For information on the changes between 21a and 20f, we refer the
+            reader to the <a href=
+            "https://gitlab.common-lisp.net/cmucl/cmucl/wikis/Release21a">21a
+            release notes</a>. Because of the release, there will not be a
+            2014-10 snapshot. .
+          </dd>
+          <dt>
+            <strong>CMUCL 20f released</strong>
+          </dt>
+          <dd>
+            <a href="downloads/release/20f/">CMUCL 20f</a> has been released,
+            For information on the changes between 20f and 20e, we refer the
+            reader to the <a href=
+            "https://trac.common-lisp.net/cmucl/wiki/Release20f">20f release
+            notes</a>. Because of the release, there will not be a 2014-10
+            snapshot. .
+          </dd>
+          <dt>
+            <strong>CMUCL moves to Gitlab from Trac</strong>
+          </dt>
+          <dd>
+            <a href="https://common-lisp.net">common-lisp.net</a> announced
+            that <a href="https://gitlab.org">Gitlab</a> would replace the
+            current <a href="https://trac.edgewall.org">Trac</a> system. The
+            pages from Trac are slowing being migrated to CMUCL's gitlab page.
+          </dd>
+          <dt>
+            <strong>CMUCL 20e released</strong>
+          </dt>
+          <dd>
+            <a href="downloads/release/20e/">CMUCL 20e</a> has been released,
+            For information on the changes between 20e and 20d, we refer the
+            reader to the <a href=
+            "https://trac.common-lisp.net/cmucl/wiki/Release20e">20e release
+            notes</a>. Because of the release, there will not be a 2013-10
+            snapshot. .
+          </dd>
+        </dl>
+        <h2>
+          What is Common Lisp?
+        </h2>
+        <p>
+          Common Lisp is well suited to large programming projects and
+          <em>explorative programming</em>. The language has a dynamic
+          semantics which distinguishes it from languages such as C and Ada. It
+          features automatic memory management, an interactive incremental
+          development environment, a module system, a large number of powerful
+          data structures, a large standard library of useful functions, a
+          sophisticated object system supporting multiple inheritance and
+          generic functions, an exception system, user-defined types and a
+          macro system which allows programmers to extend the language.
+        </p>
+        <blockquote>
+          Pascal is for building pyramids -- imposing, breathtaking structures
+          built by armies pushing heavy blocks into place. Lisp is for building
+          organisms ...<br>
+          <i>Alan Perlis</i>
+        </blockquote>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Sat Nov 23 22:47:09 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

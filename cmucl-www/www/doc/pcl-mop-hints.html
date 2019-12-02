@@ -1,113 +1,189 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: Hints for using the PCL MOP</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: Hints for using the PCL MOP
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Hints for using the PCL Metaobject Protocol)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> The CLOS <strong>Metaobject Protocol</strong> (MOP) is a
-    semi-standardized reflective extension to CLOS. Most Common Lisp
-    implementations (including CMUCL) implement a metaobject protocol that
-    is similar to the specification given in <a href =
-    "http://www.lisp.org/mop/">chapters 5 and 6 of the <i>The Art of the
-    MetaObject Protocol</i></a> (a book whose title is often abbreviated
-    <i>AMOP</i>). However, the PCL MOP provided by CMUCL has a few
-    differences from AMOP, and behaves differently from the MOP in other
-    Common Lisp implementations in certain respects.
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<p> The major issues that can arise are:
-
-<ul>
-<li> Make sure that you use symbols from the right package. A number of
-     symbols, such as <tt class=code>STANDARD-CLASS</tt> exist both in the
-     <tt class=code>COMMON-LISP</tt> package and in the <tt
-     class=code>PCL</tt> package. For MOP programming you should be using
-     the symbols from the PCL package.
-
-<li> CMUCL has a package named <tt class=code>MOP</tt>, which exports most
-     (but not all) of the symbols defined in AMOP.
-
-<li> Since CMUCL uses special wrappers around class-objects, you sometimes
-     need to use <tt class="function-name">PCL::COERCE-TO-PCL-CLASS</tt> to
-     coerce the wrapper objects into real MOP-aware objects. For example,
-     this occurs when using the <tt class="function-name">CLASS-OF</tt>
-     function. 
-
-<li> You may need to define methods on <tt class =
-     "function-name">PCL:VALIDATE-SUPERCLASS</tt> more often than is said
-     in AMOP. For example, consider a class called <tt>FOO</tt> whose
-     metaclass is <tt>META-FOO</tt>. Class FOO inherits from class T, whose
-     metaclass is <tt>STANDARD-CLASS</tt>, and in the PCL MOP you have to
-     declare that this combination of metaclasses is valid:
-
-<pre class=code>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Hints for using the PCL Metaobject
+          Protocol
+        </div>
+        <p>
+          The CLOS <strong>Metaobject Protocol</strong> (MOP) is a
+          semi-standardized reflective extension to CLOS. Most Common Lisp
+          implementations (including CMUCL) implement a metaobject protocol
+          that is similar to the specification given in <a href=
+          "http://www.lisp.org/mop/">chapters 5 and 6 of the <i>The Art of the
+          MetaObject Protocol</i></a> (a book whose title is often abbreviated
+          <i>AMOP</i>). However, the PCL MOP provided by CMUCL has a few
+          differences from AMOP, and behaves differently from the MOP in other
+          Common Lisp implementations in certain respects.
+        </p>
+        <p>
+          The major issues that can arise are:
+        </p>
+        <ul>
+          <li>Make sure that you use symbols from the right package. A number
+          of symbols, such as <code class="code">STANDARD-CLASS</code> exist
+          both in the <code class="code">COMMON-LISP</code> package and in the
+          <code class="code">PCL</code> package. For MOP programming you should
+          be using the symbols from the PCL package.
+          </li>
+          <li>CMUCL has a package named <code class="code">MOP</code>, which
+          exports most (but not all) of the symbols defined in AMOP.
+          </li>
+          <li>Since CMUCL uses special wrappers around class-objects, you
+          sometimes need to use <code class=
+          "function-name">PCL::COERCE-TO-PCL-CLASS</code> to coerce the wrapper
+          objects into real MOP-aware objects. For example, this occurs when
+          using the <code class="function-name">CLASS-OF</code> function.
+          </li>
+          <li>You may need to define methods on <code class=
+          "function-name">PCL:VALIDATE-SUPERCLASS</code> more often than is
+          said in AMOP. For example, consider a class called <code>FOO</code>
+          whose metaclass is <code>META-FOO</code>. Class FOO inherits from
+          class T, whose metaclass is <code>STANDARD-CLASS</code>, and in the
+          PCL MOP you have to declare that this combination of metaclasses is
+          valid:
+            <pre class="code">
    (defmethod pcl:validate-superclass ((class meta-foo) (super pcl::standard-class))
       t)
 </pre>
-</ul>
-
-
-<h2>Details on the class schizophrenia</h2>
-
-<p> PCL, the CLOS implementation that is used in CMUCL, is integrated with
-    the rest of CMUCL in a somewhat incomplete way. The type system of PCL
-    and of the CMUCL kernel have different notions of what a class is. This
-    is because classes are fundamental to the CMUCL type system, yet CMUCL
-    needs to be able to function without PCL loaded (mainly in order to be
-    able to build itself). The way that this problem is resolved is by
-    having the CMUCL kernel maintain parallel class hierarchies. For
-    instance, <tt class=code>LISP:CLASS</tt> and <tt
-    class=code>PCL:CLASS</tt> are different types. The function <tt
-    class="function-name">LISP:FIND-CLASS</tt> returns instances of <tt
-    class=code>LISP:CLASS</tt>, whereas the function <tt
-    class="function-name">PCL:FIND-CLASS</tt> returns <tt
-    class=code>PCL:CLASS</tt> instances. For example
-
-<pre class=code>
+          </li>
+        </ul>
+        <h2>
+          Details on the class schizophrenia
+        </h2>
+        <p>
+          PCL, the CLOS implementation that is used in CMUCL, is integrated
+          with the rest of CMUCL in a somewhat incomplete way. The type system
+          of PCL and of the CMUCL kernel have different notions of what a class
+          is. This is because classes are fundamental to the CMUCL type system,
+          yet CMUCL needs to be able to function without PCL loaded (mainly in
+          order to be able to build itself). The way that this problem is
+          resolved is by having the CMUCL kernel maintain parallel class
+          hierarchies. For instance, <code class="code">LISP:CLASS</code> and
+          <code class="code">PCL:CLASS</code> are different types. The function
+          <code class="function-name">LISP:FIND-CLASS</code> returns instances
+          of <code class="code">LISP:CLASS</code>, whereas the function
+          <code class="function-name">PCL:FIND-CLASS</code> returns
+          <code class="code">PCL:CLASS</code> instances. For example
+        </p>
+        <pre class="code">
    USER&gt; (lisp:find-class 'cons)
    #&lt;built-in-class cons (sealed) {28073C8D}&gt;
    USER&gt; (pcl:find-class 'cons)
    #&lt;Built-In-Class cons {2817967D}&gt;
 </pre>
-
-<p> These two classes are in one sense the same class, in that they
-    represent the same type: CONS. However, PCL has its own way of
-    representing that type internally. 
-
-<p> In order to make this situation livable, PCL has been hacked up to
-    accept <tt class=code>LISP:CLASS</tt> objects in the common places
-    where people supply classes to PCL operations. You can also explicitly
-    convert between the two kinds of classes, either by using the class
-    name and the appropriate <tt class="function-name">FIND-CLASS</tt>, or
-    by:
-
-<pre class=code>
+        <p>
+          These two classes are in one sense the same class, in that they
+          represent the same type: CONS. However, PCL has its own way of
+          representing that type internally.
+        </p>
+        <p>
+          In order to make this situation livable, PCL has been hacked up to
+          accept <code class="code">LISP:CLASS</code> objects in the common
+          places where people supply classes to PCL operations. You can also
+          explicitly convert between the two kinds of classes, either by using
+          the class name and the appropriate <code class=
+          "function-name">FIND-CLASS</code>, or by:
+        </p>
+        <pre class="code">
     (kernel:class-pcl-class lisp-class)  ==&gt; the PCL class
     (kernel:layout-class (pcl::class-wrapper pcl-class))  ==&gt; the LISP class
 </pre>
-
-<p> Another problem area is with generic functions that are called by PCL
-with classes as arguments. These classes will be <tt
-class=code>PCL:CLASS</tt>es, so if you try to specialize on e.g. <tt
-class="function-name">ALLOCATE-INSTANCE</tt> using an <tt
-class="function-name">EQL</tt> specializer, then make sure the class in the
-specializer is a <tt class=code>PCL:CLASS</tt>.
-
-<p> People who stick to using standard CLOS operations shouldn't ever
-notice all this smoke and mirrors. People using standard CLOS operations
-shouldn't have their packages use the PCL package, since the Common-Lisp
-package exports a consistent set of definitions for standard CLOS
-operations.
-
-<p> Though the above hacks usually work for simple stuff, they often seem to
-break down when defining new metaclasses.  What you need to do is explictly
-specify the <tt class=code>PCL::</tt> prefix on the class name.
-
-
-@@FOOTER@@
-</body>
+        <p>
+          Another problem area is with generic functions that are called by PCL
+          with classes as arguments. These classes will be <code class=
+          "code">PCL:CLASS</code>es, so if you try to specialize on e.g.
+          <code class="function-name">ALLOCATE-INSTANCE</code> using an
+          <code class="function-name">EQL</code> specializer, then make sure
+          the class in the specializer is a <code class=
+          "code">PCL:CLASS</code>.
+        </p>
+        <p>
+          People who stick to using standard CLOS operations shouldn't ever
+          notice all this smoke and mirrors. People using standard CLOS
+          operations shouldn't have their packages use the PCL package, since
+          the Common-Lisp package exports a consistent set of definitions for
+          standard CLOS operations.
+        </p>
+        <p>
+          Though the above hacks usually work for simple stuff, they often seem
+          to break down when defining new metaclasses. What you need to do is
+          explictly specify the <code class="code">PCL::</code> prefix on the
+          class name.
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:50:37 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

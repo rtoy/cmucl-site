@@ -1,21 +1,83 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL: determining the code size of a function</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL: determining the code size of a function
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(Function code size)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<p> The following code prints a breakdown of the code size of functions in
-    a given package. By <i>code size</i> we mean the number of octets
-    occupied by the machine code, for a function that has been compiled to
-    native code. This size breakdown may be useful if you're trying to
-    optimize for space.
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-<pre class=code>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Documentation</strong>: Function code size
+        </div>
+        <p>
+          The following code prints a breakdown of the code size of functions
+          in a given package. By <i>code size</i> we mean the number of octets
+          occupied by the machine code, for a function that has been compiled
+          to native code. This size breakdown may be useful if you're trying to
+          optimize for space.
+        </p>
+        <pre class="code">
 (in-package :vm)
 
 (defun print-function-sizes (package-specifier
@@ -34,22 +96,28 @@
                   (code-package-name
                    (if (typep dinfo 'c::compiled-debug-info)
                        (c::compiled-debug-info-package dinfo)
-                       &quot;UNKNOWN&quot;))
+                       "UNKNOWN"))
                   (code-package (find-package code-package-name)))
              (when (eq code-package package)
                (push (cons size obj) function-sizes)))))
        space))
-    (format stream &quot;~=== Function breakdown by size for ~a ===~%&quot;
+    (format stream "~=== Function breakdown by size for ~a ===~%"
             package)
     (loop :for counter :to count
           :for (size . name) :in (sort function-sizes #'&gt; :key #'car)
           :while (&gt; size larger)
-          :do (format stream &quot;~70a ~6d~%&quot; name size))))
+          :do (format stream "~70a ~6d~%" name size))))
 </pre>
-
-
-<p class=credits> by Eric Marsden
-
-@@FOOTER@@
-</body>
+        <p class="credits">
+          by Eric Marsden
+        </p>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Mon Nov 25 10:28:48 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

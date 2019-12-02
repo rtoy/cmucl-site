@@ -1,66 +1,132 @@
-@@DTD@@
+<!DOCTYPE html>
 <html>
-<head>
-<title>CMUCL performance benchmarks</title>
-@@METAS@@
-</head>
+  <head>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL performance benchmarks
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language"
+          content="en-US">
+    <link rev="made"
+          href="mailto:webmaster@cmucl.cons.org"
+          title="CMUCL feedback">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css">
+    <link rel="home"
+          href="@@HOME@@index.html"
+          title="CMUCL Home Page">
+    <link rel="banner"
+          href="@@HOME@@doc/"
+          title="Documentation">
+    <link rel="banner"
+          href="@@HOME@@credits.html"
+          title="Credits">
+    <link rel="banner"
+          href="@@HOME@@download.html"
+          title="Download">
+    <link rel="banner"
+          href="@@HOME@@projects.html"
+          title="Projects">
+    <link rel="banner"
+          href="@@HOME@@ports.html"
+          title="Ports">
+    <link rel="banner"
+          href="@@HOME@@support.html"
+          title="Support"><!-- For Google analytics -->
 
-<body bgColor="#FFFFFF" text="#000000">
+    <script type="text/javascript">
 
-@@HEADING(measuring CMUCL performance)
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-18172365-1']);
+    _gaq.push(['_setDomainName', 'none']);
+    _gaq.push(['_setAllowLinker', true]);
+    _gaq.push(['_trackPageview']);
 
-<blockquote>
-   There are lies, damned lies and benchmarks. <br>
-   -- after Benjamin Disraeli
-</blockquote>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 
-
-<p> Here are the results of some performance benchmarking tests run on a
-number of different Common Lisp implementations. The tests run include
-
-<ul>
-<li> the well-known Gabriel benchmarks
-
-<li> hashtable exercising
-
-<li> <tt class="function-name">READ-LINE</tt> exercising
-
-<li> mathematical functions: factorial, fibonnaci, ackermann's number
-
-<li> some bignum intensive code from Bruno Haible
-
-<li> various aspects of CLOS: time taken to compile and execute <tt
-    class="function-name">DEFCLASS</tt> forms which create a class
-    hierarchy, instance creation time, time taken to compile and execute
-    <tt class="function-name">DEFMETHOD</tt> forms, execution of method
-    combinations, both with and without <tt>:after</tt> methods.
-
-<li> various operations on arrays, bitvectors and strings.
-</ul>
-
-<p> Except for the CLOS code, timings do not include compilation time. The
-garbage collector is run before each test to try to make the timings more
-repeatable. Remember that the only real benchmark is your application: this
-code is only representative of real-life programs to a limited extent. For
-certain targets, we assume that the times reported by <tt
-class="function-name">GET-INTERNAL-RUN-TIME</tt> and <tt
-class="function-name">GET-INTERNAL-REAL-TIME</tt> are accurate.
-
-<p> The code for these performance benchmarks can be downloaded from <a
-href = "http://www.chez.com/emarsden/downloads/"
->www.chez.com/emarsden/downloads</a>.
-
-<p> Here is an example of the type of results you can obtain, for x86 and
-SPARC platforms. To interpret these numbers: the number in the Reference
-column is a number of seconds taken to execute that test. The other numbers
-are the relative performance of that implementation, so for example a
-number of 1.3 means 30% slower than the reference implementation. A number
-of -1 means that the corresponding test was not run on that implementation,
-either because it does not support the given feature (certain types of
-method combination for CLISP, for instance), or because of implementation
-limits (heap size limit on LispWorks Personal, for example).
-
-<pre>
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <iframe class="header-frame"
+                src="../include/header.html"></iframe>
+      </header>
+      <aside>
+        <iframe class="navbar"
+               src="../include/navbar.html"></iframe>
+      </aside>
+      <main>
+        <div class="heading-line">
+          <strong>Benchmarks</strong>: measuring CMUCL performance
+        </div>
+        <blockquote>
+          There are lies, damned lies and benchmarks.<br>
+          -- after Benjamin Disraeli
+        </blockquote>
+        <p>
+          Here are the results of some performance benchmarking tests run on a
+          number of different Common Lisp implementations. The tests run
+          include
+        </p>
+        <ul>
+          <li>the well-known Gabriel benchmarks
+          </li>
+          <li>hashtable exercising
+          </li>
+          <li>?<code class="function-name">READ-LINE</code> exercising
+          </li>
+          <li>?mathematical functions: factorial, fibonnaci, ackermann's number
+          </li>
+          <li>?some bignum intensive code from Bruno Haible
+          </li>
+          <li>various aspects of CLOS: time taken to compile and execute
+          <code class="function-name">DEFCLASS</code> forms which create a class
+          hierarchy, instance creation time, time taken to compile and execute
+          <code class="function-name">DEFMETHOD</code> forms, execution of method
+          combinations, both with and without <code>:after</code> methods.
+          </li>
+          <li>?various operations on arrays, bitvectors and strings.
+          </li>
+        </ul>
+        <p>
+          Except for the CLOS code, timings do not include compilation time.
+          The garbage collector is run before each test to try to make the
+          timings more repeatable. Remember that the only real benchmark is
+          your application: this code is only representative of real-life
+          programs to a limited extent. For certain targets, we assume that the
+          times reported by <code class=
+          "function-name">GET-INTERNAL-RUN-TIME</code> and <code class=
+          "function-name">GET-INTERNAL-REAL-TIME</code> are accurate.
+        </p>
+        <p>
+          The code for these performance benchmarks can be downloaded from
+          <a href=
+          "http://www.chez.com/emarsden/downloads/">www.chez.com/emarsden/downloads</a>.
+        </p>
+        <p>
+          Here is an example of the type of results you can obtain, for x86 and
+          SPARC platforms. To interpret these numbers: the number in the
+          Reference column is a number of seconds taken to execute that test.
+          The other numbers are the relative performance of that
+          implementation, so for example a number of 1.3 means 30% slower than
+          the reference implementation. A number of -1 means that the
+          corresponding test was not run on that implementation, either because
+          it does not support the given feature (certain types of method
+          combination for CLISP, for instance), or because of implementation
+          limits (heap size limit on LispWorks Personal, for example).
+        </p>
+        <pre>
 ,---- Pentium III@1.1GHz, 512MB RAM ---
 |
 | Benchmark                 Reference   18d   18dsm  CLISP   SBCL  Poplog
@@ -178,26 +244,33 @@ limits (heap size limit on LispWorks Personal, for example).
 | SunOS eagles 5.8 Generic_108528-10 sun4u sparc SUNW,Sun-Blade-100
 `----
 </pre>
-
-
-<h2>Further information</h2>
-
-<ul>
-<li> refer to the sections on timing and benchmarking in Chapter 5 of the
-     <i>CMUCL User's Manual</i>. </li>
-
-<li> <a href = "http://openmap.bbn.com/~kanderso/performance/">
-     Ken Anderson's performance</a> page. </li>
-
-<li> the article <a href = "http://citeseer.nj.nec.com/4555.html">
-     Benchmarking Implementations of Functional Languages with
-     Pseudoknot, a Float-Intensive Benchmark</a>. </li>
-
-<li> Information on <a href = "http://gcc.gnu.org/benchmarks/">benchmarking
-     GCC</a>. </li>
-</ul>
-
-
-@@FOOTER@@
-</body>
+        <h2>
+          Further information
+        </h2>
+        <ul>
+          <li>refer to the sections on timing and benchmarking in Chapter 5 of
+          the <i>CMUCL User's Manual</i>.
+          </li>
+          <li>
+            <a href="http://openmap.bbn.com/~kanderso/performance/">Ken
+            Anderson's performance</a> page.
+          </li>
+          <li>the article <a href=
+          "http://citeseer.nj.nec.com/4555.html">Benchmarking Implementations
+          of Functional Languages with Pseudoknot, a Float-Intensive
+          Benchmark</a>.
+          </li>
+          <li>Information on <a href=
+          "http://gcc.gnu.org/benchmarks/">benchmarking GCC</a>.
+          </li>
+        </ul>
+      </main>
+      <footer>
+        <iframe class="footer-frame"
+                src="../include/footer.html"></iframe> <!-- hhmts start -->
+Last modified: Tue Nov 26 14:29:30 PST 2019
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
 </html>

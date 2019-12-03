@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <meta name="generator"
           content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
     <title>
@@ -8,10 +9,6 @@
     </title>
     <meta name="author"
           content="CMUCL webmasters">
-    <meta http-equiv="Content-Type"
-          content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Language"
-          content="en-US">
     <link rel="author"
           href="https://gitlab.common-lisp.net/cmucl/cmucl-site/issues"
           title="CMUCL site issues tracker">
@@ -19,7 +16,7 @@
           href="../cmucl.css"
           type="text/css"><!-- For Google analytics -->
 
-    <script type="text/javascript">
+    <script>
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-18172365-1']);
@@ -52,16 +49,16 @@
         <p>
           <strong>Summary</strong>: use the function <code class=
           "function-name">EXT:OPEN-CLX-DISPLAY</code> instead of <code class=
-          "function-name">XLIB:OPEN-DISPLAY</code> to establish a connection with
-          your X11 server.
+          "function-name">XLIB:OPEN-DISPLAY</code> to establish a connection
+          with your X11 server.
         </p>
         <p>
           To prevent malicious users from snooping on an display (and logging
           keystrokes for example), X11 servers may require connection requests
           to be authorized. The X server (or display manager) will create a
           random key on startup, and store it as an entry in a file generally
-          named <code>$HOME/.Xauthority</code>. Clients must extract from this file
-          the "magic cookie" that corresponds to the server they wish to
+          named <code>$HOME/.Xauthority</code>. Clients must extract from this
+          file the "magic cookie" that corresponds to the server they wish to
           connect to, and send it as authorization data when opening the
           display. Users can manipulate the contents of the .Xauthority file by
           using the <code>xauth</code> command.
@@ -71,14 +68,14 @@
           magic cookie information when establishing a connection with the X
           server. The old CLX code base does not have support for
           MIT-MAGIC-COOKIE-1 authorization, so CLX programs may be rejected by
-          the X server. One workaround is to say <code>xhost +localhost</code>, to
-          allow unauthorized X11 connections that originate from the local
+          the X server. One workaround is to say <code>xhost +localhost</code>,
+          to allow unauthorized X11 connections that originate from the local
           host. A better solution is to change CLX programs to use the CMUCL
-          function <code class="function-name">EXT:OPEN-CLX-DISPLAY</code> instead
-          of <code class="function-name">XLIB:OPEN-DISPLAY</code> to establish
-          connections to your X11 server. This function is able to extract X11
-          authorization cookies from your XAUTHORITY file and present them to
-          the X server.
+          function <code class="function-name">EXT:OPEN-CLX-DISPLAY</code>
+          instead of <code class="function-name">XLIB:OPEN-DISPLAY</code> to
+          establish connections to your X11 server. This function is able to
+          extract X11 authorization cookies from your XAUTHORITY file and
+          present them to the X server.
         </p>
         <p>
           As far as we know, support for X11 authorization has not been
@@ -94,10 +91,10 @@
           extract the display number from the <code>DISPLAY</code> environment
           variable. This is a problem you might run into when using CLX on an
           ssh-forwarded X11 session. Indeed, ssh typically sets
-          <code>$DISPLAY</code> to <code>remotehost:10</code>, and forwards port 6010
-          on the remote host to port 6000 (or whatever port the local X11
-          server is running on) on the local host. CLX will unsuccessfully try
-          to connect to <code>remotehost:0</code>.
+          <code>$DISPLAY</code> to <code>remotehost:10</code>, and forwards
+          port 6010 on the remote host to port 6000 (or whatever port the local
+          X11 server is running on) on the local host. CLX will unsuccessfully
+          try to connect to <code>remotehost:0</code>.
         </p>
         <p>
           The function <code class="function-name">EXT:OPEN-CLX-DISPLAY</code>
@@ -113,8 +110,7 @@
       <footer>
         <iframe class="footer-frame"
                 src="../include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Sun Dec  1 17:07:03 PST 2019
-<!-- hhmts end -->
+         Last modified: Sun Dec 1 17:07:03 PST 2019 <!-- hhmts end -->
       </footer>
     </div>
   </body>

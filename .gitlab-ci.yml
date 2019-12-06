@@ -39,11 +39,9 @@ site:
   # don't really want to do this
   # and only build the site if something changed?
   script:
-    # Generate the website.  Touch build-el.force to force building.
-    # I think we should always build everything even if only one file changed.
-    - touch /tmp/build-el-force
-    - (cd cmucl-www/www; emacs -batch -q -l ../build.el -f wb-make)
-    - cp -r public/* gen
+    # Just need to copy all of the html files to the gen directory
+    - (cd cmucl-www/www; tar cf - `find . -name '*.html'`) | (cd gen; tar xf -)
+    - ls gen
 
 # Generates the texi docs.  Only done if some texi file changed so we don't
 # have to download and build texinfo if nothing changed. 

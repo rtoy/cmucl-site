@@ -35,6 +35,7 @@ site:
   artifacts:
      paths:
        - public
+       - gen
   # Always build the site, even if nothing has changed.  Maybe we
   # don't really want to do this
   # and only build the site if something changed?
@@ -52,6 +53,7 @@ docs:
   artifacts:
      paths:
        - public
+       - gen
   only:
     changes:
       - docs/cmu-user/*.texi
@@ -86,3 +88,7 @@ pages:
        - public
   tags:
     - site-gen
+  # Only deploy on master branch
+  only:
+    refs:
+      - master

@@ -22,7 +22,7 @@ toolkit :
 internals :
 	mkdir internals
 
-PUBDIR = ../../gen/docs/interface
+PUBDIR = ../../public/docs/interface
 
 $(PUBDIR)/internals :
 	mkdir -p $@

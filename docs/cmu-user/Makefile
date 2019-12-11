@@ -51,7 +51,7 @@ cmu-user :
 
 all : cmu-user-info.tar.bz2 cmu-user.pdf cmu-user.html cmu-user/index.html cmu-user-html.tar.bz2
 
-PUBUSER = ../../gen/docs/cmu-user
+PUBUSER = ../../public/docs/cmu-user
 
 $(PUBUSER) :
 	mkdir -p $@

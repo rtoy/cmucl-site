@@ -1,5 +1,5 @@
 \input texinfo
-@settitle CMUCL User's Manual
+@settitle Design of CMU Common Lisp
 
 @fonttextsize 10
 

@@ -34,7 +34,7 @@ design/index.html : design $(SRCS)
 design :
 	mkdir design
 
-PUBDIR = ../../public/docs/internals
+PUBDIR = ../../gen/docs/internals
 
 $(PUBDIR) :
 	mkdir -p $@

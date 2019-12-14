@@ -13,6 +13,7 @@ cache:
     - texinfo
     - bin
     - share
+    - gen
 
 # Just creates the public directory where we're keeping all of the
 # generated docs.
@@ -51,6 +52,7 @@ docs:
   artifacts:
      paths:
        - public
+       - gen
   only:
     changes:
       - docs/cmu-user/*.texi
@@ -77,6 +79,7 @@ docs:
     - (cd docs/internals; make install)
     - (cd docs/cmu-user; make install)
     - (cd docs/interface; make install)
+    - cp -r gen/* public
 
 # Deploys the things we created in public/ and copies that to the website.
 pages:

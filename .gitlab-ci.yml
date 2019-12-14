@@ -57,7 +57,7 @@ docs:
     changes:
       - docs/cmu-user/*.texi
       - docs/cmu-user/Makefile
-      - docs/interface/*.texi
+      - docs/internals/*.texi
       - docs/internals/Makefile
       - docs/interface/*.texi
       - docs/internals/Makefile

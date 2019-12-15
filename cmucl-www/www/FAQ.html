@@ -115,9 +115,10 @@
             <p>
               The standard way of delivering a Common Lisp application with
               CMUCL is to dump an image containing all your application code
-              (see the <i>CMUCL User's Manual</i> for details), and deliver a
-              tarball containing this image, the lisp runtime, and a shell
-              script which launches the runtime with your image (see the
+              (see the <a href="../docs/cmu-user/html/index.html"><i>CMUCL
+              User's Manual</i></a> for details), and deliver a tarball
+              containing this image, the lisp runtime, and a shell script which
+              launches the runtime with your image (see the
               <code>sample-wrapper</code> distributed with CMUCL for guidance).
               Also see the following <a href="doc/executable.html">hint on
               making Lisp files executable</a>.
@@ -128,7 +129,8 @@
               <code>:executable t</code> option for <code>save-lisp</code>. The
               executable file contains the current entire core image and
               runtime. See the section <em>Saving a Core Image</em> in the
-              <em>CMUCL User's Manual</em> for more information.
+              <a href="../docs/cmu-user/html/index.html"><i>CMUCL User's
+              Manual</i></a> for more information.
             </p>
             <hr>
           </li>
@@ -311,9 +313,9 @@
               (the memory zone that is used for normal lisp objects). You can
               increase the size of the dynamic space reserved on startup by
               using the <code>-dynamic-space-size</code> commandline option
-              (see the <i>CMUCL User's Manual</i> for details). You can
-              determine the amount of dynamic space currently available as
-              follows:
+              (see the <a href="../docs/cmu-user/html/index.html"><i>CMUCL
+              User's Manual</i></a> for details). You can determine the amount
+              of dynamic space currently available as follows:
             </p>
             <pre class="code">
    USER&gt; (alien:def-alien-variable ("dynamic_space_size" dynamic-space-size) c-call::int)
@@ -448,7 +450,7 @@ or get more memory+swap.
       <footer>
         <iframe class="footer-frame"
                 src="include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Fri Dec  6 21:49:25 PST 2019
+Last modified: Sat Dec 14 20:54:05 PST 2019
 <!-- hhmts end -->
       </footer>
     </div>

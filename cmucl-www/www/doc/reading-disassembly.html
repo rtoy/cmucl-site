@@ -88,13 +88,17 @@
         <p>
           This is fairly easy to interpret, once you know that the byte-code
           interpreter is a stack machine. The references of the internal
-          TWO-ARG-AND and TWO-ARG-IOR functions are pushed onto the stack, the
-          arguments Y then X are pushed onto the stack, the TWO-ARG-IOR call is
-          executed (leaving the result on the stack), the reference of the
-          function TWO-ARG-XOR is pushed onto the stack, the arguments are
-          pushed again, the TWO-ARG-XOR is executed, and finally the
-          TWO-ARG-AND is executed in a tail-call. 
-          <!-- FIXME what are the push-local about ?
+          <code class="function-name">TWO-ARG-AND</code> and <code class=
+          "function-name">TWO-ARG-IOR</code> functions are pushed onto the
+          stack, the arguments <code class="variable">Y</code> then
+          <code class="variable">X</code> are pushed onto the stack, the
+          <code class="function-name">TWO-ARG-IOR</code> call is executed
+          (leaving the result on the stack), the reference of the function
+          <code class="function-name">TWO-ARG-XOR</code> is pushed onto the
+          stack, the arguments are pushed again, the <code class=
+          "function-name">TWO-ARG-XOR</code> is executed, and finally the
+          <code class="function-name">TWO-ARG-AND</code> is executed in a
+          tail-call. <!-- FIXME what are the push-local about ?
 
      seems that push-local is like push-arg, but negative
 -->
@@ -255,7 +259,7 @@
       <footer>
         <iframe class="footer-frame"
                 src="../include/footer.html"></iframe> <!-- hhmts start -->
-Last modified: Sat Dec 14 20:59:02 PST 2019
+Last modified: Sat Dec 14 21:12:42 PST 2019
 <!-- hhmts end -->
       </footer>
     </div>

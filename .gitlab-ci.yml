@@ -52,6 +52,8 @@ docs:
   artifacts:
      paths:
        - public
+       # This path is important.  It caches the generated manuals so
+       # we don't have to generate the manuals if they don't change.
        - gen
   only:
     changes:
@@ -75,7 +77,7 @@ docs:
     - (cd docs/cmu-user; make all)
     # Generate the hemlock manuals.
     - (cd docs/interface; make all)
-    # Copy everything to the appropriate subdirectories
+    # Install everything to the gen directory.  This is important!
     - (cd docs/internals; make install)
     - (cd docs/cmu-user; make install)
     - (cd docs/interface; make install)
@@ -86,6 +88,9 @@ pages:
   stage: deploy
   script:
     - echo Deploying
+    # If the docs/manuals are skipped, copy over the cached docs to
+    # the public directory.  This is important.  If we don't, the site
+    # has no manuals.
     - cp -r gen/* public
   artifacts:
      paths:

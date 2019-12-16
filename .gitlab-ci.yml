@@ -86,6 +86,7 @@ pages:
   stage: deploy
   script:
     - echo Deploying
+    - cp -r gen/* public
   artifacts:
      paths:
        - public

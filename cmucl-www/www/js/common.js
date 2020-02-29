@@ -4,7 +4,7 @@ const headerTemplate = () =>
 html`
   <!-- top banner -->  
   <div style="text-align: center">
-    <img src="../images/CMUCL.jpg"
+    <img src="images/CMUCL.jpg"
          alt="cmucl">
   </div><!-- top rule -->
   <div style="height: 20px; background: #003333"></div>

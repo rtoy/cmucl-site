@@ -1,10 +1,30 @@
 import {html, render} from 'https://unpkg.com/lit-html?module';
 
+// Figure out what prefix to use for the image and for the navbar
+// links.  We need to do this because the we want these links to work
+// no matter if we're being served from cmucl.org or from
+// common-lisp.net/project/cmucl.
+function getPrefix() {
+  let scripts = document.getElementsByTagName("script");
+
+  // Find our script by looking for the one that is matches our name
+  // of this script.  The prefix is then everything up to
+  // "/js/common.js".
+  for (let k = 0; k < scripts.length; ++k) {
+    let m = scripts[k].src.match(/(.*)\/js\/common.js/);
+    if (m) {
+      return m[1]+"/";
+    }
+  }
+}
+
+let prefix = getPrefix();
+
 const headerTemplate = () =>
 html`
   <!-- top banner -->  
   <div style="text-align: center">
-    <img src="images/CMUCL.jpg"
+    <img src="${prefix}images/CMUCL.jpg"
          alt="cmucl">
   </div><!-- top rule -->
   <div style="height: 20px; background: #003333"></div>
@@ -42,6 +62,7 @@ html`
   </address>
 `;
 
+
 // Every li element of the navbar must have an id of "nav-name", where
 // "name" is the name of the item.  This is basically the item text,
 // in lower case.  Then on every page, the main tag must have an id of
@@ -52,46 +73,46 @@ html`
        class="navlist">
     <ol id="navitems" style="list-style-type: none; text-align: center; padding: 0; margin: 0">
       <li id="nav-faq">
-        <a href="../FAQ.html">FAQ</a>
+        <a href="${prefix}FAQ.html">FAQ</a>
       </li>
       <li id="nav-benchmarks">
-        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="${prefix}benchmarks/index.html">Benchmarks</a>
       </li>
       <li id="nav-credits">
-        <a href="../credits.html">Credits</a>
+        <a href="${prefix}credits.html">Credits</a>
       </li>
       <li id="nav-documentation">
-        <a href="../doc/index.html">Documentation</a>
+        <a href="${prefix}doc/index.html">Documentation</a>
       </li>
       <li id="nav-download">
-        <a href="../download.html">Download</a>
+        <a href="${prefix}download.html">Download</a>
       </li>
       <li id="nav-hemlock">
-        <a href="../hemlock/index.html">Hemlock</a>
+        <a href="${prefix}hemlock/index.html">Hemlock</a>
       </li>
       <li id="nav-home">
-        <a href="../index.html">Home</a>
+        <a href="${prefix}index.html">Home</a>
       </li>
       <li id="nav-install">
-        <a href="../install.html">Install</a>
+        <a href="${prefix}install.html">Install</a>
       </li>
       <li id="nav-news">
-        <a href="../news/index.html">News</a>
+        <a href="${prefix}news/index.html">News</a>
       </li>
       <li id="nav-platforms">
-        <a href="../platforms.html">Platforms</a>
+        <a href="${prefix}platforms.html">Platforms</a>
       </li>
       <li id="nav-ports">
-        <a href="../ports.html">Ports</a>
+        <a href="${prefix}ports.html">Ports</a>
       </li>
       <li id="nav-projects">
-        <a href="../projects.html">Projects</a>
+        <a href="${prefix}projects.html">Projects</a>
       </li>
       <li id="nav-search">
-        <a href="../search.html">Search</a>
+        <a href="${prefix}search.html">Search</a>
       </li>
       <li id="nav-support">
-        <a href="../support.html">Support</a>
+        <a href="${prefix}support.html">Support</a>
       </li>
     </ol>
   </nav>

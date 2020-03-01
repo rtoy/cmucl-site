@@ -125,7 +125,6 @@ render(footerTemplate(), document.getElementById('footer'));
 // Highlight the navitem depending on the id of the main tag.
 function highlight () {
   let collection = document.getElementsByTagName("main");
-  console.log(collection[0]);
   let id = collection[0].id;
   let matches = id.match(/content-(.*)/);
   let name = matches[1];
@@ -134,7 +133,6 @@ function highlight () {
     // Find the entry in the ordered list of the navbar and make
     // the entry bold
     let item = document.getElementById("nav-" + name);
-    console.log(item);
     // Add class to the item and let CSS highlight it appropriately.
     item.classList.add("nav-highlight");
   }

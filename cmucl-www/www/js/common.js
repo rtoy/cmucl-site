@@ -11,9 +11,9 @@ function getPrefix() {
   // of this script.  The prefix is then everything up to
   // "/js/common.js".
   for (let k = 0; k < scripts.length; ++k) {
-    let m = scripts[k].src.match(/(.*)\/js\/common.js/);
-    if (m) {
-      return m[1]+"/";
+    let m = scripts[k].src.indexOf("js/common.js");
+    if (m >= 0) {
+      return encodeURI(scripts[k].src.substring(0, m));
     }
   }
 }
@@ -48,12 +48,12 @@ html`
   <p style="font-size: smaller; font-family: Helvetica, Arial;">
     Copyright © 1999-2019 CMUCL Project<br>
     Validate <a id="links"
-       href="https://validator.w3.org/checklink?uri=//URI//"
+       href="https://validator.w3.org/checklink?uri=${window.location.href}"
        target="_blank" rel="noopener">links</a>, <a id="html"
-       href="https://validator.w3.org/check?uri=//URI//"
+       href="https://validator.w3.org/check?uri=${window.location.href}"
        target="_blank" rel="noopener">HTML</a>, <a id="css"
        href=
-       "https://jigsaw.w3.org/css-validator/validator?uri=//BASE//cmucl.css"
+       "https://jigsaw.w3.org/css-validator/validator?uri=${prefix}cmucl.css"
        target="_blank" rel="noopener">stylesheet</a>.
   </p>
   <address>
@@ -130,8 +130,6 @@ function highlight () {
   let matches = id.match(/content-(.*)/);
   let name = matches[1];
   
-  console.log(name);
-
   if (name) {
     // Find the entry in the ordered list of the navbar and make
     // the entry bold

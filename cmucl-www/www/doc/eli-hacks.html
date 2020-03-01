@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Linux version 5.7.28">
+    <title></title>
+    <meta name="generator"
+          content="HTML Tidy for HTML5 for Apple macOS version 5.6.0">
+    <title>
+      CMUCL documentation
+    </title>
+    <meta name="author"
+          content="CMUCL webmasters">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <link rel="author"
+          href="https://gitlab.common-lisp.net/cmucl/cmucl-site/issues"
+          title="CMUCL site issues tracker">
+    <link rel="stylesheet"
+          href="../cmucl.css"
+          type="text/css"><!-- For Google analytics -->
+
+    <script>
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18172365-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    <script type="module"
+          src="../js/common.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header id="header"></header>
+      <aside id="navbar"></aside>
+      <main id="content-documentation">
+        <div class="heading-line">
+          <strong>Documentation</strong>: ELI hacks
+        </div>
+        <p>
+          Below are some hacks to get the ACL emacs lisp interface partially
+          working for CMUCL. This really just allows multiple listeners to be
+          started, there is no support for the LEP process so functionality is
+          very limited. Eventually hemlock may be enhanced to provide similar
+          functionality for CMUCL in a far more integrated manner.
+        </p>
+        <p>
+          Regards Douglas Crosher
+        </p>
+        <pre class="code">
+;;;; CMUCL Run-Bar process, and lisp listener hacks.
+
+(in-package "MULTIPROCESSING")
+
+;;;
+(defun run-bar-process ()
+  (let ((fd (sys:fd-stream-fd *terminal-io*)))
+    (let ((before-gc #'(lambda ()
+                         (unix:unix-write fd "GC  " 0 4)))
+          (after-gc #'(lambda ()
+                        (unix:unix-write fd "Up  " 0 4))))
+      (unwind-protect
+          (progn
+            (push before-gc ext:*before-gc-hooks*)
+            (push after-gc ext:*after-gc-hooks*)
+            (unix:unix-write fd "Up  " 0 4)
+            (mp:process-wait "Sleep" (constantly nil)))
+        (setf ext:*before-gc-hooks* (remove before-gc ext:*before-gc-hooks*))
+        (setf ext:*after-gc-hooks* (remove after-gc ext:*after-gc-hooks*))
+        (unix:unix-write fd "Down" 0 4)))))
+
+;;;
+;;; Add an emacs connection mode providing minimal compatibility to
+;;; the ACL emacs package.
+;;;
+(defun start-lisp-connection-listener (&amp;key (port 1025)
+                                            (password (random (expt 2 24)))
+                                            (emacs nil))
+  (declare (type (unsigned-byte 16) port))
+  "Create a Lisp connection listener, listening on a TCP port for new
+  connections and starting a new top-level loop form each."
+  (labels (;; The session top level read eval. loop.
+           (start-top-level (fd)
+             (let ((stream (sys:make-fd-stream fd :input t :output t)))
+               (unwind-protect
+                    (let* ((*terminal-io* stream)
+                           (*standard-input*
+                            (make-synonym-stream '*terminal-io*))
+                           (*standard-output* *standard-input*)
+                           (*error-output* *standard-input*)
+                           (*debug-io* *standard-input*)
+                           (*query-io* *standard-input*)
+                           (*trace-output* *standard-input*))
+                      ;;
+                      (cond (emacs
+                             (let ((*read-eval* nil))
+                               (handler-case
+                                (let ((protocol (read))
+                                      (process-name (read))
+                                      (read-password (read)))
+                                  (format sys::*tty* "*P ~s ~s ~s~%"
+                                          protocol process-name read-password)
+                                  (format sys::*tty* "*P ~s ~s~%"
+                                          (eql read-password password)
+                                          (stringp process-name))
+                                  (unless (and (eql read-password password)
+                                               (stringp process-name))
+                                    (return-from start-top-level))
+                                  (format sys::*tty* "*P ~s ~s~%"
+                                          (eql read-password password)
+                                          (stringp process-name))
+                                  (setf (process-name *current-process*)
+                                        process-name)
+                                  (format sys::*tty* "*P ~s ~s~%"
+                                          (eql read-password password)
+                                          (stringp process-name))
+                                  (when (eq protocol :lep)
+                                    (read) ; Flush emacs version.
+                                    (process-wait "Sleep" (constantly nil))))
+                                (error () (return-from start-top-level)))))
+                            (t
+                             ;;
+                             (format t "Enter password: ")
+                             (finish-output)
+                             (let* ((*read-eval* nil)
+                                    (read-password
+                                     (handler-case 
+                                      (read)
+                                      (error ()
+                                        (return-from start-top-level)))))
+                               (unless (equal read-password password)
+                                 (return-from start-top-level)))))
+                      ;;
+                      (ext:print-herald)
+                      ;;
+                      (top-level))
+                 (handler-case 
+                  (close stream)
+                  (error ())))))
+           ;;
+           ;; Turn internet address into string format
+           (ip-address-string (address)
+             (format nil "~D.~D.~D.~D"
+                     (ldb (byte 8 24) address)
+                     (ldb (byte 8 16) address)
+                     (ldb (byte 8 8)  address)
+                     (ldb (byte 8 0)  address)))
+           ;;
+           ;; The body of the connection listener.
+           (listener ()
+             (declare (optimize (speed 3)))
+             (let ((fd nil))
+               (unwind-protect
+                    (progn
+                      ;; Start the listener.
+                      (do ()
+                          (fd)
+                        (handler-case
+                         (setf fd (ext:create-inet-listener port))
+                         (error () (incf port))))
+
+                      (setf (process-name *current-process*)
+                            (format nil "Lisp connection listener on port ~d"
+                                    port))
+
+                      (cond (emacs
+                             (format t "~d ~d :upper NIL 1" port password)
+                             (finish-output))
+                            (t
+                             (format t "~&amp;;; Started lisp connection ~
+                                        listener on port ~d with password ~d~%"
+                                     port password)))
+
+                      (loop
+                       ;; Wait for new connections.
+                       (process-wait-until-fd-usable fd :input)
+                       (multiple-value-bind (new-fd remote-host)
+                           (ext:accept-tcp-connection fd)
+                         (let ((host-entry (ext:lookup-host-entry
+                                            remote-host)))
+                           (make-process
+                            #'(lambda ()
+                                (start-top-level new-fd))
+                            :name (format nil "Lisp session from ~A"
+                                          (if host-entry
+                                              (ext:host-entry-name host-entry)
+                                              (ip-address-string
+                                               remote-host))))))))
+                 ;; Close the listener stream.
+                 (when fd
+                   (unix:unix-close fd))))))
+
+    ;; Make the listening thread.
+    (make-process #'listener)))
+</pre>
+        <pre class="code">
+;;;; Emacs ilisp code hacks - place in .emacs
+
+;;; ACL 4.3
+(setq load-path
+      (cons "/usr/acl4.3/home/emacs/fi" load-path))
+(load "fi-site-init")
+
+(setq fi:start-lisp-interface-arguments
+  (function
+   (lambda (use-background-streams)
+     (list
+      "-eval" "(setf mp::*idle-process* mp::*initial-process*)"
+      "-eval" "(mp::start-lisp-connection-listener :emacs t)"
+      ))))
+
+(setq fi:common-lisp-image-name "lisp")
+
+;;; Sent to the a newly started listener.
+(defun fi::setup-tcp-connection (proc)
+  (format "\";;; Emacs listener %d.\"\n" (fi::tcp-listener-generation proc)))
+
+(defun fi:show-run-status ()
+  "Cause CL to show Run/Wait/GC status in ACL buffer mode lines.
+This is normally called automatically from fi:start-lisp-listener-hook."
+  (interactive "")
+  (if (or (null fi::common-lisp-backdoor-main-process-name)
+          (not (fi:process-running-p
+                (get-process fi::common-lisp-backdoor-main-process-name))))
+      (error "Common Lisp must be running to show run bars."))
+  (save-excursion
+    (let* ((buffer
+            (process-buffer
+             (get-process fi::common-lisp-backdoor-main-process-name)))
+           (proc (fi::open-network-stream "Run Bar Process"
+                                          nil
+                                          (fi::get-buffer-host buffer)
+                                          (fi::get-buffer-port buffer))))
+      (set-process-filter   proc 'fi::show-run-status-filter)
+      (set-process-sentinel proc 'fi::show-run-status-sentinel)
+      (send-string proc (format "%s \n" (fi::prin1-to-string fi::listener-protocol)))
+      (send-string proc (format "\"%s\" \n" (process-name proc)))
+      (send-string proc (format "%d \n" (fi::get-buffer-password buffer)))
+      (send-string proc "(mp::run-bar-process)\n")
+      proc)))
+
+(defun fi::install-mode-line-run-status ()
+  (setq mode-line-buffer-identification
+    '("CMUCL " fi:allegro-run-status-string " %12b")))
+</pre>
+      </main>
+      <footer>
+        <div id="footer"></div><!-- hhmts start -->
+Last modified: Sat Feb 29 23:19:42 PST 2020
+<!-- hhmts end -->
+      </footer>
+    </div>
+  </body>
+</html>

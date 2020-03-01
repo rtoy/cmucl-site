@@ -49,16 +49,16 @@ html`
     Copyright © 1999-2019 CMUCL Project<br>
     Validate <a id="links"
        href="https://validator.w3.org/checklink?uri=//URI//"
-       target="_blank">links</a>, <a id="html"
+       target="_blank" rel="noopener">links</a>, <a id="html"
        href="https://validator.w3.org/check?uri=//URI//"
-       target="_blank">HTML</a>, <a id="css"
+       target="_blank" rel="noopener">HTML</a>, <a id="css"
        href=
        "https://jigsaw.w3.org/css-validator/validator?uri=//BASE//cmucl.css"
-       target="_blank">stylesheet</a>.
+       target="_blank" rel="noopener">stylesheet</a>.
   </p>
   <address>
     <a href="https://gitlab.common-lisp.net/cmucl/cmucl-site/issues"
-             target="_blank">CMUCL Site Issue tracker</a>
+             target="_blank" rel="noopener">CMUCL Site Issue tracker</a>
   </address>
 `;
 

@@ -136,5 +136,5 @@ aside {
 /* Highlight to use for selected nav bar item */
 .nav-highlight { 
   font-weight: bold;
-  font-size: larger;
+  background-color: yellow;
 }

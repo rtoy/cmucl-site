@@ -9,7 +9,8 @@
     </title>
     <meta name="author"
           content="CMUCL webmasters">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
     <link rel="author"
           href="https://gitlab.common-lisp.net/cmucl/cmucl-site/issues"
           title="CMUCL site issues tracker">
@@ -32,15 +33,13 @@
     })();
 
     </script>
-    <script type="module" src="../js/common.js">
-    </script>
+    <script type="module"
+          src="../js/common.js"></script>
   </head>
   <body>
     <div class="container">
-      <header id="header">
-      </header>
-      <aside id="navbar">
-      </aside>
+      <header id="header"></header>
+      <aside id="navbar"></aside>
       <main id="content-documentation">
         <div class="heading-line">
           <strong>Documentation</strong>: Reading disassembly output
@@ -220,13 +219,20 @@
      82C: L9:   JMP   L4
 </pre>
         <p>
-          FIXME: Explain the fact that the compiler can generate fast calls to
-          the no-arg-parsing entry point, that bypass the checking of the
-          number of arguments and their types, assuming that code has been
-          compiled with low safety.
+          The compiler can generate fast calls to the no-arg-parsing entry
+          point, that bypass the checking of the number of arguments and their
+          types, assuming that code has been compiled with low safety. This is
+          best explained in the section <a href=
+          "https://cmucl.org/docs/cmu-user/cmu-user.html#Block-Compilation">Block
+          Compilation</a> in the <a href=
+          "https://cmucl.org/docs/interface/toolkit/toolkit.html">CMU User's
+          Manual</a>.
         </p>
         <p>
-          The code at label L4 is the normal function epilogue. FIXME explain.
+          The code at label L4 is the normal function epilogue. This basically
+          restores the frame information saved in the function prologue, which
+          is the code before label L0. The prologue basically allocates some
+          space on the stack and adjust the frame pointer accordingly.
         </p>
         <p>
           The code at label L5 checks first whether the most-significant bit is
@@ -238,7 +244,27 @@
           words of storage, (the heap is 8 byte aligned).
         </p>
         <p>
-          The code at labels L7 to L8 is ... FIXME.
+          The code at labels L5 to L6 setting the header word needed for boxing
+          up the result when the result is a bignum.. The header tag is
+          computed in <code>EDX</code> which is either <code>20A</code> or
+          <code>10A</code> depending on whether the most significant bit is set
+          or not. The final result is a bignum and bignums use a
+          twos-complement representation so two wrods are needed if the most
+          significant bit of the result is 1. This is all denoted by the
+          <code>0A</code> part which says the result is a bignum. The other
+          part indicates how many words are needed.
+        </p>
+        <p>
+          The code at labels L7 to L8 deals with allocating space for the the
+          boxed result. if there's enough space between the
+          <code>current_region_free_pointer</code> and
+          <code>current_region_end_addr</code> to hold 16 more bytes, then the
+          free pointer is incremented. Otherwise we need to call
+          <code>alloc_overflow_eax</code> to add more space.
+        </p>
+        <p>
+          Finally, the code after L8 fills in the allocated space with the
+          header word value and the actual 32-bit result.
         </p>
         <p>
           While this example doesn't show it, CMUCL can handle unboxed values
@@ -256,10 +282,8 @@
         </p>
       </main>
       <footer>
-        <div id="footer">
-	</div>
-<!-- hhmts start -->
-Last modified: Sat Feb 29 22:38:40 PST 2020
+        <div id="footer"></div><!-- hhmts start -->
+Last modified: Sat Mar 14 08:48:07 PDT 2020
 <!-- hhmts end -->
       </footer>
     </div>

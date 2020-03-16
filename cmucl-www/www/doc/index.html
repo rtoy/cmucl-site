@@ -107,8 +107,8 @@
               </li>
             </ul>
           </li>
-          <li>The <strong>CLX manual</strong> is available for <a
-          href="https://sharplispers.github.io/clx/">online browsing</a>.
+          <li>The <strong>CLX manual</strong> is available for <a href=
+          "https://sharplispers.github.io/clx/">online browsing</a>.
           </li>
           <li>Documentation on the <strong>CMUCL Motif toolkit</strong>:
             <ul>
@@ -197,10 +197,21 @@
           Tips and tricks
         </h2>
         <ul>
-          <li>On GNU/Linux systems running kernel 2.2 or greater,
-          CMUCL-compiled files can be <a href="executable.html">made directly
-          executable by the kernel</a> by registering them with the binfmt_misc
-          module.
+          <li>
+            <p>
+              On GNU/Linux systems running kernel 2.2 or greater,
+              CMUCL-compiled files can be <a href="executable.html">made
+              directly executable by the kernel</a> by registering them with
+              the binfmt_misc module.
+            </p>
+            <p>
+              Alternatively, take advantage of the executable feature. If
+              <code>(ext:featurep :executable)</code> is true, you can run
+              <code>(ext:save-lisp "exe" :executable t)</code> to create an
+              executable file that contains the lisp image. This works on
+              Linux, MacOS X, and Solaris, so you don't need to depend on the
+              binfmt_misc module on Linux.
+            </p>
           </li>
           <li>Example uses of CMUCL's foreign function interface to <a href=
           "tcl-alien.html">call a tcl interpreter</a>, and a more complicated
@@ -355,7 +366,7 @@
       </main>
       <footer>
         <div id="footer"></div><!-- hhmts start -->
-Last modified: Sat Mar 14 08:01:14 PDT 2020
+Last modified: Sun Mar 15 17:39:37 PDT 2020
 <!-- hhmts end -->
       </footer>
     </div>
